@@ -38,16 +38,27 @@ export default {
     getTouchTime(val) {
       if (process.env.NODE_ENV !== 'development') {
         if (!this.userMakeState) {
-          if (this.$route.path == '/') {
+          if (this.$route.path == '/datadetection') {
+            this.$router.push('/')
             this.$store.commit('set_StandbyState', true)
             this.$store.dispatch('logout')
           }
         }
       }
     },
+    resLogoutUser(val) {
+      if (this.$route.path !== '/testingend') {
+        this.logout()
+      }
+    },
   },
   computed: {
-    ...mapGetters(['getTouchTime', 'StandbyState', 'userMakeState']),
+    ...mapGetters([
+      'getTouchTime',
+      'StandbyState',
+      'userMakeState',
+      'resLogoutUser',
+    ]),
   },
   created() {
     var whdef = 100 / 1280 // 表示1920的设计图,使用100PX的默认值,使用100px只是为了方便计算 其他值都可以
@@ -59,7 +70,7 @@ export default {
     this.init_socket()
   },
   methods: {
-    ...mapActions(['init_socket']),
+    ...mapActions(['init_socket', 'logout']),
   },
 }
 </script>

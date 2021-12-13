@@ -185,21 +185,21 @@
         <h4>{{ userInfo.user_name }}</h4>
         <div class="user_star">
           <span>累计获星:</span>
-          <span>132</span>
+          <span>{{ userData.total.star_count || 0 }}</span>
         </div>
         <div class="user_ability">
           <div class="user_ability_item">
-            <span class="ability_value">65</span>
+            <span class="ability_value">{{ userData.data.sport_power }}</span>
             <span class="ability_title">运动能力</span>
           </div>
           <div class="user_ability_line"></div>
           <div class="user_ability_item">
-            <span class="ability_value">95</span>
+            <span class="ability_value">{{ userData.data.vitality }}</span>
             <span class="ability_title">活力</span>
           </div>
         </div>
       </section>
-      <section class="week_motion">
+      <!-- <section class="week_motion">
         <h4>
           <span
             class="small_icon2"
@@ -263,7 +263,7 @@
             <div class="motion_time">2021年10月11日08:26</div>
           </li>
         </ul>
-      </section>
+      </section> -->
     </div>
     <RecommDetails v-if="recommendState" />
   </div>
@@ -272,6 +272,7 @@
 <script>
 import RecommDetails from './RecommDetails'
 import { mapGetters, mapActions } from 'vuex'
+import api from '@/api/api'
 export default {
   props: {
     // userInfo: {
@@ -283,15 +284,36 @@ export default {
   },
   watch: {},
   data() {
-    return {}
+    return {
+      userData: {
+        total: {
+          star_count: 0,
+        },
+        data: {
+          sport_power: 0,
+          vitality: 0,
+        },
+      },
+    }
   },
   created() {},
-  mounted() {},
+  mounted() {
+    this.getUserAll()
+  },
   computed: {
     ...mapGetters(['recommendState', 'userInfo', 'publicPath']),
   },
   methods: {
     // ...mapActions([]),
+    async getUserAll() {
+      const rs = await api.get('/get-user-all', {
+        user_id: this.userInfo.user_id,
+      })
+      console.log(rs)
+      if (rs.data.code == '200') {
+        this.userData = rs.data.data
+      }
+    },
     user_login() {
       this.$emit('userlogout')
     },

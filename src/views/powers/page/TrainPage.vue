@@ -8,7 +8,7 @@
   .page_header_line {
     width: 100%;
     height: 0.13rem;
-    background: #a3d5f2;
+    // background: #a3d5f2;
   }
   h1 {
     padding: 0.2rem 0;
@@ -99,13 +99,27 @@
     }
   }
 }
+::v-deep .el-progress-bar__outer {
+  height: 0.13rem !important;
+  border-radius: 0 !important;
+}
+::v-deep .el-progress-bar__inner  {
+  border-radius: 0 !important;
+}
 </style>
 
 <template>
   <div class="page">
     <div v-show="!reststate">
       <header class="page_header">
-        <div class="page_header_line"></div>
+        <div class="page_header_line">
+          <el-progress
+            :show-text="false"
+            stroke-linecap="square"
+            :percentage="percentage"
+            :color="progressinfo.customColor"
+          ></el-progress>
+        </div>
         <h1>{{ plantitle() }}</h1>
       </header>
       <section class="page_action">
@@ -177,6 +191,11 @@ import RadialProgressBar from 'vue-radial-progress'
 export default {
   data() {
     return {
+      progressinfo: {
+        customColor: '#409eff',
+        linecap: 'square',
+      },
+      percentage: 0,
       timeMeter: 0,
       timevalue: null, //时间
       timestate: false,
@@ -199,7 +218,7 @@ export default {
       },
       //组数
       groupnum: {
-        totalNum: 7,
+        totalNum: 1,
         currentNum: 0,
         pyramid: 0,
         weight: 0,
@@ -259,7 +278,7 @@ export default {
             }
           } else if (this.planstate == 1) {
             this.firststate = false
-            this.groupnum.currentNum = e.Weight / 6
+            this.groupnum.currentNum = Math.floor(e.Weight / 6)
             setTimeout(() => {
               this.reststate = true
               this.totalSteps = 10
@@ -311,7 +330,6 @@ export default {
         })
       }
     },
-    // ShowPage() {},
     //监听课程
     coursegroup(val, oldval) {
       console.log('课程组', val, val['负重组'].length)
@@ -330,6 +348,9 @@ export default {
     //监听步骤
     planstate(val, oldval) {
       this.$store.commit('add_total_group')
+      if (val == 1) {
+        this.groupnum.totalNum = 7
+      }
       if (val == 2 || val == 3 || val == 4) {
         let data = []
         if (val == 2) {
@@ -348,23 +369,35 @@ export default {
         this.totalSteps = data[0].rest
       }
     },
-    reststate(val, oldval) {
-      if (!val) {
-        this.timestart()
-      } else {
-        clearInterval(window.timer)
-      }
-    },
-    startstate: {
-      immediate: true, // 首次加载的时候执行函数
-      deep: true, // 深入观察,监听数组值，对象属性值的变化
+    //休息
+    reststate: {
       handler: function (e) {
         if (!e) {
           this.timestart()
         } else {
-          clearInterval(window.timer)
+          clearInterval(this.windowtimer)
         }
       },
+      deep: true, // 深入观察,监听数组值，对象属性值的变化
+    },
+    //暂停开始
+    startstate: {
+      handler: function (e) {
+        if (!e) {
+          this.timestart()
+        } else {
+          clearInterval(this.windowtimer)
+        }
+      },
+      immediate: true, // 首次加载的时候执行函数
+      deep: true, // 深入观察,监听数组值，对象属性值的变化
+    },
+    plannum: {
+      handler: function (e) {
+        this.percentage = (100 / e.totalNum) * e.currentNum
+      },
+      immediate: true, // 首次加载的时候执行函数
+      deep: true, // 深入观察,监听数组值，对象属性值的变化
     },
   },
   created() {},
@@ -376,22 +409,21 @@ export default {
     }
     this.$store.commit('set_couserTimer', {
       type: 'start',
-      time: Number(Date.parse(new Date()).toString().substr(0, 10)),
     })
   },
   //离开页面
   destroyed: function () {
-    console.log(123)
+    // console.log(123)
     this.$store.commit('set_couserTimer', {
       type: 'end',
-      time: Number(Date.parse(new Date()).toString().substr(0, 10)),
     })
   },
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_resHeightWeight']),
     //时间计时
     timestart() {
-      window.timer = setInterval(() => {
+      console.log('计时了嘛')
+      this.windowtimer = setInterval(() => {
         this.timeMeter += 0.1
         this.timevalue = Format.FormatTime(this.timeMeter.toFixed())
       }, 100)
@@ -489,7 +521,7 @@ export default {
           return this.groupnum.currentNum + ' / ' + this.groupnum.totalNum
         case '次数':
           if (this.planstate == 1) {
-            return '0 / 0'
+            return '1 / 1'
           }
           return this.plannum.currentNum + ' / ' + this.plannum.totalNum
         case '单次动作评分':
@@ -518,9 +550,6 @@ export default {
         //   this.planstate += 1
         // }
       }
-    },
-    ShowPage() {
-      console.log(123)
     },
   },
 }

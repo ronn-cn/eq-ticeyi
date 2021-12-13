@@ -199,10 +199,16 @@
           </div>
           <h1 class="h1">动作演示</h1>
           <div class="apparatus_picture">
-            <img
+            <iframe
+              :src="`${publicPath}powerStatic/mo1.html`"
+              id="mo1"
+              style="width: 100%; height: 100%"
+              frameborder="0"
+            ></iframe>
+            <!-- <img
               :src="`${publicPath}powerStatic/images/apparatus_img3.png`"
               style="width: 5rem"
-            />
+            /> -->
           </div>
           <ol>
             <li>胸部压着软垫，腰部紧贴椅背，双手反握把手</li>

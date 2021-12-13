@@ -38,7 +38,10 @@ header {
         height: 1.8rem;
         margin-bottom: 0.25rem;
         position: relative;
-        background-color: salmon;
+        // background: url(../assets/images/course/弹力带减脂塑形跟练_1920x660.jpg)
+        //   no-repeat;
+        // background-size: cover;
+        // background-color: salmon;
         .item_text {
           padding-left: 10%;
           text-align: left;
@@ -107,6 +110,10 @@ footer {
             v-for="item of courseList"
             :key="item.md5"
             class="courses_list_item"
+            :style="{
+              backgroundImage: `url(${item.image})`,
+              backgroundPosition: 'right',
+            }"
           >
             <div class="item_text">
               <p class="p1" :title="item.name">{{ item.name }}</p>
@@ -130,16 +137,14 @@ footer {
 import api from '@/api/api'
 import { mapGetters } from 'vuex'
 export default {
-  props: {
-    // courseList: {
-    //   type: Array,
-    // },
-  },
+  props: {},
+  components: {},
   data() {
     return {
       timernum: 30,
       downtimer: null,
       courseList: [],
+      showNotify: false,
     }
   },
   created() {
@@ -161,36 +166,69 @@ export default {
   mounted() {},
   destroyed() {
     clearInterval(this.downtimer)
+    this.$store.commit('set_recommendid', '')
   },
   computed: {
-    ...mapGetters(['recommendState', 'userInfo']),
+    ...mapGetters(['recommendState', 'userInfo', 'client_id']),
   },
   methods: {
     async details(info) {
       const user_id = this.userInfo.user_id
       const lesson_id = info.md5
       const client_type = info.equipmenttype
-
-      // console.log(info)
       const rs = await api.post('/transfer-user', {
         user_id,
         lesson_id,
         client_type,
       })
-
+      console.log(rs)
       if (rs.data.data) {
-        console.log(rs)
-        this.$store.commit('set_recommendid', {
-          md5: info.md5,
-          transfer: rs.data.data,
-        })
+        this.$store.commit('set_client_id', rs.data.data.client_id)
+        if (process.env.VUE_APP_PAGE_ID == 0) {
+          if (client_type.includes('坐姿腹肌训练器')) {
+            this.$router.push('/trainpage')
+          } else {
+            this.$store.commit('set_recommendid', {
+              md5: info.md5,
+              transfer: rs.data.data,
+            })
+          }
+        }
+        if (process.env.VUE_APP_PAGE_ID == 1) {
+          if (client_type.includes('体测仪')) {
+            this.$router.push('/datadetection')
+          } else {
+            this.$store.commit('set_recommendid', {
+              md5: info.md5,
+              transfer: rs.data.data,
+            })
+          }
+        }
+        if (process.env.VUE_APP_PAGE_ID == 2) {
+          if (client_type.includes('跑步机')) {
+            this.$router.push({
+              path: '/trainrun',
+              query: { type: 2, status: 0 },
+            })
+          } else {
+            this.$store.commit('set_recommendid', {
+              md5: info.md5,
+              transfer: rs.data.data,
+            })
+          }
+        }
       } else {
-        console.log('那就这样把')
+        this.$notify({ type: 'warning', message: '暂无设备空闲' })
       }
     },
     //退出课程
-    lotrecommend() {
+    async lotrecommend() {
       this.$store.commit('set_recommendid', '')
+      const rs = await api.post('/cancel-transfer', {
+        client_id: this.client_id,
+      })
+      console.log(rs)
+      // this.$router.push('/')
     },
     async loadcourseList() {
       const rs = await api.post('/guide-lesson', {
@@ -203,12 +241,13 @@ export default {
         // console.log(lessons)
         for (let i in data) {
           lessons.forEach((item) => {
+            // console.log(data[i])
             if (item.md5 == data[i]) {
-              // console.log(item)
               this.courseList.push({
                 md5: item.md5,
                 name: item.name,
                 desc: item.desc,
+                image: require(`../assets/images/course/${item.image}`),
                 equipmenttype: item.equipmenttype,
               })
             }

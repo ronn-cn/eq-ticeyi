@@ -70,7 +70,7 @@
         </div>
         <div class="footer_start">
           <div class="start_text1" @click="initStep">
-            {{ courseState ? '确认' : '开始课程' }}
+            {{ courseState ? '确认' : '开始测试' }}
           </div>
         </div>
       </div>
@@ -79,6 +79,7 @@
 </template>
 
 <script>
+import api from '@/api/api'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import StepView from '@/components/bodytester/StepView.vue'
 export default {
@@ -105,7 +106,12 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['loginState', 'userMakeState', 'resStartLesson']),
+    ...mapGetters([
+      'loginState',
+      'userInfo',
+      'userMakeState',
+      'resStartLesson',
+    ]),
   },
   watch: {
     itemindex(val) {
@@ -133,12 +139,33 @@ export default {
         })
       }
     },
+    loginState: {
+      handler(newval, oldval) {
+        if (newval) {
+          this.getSexAge()
+        }
+      },
+      immediate: true,
+    },
   },
-  created() {},
+  created() {
+    this.getSexAge()
+  },
   mounted() {},
   methods: {
-    ...mapMutations(['set_lesson_id', 'set_MakeCareInfo']),
+    ...mapMutations(['SEND_SOCKET', 'set_lesson_id', 'set_MakeCareInfo']),
     ...mapActions(['send_askLedState']),
+    async getSexAge() {
+      const rs = await api.get('/get-user-all', {
+        user_id: this.userInfo.user_id,
+      })
+      // console.log(rs)
+      if (rs.data.code == '200') {
+        let user = rs.data.data.user
+        this.$store.commit('set_user_age', user.age)
+        this.$store.commit('set_user_sex', user.sex)
+      }
+    },
     //返回
     setitemindex() {
       if (this.viewindex == 0) {

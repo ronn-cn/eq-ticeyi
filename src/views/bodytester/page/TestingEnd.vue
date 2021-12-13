@@ -292,7 +292,7 @@
               backgroundSize: 'cover',
             }"
           >
-            <span>0</span>
+            <span>{{ usergrade }}</span>
           </div>
           <p class="left_text">
             数据已同步至云端，可通过智能健身镜或小程序在线查看
@@ -437,6 +437,7 @@ export default {
       ],
       qrstate: true,
       endPageStatus: true,
+      usergrade: 0,
     }
   },
   computed: {
@@ -471,6 +472,7 @@ export default {
   },
   //离开页面
   destroyed: function () {
+    this.$store.commit('clear_bodydata')
     this.loadaddside()
     this.$store.dispatch('clientEnd')
   },
@@ -511,9 +513,10 @@ export default {
       const data = this.bodydata
       // console.log(data)
       const bmi = this.healthyList[2].healthyindex
+      this.usergrade = bmi == 0 ? 70 : bmi == 1 ? 90 : 70
       var msg = {
         device_ouid: this.ouid, //设备ID
-        user_id: this.userInfo['user_id'] || '', //用户ID
+        user_ouid: this.userInfo['user_id'] || '', //用户ID
         start_time: new Date().getTime(), //体测时间
         age: Number(this.user_age), //用户年龄
         sex: Number(this.user_sex), //用户性别

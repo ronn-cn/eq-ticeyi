@@ -153,10 +153,9 @@
       <home-view
         :itemindex="itemindex"
         @send_askLedState="send_askLedState"
-        @setstartTrain="setstartTrain"
       ></home-view>
     </div>
-    <TrainPage v-if="trainstatic" />
+    <!-- <TrainPage v-if="trainstatic" /> -->
   </div>
 </template>
 
@@ -254,7 +253,7 @@ export default {
     },
     //开始训练
     setstartTrain() {
-      this.trainstatic = true
+      // this.trainstatic = true
     },
     // beforeunloadHandler() {
     //   this._beforeUnload_time = new Date().getTime()

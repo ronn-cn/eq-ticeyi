@@ -3,6 +3,7 @@ import api from "../../api/api";
 const state = {
   userinfo: {},
   loginState: false,
+  resLogoutUser: 0
 };
 
 const mutations = {
@@ -10,7 +11,10 @@ const mutations = {
     state.loginState = true
     state.userinfo = JSON.parse(data)
   },
-
+  //用户转移退出
+  set_resLogoutUser (state) {
+    state.resLogoutUser = new Date().getTime()
+  }
 };
 
 const actions = {

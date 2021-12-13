@@ -9,6 +9,7 @@ const state = {
   initialization: false,
   resStartLesson: {},
   lesson_id: process.env.VUE_APP_PAGE_ID == 0 ? "445dab66e033da6f0000000000000003" : process.env.VUE_APP_PAGE_ID == 1 ? "445dab66e033da6f0000000000000001" : "445dab66e033da6f0000000000000006", //课程id
+  resLogoutUser: 0
 };
 
 const mutations = {
@@ -31,6 +32,7 @@ const mutations = {
   },
   //发送
   SEND_SOCKET (state, cmd) {
+    console.log(cmd)
     if (state.socket) {
       state.socket.send(cmd)
     }
@@ -38,7 +40,12 @@ const mutations = {
   //设置课程id
   set_lesson_id (state, data) {
     state.lesson_id = data
+  },
+  //
+  set_resLogoutUser (state, data) {
+    state.resLogoutUser = new Date().getTime()
   }
+
 };
 
 const actions = {
@@ -76,9 +83,9 @@ const actions = {
           }
 
 
-          const cmdList = ['resLoginQrcode', 'resLoginUser', 'resServiceBusiness', 'resLastTouchTime', 'resStartLesson']  //登陆二维码，登陆用户，主机http,间隔时间,课程预约
+          const cmdList = ['resLoginQrcode', 'resLoginUser', 'resServiceBusiness', 'resLastTouchTime', 'resStartLesson', 'resLogoutUser']  //登陆二维码，登陆用户，主机http,间隔时间,课程预约
           const powerList = ['resHeightWeight', 'resGenerateLesson']  //下压数据,课程开始
-          const bodytesterList = ['resMeasureHeight', 'resMeasureWeight', 'resMeasureImpedance', 'resMeasureBodyData']  //测量身高，测量体重，测量体脂，各类数据
+          const bodytesterList = ['resMeasureHeight', 'resMeasureWeight', 'resMeasureImpedance', 'resMeasureBodyData', 'resWeightState']  //测量身高，测量体重，测量体脂，各类数据 返回上一次
           const treadmillList = ['resTreadmillData', 'resSetSpeed', 'resSetIncline', 'resEmergencyStop', 'resSetStart', 'resSetStop']  //实时记录 回馈速度 坡度改变 紧急停止 课程开始 运动结束
 
 
@@ -136,6 +143,10 @@ const actions = {
         break;
       case "resStartLesson": //课程预约
         commit('set_resStartLesson', data.data)
+        break;
+      case "resLogoutUser": //用户转移退出
+        console.log(data, 333)
+        commit('set_resLogoutUser')
         break;
     }
   }

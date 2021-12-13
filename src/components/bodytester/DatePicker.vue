@@ -12,7 +12,7 @@
       :maskClick="true"
       :rowNumber="4"
       :itemHeight="60"
-      :defaultIndex="11"
+      :defaultIndex="user_age"
       @change="pickerchang"
       :visible.sync="pickerVisible"
     />
@@ -20,10 +20,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import VuePicker from '../../../node_modules/vue-pickers/src/picker.vue'
 // import VuePicker from 'vue-pickers'
 var tdata = []
-for (let i = 7; i < 100; i++) {
+for (let i = 0; i < 100; i++) {
   tdata.push({
     label: `${i}岁`,
     value: i,
@@ -41,9 +42,11 @@ export default {
     }
   },
   mounted() {},
+  computed: {
+    ...mapGetters(['user_age']),
+  },
   methods: {
     pickerchang(e) {
-      // console.log(e[0].value);
       this.$store.commit('set_user_age', e[0].value)
     },
   },

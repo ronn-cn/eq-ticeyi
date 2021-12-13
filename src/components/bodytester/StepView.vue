@@ -321,15 +321,15 @@ export default {
       ],
       actionImg: [
         {
-          url: 'bodytesterStatic/images/test_guide1.png',
+          url: 'bodytesterStatic/images/test_guide3.png',
           title: '请双脚踩在体脂秤上，保持身体平衡',
         },
         {
-          url: 'bodytesterStatic/images/test_guide2.png',
+          url: 'bodytesterStatic/images/test_guide1.png',
           title: '双手握住手柄，拇指一侧充分接触电极部分',
         },
         {
-          url: 'bodytesterStatic/images/test_guide3.png',
+          url: 'bodytesterStatic/images/test_guide2.png',
           title: '点击确认，保持静止10-20秒，待检测完成',
         },
       ],

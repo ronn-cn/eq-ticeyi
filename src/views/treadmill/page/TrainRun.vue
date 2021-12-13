@@ -766,7 +766,6 @@ export default {
         if (this.downcount == 0) {
           this.$store.commit('set_couserTimer', {
             type: 'start',
-            time: new Date().getTime(),
           })
           clearInterval(this.startDown)
           this.maskstate = false
@@ -782,10 +781,10 @@ export default {
 
       this.$store.commit('set_couserTimer', {
         type: 'end',
-        time: new Date().getTime(),
       })
 
-      let speed_avg = this.TreadmillData.distance / this.TreadmillData.time //计算平均速度
+      let speed_avg =
+        (this.TreadmillData.distance / this.TreadmillData.time) * 3.6 //计算平均速度
 
       let sum = 0
       let inclinelength = this.averageSlope.length

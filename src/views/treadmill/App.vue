@@ -35,18 +35,28 @@ export default {
     return {}
   },
   computed: {
-    ...mapGetters(['getTouchTime', 'StandbyState', 'userMakeState']),
+    ...mapGetters([
+      'getTouchTime',
+      'StandbyState',
+      'userMakeState',
+      'resLogoutUser',
+    ]),
   },
   watch: {
     getTouchTime(val) {
       if (process.env.NODE_ENV !== 'development') {
         if (!this.userMakeState) {
-          if (this.$route.path == '/') {
-            // console.log(this.$route)
+          if (this.$route.path !== '/trainrun') {
+            this.$router.push('/')
             this.$store.commit('set_StandbyState', true)
             this.$store.dispatch('logout')
           }
         }
+      }
+    },
+    resLogoutUser(val) {
+      if (this.$route.path !== '/courseend') {
+        this.logout()
       }
     },
   },
@@ -61,7 +71,7 @@ export default {
   },
   mounted() {},
   methods: {
-    ...mapActions(['init_socket']),
+    ...mapActions(['init_socket', 'logout']),
   },
 }
 </script>

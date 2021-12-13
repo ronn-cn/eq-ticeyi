@@ -227,7 +227,7 @@ export default {
       patternList: [
         {
           id: 1,
-          title: '自助体侧',
+          title: '自助体测',
         },
         {
           id: 2,

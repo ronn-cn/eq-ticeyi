@@ -178,8 +178,8 @@ export default {
           document.getElementById(uid).setAttribute('class', 'view_active')
         } else {
           console.log('开始吧')
-          this.$emit('setstartTrain')
-          // this.$router.push('/trainpage')
+          // this.$emit('setstartTrain')
+          this.$router.push('/trainpage')
         }
       } else {
         this.courseState = true

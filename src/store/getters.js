@@ -13,17 +13,22 @@ export default {
   sport_end_time: state => state.common.sport_end_time,  //结束时间
   MakeCareTitle: state => state.common.MakeCareTitle,  //预约名称
   MakeCareDesc: state => state.common.MakeCareDesc,  //预约简介
+  client_id: state => state.common.client_id,  //
+
+
 
 
   //用户
   loginState: state => state.user.loginState, //登陆状态 
-  userInfo: state => state.user.userinfo, //登陆状态 
+  userInfo: state => state.user.userinfo, //用户信息
   //websocket
   websocketUrl: state => state.websocket.websocketUrl,  //websocket地址
   getTouchTime: state => state.websocket.TouchTime,  //间隔时间
 
   resStartLesson: state => state.websocket.resStartLesson,  //课程预约
   lesson_id: state => state.websocket.lesson_id,      //lesson_id
+  resLogoutUser: state => state.websocket.resLogoutUser,  //用户转移退出
+
   //体测仪
   user_sex: state => state.bodytester.user_sex,   //用户性别
   user_age: (state) => state.bodytester.user_age, //用户年龄

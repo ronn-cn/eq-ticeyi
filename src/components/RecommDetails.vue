@@ -45,8 +45,12 @@
   .content_cover {
     width: 2.3rem;
     height: 2.3rem;
-    background-color: aqua;
+    // background-color: aqua;
     margin-top: 0.2rem;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
   .content_progress {
     width: 70%;
@@ -91,7 +95,9 @@
         <span>{{ recommInfo.calorie }}千卡</span> |
       </div>
       <p class="content_p">{{ recommInfo.desc }}</p>
-      <div class="content_cover"></div>
+      <div class="content_cover">
+        <img :src="imgurl" alt="" />
+      </div>
       <div class="content_progress"></div>
       <div class="content_tips">
         请您前往有氧区<span style="color: #0eebf0"
@@ -113,6 +119,7 @@ export default {
   data() {
     return {
       recommInfo: {},
+      imgurl: '',
     }
   },
   watch: {
@@ -124,14 +131,18 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['recommendid', 'userInfo', 'recommendMsg']),
+    ...mapGetters(['recommendid', 'userInfo', 'recommendMsg', 'client_id']),
   },
   created() {},
   mounted() {},
   methods: {
     ...mapActions(['logout']),
-    lotrecommend() {
+    async lotrecommend() {
       this.$store.commit('set_recommendid', '')
+      const rs = await api.post('/cancel-transfer', {
+        client_id: this.client_id,
+      })
+      console.log(rs)
     },
     async loaddetails(val) {
       const data = require('../../public/common/js/lessons.json')
@@ -140,6 +151,15 @@ export default {
         if (data[i].md5 == val) {
           // console.log(data[i])
           this.recommInfo = data[i]
+          if (data[i].equipmenttype.includes('健身镜')) {
+            this.imgurl = require('../assets/images/jianshenjing.png')
+          } else if (data[i].equipmenttype.includes('跑步机')) {
+            this.imgurl = require('../assets/images/paobuji.png')
+          } else if (data[i].equipmenttype.includes('体测仪')) {
+            this.imgurl = require('../assets/images/ticeyi.png')
+          } else {
+            this.imgurl = require('../assets/images/zuozixunlianqi.png')
+          }
         }
       }
     },

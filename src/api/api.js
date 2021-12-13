@@ -18,6 +18,7 @@ export default {
     })
     return rs
   },
+
   async post (url, data) {
     var timestamp = Date.parse(new Date())
     let src;

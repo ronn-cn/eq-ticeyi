@@ -17,17 +17,26 @@ export default [
     path: "/trainpage",
     name: "TrainPage",
     component: _import('powers/page/TrainPage'),
+    meta: {
+      title: '训练页'
+    },
   },
   {
     path: "/restpage",
     name: "RestPage",
     component: _import('powers/page/RestPage'),
+    meta: {
+      title: '休息页'
+    },
     // component: () => import(/* webpackChunkName: "about" */ "../views/RestPage.vue"),
   },
   {
     path: "/endpage",
     name: "EndPage",
     component: _import('powers/page/EndPage'),
+    meta: {
+      title: '结束页'
+    },
     // component: () => import(/* webpackChunkName: "about" */ "../views/EndPage.vue"),
   },
   {

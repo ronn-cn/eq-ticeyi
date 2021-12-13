@@ -14,7 +14,8 @@ const state = {
   projecttype: process.env.VUE_APP_PAGE_ID == 0 ? "坐姿腹肌训练器" : process.env.VUE_APP_PAGE_ID == 1 ? "体测仪" : "跑步机",
   publicPath: process.env.NODE_ENV == "development" ? '/' : './',
   MakeCareTitle: '',  //预约课程名称
-  MakeCareDesc: ''    //预约课程简介
+  MakeCareDesc: '',    //预约课程简介
+  client_id: ''
 }
 
 const mutations = {
@@ -28,14 +29,17 @@ const mutations = {
   //设置开始时间 结束时间
   set_couserTimer (state, data) {
     if (data.type == 'start') {
-      state.sport_start_time = data.time
+      state.sport_start_time = Number(Date.parse(new Date()).toString().substr(0, 10))
     } else if (data.type == 'end') {
-      state.sport_end_time = data.time
+      state.sport_end_time = Number(Date.parse(new Date()).toString().substr(0, 10))
     }
   },
   //用户转移
   set_userMakeState (state, boolean) {
     state.userMakeState = boolean
+    if (state.StandbyState) {
+      state.StandbyState = false
+    }
   },
   //设置屏保
   set_StandbyState (state, boolean) {
@@ -56,6 +60,9 @@ const mutations = {
       state.recommendState = false
     }
 
+  },
+  set_client_id (state, data) {
+    state.client_id = data
   }
 }
 

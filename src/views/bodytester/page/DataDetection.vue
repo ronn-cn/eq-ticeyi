@@ -264,12 +264,13 @@ export default {
   },
   created() {
     this.$store.dispatch('clientstart', '445dab66e033da6f0000000000000001')
-    this.$store.commit('set_screenstate', true)
   },
   mounted() {
     this.initload()
     setTimeout(() => {
       this.audio_play()
+      this.$store.commit('set_screenstate', true)
+      this.SEND_SOCKET('{"cmd":"askMeasureHeight"}') //开始测量身高
     }, 1000)
   },
   //离开页面
@@ -286,7 +287,14 @@ export default {
           this.audio_play()
           this.progress.endVal += 20
           console.log('测量体重')
+          this.SEND_SOCKET('{"cmd":"askStopMeasureHeight"}') //停止测量身高
           this.SEND_SOCKET('{"cmd":"askMeasureWeight"}')
+          setTimeout(() => {
+            console.log(123, this.LOCK_WEIGHT.status)
+            if (!this.LOCK_WEIGHT.status) {
+              this.SEND_SOCKET('{"cmd":"askWeightState"}')
+            }
+          }, 5000)
           this.updateProgress('25')
         }
       },
@@ -296,11 +304,10 @@ export default {
     //监听体重
     LOCK_WEIGHT: {
       handler(newName, oldName) {
-        if (newName.state == 6) {
+        if (newName.status) {
           this.audiosrc = `${this.publicPath}bodytesterStatic/audio/测量体质.mp3`
           this.audio_play()
           this.progress.endVal += 20
-          console.log('测量体脂')
           this.massageList[3].state = true
           this.SEND_SOCKET('{"cmd":"askMeasureImpedance"}')
           this.updateProgress('50')
@@ -428,6 +435,7 @@ export default {
       }
     },
     backhome() {
+      this.$store.commit('clear_bodydata')
       this.$store.dispatch('clientEnd')
       this.$emit('setdatastate', false)
       // this.$emit("init_qrcode", this.Qrcode);
