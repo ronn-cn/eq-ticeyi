@@ -1,97 +1,37 @@
 <style scoped lang="scss">
 .rest_page {
+  width: 45%;
+  height: 70%;
   color: #fff;
+  background-color: #5a4f5f;
+  position: absolute;
+  left: 3%;
+  bottom: 18%;
+  z-index: 1;
+}
+.rest_progress {
+  padding: 0 0.3rem 0.1rem;
   display: flex;
-  padding: 0.6rem 0 0 1.12rem;
-  &_left {
-    display: flex;
-    flex-direction: column;
-    margin-right: 0.72rem;
-    align-items: center;
-    .left_countdown {
-      width: 4.22rem;
-      height: 4.22rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      // background: aqua;
-    }
-    .left_btn {
-      width: 2.13rem;
-      height: 0.73rem;
-      font-size: 0.28rem;
-      line-height: 0.73rem;
-      background: rgba(103, 117, 217, 0.15);
-      border: 1px solid #89b2e7;
-      border-radius: 0.37rem;
-      margin-top: 0.26rem;
-    }
-  }
-  &_right {
-    .right_text {
-      display: flex;
-      flex-direction: column;
-      .text_p1 {
-        font-size: 1rem;
-        font-weight: 400;
-      }
-      .text_p2 {
-        // font-size: 42px;
-        // font-weight: 400;
-        // letter-spacing: 10px;
-        // position: relative;
-        // margin: 85px 0 180px 0;
-        font-size: 0.26rem;
-        font-weight: 400;
-        line-height: 0.42rem;
-        letter-spacing: 0.1rem;
-        position: relative;
-        margin: 0.85rem 0 1.8rem 0;
-        text-align: left;
-      }
-
-      .text_p2::before {
-        content: '“';
-        width: 0.4rem;
-        height: 0.4rem;
-        position: absolute;
-        top: -0.8rem;
-        left: -0.5rem;
-        font-size: 1rem;
-      }
-      .text_p2::after {
-        content: '”';
-        width: 0.4rem;
-        height: 0.4rem;
-        position: absolute;
-        top: 1.5rem;
-        right: 0.1rem;
-        font-size: 1rem;
-      }
-    }
-    .right_next {
-      width: 5.15rem;
-      height: 2.14rem;
-      background: rgb(33 35 36);
-      border-radius: 0.1rem;
-      display: flex;
-      &_image {
-        width: 3.16rem;
-        height: 2.14rem;
-        border-radius: 0.1rem 0px 0px 0.1rem;
-        background: chocolate;
-      }
-      &_text {
-        font-size: 0.24rem;
-        width: (5.15rem-3.16rem);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
+  align-items: center;
+  .bearing {
+    font-size: 0.3rem;
+    margin-top: 0.4rem;
+    margin-left: 1rem;
+    .bearing_p2 {
+      font-size: 0.42rem;
+      margin-top: 0.2rem;
+      color: #10c98f;
     }
   }
 }
+
+.rest_text {
+  font-size: 28px;
+  text-align: left;
+  letter-spacing: 2px;
+  line-height: 56px;
+}
+
 .jixianvalue {
   width: 5.15rem;
   height: 2.14rem;
@@ -103,95 +43,94 @@
   align-items: center;
   font-size: 0.24rem;
 }
-.planzu {
-  width: 5.15rem;
-  height: 2.14rem;
-  border-radius: 0.15rem;
-  border: 1px solid #fff;
+.plan_group {
   display: flex;
-  font-size: 0.24rem;
+  justify-content: center;
+  font-size: 0.2rem;
+  margin: 0.2rem 0;
   &_left {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30%;
-    height: 100%;
-    border-right: 1px solid;
-  }
-  &_right {
-    width: 70%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
   }
+  &_line {
+    width: 4px;
+    height: 65px;
+    background-color: #fff;
+    margin: 0 20px;
+  }
+}
+.rest_btn {
+  width: 90%;
+  height: 130px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background-color: rgb(16, 201, 143);
+}
+p {
+  margin-bottom: 0;
 }
 </style>
 
 <template>
   <div class="rest_page">
-    <section class="rest_page_left">
-      <div class="left_countdown">
-        <radial-progress-bar
-          :diameter="barinfo.diameter"
-          :stopColor="barinfo.stopColor"
-          :startColor="barinfo.startColor"
-          :strokeWidth="barinfo.strokeWidth"
-          :innerStrokeWidth="barinfo.innerStrokeWidth"
-          :innerStrokeColor="barinfo.innerStrokeColor"
-          :strokeLinecap="barinfo.strokeLinecap"
-          :completed-steps="completedSteps"
-          :v-model="completedSteps"
-          :total-steps="totalSteps"
-        >
-          <p style="font-size: 84px; margin-bottom: 5px">
-            {{ completedSteps }}
-          </p>
-          <p>s后</p>
-          <p style="margin-top: 10px">即将结束</p>
-        </radial-progress-bar>
+    <div class="rest_progress">
+      <radial-progress-bar
+        :diameter="barinfo.diameter"
+        :stopColor="barinfo.stopColor"
+        :startColor="barinfo.startColor"
+        :strokeWidth="barinfo.strokeWidth"
+        :innerStrokeWidth="barinfo.innerStrokeWidth"
+        :innerStrokeColor="barinfo.innerStrokeColor"
+        :strokeLinecap="barinfo.strokeLinecap"
+        :completed-steps="completedSteps"
+        :v-model="completedSteps"
+        :total-steps="totalSteps"
+      >
+        <p style="font-size: 84px; margin-bottom: 5px">{{ completedSteps }}s</p>
+
+        <p style="margin-top: 10px">后继续测试</p>
+      </radial-progress-bar>
+      <div class="bearing">
+        <p class="bearing_p1">建议器械负重</p>
+        <p class="bearing_p2">"{{ restinfo.weight }}KG"</p>
       </div>
-      <div class="left_btn" @click="skipRest">
-        {{
-          planstate == 1 ? (firststate ? '跳过休息' : '继续测试') : '跳过休息'
-        }}
-      </div>
-    </section>
+    </div>
+
+    <div class="rest_text" v-show="planstate == 0">
+      自由调整配重后,可随时进行器械规范动作训练，无需点击按钮或等待休息结束，即可开启热身组训练
+    </div>
+    <div class="rest_text" v-show="planstate !== 0">
+      非常棒,你已完成当前重量测试（"{{ restinfo.weight }}KG/{{
+        restinfo.weight * 2
+      }}lb"），自行调整配重后，可随时进行器械规范动作训练，无需点击按钮或等待休息结束，即可继续测试
+    </div>
+
+    <div class="plan_group">
+      <section class="plan_group_left">下一组</section>
+      <div class="plan_group_line"></div>
+      <section class="plan_group_right">
+        <p>{{ plantitle() }} | 第{{ restinfo.group }}组</p>
+        <p style="margin-top: 10px">
+          {{ restinfo.weight }}KG/{{ restinfo.num }}次
+        </p>
+      </section>
+    </div>
+
+    <div class="rest_btn" @click="skipRest">
+      <p>立即开始</p>
+      <p>开始运动即开启训练</p>
+    </div>
+    <!-- 
     <section class="rest_page_right">
-      <div class="right_text">
-        <p class="text_p2" v-show="planstate !== 1">热爱的事情要不留余地</p>
-        <p class="text_p2" v-show="planstate == 1 && !firststate">
-          非常棒,你已完成当前重量测试,请调整提升配重至"{{
-            restweight + 6
-          }}KG"重量,继续测试.
-        </p>
-        <p class="text_p2" v-show="planstate == 1 && firststate">
-          非常棒,你已完成热身组训练,请调整提升配重至合适重量
-          (建议"--KG"),开启极限组测试
-        </p>
-      </div>
-      <!-- <div class="right_next"
-           v-show="planstate !== 1">
-        <div class="right_next_image"></div>
-        <div class="right_next_text">
-          <span style="margin-bottom:40px;">接下来</span>
-          <span>腹肌训练</span>
-        </div>
-      </div> -->
-      <div class="planzu" v-show="planstate !== 1">
-        <section class="planzu_left">下一组</section>
-        <section class="planzu_right">
-          <p style="margin-bottom: 26px">
-            {{ plantitle() }} | 第{{ restinfo.group + 1 }}组
-          </p>
-          <p>{{ restinfo.weight }}KG/{{ restinfo.times }}次</p>
-        </section>
-      </div>
       <div class="jixianvalue" v-show="planstate == 1 && !firststate">
         <p style="margin-bottom: 26px">当前器械1RM为</p>
         <p>{{ restweight }}KG/--1b</p>
       </div>
+
       <div class="planzu" v-show="planstate == 1 && firststate">
         <section class="planzu_left">下一组</section>
         <section class="planzu_right">
@@ -199,7 +138,7 @@
           <p>--KG/1次</p>
         </section>
       </div>
-    </section>
+    </section> -->
   </div>
 </template>
 
@@ -262,7 +201,7 @@ export default {
     },
   },
   mounted() {
-    console.log('传的数据', this.restinfo)
+    // console.log('传的数据', this.restinfo)
   },
   destroyed() {
     clearInterval(window.timer)
@@ -277,7 +216,7 @@ export default {
         case 0:
           return '热身组'
         case 1:
-          return '极限组 (1RM测试)'
+          return '极限组'
         case 2:
           return '负重组'
         case 3:

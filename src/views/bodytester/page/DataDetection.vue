@@ -286,11 +286,14 @@ export default {
           this.audiosrc = `${this.publicPath}bodytesterStatic/audio/测量体重.mp3`
           this.audio_play()
           this.progress.endVal += 20
-          console.log('测量体重')
+          // console.log('测量体重')
           this.SEND_SOCKET('{"cmd":"askStopMeasureHeight"}') //停止测量身高
-          this.SEND_SOCKET('{"cmd":"askMeasureWeight"}')
           setTimeout(() => {
-            console.log(123, this.LOCK_WEIGHT.status)
+            console.log(123)
+            this.SEND_SOCKET('{"cmd":"askMeasureWeight"}') //开始测量体重
+          }, 1000)
+          setTimeout(() => {
+            // console.log(123, this.LOCK_WEIGHT.status)
             if (!this.LOCK_WEIGHT.status) {
               this.SEND_SOCKET('{"cmd":"askWeightState"}')
             }

@@ -2,68 +2,12 @@
 .end_page {
   width: 100%;
   height: 100%;
-  // background: black;
+  position: relative;
+  z-index: 1;
   display: flex;
-  &_left {
-    width: 30%;
-    // padding: 0.63rem 0.58rem 1.04rem 0.6rem;
-    position: relative;
-    background-color: rgb(240, 248, 250);
-    .left_phone {
-      width: 3rem;
-      height: 6rem;
-      margin: 0 auto;
-      margin-top: 0.4rem;
-      border-radius: 0.4rem;
-      border: 3px solid #7f7f7f;
-      &_qrcode {
-        .vx_qr {
-          margin-top: 1rem;
-          display: flex;
-          justify-content: center;
-        }
-        .code_p1 {
-          color: #000;
-          font-size: 0.16rem;
-          font-weight: bold;
-          margin-top: 0.2rem;
-        }
-        .rqcode_text {
-          font-size: 0.16rem;
-          font-weight: bold;
-          // opacity: 0.5;
-          color: #000000;
-        }
-      }
-      &_btn {
-        margin-top: 0.62rem;
-        ul {
-          display: flex;
-          justify-content: space-around;
-          li {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            .icon {
-              img {
-                width: 0.4rem;
-                height: 0.4rem;
-                border-radius: 50%;
-              }
-            }
-            .icon_text {
-              color: #000000;
-              font-size: 0.14rem;
-              margin-top: 0.12rem;
-            }
-          }
-        }
-      }
-    }
-  }
   &_right {
     color: #000;
-    width: 70%;
+    width: 100%;
     background: #f2f2f2;
     position: relative;
     .rignt_head {
@@ -77,19 +21,18 @@
         height: 0.84rem;
         background-position: left;
         background-repeat: repeat-y;
-        // background: darkcyan;
         border-bottom: 1px solid #000;
         display: flex;
         align-items: center;
-        span {
-          font-size: 0.36rem;
+        .plan_text {
+          font-size: 0.22rem;
           letter-spacing: 0.04rem;
         }
       }
       &_grade {
         position: absolute;
-        top: -0.2rem;
-        right: 1.2rem;
+        top: -0.5rem;
+        right: 2.4rem;
         img {
           width: 1.3rem;
           height: 1.5rem;
@@ -99,25 +42,34 @@
     .right_type {
       margin-top: 0.34rem;
       ul {
+        width: 80%;
         display: flex;
-        flex-wrap: wrap;
+        // justify-content: space-between;
         padding-left: 5%;
-        // justify-content: space-around;
         li {
-          width: 38%;
+          position: relative;
           text-align: left;
           padding-bottom: 0.2rem;
-          // display: flex;
-          // flex-direction: column;
+          margin-left: 0.3rem;
+          margin-right: 0.9rem;
+          .type_icon {
+            position: absolute;
+            top: 0.1rem;
+            left: -0.35rem;
+            width: 45px;
+            height: 45px;
+            // background-color: aqua;
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
           .right_type_value {
-            display: inline-block;
             width: 35%;
             font-size: 0.28rem;
             font-weight: bold;
           }
           .right_type_title {
-            display: inline-block;
-            width: 45%;
             font-size: 0.2rem;
             font-weight: 400;
           }
@@ -126,71 +78,62 @@
     }
     .right_echart {
       width: 100%;
-      margin: 0.2rem 0;
+      margin-top: 0.2rem;
       h3 {
-        font-size: 0.22rem;
+        font-size: 0.16rem;
+        font-weight: 600;
         text-align: left;
-        padding: 0 0 0.2rem 5%;
+        padding: 0 0 0rem 5%;
       }
       .echart_size {
         width: 90%;
-        height: 1rem;
+        height: 1.3rem;
       }
     }
-    // .right_text {
-    //   margin-top: 0.7rem;
-    //   text-align: left;
-    //   padding-left: 5%;
-    //   p {
-    //     font-size: 0.2rem;
-    //     margin-bottom: 0.2rem;
-    //     letter-spacing: 0.03rem;
-    //     line-height: 0.36rem;
-    //   }
-    // }
   }
   .right_foot {
     width: 100%;
     height: 0.8rem;
-    // background-color: aqua;
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: 0.1rem;
     display: flex;
     .btn_btn {
-      width: 50%;
+      margin-left: 5%;
+      margin-right: 2%;
+      width: 60%;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: rgba(255, 255, 255, 1);
+      color: #fff;
+      background-color: rgb(31, 172, 74);
     }
     .btn_btn1,
     .btn_btn2 {
-      width: 50%;
+      width: 20%;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: rgba(255, 255, 255, 1);
+      background-color: rgb(237, 77, 113);
       position: relative;
       .btn_end1 {
-        // width: 10%;
         position: absolute;
         left: 0;
-        animation: backTo 30s linear;
+        // animation: backTo 30s linear;
         height: 100%;
         background-color: rgba(214, 199, 199, 0.753);
       }
       .btn_end2 {
-        // width: 10%;
         position: absolute;
         left: 0;
-        animation: backTo2 30s linear;
+        // animation: backTo2 30s linear;
         height: 100%;
         background-color: rgba(167, 167, 167, 0.753);
       }
     }
     .btn_btn2 {
-      width: 100%;
+      width: 70%;
+      margin-left: 5%;
     }
   }
 }
@@ -210,72 +153,70 @@
     width: 100%;
   }
 }
+.login_qr {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 2rem;
+  height: 2rem;
+  // background-color: bisque;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  p {
+    font-size: 0.12rem;
+    font-weight: bold;
+  }
+}
+.login_activer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin-right: 0.2rem;
+  // background-color: bisque;
+  .user_text1 {
+    margin-left: 15px;
+    font-size: 0.18rem;
+  }
+  .user_text2 {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    font-size: 0.12rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+  }
+  .user_img {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+  }
+}
 </style>
 
 <template>
   <div class="end_page">
-    <section class="end_page_left" v-if="!loginState">
-      <div class="left_phone">
-        <div>
-          <div class="left_phone_qrcode">
-            <!-- <div class="qrcode_image" id="qrdiv"></div> -->
-            <!-- <p class="rqcode_text">扫码登陆后可查看更多内容</p> -->
-            <QRCode
-              ref="qrcode1"
-              v-if="qrstate"
-              class="vx_qr"
-              :qrwidth="224"
-              :qrheight="224"
-              codeid="3"
-              :codeTest="Qrcode"
-            ></QRCode>
-            <p class="code_p1">扫码登录后可查看更多内容</p>
-          </div>
-          <div class="left_phone_btn">
-            <ul>
-              <li v-for="item of dataList" :key="item.title">
-                <div class="icon">
-                  <img :src="publicPath + item.imgurl" alt="" />
-                </div>
-                <span class="icon_text">{{ item.title }}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <!-- <div class="user_phone" v-if="loginState">
-          <section class="user_phone_active">
-            <div class="active_img">
-              <img :src="userInfo.user_avatar" alt="" />
-            </div>
-            <span>{{ userInfo.user_name || '' }}</span>
-            <span></span>
-          </section>
-          <section class="user_phone_star">本次获星:3颗</section>
-        </div> -->
-      </div>
-    </section>
-    <section class="end_page_left" v-if="loginState">
-      <recomm-user @userlogout="logout" v-if="loginState" />
-    </section>
     <section class="end_page_right" v-if="!recommstate">
       <div class="rignt_head">
-        <div class="rignt_head_badge" v-if="reneging == 0">
-          <div>
+        <div class="rignt_head_badge">
+          <div class="login_activer">
             <img
-              :src="`${publicPath}powerStatic/images/end_icon_4.png`"
-              alt=""
+              :src="userInfo.user_avatar"
+              v-if="loginState"
+              class="user_img"
             />
+            <span v-if="loginState" class="user_text1"
+              >{{ userInfo.user_name }},</span
+            >
+            <span v-else class="user_text2">未登录</span>
           </div>
-          <span>恭喜你完成本次训练!</span>
-        </div>
-        <div class="rignt_head_badge" v-if="reneging == 1">
-          <div>
-            <img
-              :src="`${publicPath}powerStatic/images/end_icon_4.png`"
-              alt=""
-            />
-          </div>
-          <span>你已结束本次训练!</span>
+          <span class="plan_text">{{
+            reneging == 0 ? '恭喜你完成本次训练!' : '你已结束本次训练'
+          }}</span>
         </div>
         <div class="rignt_head_grade">
           <img :src="scoreimg()" alt="" />
@@ -284,6 +225,9 @@
       <div class="right_type">
         <ul>
           <li v-for="item of typeList" :key="item.title">
+            <div class="type_icon">
+              <img :src="`/common/images/end/${item.url}.png`" alt="" />
+            </div>
             <div class="right_type_title">{{ item.title }}</div>
             <div class="right_type_value">{{ item.value }}</div>
           </li>
@@ -295,18 +239,20 @@
       </div>
       <div class="right_echart">
         <h3>训练节奏</h3>
-        <echarts class="echart_size"></echarts>
+        <!-- <echarts class="echart_size"></echarts> -->
+        <EchartsLine class="echart_size" />
       </div>
-      <!-- <div class="right_text">
-        <p v-if="reneging == 0">
-          您已完成本次课程全部训练,参与锻炼肌群包括腹直肌等。
-        </p>
-        <p v-if="reneging == 1">您中止了此次训练，坚持就是胜利，下次加油哦~</p>
-        <p>
-          运动完成后记得要拉伸放松肌肉，帮助恢复，请到智慧健身镜获取拉伸课程吧！
-        </p>
-      </div> -->
       <div class="right_foot">
+        <!-- <div>
+          <a-progress
+            type="dashboard"
+            :percent="100"
+            stroke-linecap="square"
+            gapPosition="bottom"
+            :gapDegree="130"
+          />
+        </div> -->
+
         <div class="btn_btn" @click="footbtn(0)" v-if="loginState">
           推荐课程
         </div>
@@ -314,9 +260,21 @@
           :class="[loginState ? 'btn_btn1' : 'btn_btn2']"
           @click="footbtn(1)"
         >
-          <div :class="loginState ? 'btn_end1' : 'btn_end2'"></div>
-          <span>结束课程({{ timenum }}s)</span>
+          <!-- <div :class="loginState ? 'btn_end1' : 'btn_end2'"></div> -->
+          <span>退出课程({{ timenum }}s)</span>
         </div>
+      </div>
+      <div class="login_qr" v-if="!loginState">
+        <QRCode
+          ref="qrcode1"
+          v-if="qrstate"
+          class="vx_qr"
+          :qrwidth="157"
+          :qrheight="157"
+          codeid="3"
+          :codeTest="Qrcode"
+        ></QRCode>
+        <p style="padding-top: 0.15rem">微信扫码后可同步训练数据</p>
       </div>
     </section>
     <section class="end_page_right" v-if="recommstate">
@@ -327,6 +285,7 @@
 
 <script>
 import Echarts from '@/components/Echarts.vue'
+import EchartsLine from '@/components/power/echartsLine.vue'
 import { mapGetters, mapActions } from 'vuex'
 import QRCode from '@/components/QRCode.vue'
 import RecommCourses from '@/components/RecommCourses.vue'
@@ -335,6 +294,7 @@ import api from '@/api/api.js'
 export default {
   components: {
     Echarts,
+    EchartsLine,
     RecommCourses,
     RecommUser,
     QRCode,
@@ -358,18 +318,27 @@ export default {
       typeList: [
         {
           title: '综合评分',
+          url: 'pingfen',
           value: 19,
         },
         {
           title: '运动时间',
+          url: 'shijian',
           value: '00:00',
         },
         {
           title: '总负重',
+          url: 'zongfuzhong',
           value: '1',
         },
         {
           title: '平均负重',
+          url: 'fuzhong',
+          value: '1',
+        },
+        {
+          title: '训练量',
+          url: 'xunlianliang',
           value: '1',
         },
       ],
@@ -377,7 +346,7 @@ export default {
       recommstate: false,
       qrstate: false,
       courseList: [],
-      timenum: 30,
+      timenum: 60,
       downtimer: null,
     }
   },
@@ -404,6 +373,7 @@ export default {
     clearInterval(this.downtimer)
     this.$store.commit('set_recommendid', '') //离开设置课程为空
     this.$store.dispatch('clientEnd')
+    this.logout()
     if (this.lesson_id) {
       this.$store.commit('set_lesson_id', '')
     }
@@ -459,47 +429,52 @@ export default {
     setdowntimer() {
       if (this.downtimer) {
         clearInterval(this.downtimer)
-        this.timenum = 30
+        this.timenum = 60
       }
 
-      this.downtimer = setInterval(() => {
-        let num = (this.timenum -= 1)
-        if (num !== 0) {
-          this.timenum = num
-        } else {
-          clearInterval(this.downtimer)
-          this.$router.push('/')
-        }
-      }, 1000)
+      if (process.env.NODE_ENV !== 'development') {
+        this.downtimer = setInterval(() => {
+          let num = (this.timenum -= 1)
+          if (num !== 0) {
+            this.timenum = num
+          } else {
+            clearInterval(this.downtimer)
+            this.$router.push('/')
+          }
+        }, 1000)
+      }
     },
     //推荐结束
     async footbtn(index) {
       if (index == 0) {
-        const rs = await api.post('/guide-lesson', {
-          user_id: this.userInfo.user_id,
-        })
+        // const rs = await api.post('/guide-lesson', {
+        //   user_id: this.userInfo.user_id,
+        // })
+        // console.log(rs)
+        // if (rs.data.code == '200') {
+        //   let data = rs.data.data.lessonIds
+        //   // const lessons = require('../../../../public/common/js/lessons.json')
+        //   this.$axios.get('./common/js/lessons.json').then((res) => {
+        //     for (let i in data) {
+        //       res.data.forEach((item) => {
+        //         if (item.md5 == data[i]) {
+        //           // console.log(item)
+        //           this.courseList.push({
+        //             md5: item.md5,
+        //             name: item.name,
+        //             desc: item.desc,
+        //             equipmenttype: item.equipmenttype,
+        //           })
+        //         }
+        //       })
+        //     }
+        //     this.recommstate = true
+        //     clearInterval(this.downtimer)
+        //   })
+        // }
 
-        if (rs.data.code == '200') {
-          let data = rs.data.data.lessonIds
-          // const lessons = require('../../../../public/common/js/lessons.json')
-          this.$axios.get('./common/js/lessons.json').then((res) => {
-            for (let i in data) {
-              res.data.forEach((item) => {
-                if (item.md5 == data[i]) {
-                  // console.log(item)
-                  this.courseList.push({
-                    md5: item.md5,
-                    name: item.name,
-                    desc: item.desc,
-                    equipmenttype: item.equipmenttype,
-                  })
-                }
-              })
-            }
-            this.recommstate = true
-            clearInterval(this.downtimer)
-          })
-        }
+        this.recommstate = true
+        clearInterval(this.downtimer)
       } else {
         clearInterval(this.downtimer)
         this.$router.push('/')

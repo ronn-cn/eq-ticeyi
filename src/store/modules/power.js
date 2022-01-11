@@ -1,4 +1,4 @@
-
+import api from "../../api/api";
 const state = {
   actionValue: {},
   coursegroup: {},
@@ -9,7 +9,9 @@ const state = {
   combinedscore: 0,  //综合分
   weight_max: 0,       //最大负重
   weight_rm: 0,        //极限rm
-  powerDetail: []
+  powerDetail: [],
+  moheight: 0,
+
 }
 
 const mutations = {
@@ -26,6 +28,10 @@ const mutations = {
   },
   add_total_group (state) {
     state.total_group += 1
+  },
+  //设置模型高度
+  set_moheight (state, val) {
+    state.moheight = val
   },
   //设置极限rm
   set_weight_rm (state, data) {
@@ -47,6 +53,7 @@ const mutations = {
   },
   //动作数据
   set_resHeightWeight (state, data) {
+    // console.log(1232, data)
     state.actionValue = data
   },
   //课程组
@@ -91,6 +98,19 @@ const actions = {
     console.log(masg)
 
     dispatch('addSportDetail', masg)
+  },
+  //
+  async updateRM ({ state, getters }, value) {
+    console.log(value)
+    const rs = await api.post('/update-user-RM', {
+      user_id: getters.userInfo.user_id,
+      user_RM: [{
+        part: '坐姿腹肌训练器RM值',
+        value: value,
+        date: Number(Date.parse(new Date()).toString().substr(0, 10))
+      }]
+    })
+    console.log('更新rm值', rs)
   },
 }
 

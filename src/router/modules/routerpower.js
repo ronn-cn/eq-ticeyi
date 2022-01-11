@@ -22,6 +22,22 @@ export default [
     },
   },
   {
+    path: "/freeplan",
+    name: "FreePlan",
+    component: _import('powers/page/FreePlan'),
+    meta: {
+      title: '自由训练'
+    },
+  },
+  {
+    path: "/strengthtest",
+    name: "StrengthTest",
+    component: _import('powers/page/StrengthTest'),
+    meta: {
+      title: '力量测试'
+    },
+  },
+  {
     path: "/restpage",
     name: "RestPage",
     component: _import('powers/page/RestPage'),

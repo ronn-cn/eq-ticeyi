@@ -2,6 +2,8 @@
 #main_cover {
   width: 100%;
   height: 100%;
+  position: relative;
+  z-index: 1;
 }
 .main {
   width: 100%;
@@ -17,9 +19,9 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 0.04rem;
+    width: 2px;
     height: 100%;
-    background-color: #2386be;
+    background-color: #8a8a8a;
   }
   .home_nav {
     color: #fff;
@@ -33,6 +35,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      border-bottom: 2px solid #fff;
       //未登录
       .qr_img {
         width: 1.3rem;
@@ -59,7 +62,6 @@
             width: 1rem;
             height: 1rem;
             border-radius: 50%;
-            // background: chocolate;
           }
         }
         .p2 {
@@ -72,13 +74,18 @@
     }
     ul {
       li {
-        height: 1.1rem;
+        height: 1.16rem;
         font-size: 0.26rem;
         display: flex;
-        // justify-content: center;
         align-items: center;
-        padding-left: 20%;
-        border-bottom: 1px solid #31353c;
+        padding-left: 10%;
+        border-bottom: 2px solid #fff;
+        .home_icon {
+          width: 50px;
+          height: 50px;
+          margin-right: 10px;
+          background-size: 100% 100%;
+        }
       }
       .active {
         background: url('~assets/images/nav_li.png') no-repeat;
@@ -91,29 +98,31 @@
         height: 0px;
         border-top: 0.12rem solid transparent;
         border-bottom: 0.12rem solid transparent;
-        border-left: 0.12rem solid #ffffff;
+        border-right: 0.12rem solid #ffffff;
         position: absolute;
         top: 0.44rem;
-        right: -0.1rem;
+        right: 2px;
         z-index: 99;
       }
     }
-    &_out {
-      height: 1.28rem;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      span {
-        font-size: 0.24rem;
-        font-family: SourceHanSansCN;
-        font-weight: 400;
-        color: #99ccf0;
-        padding: 0.2rem 0.4rem;
-        background: rgba(103, 117, 217, 0.3);
-        border: 1px solid #89b2e7;
-        opacity: 0.5;
-        border-radius: 0.33rem;
+    .user_liout {
+      width: 3.3rem;
+      height: 1rem;
+      margin: 10px auto;
+      border-radius: 5px;
+      background-color: #fc2d56;
+      box-sizing: border-box;
+      box-shadow: 5px 5px 20px 0px #f85e60;
+      font-family: '苹方 简 常规', '苹方 简', sans-serif;
+      color: rgba(255, 255, 255, 0.97);
+      .shape {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+
+        box-sizing: border-box;
+        background-image: url('/common/images/home/home_icon4.png');
+        background-size: 100% 100%;
       }
     }
   }
@@ -140,22 +149,32 @@
           <li
             v-for="(item, index) of patternList"
             :class="{ active: itemindex == index }"
-            @click="itemindex = index"
+            @click="swichType(index)"
             :key="item.id"
           >
+            <div
+              class="home_icon"
+              :style="{
+                backgroundImage: `url(${publicPath}common/images/home/home_icon${
+                  index + 1
+                }.png)`,
+              }"
+            ></div>
             {{ item.title }}
           </li>
+          <li class="user_liout" @click="logout" v-if="loginState">
+            <div class="shape"></div>
+            退出当前账号
+          </li>
         </ul>
-        <div class="home_nav_out" @click="logout" v-if="loginState">
-          <span>退出当前账号</span>
-        </div>
       </div>
       <home-view
         :itemindex="itemindex"
         @send_askLedState="send_askLedState"
       ></home-view>
     </div>
-    <!-- <TrainPage v-if="trainstatic" /> -->
+
+    <!-- <TrainPage v-show="trainstatic" /> -->
   </div>
 </template>
 
@@ -173,19 +192,17 @@ export default {
       patternList: [
         {
           id: 1,
-          title: '腹肌练习 | 标准模式',
+          title: '标准模式',
         },
         {
           id: 2,
-          title: '腹肌练习 | 自由模式',
+          title: '自由模式',
         },
         {
           id: 3,
-          title: '腹肌练习 | 力量测试',
+          title: '力量测试',
         },
       ],
-      // caretitle: '',
-      // caredesc: '',
       _beforeUnload_time: '',
       trainstatic: false,
     }
@@ -202,7 +219,6 @@ export default {
         }
       }
     }
-
     // window.addEventListener('beforeunload', (e) => this.beforeunloadHandler(e))
     // window.addEventListener('unload', (e) => this.unloadHandler(e))
   },
@@ -214,7 +230,7 @@ export default {
     // window.removeEventListener('unload', (e) => this.unloadHandler(e))
   },
   computed: {
-    ...mapGetters(['Qrcode', 'loginState', 'userInfo']),
+    ...mapGetters(['Qrcode', 'loginState', 'userInfo', 'publicPath']),
   },
   watch: {
     Qrcode(val) {
@@ -223,12 +239,14 @@ export default {
     loginState(val) {
       if (!val) {
         this.init_qrcode(this.Qrcode)
+      } else {
+        this.all_user()
       }
     },
   },
   methods: {
     ...mapMutations(['setLoginStatus', 'set_MakeCareInfo', 'set_lesson_id']),
-    ...mapActions(['logout', 'send_askLedState']),
+    ...mapActions(['logout', 'send_askLedState', 'all_user']),
     //调用二维码
     init_qrcode(text) {
       let box = document.getElementById('qrdiv')
@@ -236,7 +254,6 @@ export default {
       let ipx = contentHeight.indexOf('px')
       let widthheight = contentHeight.slice(0, ipx)
       // console.log(contentHeight, contentHeight.slice(0, ipx))
-
       //这里是调用的方法
       const qrid = document.getElementById('qrdiv')
       if (qrid) {
@@ -254,6 +271,9 @@ export default {
     //开始训练
     setstartTrain() {
       // this.trainstatic = true
+    },
+    swichType(index) {
+      this.itemindex = index
     },
     // beforeunloadHandler() {
     //   this._beforeUnload_time = new Date().getTime()

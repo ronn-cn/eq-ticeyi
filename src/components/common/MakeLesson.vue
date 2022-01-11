@@ -31,13 +31,10 @@
   <div>
     <div class="introduce_title">
       <p class="introduce_title_p1">
-        {{ MakeCareTitle || '力量器械-坐姿腹肌训练器1' }}
+        {{ MakeCareTitle || '力量器械' }}
       </p>
       <p class="introduce_title_p2">
-        {{
-          MakeCareDesc ||
-          '坐姿腹部训练器是一款针对腹部训练的专用健身器材,起到增强上肢及腹部肌肉力量,改善心肺及胸腔功能'
-        }}
+        {{ MakeCareDesc || '' }}
       </p>
     </div>
     <div class="careradia">

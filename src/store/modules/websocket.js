@@ -6,10 +6,9 @@ const state = {
   socket: null,
   TouchTime: 0,
   httpUrl: {},
-  initialization: false,
   resStartLesson: {},
-  lesson_id: process.env.VUE_APP_PAGE_ID == 0 ? "445dab66e033da6f0000000000000003" : process.env.VUE_APP_PAGE_ID == 1 ? "445dab66e033da6f0000000000000001" : "445dab66e033da6f0000000000000006", //课程id
-  resLogoutUser: 0
+  resLogoutUser: 0,
+  downval: null
 };
 
 const mutations = {
@@ -37,19 +36,15 @@ const mutations = {
       state.socket.send(cmd)
     }
   },
-  //设置课程id
-  set_lesson_id (state, data) {
-    state.lesson_id = data
-  },
-  //
-  set_resLogoutUser (state, data) {
-    state.resLogoutUser = new Date().getTime()
-  }
-
 };
 
 const actions = {
   init_socket ({ dispatch, commit, rootState }) {
+    if (!state.downval) {
+      state.downval = setInterval(() => {
+        commit('SEND_SOCKET', `{mag:${new Date().getTime()}}`)
+      }, 30000)
+    }
     if (typeof WebSocket === 'undefined') {
       console.log('您的浏览器不支持socket')
     } else {
@@ -71,23 +66,10 @@ const actions = {
         ws.onmessage = function (e) {
           let data = JSON.parse(e.data);
           // console.log(data)
-
-          if (process.env.VUE_APP_PAGE_ID == '0') {
-            if (data.cmd !== 'resHeightWeight') {
-              console.log(data)
-            }
-          } else if (process.env.VUE_APP_PAGE_ID == '2') {
-            if (data.cmd !== 'resTreadmillData') {
-              console.log(data)
-            }
-          }
-
-
           const cmdList = ['resLoginQrcode', 'resLoginUser', 'resServiceBusiness', 'resLastTouchTime', 'resStartLesson', 'resLogoutUser']  //登陆二维码，登陆用户，主机http,间隔时间,课程预约
           const powerList = ['resHeightWeight', 'resGenerateLesson']  //下压数据,课程开始
           const bodytesterList = ['resMeasureHeight', 'resMeasureWeight', 'resMeasureImpedance', 'resMeasureBodyData', 'resWeightState']  //测量身高，测量体重，测量体脂，各类数据 返回上一次
           const treadmillList = ['resTreadmillData', 'resSetSpeed', 'resSetIncline', 'resEmergencyStop', 'resSetStart', 'resSetStop']  //实时记录 回馈速度 坡度改变 紧急停止 课程开始 运动结束
-
 
           if (cmdList.includes(data.cmd)) {
             dispatch('websocket_common', data)
@@ -106,11 +88,8 @@ const actions = {
         ws.close = function () {
           console.log('连接已断开');
         }
-
       }
-
     }
-
   },
   websocket_common ({ dispatch, commit }, data) {
     switch (data.cmd) {
@@ -138,15 +117,13 @@ const actions = {
         }
         break;
       case "resLastTouchTime":   //屏幕间隔时间
-        // console.log(e.data)
         commit('set_resLastTouchTime', data.data)
         break;
       case "resStartLesson": //课程预约
         commit('set_resStartLesson', data.data)
         break;
       case "resLogoutUser": //用户转移退出
-        console.log(data, 333)
-        commit('set_resLogoutUser')
+        commit('set_resLogoutUser', data)
         break;
     }
   }

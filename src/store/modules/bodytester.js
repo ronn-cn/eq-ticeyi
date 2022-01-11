@@ -87,12 +87,12 @@ const mutations = {
 
 const actions = {
   websocket_body ({ dispatch, commit }, data) {
-    // console.log(data)
     switch (data.cmd) {
       case "resMeasureHeight": //测量身高
         commit("set_resMeasureHeight", data.data);
         break;
       case "resMeasureWeight": //测量体重
+        console.log(data)
         dispatch("set_resMeasureWeight", data.data);
         break;
       case "resMeasureImpedance": //测量体脂

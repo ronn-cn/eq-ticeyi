@@ -14,19 +14,21 @@ export default {
   MakeCareTitle: state => state.common.MakeCareTitle,  //预约名称
   MakeCareDesc: state => state.common.MakeCareDesc,  //预约简介
   client_id: state => state.common.client_id,  //
-
-
+  projecttype: state => state.common.projecttype, //设备类型 
+  lesson_id: state => state.common.lesson_id,      //lesson_id
 
 
   //用户
   loginState: state => state.user.loginState, //登陆状态 
   userInfo: state => state.user.userinfo, //用户信息
+  user_rm: state => state.user.user_rm, //用户rm值
+  user_rmvalue: state => state.user.user_rmvalue, //用户rm值 
   //websocket
   websocketUrl: state => state.websocket.websocketUrl,  //websocket地址
   getTouchTime: state => state.websocket.TouchTime,  //间隔时间
 
   resStartLesson: state => state.websocket.resStartLesson,  //课程预约
-  lesson_id: state => state.websocket.lesson_id,      //lesson_id
+
   resLogoutUser: state => state.websocket.resLogoutUser,  //用户转移退出
 
   //体测仪
@@ -38,11 +40,14 @@ export default {
   impedance: (state) => state.bodytester.impedance, //用户体脂
   bodydata: (state) => state.bodytester.bodydata, //用户各项指数
   //力量器械
+  moheight: state => state.power.moheight,  //动作数据
   actionValue: state => state.power.actionValue,  //动作数据
   coursegroup: state => state.power.coursegroup,  //课程组
   totalweight: state => state.power.totalweight, //总负重 
   averagescore: state => state.power.averagescore, //平均分 
   combinedscore: state => state.power.combinedscore, //综合得分 
+
+
 
   //跑步机
   TreadmillData: (state) => state.treadmill.TreadmillData, //实习数据

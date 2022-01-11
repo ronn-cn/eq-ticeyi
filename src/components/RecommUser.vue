@@ -68,110 +68,6 @@
     }
   }
 }
-.week_motion {
-  // margin-top: 0.2rem;
-  h4 {
-    padding: 0.15rem 0 0.15rem 0.4rem;
-    font-size: 0.16rem;
-    text-align: left;
-    display: flex;
-    align-items: center;
-  }
-  .date_ul {
-    display: flex;
-    justify-content: space-around;
-    li {
-      display: flex;
-      flex-direction: column;
-      .option {
-        width: 0.17rem;
-        height: 0.17rem;
-        border: 1px solid #797979;
-        border-radius: 50%;
-        margin-top: 0.06rem;
-      }
-    }
-  }
-  .remind_ul {
-    li {
-      font-size: 0.12rem;
-      text-align: left;
-      padding-left: 0.2rem;
-      margin: 0.1rem 0;
-      list-style-type: circle !important;
-    }
-  }
-}
-.history_optimum,
-.motion_recording {
-  padding: 0.2rem;
-  border-top: 1px solid #d7d7d7;
-  border-bottom: 1px solid #d7d7d7;
-  h4 {
-    padding-left: 0.2rem;
-    text-align: left;
-    font-size: 0.18rem;
-    margin-bottom: 0.12rem;
-    display: flex;
-    align-items: center;
-  }
-  .history_value {
-    display: flex;
-    justify-content: space-between;
-    &_item {
-      display: flex;
-      flex-direction: column;
-      .item_text {
-        font-size: 0.12rem;
-        margin-bottom: 0.12rem;
-      }
-      .item_value {
-        font-size: 0.14rem;
-      }
-    }
-  }
-}
-.motion_recording {
-  .motion_ul {
-    li {
-      padding: 0 0.15rem;
-      margin-bottom: 0.14rem;
-      display: flex;
-      justify-content: space-between;
-      .motion_type {
-        font-size: 0.14rem;
-        .motion_circular {
-          display: inline-block;
-          width: 0.1rem;
-          height: 0.1rem;
-          border-radius: 50%;
-          background-color: #3476fe;
-          margin-right: 0.05rem;
-        }
-      }
-      .motion_time {
-        font-size: 0.12rem;
-        color: #aaaaaa;
-      }
-    }
-  }
-}
-.small_icon2,
-.small_icon3,
-.small_icon4 {
-  display: inline-block;
-  width: 0.24rem;
-  height: 0.32rem;
-  margin-right: 0.04rem;
-}
-.small_icon3 {
-  width: 0.32rem;
-  height: 0.32rem;
-}
-.small_icon4 {
-  width: 0.28rem;
-  height: 0.28rem;
-}
 </style>
 
 <template>
@@ -199,73 +95,8 @@
           </div>
         </div>
       </section>
-      <!-- <section class="week_motion">
-        <h4>
-          <span
-            class="small_icon2"
-            :style="{
-              background: `url(${publicPath}common/images/small_icon2.png) no-repeat`,
-              backgroundSize: '100% 100%',
-            }"
-          ></span>
-          本周运动
-        </h4>
-        <ul class="date_ul">
-          <li v-for="item of 7" :key="item">
-            <span>{{ item }}</span>
-            <span class="option"></span>
-          </li>
-        </ul>
-        <ul class="remind_ul">
-          <li>今日训练计划已完成</li>
-          <li>运动完成后记得要拉伸放松肌肉，帮助恢复~</li>
-        </ul>
-      </section>
-      <section class="history_optimum">
-        <h4>
-          <span
-            class="small_icon4"
-            :style="{
-              background: `url(${publicPath}common/images/small_icon4.png) no-repeat`,
-              backgroundSize: '100% 100%',
-            }"
-          ></span>
-          当前器械历史最佳
-        </h4>
-        <div class="history_value">
-          <div class="history_value_item">
-            <span class="item_text">总负重</span>
-            <span class="item_value">1500KG</span>
-          </div>
-          <div class="history_value_item">
-            <span class="item_text">单次最大重复率</span>
-            <span class="item_value">48KG</span>
-          </div>
-        </div>
-      </section>
-      <section class="motion_recording">
-        <h4>
-          <span
-            class="small_icon3"
-            :style="{
-              background: `url(${publicPath}common/images/small_icon3.png) no-repeat`,
-              backgroundSize: '100% 100%',
-            }"
-          ></span>
-          当前器械历史最佳
-        </h4>
-        <ul class="motion_ul">
-          <li v-for="item of 4" :key="item">
-            <div class="motion_type">
-              <span class="motion_circular"></span>
-              <span>腹肌训练-标准模式</span>
-            </div>
-            <div class="motion_time">2021年10月11日08:26</div>
-          </li>
-        </ul>
-      </section> -->
     </div>
-    <RecommDetails v-if="recommendState" />
+    <!-- <RecommDetails v-if="recommendState" /> -->
   </div>
 </template>
 
@@ -316,6 +147,7 @@ export default {
     },
     user_login() {
       this.$emit('userlogout')
+      this.$router.push('/')
     },
   },
 }

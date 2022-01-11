@@ -8,11 +8,37 @@
   width: 0.3rem;
   height: 0.3rem;
   position: absolute;
-  top: 0.2rem;
-  left: 0.2rem;
-  background: url(../../public/common/images/small_icon0.png) no-repeat;
-  background-size: cover;
+  top: 0;
+  left: 0;
+  // background-color: #3476fe;
+  // background: url(../../public/common/images/small_icon0.png) no-repeat;
+  // background-size: cover;
 }
+.recomm_back::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 100px solid red;
+  border-top: 100px solid green;
+  border-bottom: 100px solid rgb(231, 175, 72);
+  border-right: 100px solid #f5a623;
+  transform: translateX(-104px) translateY(-104px) rotate(45deg);
+}
+.recomm_back::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 60px;
+  height: 60px;
+  background: url('~assets/images/common/home_back.png') no-repeat;
+  background-size: cover;
+  z-index: 99;
+}
+
 .main_content {
   display: flex;
   flex-direction: column;
@@ -27,7 +53,7 @@
     font-weight: bold;
     border: 1px solid #000;
     border-radius: 0.06rem;
-    margin-top: 1.2rem;
+    margin-top: 0.6rem;
     white-space: nowrap;
   }
   .content_energy {
@@ -88,11 +114,11 @@
   <div class="main_details">
     <div class="recomm_back" @click="lotrecommend"></div>
     <section class="main_content">
-      <div class="content_title">{{ recommInfo.name }}</div>
+      <div class="content_title">{{ recommInfo.name || '测试' }}</div>
       <div class="content_energy">
-        <span>l{{ recommInfo.factor }}</span> |
-        <span>{{ Math.ceil(recommInfo.time / 60) }}分钟</span> |
-        <span>{{ recommInfo.calorie }}千卡</span> |
+        <span>l{{ recommInfo.factor || 0 }}</span> |
+        <span>{{ Math.ceil(recommInfo.time / 60 || 0) }}分钟</span> |
+        <span>{{ recommInfo.calorie || 0 }}千卡</span> |
       </div>
       <p class="content_p">{{ recommInfo.desc }}</p>
       <div class="content_cover">
@@ -106,7 +132,7 @@
       </div>
     </section>
     <section class="footer">
-      <div class="footer_btn" @click="GoTo">立即前往</div>
+      <div class="footer_btn" @click="GoTo">立即前往{{ downnum }}s</div>
     </section>
   </div>
 </template>
@@ -120,12 +146,15 @@ export default {
     return {
       recommInfo: {},
       imgurl: '',
+      downnum: 30,
+      timer: null,
     }
   },
   watch: {
     recommendid: {
       handler(val) {
         this.loaddetails(val)
+        this.downChang()
       },
       immediate: true,
     },
@@ -135,14 +164,33 @@ export default {
   },
   created() {},
   mounted() {},
+  destroyed: function () {
+    clearInterval(this.timer)
+    this.timer = null
+  },
   methods: {
     ...mapActions(['logout']),
+    downChang() {
+      clearInterval(this.timer)
+      this.downnum = 30
+      this.timer = setInterval(() => {
+        if (this.downnum == 0) {
+          clearInterval(this.timer)
+          this.$router.push('/')
+        } else {
+          this.downnum -= 1
+        }
+      }, 1000)
+    },
     async lotrecommend() {
+      // console.log('返回')
+      clearInterval(this.timer)
+      this.downnum = 30
       this.$store.commit('set_recommendid', '')
       const rs = await api.post('/cancel-transfer', {
         client_id: this.client_id,
       })
-      console.log(rs)
+      console.log('用户转移取消', rs)
     },
     async loaddetails(val) {
       const data = require('../../public/common/js/lessons.json')
@@ -164,6 +212,7 @@ export default {
       }
     },
     GoTo() {
+      clearInterval(this.timer)
       this.logout()
       this.$router.push('/')
     },

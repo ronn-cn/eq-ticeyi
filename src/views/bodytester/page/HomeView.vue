@@ -124,13 +124,13 @@ export default {
         console.log('不空', val)
         // const rs = require('../../../../public/common/js/lessons.json')
         this.$axios.get('./common/js/lessons.json').then((res) => {
-          let color = val.color.split(',')
-          let arr = color.map(Number)
-          this.send_askLedState({
-            r: arr[0],
-            g: arr[1],
-            b: arr[2],
-          })
+          // let color = val.color.split(',')
+          // let arr = color.map(Number)
+          // this.send_askLedState({
+          //   r: arr[0],
+          //   g: arr[1],
+          //   b: arr[2],
+          // })
           this.$store.commit('set_userMakeState', true)
           const lesson_id = val.lesson_id
           const data = res.data.filter((item) => item.md5 == lesson_id)

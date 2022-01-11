@@ -4,7 +4,7 @@ const argv = JSON.parse(process.env.npm_config_argv);
 // vue-cli-service指令需要读取 process.argv，我用的是npm
 // const argv1 = process.argv;
 
-// console.log("process.env.npm_config_argv值", argv)
+console.log("process.env.npm_config_argv值", argv)
 // console.log("process.argv值", argv1)
 
 const config = {};
@@ -15,8 +15,12 @@ const length = argv.cooked.length;
 while ((idx += 2) <= length) {
   config[cooked[idx - 2]] = cooked[idx - 1];
 }
+console.log(config)
+
+
 
 process.env.VUE_APP_PAGE_ID = config['--pageId']
+process.env.VUE_APP_PAGE_TYPE = config['--pagetype'] || 1
 
 const copypage = ['./public/powerStatic', './public/bodytesterStatic', './public/TreadmillStatic']
 const copyPageTo = ['./powerStatic', './bodytesterStatic', './TreadmillStatic']

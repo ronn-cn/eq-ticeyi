@@ -14,25 +14,62 @@ body {
   width: 100%;
   height: 100%;
 }
+
+.iframe_conver1 {
+  position: fixed;
+  top: 17%;
+  left: 16%;
+  width: 400px;
+  height: 4.5rem;
+}
+.iframe_conver2 {
+  position: fixed;
+  top: 17%;
+  right: 18%;
+  width: 400px;
+  height: 4.5rem;
+}
+p {
+  margin-bottom: 0;
+}
 </style>
 
 <template>
   <div id="app">
-    <!-- <keep-alive :include="['TrainPage']">
+    <keep-alive :include="['TrainPage']">
       <router-view></router-view>
-    </keep-alive> -->
-    <router-view></router-view>
+    </keep-alive>
+
     <Login v-if="StandbyState"></Login>
+
+    <div class="iframe_conver1">
+      <iframe
+        :src="`${publicPath}powerStatic/${projecttype}1.html`"
+        id="mo1"
+        style="width: 100%; height: 100%"
+        frameborder="0"
+      ></iframe>
+    </div>
+    <div class="iframe_conver2">
+      <iframe
+        :src="`${publicPath}powerStatic/${projecttype}2.html`"
+        id="mo2"
+        style="width: 100%; height: 100%"
+        frameborder="0"
+      ></iframe>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import Login from '@/components/Login.vue'
+import Viframe from '@/components/power/iframe.vue'
 export default {
   name: 'App',
   components: {
     Login,
+    Viframe,
   },
   data() {
     return {}
@@ -49,10 +86,19 @@ export default {
         }
       }
     },
+    //用户转移退出
     resLogoutUser(val) {
-      if (this.$route.path !== '/endpage') {
-        this.logout()
-      }
+      this.logout()
+      this.$router.push('/')
+      // if (this.$route.path !== '/endpage') {
+      //   this.logout()
+      //   this.$router.push('/')
+      // }
+    },
+    //模型下压
+    moheight(val) {
+      var moPage2 = document.getElementById('mo2').contentWindow
+      moPage2.ControlAnimationTime(val)
     },
   },
   computed: {
@@ -61,6 +107,9 @@ export default {
       'StandbyState', //屏保
       'userMakeState', //预约
       'resLogoutUser',
+      'publicPath',
+      'moheight',
+      'projecttype',
     ]),
   },
   created() {

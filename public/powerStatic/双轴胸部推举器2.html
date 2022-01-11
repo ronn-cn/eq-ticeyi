@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>双轴胸部推举机-B</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* 溢出隐藏 */
+        }
+    </style>
+    <script type="text/javascript" src="js/three.min.js"></script>
+</head>
+<body>
+    <script type="text/javascript" src="js/GLTFLoader.js"></script>
+    <script type="text/javascript" src="js/OrbitControls.js"></script>
+    <script>
+        // 场景
+        var scene = new THREE.Scene();
+        var clock = new THREE.Clock();
+        var mixer,AnimationAction;
+        var sceneObj;
+
+        window.onload = function(){
+
+            // 摄像机
+            const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+            // x横轴y纵轴z前后纵深
+            camera.position.set(32, 30, 45);
+            //相机看向哪个坐标
+            camera.lookAt({x : 0, y : 30, z : 0});
+
+            // 渲染器
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setClearColor(0x5a4f5f);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.target = new THREE.Vector3(-3, 15, 0 );
+
+            // controls.enablePan = false;
+            // controls.enableZoom = false;
+
+            // controls.minPolarAngle = Math.PI / 2.3;
+            // controls.maxPolarAngle = Math.PI / 2.5;
+
+            // controls.minAzimuthAngle = -Math.PI * (30 / 180);
+            // controls.maxAzimuthAngle = Math.PI * (30 / 180);
+
+            controls.screenSpacePanning = true;
+
+            let loader = new THREE.GLTFLoader();
+            loader.load('./models/双轴胸部推举机.glb', function ( gltf ) {
+                console.log(gltf);
+                
+                sceneObj = gltf.scene || gltf.scenes[0];
+                sceneObj.scale.multiplyScalar(0.19);
+                scene.add(sceneObj);
+
+
+                mixer = new THREE.AnimationMixer(gltf.scene); 
+                AnimationAction = mixer.clipAction(gltf.animations[0]);
+                AnimationAction.play();
+                AnimationAction.paused = true;
+                
+                // parent.ShowPage();
+            }, undefined, function ( error ) {
+                console.error( error );
+            });
+
+
+            // 灯光
+            var ambientLight = new THREE.AmbientLight(0xFFFFFF)
+            scene.add(ambientLight);
+
+            // 添加平行光
+            var directionalLight = new THREE.DirectionalLight(0XFFFFFF)
+            directionalLight.position.set(10, 50, 30);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+
+            // 添加平行光
+            var directionalLight = new THREE.DirectionalLight(0xFFFFFF)
+            directionalLight.position.set(-30, 50, 30);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+
+            
+            // 添加平行光
+            var directionalLight = new THREE.DirectionalLight(0xFFFFFF)
+            directionalLight.position.set(-30, -50, 30);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+
+            // 动画
+            const animate = function () {
+                requestAnimationFrame( animate );
+                
+                controls.update();
+                var delta = clock.getDelta();
+                if (mixer){
+                    // if(AnimationAction.time < 1){
+                    //     sceneObj.children[5].children[0].children[0].children[1].material.emissiveIntensity = AnimationAction.time;
+                    // } else if(AnimationAction.time > 1 && AnimationAction.time < 2){
+                    //     var v = 2-AnimationAction.time;
+                    //     sceneObj.children[5].children[0].children[0].children[1].material.emissiveIntensity = v;
+                    // }
+                    mixer.update(delta);
+                }
+
+                renderer.render( scene, camera );
+            };
+
+            
+            // 执行动画
+            animate();
+        }
+        
+        function ControlAnimationTime(h) {
+            if (AnimationAction){
+                if (h == 0){
+                    AnimationAction.time = 0;    
+                } else {
+                    var v = (h/60)*1.03;
+
+                    if (v > 1.03){
+                        v = 1.03;
+                    }
+                    AnimationAction.time = v;
+                }
+                AnimationAction.paused=true;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -357,7 +357,7 @@
 </template>
 
 <script>
-import RecommendPage from './recommendPage.vue'
+import RecommendPage from '@/components/CommendPage.vue'
 import api from '@/api/api'
 import { mapGetters, mapActions } from 'vuex'
 // import QRCode from "qrcodejs2";

@@ -8,6 +8,10 @@ import store from "@/store";
 import axios from 'axios';
 // import "./util/cusImportAntD";
 
+import Antd from 'ant-design-vue';
+// import 'ant-design-vue/dist/antd.css';
+Vue.use(Antd);
+
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';

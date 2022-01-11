@@ -3,7 +3,12 @@ import api from "../../api/api";
 const state = {
   userinfo: {},
   loginState: false,
-  resLogoutUser: 0
+  resLogoutUser: 0,
+  user_rm: 0,
+  user_rmvalue: {
+    state: false,
+    value: 24
+  }
 };
 
 const mutations = {
@@ -12,7 +17,8 @@ const mutations = {
     state.userinfo = JSON.parse(data)
   },
   //用户转移退出
-  set_resLogoutUser (state) {
+  set_resLogoutUser (state, data) {
+    console.log('用户转移退出', data)
     state.resLogoutUser = new Date().getTime()
   }
 };
@@ -22,9 +28,11 @@ const actions = {
   async clientlogin ({ state, rootState }) {
     const rs = await api.post('/client-login', {
       ouid: rootState.common.ouid,
-      user_id: state.userinfo.user_id
+      user_id: state.userinfo.user_id,
+      transfer_client_id: state.userinfo.transfer_client_id || 'bug'
     })
     console.log('用户登陆', rs)
+
   },
   // 退出登录
   logout ({ state, commit, dispatch, getters }) {
@@ -45,6 +53,28 @@ const actions = {
       ouid: rootState.common.ouid
     })
     console.log('用户退出', rs)
+
+    if (process.env.VUE_APP_PAGE_ID == 0) {
+      state.user_rmvalue.state = false
+      state.user_rmvalue.value = 0
+    }
+
+  },
+  async all_user ({ state, dispatch }) {
+    const rs = await api.get('/get-user-all', {
+      user_id: state.userinfo.user_id
+    })
+    console.log('用户信息', rs.data.data.data)
+    if (process.env.VUE_APP_PAGE_ID == 0) {
+      let userrm = JSON.parse(rs.data.data.data.user_rm)
+      if (userrm[0].value != 0) {
+        state.user_rmvalue.state = true
+        state.user_rmvalue.value = userrm[0].value
+      }
+    }
+
+    // state.user_rm = userrm[0].value || 0
+    // console.log(JSON.parse(rs.data.data.data.user_rm))
   },
 }
 

@@ -1,8 +1,11 @@
 import api from "../../api/api";
+import project from "@/config/project"
+// console.log(project)
 const state = {
   ouid: '', //设备id
   Qrcode: '',
   PAGEID: process.env.VUE_APP_PAGE_ID,
+  initialization: false,  //设备初始化
   voicestate: true,
   userMakeState: false,  //预约
   StandbyState: false,  //屏保
@@ -11,11 +14,12 @@ const state = {
   recommendMsg: {},
   sport_start_time: 0, //课程开始时间
   sport_end_time: 0, //课程结束时间
-  projecttype: process.env.VUE_APP_PAGE_ID == 0 ? "坐姿腹肌训练器" : process.env.VUE_APP_PAGE_ID == 1 ? "体测仪" : "跑步机",
+  projecttype: project.projecttype,
   publicPath: process.env.NODE_ENV == "development" ? '/' : './',
-  MakeCareTitle: '',  //预约课程名称
-  MakeCareDesc: '',    //预约课程简介
-  client_id: ''
+  MakeCareTitle: project.MakeCareTitle,  //预约课程名称
+  MakeCareDesc: project.MakeCareDesc,    //预约课程简介
+  client_id: '',       //推荐课程id
+  lesson_id: project.lesson_id, //课程id
 }
 
 const mutations = {
@@ -40,6 +44,10 @@ const mutations = {
     if (state.StandbyState) {
       state.StandbyState = false
     }
+  },
+  //设置课程id
+  set_lesson_id (state, data) {
+    state.lesson_id = data
   },
   //设置屏保
   set_StandbyState (state, boolean) {
@@ -68,26 +76,27 @@ const mutations = {
 
 const actions = {
   //设备登录初始化
-  async clientStatus ({ state, commit, rootState }) {
+  async clientStatus ({ state, commit, dispatch }) {
     if (!state.initialization) {
-      state.initialization = true
       const rs = await api.post('/client-status', {
         ouid: state.ouid,
         status: 'Y',
         type: state.projecttype
       })
+      state.initialization = true
       console.log("设备初始化", rs)
     } else {
       console.log('已经初始化')
     }
   },
   //设备开始上课状态变更
-  async clientstart ({ state, rootState }, lesson_id) {
+  async clientstart ({ state, rootState }, data) {
     const user_id = rootState.user.userinfo.user_id
     const ouid = state.ouid
     const rs = await api.post('/client-start', {
       ouid,
-      lesson_id,
+      lesson_id: data.lesson_id,
+      lesson_name: data.lesson_name,
       user_id: user_id || ''
     })
     console.log('开始上课状态变更', rs)
