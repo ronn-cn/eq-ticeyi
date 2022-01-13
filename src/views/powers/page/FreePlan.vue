@@ -102,28 +102,38 @@
 .fixed_right {
   width: 300px;
   height: 60vh;
-  // background-color: #7d89e2;
   position: fixed;
   right: 0;
-  top: 16vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  top: 28vh;
   .progress_test_left {
     position: absolute;
-    top: 44%;
+    bottom: 14%;
     left: 12%;
   }
-  .progress_test {
+  .progress_test_right {
     position: absolute;
-    top: 44%;
-    right: 12%;
+    bottom: 14%;
+    right: 18%;
+  }
+  .progress_rotate_left {
+    width: 500px;
+    transform: rotate(-90deg);
+    position: relative;
+    top: 200px;
+    right: 150px;
+  }
+  .progress_rotate_right {
+    width: 500px;
+    transform: rotate(-90deg);
+    position: relative;
+    top: 200px;
+    right: 80px;
   }
 }
 .fixed_left {
   position: fixed;
   left: 0;
-  top: 16vh;
+  top: 28vh;
 }
 .end_test_btn {
   width: 2rem;
@@ -160,23 +170,14 @@
         </ul>
       </footer>
       <div class="fixed_left">
-        <div
-          style="transform: rotate(90deg) translateY(110px)"
-          id="progress_left"
-        >
-          <a-progress
-            type="dashboard"
-            :percent="targetPercent"
-            :width="500"
-            :gapDegree="135"
-            stroke-linecap="round"
-            :showInfo="false"
-            :stroke-color="{
-              '0%': '#69b597',
-              '50%': '#f0972e',
-              '100%': '#f03985',
-            }"
-          />
+        <div class="progress_rotate_left">
+          <k-progress
+            :percent="100"
+            :show-text="false"
+            :line-height="30"
+            :active="true"
+            :color="['#f5af19', '#fa0a74']"
+          ></k-progress>
         </div>
         <div class="progress_test_left">
           <p>目标重量</p>
@@ -184,18 +185,15 @@
         </div>
       </div>
       <div class="fixed_right">
-        <div style="transform: rotate(-90deg) translateY(110px)">
-          <a-progress
-            type="dashboard"
+        <div class="progress_rotate_right">
+          <k-progress
             :percent="completePercent"
-            :width="500"
-            :gapDegree="135"
-            stroke-linecap="square"
-            strokeColor="#cfd7da"
-            :showInfo="false"
-          />
+            :show-text="false"
+            :line-height="30"
+            :color="['#f5af19', '#fa0a74']"
+          ></k-progress>
         </div>
-        <div class="progress_test">
+        <div class="progress_test_right">
           <p>完成重量</p>
           <p>{{ traininfo.Weight || 0 }}KG</p>
         </div>
@@ -221,10 +219,12 @@ import Format from '@/assets/js/Format'
 import { HandleSeatedAbTrainerData } from '@/assets/js/index'
 import RestPage from './RestPage.vue'
 import RadialProgressBar from 'vue-radial-progress'
+import KProgress from 'k-progress'
 export default {
   components: {
     RestPage,
     RadialProgressBar,
+    KProgress,
   },
   data() {
     return {
@@ -256,49 +256,42 @@ export default {
       planstate: 0, //0热身组 1极限组 2负重组 3金字塔组 4.辅助组
       showPopup: false,
       targetPercent: 20,
-      completePercent: 80,
+      completePercent: 20,
+      audioList: [],
+      free_url: '',
+      audio_free: null,
     }
   },
   computed: {
-    ...mapGetters(['actionValue', 'lesson_id', 'publicPath']),
+    ...mapGetters(['actionValue', 'lesson_id', 'publicPath', 'projecttype']),
   },
   watch: {
     targetPercent: {},
     actionValue(val, oldval) {
       this.$store.commit('set_moheight', val.height)
-
       let num = val.extra_weight ? val.weight * 6 + 3 : val.weight * 6
-
-      console.log('当前重量', num)
-
-      this.completePercent = 80 - val.height
-
+      // console.log('当前重量', num)
+      this.completePercent = 20 + val.height
       HandleSeatedAbTrainerData(val, num, (e) => {
+        // console.log('回调', e)
         this.$store.commit('add_detail', {
           info: e,
           timeMeter: this.timeMeter,
         })
-        this.$store.commit('set_totalweight', e)
-        // console.log('回调', e)
         this.traininfo = e
-
         let amount = (e.Height / 100) * (e.Weight * 100) * 9.8
-
         this.traininfo.amount = Math.floor(amount)
+        this.$store.commit('set_totalweight', this.traininfo) //计算平均得分
 
-        if (this.planstate == 0) {
-          this.plannum['currentNum'] += 1
-
-          // if (this.plannum['currentNum'] == this.plannum.totalNum) {
-          //   this.firststate = true
-          //   setTimeout(() => {
-          //     this.planstate = 1
-          //     this.restinfo.weight =
-          //       e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6
-          //     this.restinfo.num = 1
-          //   }, 1000)
-          // }
-          // return
+        this.plannum['currentNum'] += 1
+        if (this.plannum.currentNum % 3 == 0) {
+          if (!this.audio_free) {
+            this.audio_free = new Audio()
+          }
+          let free =
+            this.audioList[Math.floor(Math.random() * this.audioList.length)]
+          this.audio_free.src = `${this.publicPath}powerStatic/audio/${this.projecttype}/话术弹框/${free}.mp3`
+          this.audio_free.play()
         }
       })
     },
@@ -316,9 +309,13 @@ export default {
         lesson_name: '标准模式',
       })
     }
+
     this.$store.commit('set_couserTimer', {
       type: 'start',
     })
+
+    this.timestart()
+    this.loadAudioList()
   },
   //离开页面
   destroyed: function () {
@@ -328,6 +325,13 @@ export default {
   },
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_resHeightWeight']),
+    loadAudioList() {
+      this.$axios.get(`/powerStatic/js/free_audio.json`).then((res) => {
+        // console.log(res)
+        const info = res.data.filter((item) => item.type == this.projecttype)
+        this.audioList = info[0].data
+      })
+    },
     //时间计时
     timestart() {
       this.windowtimer = setInterval(() => {

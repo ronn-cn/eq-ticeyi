@@ -483,7 +483,7 @@ header {
           <p class="nav_p1">你的训练计划: {{ planInfo.name || '' }}</p>
           <p class="nav_p2">{{ planInfo.desc || '' }}</p>
         </div>
-        <div class="nav_btn" @click="continuePlan" v-if="showTable">
+        <div class="nav_btn" @click="selectLesson" v-if="showTable">
           <span>继续我的计划</span>
         </div>
       </div>
@@ -526,7 +526,7 @@ header {
 import api from '@/api/api'
 import { mapGetters } from 'vuex'
 import RecommDetails from './RecommDetails'
-import { Popup, Swipe, SwipeItem } from 'vant'
+import { Popup, Swipe, SwipeItem, Notify } from 'vant'
 export default {
   props: {},
   components: {
@@ -534,6 +534,7 @@ export default {
     VanPopup: Popup,
     VanSwipe: Swipe,
     VanSwipeItem: SwipeItem,
+    Notify,
   },
   data() {
     return {
@@ -588,11 +589,20 @@ export default {
     this.$store.commit('set_recommendid', '')
   },
   computed: {
-    ...mapGetters(['recommendState', 'userInfo', 'client_id', 'publicPath']),
+    ...mapGetters([
+      'recommendState',
+      'userInfo',
+      'client_id',
+      'publicPath',
+      'projecttype',
+    ]),
     showTable() {
       if (this.tablueData.length > 0) {
         for (let day in this.tablueData) {
-          if (this.tablueData[day].date == this.currentdate) {
+          if (
+            this.tablueData[day].date == this.currentdate &&
+            this.tablueData[day].value !== 1
+          ) {
             return true
           }
         }
@@ -601,45 +611,6 @@ export default {
     },
   },
   methods: {
-    //继续我的计划
-    async continuePlan() {
-      // this.tablueData.forEach((item) => {
-      //   if (item.date == this.currentdate) {
-      //     console.log(item)
-      //     if (item.lesson_id) {
-      //       this.iscompletion(item)
-      //     } else {
-      //       this.selectLesson(item)
-      //     }
-      //   }
-      // })
-      this.selectLesson()
-    },
-    //有课程判断是否完成
-    async iscompletion(data) {
-      // console.log(date)
-      if (data.value == 1) {
-        const res = await api.post('/lesson-change', {
-          user_id: this.userInfo.user_id,
-          user_plan: this.planInfo,
-        })
-        let id = res.data.data.lesson_id
-        this.details(id)
-      } else {
-        this.details(data.lesson_id)
-      }
-    },
-    //没课程直接拿来训练
-    async selectLesson(data) {
-      console.log('没课程的时候')
-      const rs = await api.post('/new-lesson-select', {
-        user_id: this.userInfo.user_id,
-        user_plan: this.planInfo,
-      })
-      console.log(rs)
-      let id = rs.data.data.md5
-      this.details(id)
-    },
     //获取用户信息
     async getUserAll() {
       const rs = await api.get('/get-user-all', {
@@ -649,97 +620,85 @@ export default {
       if (rs.data.code == '200') {
         this.userData = rs.data.data
         this.tablueData = rs.data.data.time_table
-        // console.log(this.userData)
         this.filterWeekName()
 
         let user_plan_id = rs.data.data.data.user_plan_id
         this.$axios
           .get(`${this.publicPath}common/js/plans.json`)
           .then((res) => {
-            // console.log(res)
             res.data.forEach((item) => {
               if (item.id == user_plan_id) {
-                // console.log(item)
                 this.planInfo = item
               }
             })
-            // this.curriculum = res.data
           })
-        // this.userData = rs.data.data
-        // this.DateDiff(rs.data.data.user.gmt_update)
       }
     },
-    //开始转移课程
-    async details(course_id) {
-      console.log(course_id)
-      let info = {}
-      this.$axios
-        .get(`${this.publicPath}common/js/lessons.json`)
-        .then(async (res) => {
-          info = res.data.find((item) => (item.md5 = course_id))
-          const user_id = this.userInfo.user_id
-          const lesson_id = info.md5
-          const client_type = info.equipmenttype
-
-          const rs = await api.post('/transfer-user', {
-            user_id,
-            lesson_id,
-            client_type,
-          })
-
-          if (rs.data.data) {
-            this.$store.commit('set_client_id', rs.data.data.client_id)
-            if (process.env.VUE_APP_PAGE_ID == 0) {
-              if (client_type.includes('坐姿腹肌训练器')) {
-                this.$router.push('/trainpage')
-              } else {
-                this.$store.commit('set_recommendid', {
-                  md5: info.md5,
-                  transfer: rs.data.data,
-                })
-              }
-            }
-            if (process.env.VUE_APP_PAGE_ID == 1) {
-              if (client_type.includes('体测仪')) {
-                this.$router.push('/datadetection')
-              } else {
-                this.$store.commit('set_recommendid', {
-                  md5: info.md5,
-                  transfer: rs.data.data,
-                })
-              }
-            }
-            if (process.env.VUE_APP_PAGE_ID == 2) {
-              if (client_type.includes('跑步机')) {
-                this.$router.push({
-                  path: '/trainrun',
-                  query: { type: 2, status: 0 },
-                })
-              } else {
-                this.$store.commit('set_recommendid', {
-                  md5: info.md5,
-                  transfer: rs.data.data,
-                })
-              }
-            }
-          } else {
-            this.$notify({ type: 'warning', message: '暂无设备空闲' })
-          }
-        })
-    },
-    async new_details(info) {
-      const lesson_type = info.groupname
-      const user_id = this.userInfo.user_id
-      const rs = await api.post('/new-guide-lesson', {
-        user_id,
-        lesson_type,
+    //没课程直接拿来训练
+    async selectLesson(data) {
+      const rs = await api.post('/new-lesson-select', {
+        user_id: this.userInfo.user_id,
+        user_plan: this.planInfo,
       })
       console.log(rs)
       if (rs.data.code == '200') {
-        this.lessondata = rs.data.data.lesson_id
-        this.details(this.lessondata[0])
+        this.details(rs.data.data)
+      }
+    },
+    //开始课程
+    async new_details(info) {
+      const groupname = info.groupname
+      const user_id = this.userInfo.user_id
+      const rs = await api.post('/new-lesson-select', {
+        user_id,
+        groupname,
+      })
+      // console.log('调用选课', rs)
+      if (rs.data.code == '200') {
+        const arr = [
+          {
+            name: this.projecttype,
+            path: '/trainpage',
+          },
+          {
+            name: '体测仪',
+            path: '/datadetection',
+          },
+          {
+            name: '跑步机',
+            path: '/trainrun',
+            query: { type: 2, status: 0 },
+          },
+        ]
+        let id = process.env.VUE_APP_PAGE_ID
+        if (rs.data.data.equipmenttype.includes(arr[id])) {
+          this.$router.push({
+            path: arr[id].path,
+            query: arr[id].query || {},
+          })
+        } else {
+          this.details(rs.data.data)
+        }
       } else {
         this.$notify({ type: 'warning', message: '暂无推荐课程' })
+      }
+    },
+    //开始转移课程
+    async details(data) {
+      const rs = await api.post('/transfer-user', {
+        user_id: this.userInfo.user_id,
+        lesson_id: data.md5,
+        client_type: data.equipmenttype,
+      })
+      console.log(rs)
+      if (rs.data.data) {
+        this.$store.commit('set_recommendid', {
+          md5: data,
+          transfer: rs.data.data,
+        })
+        this.$store.commit('set_client_id', rs.data.data.client_id)
+      } else {
+        this.$notify({ type: 'warning', message: '暂无空闲设备' })
       }
     },
     //周一到周七
@@ -780,39 +739,9 @@ export default {
     },
     //退出课程
     async lotrecommend() {
-      // this.$store.commit('set_recommendid', '')
-      // const rs = await api.post('/cancel-transfer', {
-      //   client_id: this.client_id,
-      // })
-      // console.log(rs)
       this.$router.push('/')
     },
-    //获取课程
-    async loadcourseList() {
-      const rs = await api.post('/guide-lesson', {
-        user_id: this.userInfo.user_id,
-      })
 
-      if (rs.data.code == '200') {
-        let data = rs.data.data.lessonIds
-        const lessons = require('../../public/common/js/lessons.json')
-        // console.log(lessons)
-        for (let i in data) {
-          lessons.forEach((item) => {
-            // console.log(data[i])
-            if (item.md5 == data[i]) {
-              this.courseList.push({
-                md5: item.md5,
-                name: item.name,
-                desc: item.desc,
-                image: require(`../assets/images/course/${item.image}`),
-                equipmenttype: item.equipmenttype,
-              })
-            }
-          })
-        }
-      }
-    },
     //获取日期
     moment_date(date) {
       var newdate = this.$moment(`${date}`)

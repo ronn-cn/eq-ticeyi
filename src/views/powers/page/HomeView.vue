@@ -182,6 +182,9 @@
         </div>
       </div>
     </div>
+    <!-- <audio ref="audio_text" preload="auto">
+      <source :src="audiosrc" type="audio/mp3" />
+    </audio> -->
   </div>
 </template>
 
@@ -205,6 +208,7 @@ export default {
       timer: null,
       show: true,
       operatewidth: '24',
+      audio_step: null,
     }
   },
   computed: {
@@ -263,6 +267,13 @@ export default {
         })
       }
     },
+    courseState(val) {
+      if (val) {
+        this.audio_step = new Audio()
+        this.audio_step.src = `${this.publicPath}powerStatic/audio/02请仔细阅读运动风险须知确认并启开.mp3`
+        this.audio_step.play()
+      }
+    },
   },
   created() {},
   mounted() {},
@@ -297,6 +308,7 @@ export default {
       }
 
       if (this.courseState) {
+        this.audio_step.pause()
         if (this.itemindex == 0) {
           if (this.viewindex < 3) {
             this.viewindex++

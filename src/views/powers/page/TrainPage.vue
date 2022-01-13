@@ -240,38 +240,14 @@
         <div
           style="transform: rotate(90deg) translateY(110px)"
           id="progress_left"
-        >
-          <a-progress
-            type="dashboard"
-            :percent="targetPercent"
-            :width="500"
-            :gapDegree="135"
-            stroke-linecap="round"
-            :showInfo="false"
-            :stroke-color="{
-              '0%': '#69b597',
-              '50%': '#f0972e',
-              '100%': '#f03985',
-            }"
-          />
-        </div>
+        ></div>
         <div class="progress_test_left">
           <p>目标重量</p>
           <p>{{ restinfo.weight || 0 }}KG</p>
         </div>
       </div>
       <div class="fixed_right">
-        <div style="transform: rotate(-90deg) translateY(110px)">
-          <a-progress
-            type="dashboard"
-            :percent="completePercent"
-            :width="500"
-            :gapDegree="135"
-            stroke-linecap="square"
-            strokeColor="#cfd7da"
-            :showInfo="false"
-          />
-        </div>
+        <div style="transform: rotate(-90deg) translateY(110px)"></div>
         <div class="progress_test">
           <p>完成重量</p>
           <p>{{ traininfo.Weight || 0 }}KG</p>
@@ -380,24 +356,28 @@ export default {
   watch: {
     targetPercent: {},
     actionValue(val, oldval) {
-      //  console.log('当前重量')
+      if (val.height > 5) {
+        // console.log('当前重量', val)
+      }
       this.$store.commit('set_moheight', val.height)
       this.completePercent = 80 - val.height
 
       // console.log(this.completepercent)
-      HandleSeatedAbTrainerData(val, val.Weight, (e) => {
-        console.log('回调', e)
+      HandleSeatedAbTrainerData(val, val.weight, (e) => {
+        // console.log('回调', e)
 
         this.$store.commit('add_detail', {
           info: e,
           timeMeter: this.timeMeter,
         })
 
-        this.$store.commit('set_totalweight', e)
-
         this.traininfo = e
-        let amount = (e.Height / 100) * e.Weight * 9.8
+        let amount = (e.Height / 100) * (e.Weight * 100) * 9.8
+
         this.traininfo.amount = Math.floor(amount)
+
+        this.$store.commit('set_totalweight', this.traininfo) //计算平均得分
+
         if (this.reststate) this.reststate = false
 
         if (this.planstate == 0) {

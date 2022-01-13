@@ -6,16 +6,21 @@ import App from "./App.vue";
 import router from "@/router";
 import store from "@/store";
 import axios from 'axios';
-// import "./util/cusImportAntD";
 
-import Antd from 'ant-design-vue';
-// import 'ant-design-vue/dist/antd.css';
-Vue.use(Antd);
+import 'vant/lib/button/style'
+
+// import Vant from 'vant';
+// import 'vant/lib/index.css';
+// Vue.use(Vant);
+
+// import Antd from 'ant-design-vue';
+// Vue.use(Antd);
 
 
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-Vue.use(ElementUI);
+// import ElementUI from 'element-ui';
+// import 'element-ui/lib/theme-chalk/index.css';
+// Vue.use(ElementUI);
+
 
 Vue.config.productionTip = false;
 

@@ -111,7 +111,7 @@ export default {
     Render() {
       // this.audio_dom.play()
       this.$axios.get(`/powerStatic/js/audio.json`).then((res) => {
-        const info = res.data.filter((item) => item.type == '坐姿腹肌训练器')
+        const info = res.data.filter((item) => item.type == this.projecttype)
         console.log(info[0].data)
         this.audioList = info[0].data
       })
@@ -146,7 +146,7 @@ export default {
         if (!this.audio_a) {
           this.audio_a = new Audio()
         }
-        this.audio_a.src = `${this.publicPath}powerStatic/audio/${this.projecttype}/热身辅助/${playsrc}.mp3`
+        this.audio_a.src = `${this.publicPath}powerStatic/audio/${this.projecttype}/话术弹框/${playsrc}.mp3`
         this.audio_a.play()
       }
     },

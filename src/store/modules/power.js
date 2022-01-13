@@ -3,15 +3,17 @@ const state = {
   actionValue: {},
   coursegroup: {},
   total_group: 0,  //总总数
-  totalweight: 0, //总负重
-  averagenum: 0,  //总次数
-  averagescore: 0,  //平均分  平均负重
-  combinedscore: 0,  //综合分
   weight_max: 0,       //最大负重
   weight_rm: 0,        //极限rm
   powerDetail: [],
   moheight: 0,
-
+  powerEndData: {
+    combinedscore: 0,  //综合分
+    totalweight: 0, //总负重
+    averagenum: 0,  //总次数
+    averagescore: 0,  //平均负重
+    amount: 0, //训练量
+  }
 }
 
 const mutations = {
@@ -40,14 +42,14 @@ const mutations = {
   set_totalweight (state, data) {
     // Count: 1 Duration: 1826 Height: 42 Percent: 0.5599135044420577 Weight: 6
     if (data) {
-      state.totalweight += data.Weight
-      state.averagenum += 1
-      state.averagescore = Math.ceil((state.totalweight / state.averagenum))
-      state.combinedscore = Math.ceil(Math.ceil(data.Percent * 100) / state.averagenum)
+      state.powerEndData.totalweight += data.Weight  //总重量
+      state.powerEndData.averagenum += 1             //总次数
+      state.powerEndData.averagescore = Math.ceil((state.totalweight / state.averagenum))  //平均负重
+      state.powerEndData.combinedscore = Math.ceil(Math.ceil(data.Percent * 100) / state.averagenum) //综合得分
+      state.powerEndData.amount += data.amount
       if (data.Weight > state.weight_max) {
         state.weight_max = data.Weight
       }
-
       // console.log(state.totalweight, state.averagenum, state.averagescore, state.combinedscore)
     }
   },
@@ -77,9 +79,9 @@ const actions = {
   svseEndData ({ state, getters, dispatch }, data) {
     let sport_detail = {
       group: state.total_group,   //总组数
-      times: state.averagenum,   //总次数
-      weight_total: state.totalweight,//总负重
-      weight_avg: state.averagescore,//平均负重
+      times: state.powerEndData.averagenum,   //总次数
+      weight_total: state.powerEndData.totalweight,//总负重
+      weight_avg: state.powerEndData.averagescore,//平均负重
       weight_max: state.weight_max,//最大负重
       weight_rm: state.weight_rm,  //极限RM
       detail: state.powerDetail     //详细信息

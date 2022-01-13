@@ -10,11 +10,10 @@ const state = {
   userMakeState: false,  //预约
   StandbyState: false,  //屏保
   recommendState: false,  //是否有转移设备
-  recommendid: '',        //推荐课程
-  recommendMsg: {},
+  recommendid: {},        //推荐课程
   sport_start_time: 0, //课程开始时间
   sport_end_time: 0, //课程结束时间
-  projecttype: project.projecttype,
+  projecttype: project.projecttype,   //设备类型
   publicPath: process.env.NODE_ENV == "development" ? '/' : './',
   MakeCareTitle: project.MakeCareTitle,  //预约课程名称
   MakeCareDesc: project.MakeCareDesc,    //预约课程简介
@@ -58,13 +57,14 @@ const mutations = {
     state.MakeCareDesc = data.desc
   },
   set_recommendid (state, data) {
-    if (data) {
-      state.recommendid = data.md5
-      state.recommendMsg = data.transfer
+    if (JSON.stringify(data) !== "{}") {
+      state.recommendid = {
+        data: data.md5,
+        msg: data.transfer
+      }
       state.recommendState = true
     } else {
-      state.recommendid = ''
-      state.recommendMsg = {}
+      state.recommendid = {}
       state.recommendState = false
     }
 

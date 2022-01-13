@@ -8,7 +8,6 @@ export default {
   StandbyState: state => state.common.StandbyState, //屏保
   recommendid: state => state.common.recommendid,   //推荐课程
   recommendState: state => state.common.recommendState,  //推荐状态
-  recommendMsg: state => state.common.recommendMsg,  //推荐信息
   sport_start_time: state => state.common.sport_start_time,  //开始时间
   sport_end_time: state => state.common.sport_end_time,  //结束时间
   MakeCareTitle: state => state.common.MakeCareTitle,  //预约名称
@@ -43,9 +42,12 @@ export default {
   moheight: state => state.power.moheight,  //动作数据
   actionValue: state => state.power.actionValue,  //动作数据
   coursegroup: state => state.power.coursegroup,  //课程组
-  totalweight: state => state.power.totalweight, //总负重 
-  averagescore: state => state.power.averagescore, //平均分 
-  combinedscore: state => state.power.combinedscore, //综合得分 
+  powerEndData: state => state.power.powerEndData,  //课程组
+
+  // totalweight: state => state.power.totalweight, //总负重 
+  // averagescore: state => state.power.averagescore, //平均分 
+  // combinedscore: state => state.power.combinedscore, //综合得分 
+  // amount: state => state.power.amount, //训练量 
 
 
 

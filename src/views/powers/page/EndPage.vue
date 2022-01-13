@@ -357,9 +357,10 @@ export default {
     if (this.$route.query.timevalue) {
       this.typeList[1].value = this.$route.query.timevalue
     }
-    this.typeList[0].value = this.combinedscore
-    this.typeList[2].value = this.totalweight
-    this.typeList[3].value = this.averagescore
+    this.typeList[0].value = this.powerEndData.combinedscore //综合评分
+    this.typeList[2].value = this.powerEndData.totalweight //总负重
+    this.typeList[3].value = this.powerEndData.averagescore //平均负重
+    this.typeList[4].value = this.powerEndData.amount //平均负重
   },
   mounted() {
     // console.log(this.Qrcode, this.loginState)
@@ -384,11 +385,9 @@ export default {
       'loginState',
       'ouid',
       'userInfo',
-      'totalweight',
-      'averagescore',
-      'combinedscore',
       'lesson_id',
       'publicPath',
+      'powerEndData',
     ]),
   },
   watch: {

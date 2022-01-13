@@ -65,7 +65,11 @@ const actions = {
         //接收服务端消息
         ws.onmessage = function (e) {
           let data = JSON.parse(e.data);
-          // console.log(data)
+
+          if (data.cmd !== "resHeightWeight") {
+            console.log(data)
+          }
+
           const cmdList = ['resLoginQrcode', 'resLoginUser', 'resServiceBusiness', 'resLastTouchTime', 'resStartLesson', 'resLogoutUser']  //登陆二维码，登陆用户，主机http,间隔时间,课程预约
           const powerList = ['resHeightWeight', 'resGenerateLesson']  //下压数据,课程开始
           const bodytesterList = ['resMeasureHeight', 'resMeasureWeight', 'resMeasureImpedance', 'resMeasureBodyData', 'resWeightState']  //测量身高，测量体重，测量体脂，各类数据 返回上一次

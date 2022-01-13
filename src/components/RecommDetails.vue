@@ -126,8 +126,7 @@
       </div>
       <div class="content_progress"></div>
       <div class="content_tips">
-        请您前往有氧区<span style="color: #0eebf0"
-          >'{{ recommendMsg.name }}'</span
+        请您前往有氧区<span style="color: #0eebf0">'{{ recommMsg.name }}'</span
         >开启健身课程
       </div>
     </section>
@@ -145,6 +144,7 @@ export default {
   data() {
     return {
       recommInfo: {},
+      recommMsg: {},
       imgurl: '',
       downnum: 30,
       timer: null,
@@ -153,14 +153,22 @@ export default {
   watch: {
     recommendid: {
       handler(val) {
-        this.loaddetails(val)
+        this.recommInfo = val.data
+        this.recommMag = val.msg
+        this.loaddetails(val.data.equipmenttype)
         this.downChang()
       },
       immediate: true,
     },
   },
   computed: {
-    ...mapGetters(['recommendid', 'userInfo', 'recommendMsg', 'client_id']),
+    ...mapGetters([
+      'recommendid',
+      'userInfo',
+      'client_id',
+      'publicPath',
+      'projecttype',
+    ]),
   },
   created() {},
   mounted() {},
@@ -182,33 +190,27 @@ export default {
         }
       }, 1000)
     },
+    //取消用户转移
     async lotrecommend() {
-      // console.log('返回')
       clearInterval(this.timer)
+      this.timer = null
       this.downnum = 30
-      this.$store.commit('set_recommendid', '')
+      this.$store.commit('set_recommendid', {})
       const rs = await api.post('/cancel-transfer', {
         client_id: this.client_id,
       })
       console.log('用户转移取消', rs)
     },
+    //加载
     async loaddetails(val) {
-      const data = require('../../public/common/js/lessons.json')
-
-      for (let i in data) {
-        if (data[i].md5 == val) {
-          // console.log(data[i])
-          this.recommInfo = data[i]
-          if (data[i].equipmenttype.includes('健身镜')) {
-            this.imgurl = require('../assets/images/jianshenjing.png')
-          } else if (data[i].equipmenttype.includes('跑步机')) {
-            this.imgurl = require('../assets/images/paobuji.png')
-          } else if (data[i].equipmenttype.includes('体测仪')) {
-            this.imgurl = require('../assets/images/ticeyi.png')
-          } else {
-            this.imgurl = require('../assets/images/zuozixunlianqi.png')
-          }
-        }
+      if (val.includes('健身指导镜')) {
+        this.imgurl = `${this.publicPath}common/images/jianshenjing.png`
+      } else if (val.includes('跑步机')) {
+        this.imgurl = require('../assets/images/paobuji.png')
+      } else if (val.includes('体测仪')) {
+        this.imgurl = require('../assets/images/ticeyi.png')
+      } else {
+        this.imgurl = `${this.publicPath}powerStatic/images/${this.projecttype}.png`
       }
     },
     GoTo() {
