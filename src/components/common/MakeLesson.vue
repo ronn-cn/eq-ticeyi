@@ -114,7 +114,7 @@ export default {
           this.completedSteps -= 1
           if (this.completedSteps == 40) {
             let audio = new Audio()
-            audio.src = `${this.publicPath}powerStatic/audio/03您已预约，请点击开始课程.mp3`
+            audio.src = `${this.publicPath}powerStatic/audio/首页/03您已预约，请点击开始课程.mp3`
             audio.play()
           }
         }

@@ -17,17 +17,17 @@ body {
 
 .iframe_conver1 {
   position: fixed;
-  top: 17%;
-  left: 16%;
-  width: 400px;
-  height: 4.5rem;
+  top: 14%;
+  left: 12%;
+  width: 4.5rem;
+  height: 5rem;
 }
 .iframe_conver2 {
   position: fixed;
-  top: 17%;
-  right: 18%;
-  width: 400px;
-  height: 4.5rem;
+  top: 14%;
+  right: 12%;
+  width: 4.5rem;
+  height: 5rem;
 }
 p {
   margin-bottom: 0;
@@ -44,7 +44,7 @@ p {
 
     <div class="iframe_conver1">
       <iframe
-        :src="`${publicPath}powerStatic/${projecttype}1.html`"
+        :src="`${publicPath}powerStatic/${projecttype}3.html`"
         id="mo1"
         style="width: 100%; height: 100%"
         frameborder="0"
@@ -72,7 +72,9 @@ export default {
     Viframe,
   },
   data() {
-    return {}
+    return {
+      isChangeMe: '123',
+    }
   },
   watch: {
     getTouchTime(val) {
@@ -88,8 +90,8 @@ export default {
     },
     //用户转移退出
     resLogoutUser(val) {
-      this.logout()
-      this.$router.push('/')
+      // this.logout()
+      // this.$router.push('/')
       // if (this.$route.path !== '/endpage') {
       //   this.logout()
       //   this.$router.push('/')
@@ -120,9 +122,19 @@ export default {
     document.getElementsByTagName('html')[0].style.fontSize = rem + 'px'
 
     this.init_socket()
+    window.getFromIframe = this.getFromIframe
+    // this.isChangeMe = window.isChangeMe;
   },
   methods: {
     ...mapActions(['init_socket', 'logout']),
+    getFromIframe(val) {
+      let num = (val * 100) / 60
+      let data = Math.floor(num)
+      // console.log(Math.floor(num))
+      if (data >= 5 && data <= 100) {
+        this.$store.commit('set_moloop', Math.floor(num))
+      }
+    },
   },
 }
 </script>

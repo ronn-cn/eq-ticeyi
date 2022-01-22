@@ -20,7 +20,7 @@ console.log(config)
 
 
 process.env.VUE_APP_PAGE_ID = config['--pageId']
-process.env.VUE_APP_PAGE_TYPE = config['--pagetype'] || 1
+process.env.VUE_APP_PAGE_TYPE = config['--pagetype'] || ''
 
 const copypage = ['./public/powerStatic', './public/bodytesterStatic', './public/TreadmillStatic']
 const copyPageTo = ['./powerStatic', './bodytesterStatic', './TreadmillStatic']

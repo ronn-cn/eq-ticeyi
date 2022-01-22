@@ -107,13 +107,13 @@
   top: 28vh;
   .progress_test_left {
     position: absolute;
-    bottom: 14%;
+    bottom: 12%;
     left: 12%;
   }
   .progress_test_right {
     position: absolute;
-    bottom: 14%;
-    right: 18%;
+    bottom: 12%;
+    right: 12%;
   }
   .progress_rotate_left {
     width: 500px;
@@ -127,7 +127,16 @@
     transform: rotate(-90deg);
     position: relative;
     top: 200px;
-    right: 80px;
+    right: 50px;
+  }
+  .text_p1 {
+    font-size: 0.16rem;
+  }
+  .text_p2 {
+    background-color: #000;
+    border-radius: 0.2rem;
+    padding: 0.1rem 0.2rem;
+    margin-top: 10px;
   }
 }
 .fixed_left {
@@ -172,16 +181,15 @@
       <div class="fixed_left">
         <div class="progress_rotate_left">
           <k-progress
-            :percent="100"
+            :percent="moloopval"
             :show-text="false"
             :line-height="30"
-            :active="true"
             :color="['#f5af19', '#fa0a74']"
           ></k-progress>
         </div>
         <div class="progress_test_left">
-          <p>目标重量</p>
-          <p>--KG</p>
+          <p class="text_p1">目标重量</p>
+          <p class="text_p2">--KG</p>
         </div>
       </div>
       <div class="fixed_right">
@@ -194,21 +202,14 @@
           ></k-progress>
         </div>
         <div class="progress_test_right">
-          <p>完成重量</p>
-          <p>{{ traininfo.Weight || 0 }}KG</p>
+          <p class="text_p1">完成重量</p>
+          <p class="text_p2">{{ traininfo.Weight || 0 }}KG</p>
         </div>
       </div>
     </div>
     <div @click="btn_click(0)">
       <div class="end_btn"></div>
       <div class="den_icon"></div>
-    </div>
-    <div class="popup_close" v-if="showPopup">
-      <p class="close_p1">您的训练时间过短,是否退出当前训练</p>
-      <section class="btn_list">
-        <div class="close_btn1" @touchstart="popupbtn(0)">结束训练</div>
-        <div class="close_btn2" @touchstart="popupbtn(1)">再练一会</div>
-      </section>
     </div>
   </div>
 </template>
@@ -254,32 +255,68 @@ export default {
         currentNum: 0,
       },
       planstate: 0, //0热身组 1极限组 2负重组 3金字塔组 4.辅助组
-      showPopup: false,
-      targetPercent: 20,
-      completePercent: 20,
+      // showPopup: false,
+      targetPercent: 0,
+      completePercent: 0,
+      targetdown: null,
       audioList: [],
       free_url: '',
       audio_free: null,
     }
   },
   computed: {
-    ...mapGetters(['actionValue', 'lesson_id', 'publicPath', 'projecttype']),
+    ...mapGetters([
+      'actionValue',
+      'lesson_id',
+      'publicPath',
+      'projecttype',
+      'moloopval',
+    ]),
   },
   watch: {
-    targetPercent: {},
+    // targetPercent: {
+    //   handler(val) {
+    //     if (val == 0) {
+    //       this.targetdown = setInterval(() => {
+    //         this.targetPercent += 1
+    //         if (this.targetPercent >= 100) {
+    //           clearInterval(this.targetdown)
+    //         }
+    //       }, 20)
+    //     }
+    //     if (val >= 100) {
+    //       setTimeout(() => {
+    //         this.targetdown = setInterval(() => {
+    //           this.targetPercent -= 1
+    //           if (this.targetPercent <= 0) {
+    //             clearInterval(this.targetdown)
+    //           }
+    //         }, 40)
+    //       }, 1000)
+    //     }
+    //   },
+    //   immediate: true,
+    // },
     actionValue(val, oldval) {
       this.$store.commit('set_moheight', val.height)
       let num = val.extra_weight ? val.weight * 6 + 3 : val.weight * 6
-      // console.log('当前重量', num)
-      this.completePercent = 20 + val.height
+
+      if (val.height > 5) {
+        this.completePercent = 20 + val.height
+      } else {
+        this.completePercent = 0
+      }
       HandleSeatedAbTrainerData(val, num, (e) => {
+        console.log('当前重量', num)
         // console.log('回调', e)
         this.$store.commit('add_detail', {
           info: e,
           timeMeter: this.timeMeter,
         })
         this.traininfo = e
-        let amount = (e.Height / 100) * (e.Weight * 100) * 9.8
+
+        let amount = (e.Height / 100) * e.Weight * 9.8
+
         this.traininfo.amount = Math.floor(amount)
         this.$store.commit('set_totalweight', this.traininfo) //计算平均得分
 
@@ -360,18 +397,10 @@ export default {
     },
     //按钮事件
     btn_click(index) {
-      this.showPopup = true
-    },
-    //弹框事件
-    popupbtn(type) {
-      if (type == 0) {
-        this.$router.push({
-          path: '/endpage',
-          query: { reneging: 1, timevalue: this.timevalue },
-        })
-      } else {
-        this.showPopup = false
-      }
+      this.$router.push({
+        path: '/endpage',
+        query: { timevalue: this.timevalue },
+      })
     },
   },
 }

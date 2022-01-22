@@ -7,6 +7,7 @@ const state = {
   weight_rm: 0,        //极限rm
   powerDetail: [],
   moheight: 0,
+  moloopval: 0,
   powerEndData: {
     combinedscore: 0,  //综合分
     totalweight: 0, //总负重
@@ -18,10 +19,8 @@ const state = {
 
 const mutations = {
   add_detail (state, payload) {
-    // console.log(payload)
     let info = payload.info
     let timeMeter = Math.round(payload.timeMeter)
-    // info.timeMeter = timeMeter
     state.powerDetail.push({
       ...info,
       time: timeMeter
@@ -35,6 +34,10 @@ const mutations = {
   set_moheight (state, val) {
     state.moheight = val
   },
+  //
+  set_moloop (state, val) {
+    state.moloopval = val
+  },
   //设置极限rm
   set_weight_rm (state, data) {
     state.weight_rm = data
@@ -44,8 +47,8 @@ const mutations = {
     if (data) {
       state.powerEndData.totalweight += data.Weight  //总重量
       state.powerEndData.averagenum += 1             //总次数
-      state.powerEndData.averagescore = Math.ceil((state.totalweight / state.averagenum))  //平均负重
-      state.powerEndData.combinedscore = Math.ceil(Math.ceil(data.Percent * 100) / state.averagenum) //综合得分
+      state.powerEndData.averagescore = Math.ceil(state.powerEndData.totalweight / state.powerEndData.averagenum)  //平均负重
+      state.powerEndData.combinedscore = Math.ceil(Math.ceil(data.Percent * 100) / state.powerEndData.averagenum) //综合得分
       state.powerEndData.amount += data.amount
       if (data.Weight > state.weight_max) {
         state.weight_max = data.Weight
@@ -62,6 +65,11 @@ const mutations = {
   set_resGenerateLesson (state, data) {
     state.coursegroup = data
   },
+}
+const getters = {
+  completion (state) {
+    return '别急'
+  }
 }
 
 const actions = {
@@ -117,6 +125,7 @@ const actions = {
 }
 
 export default {
+  getters,
   state,
   mutations,
   actions

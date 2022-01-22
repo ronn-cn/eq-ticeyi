@@ -1,107 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang>
 <head>
     <meta charset="UTF-8">
-    <title>坐姿划船训练器-B</title>
+    <title>坐姿划船训练器</title>
     <style>
-        body {
-            margin: 0;
-            overflow: hidden; /* 溢出隐藏 */
-        }
+        body { margin: 0;overflow: hidden; }
     </style>
     <script type="text/javascript" src="js/three.min.js"></script>
 </head>
 <body>
     <script type="text/javascript" src="js/GLTFLoader.js"></script>
     <script type="text/javascript" src="js/OrbitControls.js"></script>
+    <!-- <script type="text/javascript" src="js/project.js"></script> -->
     <script>
+        // 设置背景颜色
+        var bgColor = 0x5a4f5f;
+        // 设置模型路径
+        var modelPath = "./models/动画_V811.glb";
+        // 设置模型动作分割帧
+        var actionSplitFarme = [119,135,251]
+        // 设置动作分割时长
+        var actionSplitTime = [2.5,1,3]
+        // 设置刷新率
+        var FPS = 50;
+
         // 场景
         var scene = new THREE.Scene();
         var clock = new THREE.Clock();
-        var mixer,AnimationAction;
-        var sceneObj;
+        var mixer, AnimationAction;
 
-        window.onload = function(){
+        var action, actionA, actionB, actionC;
+        var sceneObj;
+        window.onload = function () {
+            // 显示坐标轴
+            // var axisHelper = new THREE.AxisHelper(30);//每个轴的长度
+            // scene.add(axisHelper);
 
             // 摄像机
             const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
             // x横轴y纵轴z前后纵深
-            camera.position.set(-45, 18, -43);
+            camera.position.set(16, 16, 52);
             //相机看向哪个坐标
-            camera.lookAt({x : 0, y : 30, z : 0});
+            camera.lookAt({ x: 0, y: 0, z: 0 });
 
             // 渲染器
             const renderer = new THREE.WebGLRenderer();
-            renderer.setClearColor(0x5a4f5f);
+            renderer.setClearColor(bgColor);
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
 
             const controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.target = new THREE.Vector3(-9, 12, 5 );
+            controls.target = new THREE.Vector3(0, 15, 0);
 
-            // controls.enablePan = false;
-            // controls.enableZoom = false;
-
-            // controls.minPolarAngle = Math.PI / 2.3;
-            // controls.maxPolarAngle = Math.PI / 2.5;
-
-            // controls.minAzimuthAngle = -Math.PI * (30 / 180);
-            // controls.maxAzimuthAngle = Math.PI * (30 / 180);
+            controls.enablePan = false;
+            controls.enableZoom = false;
+            // controls.enableRotate = false;
+            controls.rotateSpeed = 0.05
 
             controls.screenSpacePanning = true;
 
             let loader = new THREE.GLTFLoader();
-            loader.load('./models/坐姿划船训练器.glb', function ( gltf ) {
+            loader.load(modelPath, function (gltf) {
+                // 打印模型参数
                 console.log(gltf);
-                
+                // 创建场景
                 sceneObj = gltf.scene || gltf.scenes[0];
                 sceneObj.scale.multiplyScalar(0.19);
+                sceneObj.rotateY(Math.PI * (150 / 180));
+                
+                sceneObj.position.set(-5,0,10)
                 scene.add(sceneObj);
 
+                mixer = new THREE.AnimationMixer(gltf.scene);
 
-                mixer = new THREE.AnimationMixer(gltf.scene); 
+                action = gltf.animations[0];
                 AnimationAction = mixer.clipAction(gltf.animations[0]);
                 AnimationAction.play();
-                AnimationAction.paused = true;
-                
-                // parent.ShowPage();
-            }, undefined, function ( error ) {
-                console.error( error );
+
+                actionA = THREE.AnimationUtils.subclip(action, 'A', 0, actionSplitFarme[0], 24)
+                actionB = THREE.AnimationUtils.subclip(action, 'B', actionSplitFarme[0], actionSplitFarme[1], 24)
+                actionC = THREE.AnimationUtils.subclip(action, 'C', actionSplitFarme[1], actionSplitFarme[2], 24)
+            }, undefined, function (error) {
+                console.error(error);
             });
 
 
             // 灯光
             // 添加环境光
-            
             var ambientLight = new THREE.AmbientLight(0xFFFFFF)
             scene.add(ambientLight);
 
             // 添加平行光
             var directionalLight = new THREE.DirectionalLight(0XFFFFFF)
-            directionalLight.position.set(10, 50, -10);
-            directionalLight.castShadow = true;
+            directionalLight.position.set(0, 45, 30);
             scene.add(directionalLight);
-
-            // 添加平行光
-            var directionalLight = new THREE.DirectionalLight(0xFFFFFF)
-            directionalLight.position.set(-30, 50, -10);
-            directionalLight.castShadow = true;
-            scene.add(directionalLight);
-
             
-            // 添加平行光
-            var directionalLight = new THREE.DirectionalLight(0xFFFFFF)
-            directionalLight.position.set(-30, -50, -10);
-            directionalLight.castShadow = true;
-            scene.add(directionalLight);
-
+            
+            var renderT = 1 / FPS; //单位秒  间隔多长时间渲染渲染一次
+            var timeS = 0;
             // 动画
             const animate = function () {
-                requestAnimationFrame( animate );
-                
+                requestAnimationFrame(animate);
+
                 controls.update();
                 var delta = clock.getDelta();
-                if (mixer){
+                timeS = timeS + delta;
+                if (mixer) {
+                    // 肌肉显示贴图
+
                     // if(AnimationAction.time < 1){
                     //     sceneObj.children[5].children[0].children[0].children[1].material.emissiveIntensity = AnimationAction.time;
                     // } else if(AnimationAction.time > 1 && AnimationAction.time < 2){
@@ -111,29 +117,34 @@
                     mixer.update(delta);
                 }
 
-                renderer.render( scene, camera );
-            };
 
-            
+                if (timeS > renderT) {
+                    renderer.render(scene, camera);
+                    timeS = 0;
+                }
+            };
             // 执行动画
             animate();
         }
-        
-        function ControlAnimationTime(h) {
-            if (AnimationAction){
-                if (h == 0){
-                    AnimationAction.time = 0;    
-                } else {
-                    var v = (h/60)*1.03;
 
-                    if (v > 1.03){
-                        v = 1.03;
+        
+        // 控制动画时间
+        function ControlAnimationTime(h) {
+            if (AnimationAction) {
+                if (h == 0) {
+                    AnimationAction.time = 0;
+                } else {
+
+                    var v1 = (h / 60) * actionA.duration;
+
+                    if (v1 > actionA.duration) {
+                        v1 = actionA.duration;
                     }
-                    AnimationAction.time = v;
+                    AnimationAction.time = v1;
                 }
-                AnimationAction.paused=true;
             }
         }
     </script>
 </body>
+
 </html>

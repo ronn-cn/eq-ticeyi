@@ -1,6 +1,7 @@
 import api from "../../api/api";
 import project from "@/config/project"
-// console.log(project)
+import router from '../../router';
+// console.log(powerInfo, 111)
 const state = {
   ouid: '', //设备id
   Qrcode: '',
@@ -15,13 +16,22 @@ const state = {
   sport_end_time: 0, //课程结束时间
   projecttype: project.projecttype,   //设备类型
   publicPath: process.env.NODE_ENV == "development" ? '/' : './',
-  MakeCareTitle: project.MakeCareTitle,  //预约课程名称
-  MakeCareDesc: project.MakeCareDesc,    //预约课程简介
+  MakeCareTitle: powerInfo.name,  //预约课程名称
+  MakeCareDesc: powerInfo.desc,    //预约课程简介
   client_id: '',       //推荐课程id
   lesson_id: project.lesson_id, //课程id
+  Audio_effects: null
 }
 
 const mutations = {
+  //点击音频
+  click_effects ({ state, dispatch }) {
+    if (!state.Audio_effects) {
+      state.Audio_effects = new Audio()
+      state.Audio_effects.src = require(`../../assets/audio/click.mp3`)
+    }
+    state.Audio_effects.play()
+  },
   //登陆二维码
   set_qrcodeId (state, data) {
     let i = data.indexOf('ouid=')
@@ -57,15 +67,15 @@ const mutations = {
     state.MakeCareDesc = data.desc
   },
   set_recommendid (state, data) {
-    if (JSON.stringify(data) !== "{}") {
+    if (Object.keys(data).length == 0) {
+      state.recommendid = {}
+      state.recommendState = false
+    } else {
       state.recommendid = {
         data: data.md5,
         msg: data.transfer
       }
       state.recommendState = true
-    } else {
-      state.recommendid = {}
-      state.recommendState = false
     }
 
   },
@@ -73,6 +83,7 @@ const mutations = {
     state.client_id = data
   }
 }
+
 
 const actions = {
   //设备登录初始化
@@ -118,7 +129,6 @@ const actions = {
   },
   //设置灯的颜色
   send_askLedState ({ commit }, data) {
-    // console.log(r, g, b)
     var sendData = {
       cmd: 'askLedState',
       data: {
@@ -128,6 +138,15 @@ const actions = {
       },
     }
     commit('SEND_SOCKET', JSON.stringify(sendData))
+  },
+  //用户转移退出 || 退出
+  set_resLogoutUser ({ commit, dispatch }, data) {
+    console.log('用户转移退出', data)
+    dispatch('logout')
+    router.push({ path: '/' })
+    dispatch('send_askLedState', { r: 0, g: 0, b: 0 })
+    // this.$router.push('/trainpage')
+    // window.location.replace("/")
   },
 }
 

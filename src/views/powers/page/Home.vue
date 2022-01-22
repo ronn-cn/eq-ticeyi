@@ -168,10 +168,7 @@
           </li>
         </ul>
       </div>
-      <home-view
-        :itemindex="itemindex"
-        @send_askLedState="send_askLedState"
-      ></home-view>
+      <home-view :itemindex="itemindex"></home-view>
     </div>
 
     <!-- <TrainPage v-show="trainstatic" /> -->
@@ -219,15 +216,21 @@ export default {
         }
       }
     }
-    // window.addEventListener('beforeunload', (e) => this.beforeunloadHandler(e))
-    // window.addEventListener('unload', (e) => this.unloadHandler(e))
+
+    window.addEventListener('beforeunload', (e) => this.beforeunloadHandler(e))
+    window.addEventListener('unload', (e) => this.unloadHandler(e))
   },
   //离开页面
   destroyed: function () {
-    // window.removeEventListener('beforeunload', (e) =>
-    //   this.beforeunloadHandler(e)
-    // )
-    // window.removeEventListener('unload', (e) => this.unloadHandler(e))
+    this.send_askLedState({
+      r: 0,
+      g: 0,
+      b: 0,
+    })
+    window.removeEventListener('beforeunload', (e) =>
+      this.beforeunloadHandler(e)
+    )
+    window.removeEventListener('unload', (e) => this.unloadHandler(e))
   },
   computed: {
     ...mapGetters(['Qrcode', 'loginState', 'userInfo', 'publicPath']),
@@ -275,18 +278,19 @@ export default {
     swichType(index) {
       this.itemindex = index
     },
-    // beforeunloadHandler() {
-    //   this._beforeUnload_time = new Date().getTime()
-    // },
-    // //前端窗口关闭
-    // unloadHandler(e) {
-    //   this._gap_time = new Date().getTime() - this._beforeUnload_time
-    //   // debugger
-    //   //判断是窗口关闭还是刷新
-    //   if (this._gap_time <= 5) {
-    //     this.send_askLedState({ r: 0, g: 0, b: 0 })
-    //   }
-    // },
+    beforeunloadHandler() {
+      this._beforeUnload_time = new Date().getTime()
+    },
+    //前端窗口关闭
+    unloadHandler(e) {
+      alert('开了')
+      this._gap_time = new Date().getTime() - this._beforeUnload_time
+      // debugger
+      //判断是窗口关闭还是刷新
+      if (this._gap_time <= 5) {
+        this.send_askLedState({ r: 0, g: 0, b: 0 })
+      }
+    },
   },
 }
 </script>

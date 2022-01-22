@@ -40,7 +40,7 @@
       }
     }
     .right_type {
-      margin-top: 0.34rem;
+      margin: 0.34rem 0;
       ul {
         width: 80%;
         display: flex;
@@ -87,7 +87,7 @@
       }
       .echart_size {
         width: 90%;
-        height: 1.3rem;
+        height: 2.6rem;
       }
     }
   }
@@ -219,7 +219,7 @@
           }}</span>
         </div>
         <div class="rignt_head_grade">
-          <img :src="scoreimg()" alt="" />
+          <img :src="scoreimg" alt="" />
         </div>
       </div>
       <div class="right_type">
@@ -237,11 +237,10 @@
         <h3>训练完成度</h3>
         <echarts class="echart_size"></echarts>
       </div>
-      <div class="right_echart">
+      <!-- <div class="right_echart">
         <h3>训练节奏</h3>
-        <!-- <echarts class="echart_size"></echarts> -->
         <EchartsLine class="echart_size" />
-      </div>
+      </div> -->
       <div class="right_foot">
         <!-- <div>
           <a-progress
@@ -301,20 +300,6 @@ export default {
   },
   data() {
     return {
-      dataList: [
-        {
-          imgurl: 'powerStatic/images/end_icon_1.png',
-          title: '课程推荐',
-        },
-        {
-          imgurl: 'powerStatic/images/end_icon_2.png',
-          title: '运动记录',
-        },
-        {
-          imgurl: 'powerStatic/images/end_icon_3.png',
-          title: '更多功能',
-        },
-      ],
       typeList: [
         {
           title: '综合评分',
@@ -348,6 +333,8 @@ export default {
       courseList: [],
       timenum: 60,
       downtimer: null,
+      scoreimg: '',
+      audio_a: null,
     }
   },
   created() {
@@ -363,13 +350,17 @@ export default {
     this.typeList[4].value = this.powerEndData.amount //平均负重
   },
   mounted() {
-    // console.log(this.Qrcode, this.loginState)
+    console.log(this.completion)
     if (!this.loginState) {
       this.init_qrcode()
     }
+    this.set_scoreimg()
   },
   //离开页面
   destroyed: function () {
+    if (this.audio_a) {
+      this.audio_a.pause()
+    }
     this.svseEndData() //结束提交
     clearInterval(this.downtimer)
     this.$store.commit('set_recommendid', '') //离开设置课程为空
@@ -388,6 +379,7 @@ export default {
       'lesson_id',
       'publicPath',
       'powerEndData',
+      'completion',
     ]),
   },
   watch: {
@@ -409,21 +401,32 @@ export default {
       this.qrstate = true
     },
     //评分图片
-    scoreimg() {
+    set_scoreimg() {
       const value = this.typeList[0].value
       if (value > 80) {
-        return `${this.publicPath}common/images/end_imgA.png`
+        this.endAudio('e06')
+        this.scoreimg = `${this.publicPath}common/images/end_imgA.png`
       } else if (value < 80 && value > 60) {
-        return `${this.publicPath}common/images/end_imgB.png`
+        this.endAudio('e05')
+        this.scoreimg = `${this.publicPath}common/images/end_imgB.png`
       } else if (value < 60 && value > 40) {
-        return `${this.publicPath}common/images/end_imgC.png`
+        this.endAudio('e04')
+        this.scoreimg = `${this.publicPath}common/images/end_imgC.png`
       } else if (value < 40 && value > 20) {
-        return `${this.publicPath}common/images/end_imgD.png`
+        this.endAudio('e03')
+        this.scoreimg = `${this.publicPath}common/images/end_imgD.png`
       } else if (value < 20 && value >= 0) {
-        return `${this.publicPath}common/images/end_imgE.png`
+        this.endAudio('e03')
+        this.scoreimg = `${this.publicPath}common/images/end_imgE.png`
       } else {
-        return `${this.publicPath}common/images/end_imgA.png`
+        this.endAudio('e03')
+        this.scoreimg = `${this.publicPath}common/images/end_imgD.png`
       }
+    },
+    endAudio(num) {
+      this.audio_a = new Audio()
+      this.audio_a.src = `${this.publicPath}powerStatic/audio/课程结束/${num}.mp3`
+      this.audio_a.play()
     },
     setdowntimer() {
       if (this.downtimer) {
@@ -446,32 +449,6 @@ export default {
     //推荐结束
     async footbtn(index) {
       if (index == 0) {
-        // const rs = await api.post('/guide-lesson', {
-        //   user_id: this.userInfo.user_id,
-        // })
-        // console.log(rs)
-        // if (rs.data.code == '200') {
-        //   let data = rs.data.data.lessonIds
-        //   // const lessons = require('../../../../public/common/js/lessons.json')
-        //   this.$axios.get('./common/js/lessons.json').then((res) => {
-        //     for (let i in data) {
-        //       res.data.forEach((item) => {
-        //         if (item.md5 == data[i]) {
-        //           // console.log(item)
-        //           this.courseList.push({
-        //             md5: item.md5,
-        //             name: item.name,
-        //             desc: item.desc,
-        //             equipmenttype: item.equipmenttype,
-        //           })
-        //         }
-        //       })
-        //     }
-        //     this.recommstate = true
-        //     clearInterval(this.downtimer)
-        //   })
-        // }
-
         this.recommstate = true
         clearInterval(this.downtimer)
       } else {

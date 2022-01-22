@@ -132,28 +132,47 @@
 .fixed_right {
   width: 300px;
   height: 60vh;
-  // background-color: #7d89e2;
   position: fixed;
   right: 0;
-  top: 16vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  top: 28vh;
   .progress_test_left {
     position: absolute;
-    top: 44%;
+    bottom: 12%;
     left: 12%;
   }
-  .progress_test {
+  .progress_test_right {
     position: absolute;
-    top: 44%;
+    bottom: 12%;
     right: 12%;
+  }
+  .progress_rotate_left {
+    width: 500px;
+    transform: rotate(-90deg);
+    position: relative;
+    top: 200px;
+    right: 150px;
+  }
+  .progress_rotate_right {
+    width: 500px;
+    transform: rotate(-90deg);
+    position: relative;
+    top: 200px;
+    right: 50px;
+  }
+  .text_p1 {
+    font-size: 0.16rem;
+  }
+  .text_p2 {
+    background-color: #000;
+    border-radius: 0.2rem;
+    padding: 0.1rem 0.2rem;
+    margin-top: 10px;
   }
 }
 .fixed_left {
   position: fixed;
   left: 0;
-  top: 16vh;
+  top: 28vh;
 }
 .end_test_btn {
   width: 2rem;
@@ -304,45 +323,32 @@
           </li>
         </ul>
       </footer>
-      <div class="fixed_left" v-show="!reststate">
-        <div
-          style="transform: rotate(90deg) translateY(110px)"
-          id="progress_left"
-        >
-          <a-progress
-            type="dashboard"
-            :percent="targetPercent"
-            :width="500"
-            :gapDegree="135"
-            stroke-linecap="round"
-            :showInfo="false"
-            :stroke-color="{
-              '0%': '#69b597',
-              '50%': '#f0972e',
-              '100%': '#f03985',
-            }"
-          />
+      <div class="fixed_left">
+        <div class="progress_rotate_left">
+          <k-progress
+            :percent="moloopval"
+            :show-text="false"
+            :line-height="30"
+            :color="['#f5af19', '#fa0a74']"
+          ></k-progress>
         </div>
         <div class="progress_test_left">
-          <p>目标重量</p>
-          <p>{{ restinfo.weight || 0 }}KG</p>
+          <p class="text_p1">目标重量</p>
+          <p class="text_p2">--KG</p>
         </div>
       </div>
       <div class="fixed_right">
-        <div style="transform: rotate(-90deg) translateY(110px)">
-          <a-progress
-            type="dashboard"
+        <div class="progress_rotate_right">
+          <k-progress
             :percent="completePercent"
-            :width="500"
-            :gapDegree="135"
-            stroke-linecap="square"
-            strokeColor="#cfd7da"
-            :showInfo="false"
-          />
+            :show-text="false"
+            :line-height="30"
+            :color="['#f5af19', '#fa0a74']"
+          ></k-progress>
         </div>
-        <div class="progress_test">
-          <p>完成重量</p>
-          <p>{{ traininfo.Weight || 0 }}KG</p>
+        <div class="progress_test_right">
+          <p class="text_p1">完成重量</p>
+          <p class="text_p2">{{ traininfo.Weight || 0 }}KG</p>
         </div>
       </div>
     </div>
@@ -350,26 +356,35 @@
       <div class="end_btn"></div>
       <div class="den_icon"></div>
     </div>
-    <div class="popup_close" v-if="showPopup">
-      <p class="close_p1">您的训练时间过短,是否退出当前训练</p>
-      <section class="btn_list">
-        <div class="close_btn1" @touchstart="popupbtn(0)">结束训练</div>
-        <div class="close_btn2" @touchstart="popupbtn(1)">再练一会</div>
-      </section>
-    </div>
+    <strength-aduio
+      v-if="showPopup"
+      :endType="endType"
+      @closepopup="closepopup"
+    ></strength-aduio>
+    <strength-tone
+      :planstate="planstate"
+      :currentNum="plannum.currentNum"
+      :recordScore="recordScore"
+    ></strength-tone>
   </div>
 </template>
 
 <script>
+import StrengthAduio from '@/components/power/StrengthAduio.vue'
+import RestPage from './TestRest.vue'
 import { mapGetters, mapMutations } from 'vuex'
 import Format from '@/assets/js/Format'
 import { HandleSeatedAbTrainerData } from '@/assets/js/index'
-import RestPage from './TestRest.vue'
 import RadialProgressBar from 'vue-radial-progress'
+import KProgress from 'k-progress'
+import StrengthTone from '../../../components/power/StrengthTone.vue'
 export default {
   components: {
     RestPage,
     RadialProgressBar,
+    KProgress,
+    StrengthAduio,
+    StrengthTone,
   },
   data() {
     return {
@@ -416,13 +431,19 @@ export default {
       pyramidgroup: {}, //金字塔组
       auxiliarygroup: {}, //辅助组
       planstate: 0, //极限组 1热身组 2负重组 3金字塔组 4.辅助组
-      showPopup: false,
       targetPercent: 20,
       completePercent: 80,
       addPercent: null,
       downPercent: null,
       testShow: false,
       userRM: 0,
+      showPopup: false,
+      endType: 0,
+      recordScore: {
+        data: '',
+        score: '',
+      },
+      windowtimer: null, //时间计时器
     }
   },
   computed: {
@@ -434,45 +455,56 @@ export default {
       'loginState',
       'userInfo',
       'user_rmvalue',
+      'moloopval',
+      'powerEndData',
     ]),
   },
   watch: {
-    targetPercent: {
-      handler(val) {
-        if (val == 20) {
-          clearInterval(this.downPercent)
-          this.addPercent = setInterval(() => {
-            this.targetPercent++
-          }, 40)
-        }
-        if (val == 80) {
-          clearInterval(this.addPercent)
-          this.downPercent = setInterval(() => {
-            this.targetPercent--
-          }, 40)
-        }
-      },
-      immediate: true,
-    },
     actionValue(val, oldval) {
       this.$store.commit('set_moheight', val.height)
-      if (val.height !== 0 && val.weight !== 0) {
-        // console.log(val)
-      }
+
       let num = val.extra_weight ? val.weight * 6 + 3 : val.weight * 6
-      this.completePercent = 80 - val.height
+      if (val.height > 5) {
+        this.completePercent = 20 + val.height
+      } else {
+        this.completePercent = 0
+      }
 
       HandleSeatedAbTrainerData(val, num, (e) => {
+        // console.log('回调', e)
         this.$store.commit('add_detail', {
           info: e,
           timeMeter: this.timeMeter,
         })
-        this.$store.commit('set_totalweight', e)
-        console.log('回调', e)
 
         this.traininfo = e
-        let amount = (e.Height / 100) * (e.Weight * 100) * 9.8
+        let amount = (e.Height / 100) * e.Weight * 9.8
         this.traininfo.amount = Math.floor(amount)
+
+        if (e.Percent > 85) {
+          this.recordScore = {
+            data: new Date().getTime(),
+            score: 'A',
+          }
+        } else if (e.Percent < 85 && e.Percent > 70) {
+          this.recordScore = {
+            data: new Date().getTime(),
+            score: 'B',
+          }
+        } else if (e.Percent < 70 && e.Percent > 50) {
+          this.recordScore = {
+            data: new Date().getTime(),
+            score: 'C',
+          }
+        } else if (e.Percent < 50) {
+          this.recordScore = {
+            data: new Date().getTime(),
+            score: 'D',
+          }
+        }
+
+        this.$store.commit('set_totalweight', this.traininfo) //计算平均得分
+
         if (this.reststate) this.reststate = false
 
         //极限组
@@ -601,6 +633,18 @@ export default {
         this.totalSteps = data[0].rest
       }
     },
+    //监听休息
+    reststate: {
+      handler: function (e) {
+        if (!e) {
+          this.timestart()
+        } else {
+          clearInterval(this.windowtimer)
+        }
+      },
+      immediate: true, // 首次加载的时候执行函数
+      deep: true, // 深入观察,监听数组值，对象属性值的变化
+    },
     //暂停开始
     // startstate: {
     //   handler: function (e) {
@@ -635,7 +679,7 @@ export default {
     this.$store.commit('set_couserTimer', {
       type: 'start',
     })
-    this.timestart()
+    // this.timestart()
   },
   //离开页面
   destroyed: function () {
@@ -713,7 +757,6 @@ export default {
       if (this.loginState) {
         this.$store.dispatch('updateRM', this.traininfo.Weight || 0)
       }
-      // console.log(this.restinfo)
       if (index == 0) {
         this.testShow = false
         this.plannum.currentNum = 0
@@ -721,7 +764,8 @@ export default {
         this.reststate = true
         this.restinfo.group = 1
       } else if (index == 1) {
-        console.log(this.userInfo)
+        // console.log(this.userInfo)
+
         this.testShow = false
         this.planstate = 1
       }
@@ -729,16 +773,12 @@ export default {
     //休息开始
     startrest() {
       this.restinfo['num'] = this.plannum.totalNum
-      // this.restinfo['group'] = this.groupnum.currentNum
       if (this.groupnum.currentNum == this.groupnum.totalNum) {
         this.restinfo['group'] = 0
       } else {
         this.restinfo['group'] = this.groupnum.currentNum
       }
-
       this.restinfo['weight'] = this.groupnum.weight
-      // this.groupnum['weight'] = this.traininfo.weight
-
       this.reststate = true
     },
     downtime() {
@@ -780,16 +820,21 @@ export default {
           }
           return 0
         case 4:
-          return this.traininfo.amount || 0
+          return this.powerEndData.amount || 0
       }
     },
     //按钮事件
     btn_click(index) {
-      if (index == 0) {
-        this.showPopup = true
-      } else if (index == 1) {
-        this.startstate = !this.startstate
+      this.showPopup = true
+      if (Math.floor(this.timeMeter) > 300) {
+        this.endType = 1
+      } else {
+        this.endType = 2
       }
+    },
+    closepopup() {
+      this.showPopup = false
+      this.endType = 0
     },
     //弹框事件
     popupbtn(type) {

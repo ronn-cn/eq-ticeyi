@@ -5,7 +5,7 @@
   color: #fff;
   background-color: #5a4f5f;
   position: absolute;
-  left: 3%;
+  left: 1%;
   bottom: 18%;
   z-index: 1;
 }
@@ -101,7 +101,7 @@ p {
     </div>
 
     <div class="rest_text" v-show="planstate == 0">
-      自由调整配重后,可随时进行器械规范动作训练，无需点击按钮或等待休息结束，即可开启热身组训练
+      自由调整配重后,可随时进行器械规范动作训练，无需点击按钮或等待休息结束，即可开启极限组训练
     </div>
     <div class="rest_text" v-show="planstate !== 0">
       非常棒,你已完成当前重量测试（"{{ restinfo.weight }}KG/{{
@@ -124,21 +124,6 @@ p {
       <p>立即开始</p>
       <p>开始运动即开启训练</p>
     </div>
-    <!-- 
-    <section class="rest_page_right">
-      <div class="jixianvalue" v-show="planstate == 1 && !firststate">
-        <p style="margin-bottom: 26px">当前器械1RM为</p>
-        <p>{{ restweight }}KG/--1b</p>
-      </div>
-
-      <div class="planzu" v-show="planstate == 1 && firststate">
-        <section class="planzu_left">下一组</section>
-        <section class="planzu_right">
-          <p style="margin-bottom: 26px">{{ plantitle() }} | 第1组</p>
-          <p>--KG/1次</p>
-        </section>
-      </div>
-    </section> -->
   </div>
 </template>
 

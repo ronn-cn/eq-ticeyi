@@ -43,7 +43,7 @@ const actions = {
     if (!state.downval) {
       state.downval = setInterval(() => {
         commit('SEND_SOCKET', `{mag:${new Date().getTime()}}`)
-      }, 30000)
+      }, 7000)
     }
     if (typeof WebSocket === 'undefined') {
       console.log('您的浏览器不支持socket')
@@ -103,8 +103,15 @@ const actions = {
       case "resLoginUser":  //登陆信息
         window.localStorage.setItem('userInfo', JSON.stringify(data.data));
         const userinfo = window.localStorage.getItem('userInfo');
-        commit('setLoginStatus', userinfo)
-        dispatch('clientlogin')
+        let user = JSON.parse(userinfo)
+        console.log(user)
+        // if (user.transfer_client_id) {
+        //   commit('setLoginStatus', userinfo)
+        //   dispatch('clientlogin')
+        // } else {
+        //   dispatch('clientlogin')
+        // }
+
         break;
       case "resServiceBusiness":  //返回http地址
         if (data.data) {
@@ -127,7 +134,7 @@ const actions = {
         commit('set_resStartLesson', data.data)
         break;
       case "resLogoutUser": //用户转移退出
-        commit('set_resLogoutUser', data)
+        dispatch('set_resLogoutUser', data)
         break;
     }
   }

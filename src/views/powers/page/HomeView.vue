@@ -5,8 +5,8 @@
   position: relative;
   &_footer {
     position: absolute;
-    width: 96%;
-    padding: 0.1rem;
+    width: 98%;
+    padding: 0.1rem 1%;
     left: 0;
     bottom: 0;
     .footer_step {
@@ -80,7 +80,7 @@
         font-size: 22px;
         color: #fff;
         position: absolute;
-        top: -8px;
+        top: -2px;
         right: 0.4rem;
       }
     }
@@ -91,7 +91,7 @@
       color: #fff;
       justify-content: space-between;
       .quick_start {
-        width: 3.14rem;
+        width: 3.26rem;
         height: 100%;
         font-size: 36px;
         font-family: SourceHanSansCN;
@@ -101,8 +101,8 @@
         justify-content: center;
         border-radius: 5px;
         background-color: #017aff;
-        box-sizing: border-box;
-        box-shadow: 5px 5px 20px 0px #017aff;
+        // box-sizing: border-box;
+        // box-shadow: 5px 5px 20px 0px #017aff;
       }
       .start_text1,
       .start_text2 {
@@ -112,9 +112,9 @@
         background-size: 0.4rem 0.5rem;
         background-position: 42%;
         background-color: #1fac4a;
-        box-sizing: border-box;
-        box-shadow: 5px 5px 20px 0px #10c98f,
-          inset 5px 5px 20px 0px rgba(255, 255, 255, 0.35);
+        // box-sizing: border-box;
+        // box-shadow: 5px 5px 20px 0px #10c98f,
+        //   inset 5px 5px 20px 0px rgba(255, 255, 255, 0.35);
         font-family: '思源黑体 CN', sans-serif;
         color: #ffffff;
         display: flex;
@@ -123,7 +123,7 @@
       }
       .start_text2 {
         width: 5.6rem;
-        background-position: 40%;
+        background-position: 38%;
       }
     }
   }
@@ -164,11 +164,20 @@
           <div class="li_text">{{ stepList[viewindex] }}</div>
         </div>
         <div class="footer_start">
-          <div class="quick_start" @click="quickchang" v-if="viewindex !== 0">
-            {{ itemindex == 2 ? '重新测试' : '快速开始' }}
+          <div
+            class="quick_start"
+            @click="quickchang"
+            v-if="viewindex !== 0 && viewindex < stepList.length - 1"
+          >
+            <!-- {{ itemindex == 2 ? '重新测试' : '快速开始' }} -->
+            快速开始
           </div>
           <div
-            :class="viewindex == 0 ? 'start_text1' : 'start_text2'"
+            :class="
+              viewindex !== 0 && viewindex < stepList.length - 1
+                ? 'start_text2'
+                : 'start_text1'
+            "
             @click="initStep"
           >
             {{
@@ -189,7 +198,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import StepView from '@/components/power/StepView.vue'
 export default {
   props: {
@@ -208,7 +217,7 @@ export default {
       timer: null,
       show: true,
       operatewidth: '24',
-      audio_step: null,
+      audio_a: null,
     }
   },
   computed: {
@@ -218,11 +227,24 @@ export default {
       'publicPath',
       'user_rmvalue',
       'user_rm',
+      'userMakeState',
     ]),
   },
   watch: {
+    userMakeState(val) {
+      if (val) {
+        for (let i = 0; i < this.stepList.length; i++) {
+          let step = 'step_li' + i
+          this.$refs[step][0].setAttribute('class', '')
+        }
+        this.courseState = false
+      }
+    },
     itemindex(val) {
       this.viewindex = 0
+      if (this.userMakeState) {
+        this.$store.commit('set_userMakeState', false) //取消预约
+      }
       for (let i = 0; i < this.stepList.length; i++) {
         let step = 'step_li' + i
         this.$refs[step][0].setAttribute('class', '')
@@ -231,12 +253,14 @@ export default {
       this.courseState = false
       if (val == 0) {
         this.stepList = ['运动风险须知', '课程目标', '器械调试', '动作演示']
-        // document.getElementById(`footer_li0`).style.width = '25%'
         this.operatewidth = '24'
+        this.indexAudio('04标准模式')
       } else if (val == 1) {
         this.stepList = ['运动风险须知', '器械调试', '动作演示']
         this.operatewidth = '33'
+        this.indexAudio('15自由模式')
       } else if (val == 2) {
+        this.indexAudio('09力量测试')
         if (this.user_rmvalue.state) {
           this.stepList = ['运动风险须知', '课程目标']
           this.operatewidth = '49'
@@ -251,42 +275,51 @@ export default {
         console.log('空')
       } else {
         console.log('不空', val)
-        this.$axios.get('./common/js/lessons.json').then((res) => {
-          let color = val.color.split(',')
-          let arr = color.map(Number)
-          this.send_askLedState({
-            r: arr[0],
-            g: arr[1],
-            b: arr[2],
-          })
-          this.$store.commit('set_userMakeState', true) //设置用户转移状态
-          const data = res.data.filter((item) => item.md5 == lesson_id)
-          this.set_MakeCareInfo({ name: data[0].name, desc: data[0].desc }) //设置提示文字
-          const lesson_id = val.lesson_id
-          this.set_lesson_id(lesson_id) //设置课程id
+        let color = val.color.split(',')
+        let arr = color.map(Number)
+        this.send_askLedState({
+          r: arr[0],
+          g: arr[1],
+          b: arr[2],
         })
+        this.$store.commit('set_userMakeState', true) //设置用户预约
+        const lesson_id = val.lesson.md5
+        this.set_lesson_id(lesson_id) //设置课程id
+        this.set_MakeCareInfo({ name: val.lesson.name, desc: val.lesson.desc }) //设置提示文字
       }
     },
     courseState(val) {
       if (val) {
-        this.audio_step = new Audio()
-        this.audio_step.src = `${this.publicPath}powerStatic/audio/02请仔细阅读运动风险须知确认并启开.mp3`
-        this.audio_step.play()
+        // this.indexAudio('06开始课程')
+        this.indexAudio('02请仔细阅读运动风险须知确认并启开')
       }
     },
   },
   created() {},
   mounted() {},
+
   methods: {
-    ...mapActions(['send_askLedState']),
+    ...mapMutations(['set_lesson_id', 'set_MakeCareInfo']),
+    ...mapActions(['send_askLedState', 'click_effects']),
+    //快速开始
     quickchang() {
-      if (this.itemindex == 2) {
-        this.$router.push('/strengthtest')
-      } else if (this.itemindex == 1) {
-        this.$router.push('/freeplan')
-      } else {
-        this.$router.push('/trainpage')
+      this.indexAudio('08快速开始')
+      setTimeout(() => {
+        if (this.itemindex == 2) {
+          this.$router.push('/strengthtest')
+        } else if (this.itemindex == 1) {
+          this.$router.push('/freeplan')
+        } else {
+          this.$router.push('/trainpage')
+        }
+      }, 1500)
+    },
+    indexAudio(index) {
+      if (!this.audio_a) {
+        this.audio_a = new Audio()
       }
+      this.audio_a.src = `${this.publicPath}powerStatic/audio/首页/${index}.mp3`
+      this.audio_a.play()
     },
     //返回
     setitemindex() {
@@ -304,50 +337,48 @@ export default {
       if (this.timer) {
         clearInterval(this.timer)
         this.timer = null
-        this.$emit('send_askLedState', 0, 0, 0)
       }
 
       if (this.courseState) {
-        this.audio_step.pause()
-        if (this.itemindex == 0) {
-          if (this.viewindex < 3) {
-            this.viewindex++
-            let uid = `footer_li${this.viewindex}`
-            document.getElementById(uid).setAttribute('class', 'view_active')
-          } else {
-            this.$router.push('/trainpage')
-          }
-        } else if (this.itemindex == 1) {
-          if (this.viewindex < 2) {
-            this.viewindex++
-            let uid = `footer_li${this.viewindex}`
-            document.getElementById(uid).setAttribute('class', 'view_active')
-          } else {
-            this.$router.push('/freeplan')
-          }
-        } else if (this.itemindex == 2) {
-          if (this.user_rmvalue.state) {
-            console.log('有', this.user_rmvalue)
-            // this.$router.push('/strengthtest')
-            if (this.viewindex < 1) {
-              this.viewindex++
-              let uid = `footer_li${this.viewindex}`
-              document.getElementById(uid).setAttribute('class', 'view_active')
-            } else {
-              this.$router.push({
-                path: '/strengthtest',
-                query: { user_rm: this.user_rmvalue.value, state: true },
-              })
-            }
-          } else {
-            if (this.viewindex < 3) {
-              this.viewindex++
-              let uid = `footer_li${this.viewindex}`
-              document.getElementById(uid).setAttribute('class', 'view_active')
-            } else {
-              this.$router.push('/strengthtest')
-            }
-          }
+        this.audio_a.pause()
+        const arr = [
+          {
+            num: 3,
+            route: '/trainpage',
+          },
+          {
+            num: 2,
+            route: '/freeplan',
+          },
+          {
+            route: '/strengthtest',
+            num: this.user_rmvalue.state ? 1 : 3,
+            query: this.user_rmvalue.state
+              ? { user_rm: this.user_rmvalue.value, state: true }
+              : {},
+          },
+        ]
+        let index = this.itemindex
+
+        if (this.viewindex < arr[index].num) {
+          // if (this.viewindex == 0) {
+          //   this.indexAudio('11请确认')
+          // } else {
+          //   this.indexAudio('12下一步')
+          // }
+          // this.indexAudio('12下一步')
+          this.click_effects()
+          this.viewindex++
+          let uid = `footer_li${this.viewindex}`
+          document.getElementById(uid).setAttribute('class', 'view_active')
+        } else {
+          this.indexAudio('07开始训练')
+          setTimeout(() => {
+            this.$router.push({
+              path: arr[index].route,
+              query: arr[index].query || {},
+            })
+          }, 1500)
         }
       } else {
         this.courseState = true
@@ -360,7 +391,7 @@ export default {
       if (this.itemindex == 0) {
         textArr = ['已确认', '下一步', '下一步', '开始训练']
       } else if (this.itemindex == 1) {
-        textArr = ['已确认', '下一步', '下一步', '开始训练']
+        textArr = ['已确认', '下一步', '开始训练']
       } else if (this.itemindex == 2) {
         if (this.user_rmvalue.state) {
           textArr = ['已确认', '开始测试']

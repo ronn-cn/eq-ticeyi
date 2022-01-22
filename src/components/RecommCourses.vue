@@ -222,6 +222,7 @@ header {
   &_plan {
     margin-top: 0.2rem;
     width: 100%;
+    // height: calc(1080px-2.2rem);
     display: flex;
     justify-content: space-between;
     .plan_day {
@@ -233,7 +234,7 @@ header {
       box-sizing: border-box;
       box-shadow: 5px 5px 15px 0px rgba(170, 170, 170, 0.35);
       .day_h3 {
-        padding-left: 0.7rem;
+        padding-left: 0.35rem;
         text-align: left;
         color: #7f7f7f;
         font-size: 0.18rem;
@@ -245,14 +246,14 @@ header {
         width: 50px;
         height: 56px;
         position: absolute;
-        left: 50px;
+        left: 0;
         bottom: -10px;
         background: url('~assets/images/common/end_dayplan.png') no-repeat;
         background-size: contain;
       }
       .plan_day_item {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         .item_left {
           text-align: left;
           color: #aaaaaa;
@@ -284,7 +285,7 @@ header {
     }
     .suggest_plan {
       width: 70%;
-      height: 3.4rem;
+      height: 100%;
       padding: 0.2rem;
       background: #fff;
       box-sizing: border-box;
@@ -316,6 +317,7 @@ header {
             }
             .train_title_p2 {
               font-size: 0.14rem;
+              line-height: 0.2rem;
             }
           }
           .start_btn {
@@ -427,7 +429,7 @@ header {
         <p class="info_p1">
           欢迎回来,{{ userInfo.user_name || 'wxid-jdop31' }}
         </p>
-        <p class="info_p2">你已经连续运动15天</p>
+        <p class="info_p2">为所有，尽所能</p>
         <ul class="user_date">
           <li v-for="(item, index) of dateArr" :key="index">
             <span class="date_day1">{{ weekDay(item.date) }}</span>
@@ -478,8 +480,8 @@ header {
       </div>
     </header>
     <section class="main_cover">
-      <div class="main_cover_nav">
-        <div class="nav_title" v-if="showTable">
+      <div class="main_cover_nav" v-if="showTable">
+        <div class="nav_title">
           <p class="nav_p1">你的训练计划: {{ planInfo.name || '' }}</p>
           <p class="nav_p2">{{ planInfo.desc || '' }}</p>
         </div>
@@ -487,7 +489,10 @@ header {
           <span>继续我的计划</span>
         </div>
       </div>
-      <div class="main_cover_plan">
+      <div
+        class="main_cover_plan"
+        :style="showTable ? 'height:3.4rem' : 'Height:5rem'"
+      >
         <section class="plan_day">
           <h3 class="day_h3">今日训练计划</h3>
           <div class="plan_day_item">
@@ -568,11 +573,12 @@ export default {
   },
   watch: {
     recommendState(val) {
-      if (!val) {
+      this.popupshow = true
+      if (val) {
         // this.loadDown()
-        this.popupshow = false
-      } else {
         this.popupshow = true
+      } else {
+        this.popupshow = false
         // clearInterval(this.downtimer)
         // this.timernum = 30
       }
@@ -583,6 +589,8 @@ export default {
       this.curriculum = res.data
     })
     this.getUserAll()
+
+    // console.log(this.recommendState)
   },
   destroyed() {
     clearInterval(this.downtimer)
@@ -597,13 +605,15 @@ export default {
       'projecttype',
     ]),
     showTable() {
-      if (this.tablueData.length > 0) {
-        for (let day in this.tablueData) {
-          if (
-            this.tablueData[day].date == this.currentdate &&
-            this.tablueData[day].value !== 1
-          ) {
-            return true
+      if (this.tablueData) {
+        if (this.tablueData.length > 0) {
+          for (let day in this.tablueData) {
+            if (
+              this.tablueData[day].date == this.currentdate &&
+              this.tablueData[day].value !== 1
+            ) {
+              return true
+            }
           }
         }
       }
@@ -620,9 +630,14 @@ export default {
       if (rs.data.code == '200') {
         this.userData = rs.data.data
         this.tablueData = rs.data.data.time_table
-        this.filterWeekName()
+        if (this.tablueData) {
+          this.filterWeekName(true)
+        } else {
+          this.filterWeekName(false)
+        }
 
         let user_plan_id = rs.data.data.data.user_plan_id
+
         this.$axios
           .get(`${this.publicPath}common/js/plans.json`)
           .then((res) => {
@@ -653,7 +668,7 @@ export default {
         user_id,
         groupname,
       })
-      // console.log('调用选课', rs)
+      console.log('调用选课', rs)
       if (rs.data.code == '200') {
         const arr = [
           {
@@ -671,7 +686,7 @@ export default {
           },
         ]
         let id = process.env.VUE_APP_PAGE_ID
-        if (rs.data.data.equipmenttype.includes(arr[id])) {
+        if (rs.data.data.equipmenttype.includes(arr[id].name)) {
           this.$router.push({
             path: arr[id].path,
             query: arr[id].query || {},
@@ -690,7 +705,7 @@ export default {
         lesson_id: data.md5,
         client_type: data.equipmenttype,
       })
-      console.log(rs)
+      console.log('转移课程', rs)
       if (rs.data.data) {
         this.$store.commit('set_recommendid', {
           md5: data,
@@ -702,7 +717,7 @@ export default {
       }
     },
     //周一到周七
-    filterWeekName() {
+    filterWeekName(status) {
       this.currentdate = this.$moment(new Date())
         .add('year', 0)
         .format('YYYY-MM-DD')
@@ -717,23 +732,33 @@ export default {
       const lastSunday = this.$moment()
         .add(7 - weekOfday, 'days')
         .format('YYYYMMDD')
-
-      for (let i = lastMonday; i <= lastSunday; i++) {
-        let j = String(i)
-        let day = j.slice(0, 4) + '-' + j.slice(4, 6) + '-' + j.slice(6, 8)
-        let obj = {}
-        // console.log(day)
-        this.tablueData.forEach((item, i) => {
-          if (item.date == day) {
-            obj = item
-            if (this.currentdate == day) {
-              obj.current = true
-            } else {
-              obj.current = false
+      if (status) {
+        for (let i = lastMonday; i <= lastSunday; i++) {
+          let j = String(i)
+          let day = j.slice(0, 4) + '-' + j.slice(4, 6) + '-' + j.slice(6, 8)
+          let obj = {}
+          // console.log(day)
+          this.tablueData.forEach((item, i) => {
+            if (item.date == day) {
+              obj = item
+              if (this.currentdate == day) {
+                obj.current = true
+              } else {
+                obj.current = false
+              }
+              this.dateArr.push(obj)
             }
-            this.dateArr.push(obj)
-          }
-        })
+          })
+        }
+      } else {
+        for (let i = lastMonday; i <= lastSunday; i++) {
+          let j = String(i)
+          let day = j.slice(0, 4) + '-' + j.slice(4, 6) + '-' + j.slice(6, 8)
+          this.dateArr.push({
+            value: 0,
+            date: day,
+          })
+        }
       }
       // console.log(this.dateArr)
     },
@@ -741,12 +766,10 @@ export default {
     async lotrecommend() {
       this.$router.push('/')
     },
-
     //获取日期
     moment_date(date) {
       var newdate = this.$moment(`${date}`)
       var dow = newdate.date()
-      // console.log(dow)
       return dow
     },
     weekDay(date) {

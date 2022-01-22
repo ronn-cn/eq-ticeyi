@@ -15,17 +15,13 @@ const mutations = {
   setLoginStatus (state, data) {
     state.loginState = true
     state.userinfo = JSON.parse(data)
-  },
-  //用户转移退出
-  set_resLogoutUser (state, data) {
-    console.log('用户转移退出', data)
-    state.resLogoutUser = new Date().getTime()
   }
 };
 
 const actions = {
   //用户登陆接口
   async clientlogin ({ state, rootState }) {
+    // console.log('用户登录接口', state.userinfo)
     const rs = await api.post('/client-login', {
       ouid: rootState.common.ouid,
       user_id: state.userinfo.user_id,
@@ -36,6 +32,7 @@ const actions = {
   },
   // 退出登录
   logout ({ state, commit, dispatch, getters }) {
+    console.log('退出来了吗')
     if (state.loginState) {
       state.userinfo = {}
       state.loginState = false

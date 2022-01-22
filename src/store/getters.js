@@ -40,6 +40,7 @@ export default {
   bodydata: (state) => state.bodytester.bodydata, //用户各项指数
   //力量器械
   moheight: state => state.power.moheight,  //动作数据
+  moloopval: state => state.power.moloopval,  //模型循环
   actionValue: state => state.power.actionValue,  //动作数据
   coursegroup: state => state.power.coursegroup,  //课程组
   powerEndData: state => state.power.powerEndData,  //课程组

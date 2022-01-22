@@ -175,25 +175,25 @@
 <template>
   <div>
     <div class="home_view_introduce">
-      <div class="introduce_start_before" v-if="!courseState">
+      <div class="introduce_start_before" v-if="!courseState && !userMakeState">
         <!-- <div class="introduce_logo">
           <img :src="`${publicPath}common/images/login_img1.png`" />
         </div> -->
         <div class="introduce_make">
           {{ userMakeState ? '设备已预约' : '设备可使用' }}
         </div>
-        <make-lesson v-if="userMakeState"></make-lesson>
-        <div class="introduce_title" v-if="itemindex == 0 && !userMakeState">
+
+        <div class="introduce_title" v-if="itemindex == 0">
           <p class="introduce_title_p1">标准模式</p>
           <p class="introduce_title_p2">
             根据规定重量开始进行热身组及正式组的锻炼和提升
           </p>
         </div>
-        <div class="introduce_title" v-if="itemindex == 1 && !userMakeState">
+        <div class="introduce_title" v-if="itemindex == 1">
           <p class="introduce_title_p1">自由模式</p>
           <p class="introduce_title_p2">自主选择重量及组次,开始自由训练模式</p>
         </div>
-        <div class="introduce_title" v-if="itemindex == 2 && !userMakeState">
+        <div class="introduce_title" v-if="itemindex == 2">
           <div class="measure">
             <p class="measure_p1">当前器械1RM测定值</p>
             <p class="measure_p2">
@@ -207,7 +207,7 @@
           </div>
         </div>
 
-        <div class="introduce_cover" v-if="itemindex != 2 && !userMakeState">
+        <div class="introduce_cover" v-if="itemindex != 2">
           <img
             :src="`${publicPath}powerStatic/images/${projecttype}.png`"
             width="296"
@@ -215,8 +215,11 @@
           />
         </div>
       </div>
-
-      <div class="introduce_start_after" v-if="courseState">
+      <make-lesson
+        v-if="userMakeState"
+        style="height: 6.37rem; width: 100%"
+      ></make-lesson>
+      <div class="introduce_start_after" v-if="courseState && !userMakeState">
         <div class="risk_notice" v-if="viewindex === 0">
           <div @click="backindex">
             <div class="step_back"></div>
@@ -272,21 +275,12 @@
           </div>
           <h1 class="h1">器械调试</h1>
           <video
-            autoplay="autoplay"
-            style="margin-top: 0.5rem"
+            style="margin-top: 0.5rem; width: 832px; height: 520px"
             :src="videourl1"
             ref="myvideo1"
           >
             Your browser does not support the video tag.
           </video>
-
-          <!-- <div class="apparatus_picture">
-            <img :src="`${publicPath}powerStatic/images/liliangqixie.png`" />
-          </div>
-          <p class="apparatus_text">
-            您好，健身小伙伴，欢迎体验轨道式力量训练器，建议初次锻炼的小伙伴选择小重量配重进行负重练习，也可根据个人情况自行选择磅值
-            (注意首次锻炼者，重量选择不宜过大)
-          </p> -->
         </div>
         <div
           class="action_demo"
@@ -301,24 +295,14 @@
             <div class="home_back"></div>
           </div>
           <h1 class="h1">动作演示</h1>
+
           <video
-            autoplay="autoplay"
-            style="margin-top: 0.5rem"
+            style="margin-top: 0.5rem; width: 832px; height: 520px"
             :src="videourl2"
             ref="myvideo2"
           >
             Your browser does not support the video tag.
           </video>
-
-          <!-- <iframe
-            src="/powerStatic/mo1.html"
-            style="width: 800px; height: 400px"
-            frameborder="0"
-          ></iframe>
-          <ol>
-            <li>胸部压着软垫，腰部紧贴椅背，双手反握把手</li>
-            <li>慢慢呼气，腹部用力将重量向下压低。腹部收紧后，吸气慢慢还原</li>
-          </ol> -->
         </div>
       </div>
     </div>
@@ -370,16 +354,21 @@ export default {
         (this.itemindex == 2 && val == '2')
       ) {
         this.videourl1 = `${this.publicPath}powerStatic/video/${this.projecttype}1.mp4`
-        this.$refs.myvideo1.load()
-        // console.log(this.$refs.myvideo, this.videourl)
+        // this.videourl1 = `${this.publicPath}powerStatic/video/双轴肩部推举器（器械调节）.mp4`
+        setTimeout(() => {
+          this.$refs.myvideo1.play()
+        }, 500)
       }
       if (
         (this.itemindex == 0 && val == '3') ||
         (this.itemindex == 1 && val == '2') ||
         (this.itemindex == 2 && val == '3')
       ) {
-        this.videourl2 = `${this.publicPath}powerStatic/video/${this.projecttype}2.mp4`
-        this.$refs.myvideo2.play()
+        // this.videourl1 = `${this.publicPath}powerStatic/video/${this.projecttype}2.mp4`
+        this.videourl2 = `${this.publicPath}powerStatic/video/双轴肩部推举器（动作演示）.mp4`
+        setTimeout(() => {
+          this.$refs.myvideo2.play()
+        }, 500)
       }
     },
   },
@@ -420,7 +409,7 @@ export default {
   },
   created() {},
   mounted() {
-    this.createdVideo()
+    // this.createdVideo()
   },
   methods: {
     backindex() {
@@ -431,12 +420,6 @@ export default {
       this.video1 = `<video 
                id="videoaction1"
                src="${videourl}"
-               style="width:100%"
-               autoplay="autoplay"></video>`
-      let videourl1 = `${this.publicPath}powerStatic/video/yanshi.mp4`
-      this.video2 = `<video 
-               id="videoaction2"
-               src="${videourl1}"
                style="width:100%"
                autoplay="autoplay"></video>`
     },

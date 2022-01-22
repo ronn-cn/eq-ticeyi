@@ -53,7 +53,7 @@
     font-weight: bold;
     border: 1px solid #000;
     border-radius: 0.06rem;
-    margin-top: 0.6rem;
+    margin-top: 0.5rem;
     white-space: nowrap;
   }
   .content_energy {
@@ -67,6 +67,14 @@
     width: 85%;
     text-align: center;
     line-height: 0.2rem;
+    display: -webkit-box;
+    display: -moz-box;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /*显示行数*/
   }
   .content_cover {
     width: 2.3rem;
@@ -86,6 +94,8 @@
   }
   .content_tips {
     font-size: 0.15rem;
+    line-height: 0.2rem;
+    padding: 0 0.2rem;
   }
 }
 .footer {
@@ -153,10 +163,12 @@ export default {
   watch: {
     recommendid: {
       handler(val) {
-        this.recommInfo = val.data
-        this.recommMag = val.msg
-        this.loaddetails(val.data.equipmenttype)
-        this.downChang()
+        if (Object.keys(val).length !== 0) {
+          this.recommInfo = val.data
+          this.recommMsg = val.msg
+          this.loaddetails(val.data.equipmenttype)
+          this.downChang()
+        }
       },
       immediate: true,
     },

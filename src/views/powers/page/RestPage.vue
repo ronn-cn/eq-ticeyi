@@ -5,7 +5,7 @@
   color: #fff;
   background-color: #5a4f5f;
   position: absolute;
-  left: 3%;
+  left: 1%;
   bottom: 18%;
   z-index: 1;
 }

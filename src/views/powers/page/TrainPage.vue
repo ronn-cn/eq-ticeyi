@@ -94,67 +94,51 @@
   border-radius: 0 !important;
 }
 
-.popup_close {
-  position: fixed;
-  left: 26vw;
-  top: 25vh;
-  z-index: 9;
-  width: 42vw;
-  height: 26vh;
-  padding: 0.4rem 0.2rem;
-  border-radius: 15px;
-  background-color: #fff;
-  .close_p1 {
-    color: #000;
-    font-size: 42px;
-    margin: 0.4rem 0 0.5rem 0;
-  }
-  .btn_list {
-    padding: 0 10%;
-    display: flex;
-    justify-content: space-between;
-  }
-  .close_btn1,
-  .close_btn2 {
-    color: #000;
-    display: inline-block;
-    margin: 0 10px;
-    padding: 20px 0.3rem;
-    border-radius: 4px;
-    border: 1px solid #000;
-  }
-  .close_btn2 {
-    background-color: #000;
-    color: #fff;
-    // padding: 20px 10px;
-  }
-}
 .fixed_left,
 .fixed_right {
   width: 300px;
   height: 60vh;
-  // background-color: #7d89e2;
   position: fixed;
   right: 0;
-  top: 16vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  top: 28vh;
   .progress_test_left {
     position: absolute;
-    top: 44%;
+    bottom: 12%;
     left: 12%;
   }
-  .progress_test {
+  .progress_test_right {
     position: absolute;
-    top: 44%;
+    bottom: 12%;
     right: 12%;
+  }
+  .progress_rotate_left {
+    width: 500px;
+    transform: rotate(-90deg);
+    position: relative;
+    top: 200px;
+    right: 150px;
+  }
+  .progress_rotate_right {
+    width: 500px;
+    transform: rotate(-90deg);
+    position: relative;
+    top: 200px;
+    right: 50px;
+  }
+  .text_p1 {
+    font-size: 0.16rem;
+  }
+  .text_p2 {
+    background-color: #000;
+    border-radius: 0.2rem;
+    padding: 0.1rem 0.2rem;
+    margin-top: 10px;
   }
 }
 .fixed_left {
   position: fixed;
   left: 0;
-  top: 16vh;
+  top: 28vh;
 }
 .end_test_btn {
   width: 2rem;
@@ -207,7 +191,7 @@
           <rest-page
             v-if="reststate"
             ref="restpage"
-            @endrest="endrest"
+            @endrest="reststate = false"
             :firststate="firststate"
             :planstate="planstate"
             :restweight="restweight"
@@ -236,21 +220,32 @@
           </li>
         </ul>
       </footer>
-      <div class="fixed_left" v-show="!reststate">
-        <div
-          style="transform: rotate(90deg) translateY(110px)"
-          id="progress_left"
-        ></div>
+      <div class="fixed_left">
+        <div class="progress_rotate_left">
+          <k-progress
+            :percent="moloopval"
+            :show-text="false"
+            :line-height="30"
+            :color="['#f5af19', '#fa0a74']"
+          ></k-progress>
+        </div>
         <div class="progress_test_left">
-          <p>目标重量</p>
-          <p>{{ restinfo.weight || 0 }}KG</p>
+          <p class="text_p1">目标重量</p>
+          <p class="text_p2">{{ restinfo.weight }}KG</p>
         </div>
       </div>
       <div class="fixed_right">
-        <div style="transform: rotate(-90deg) translateY(110px)"></div>
-        <div class="progress_test">
-          <p>完成重量</p>
-          <p>{{ traininfo.Weight || 0 }}KG</p>
+        <div class="progress_rotate_right">
+          <k-progress
+            :percent="completePercent"
+            :show-text="false"
+            :line-height="30"
+            :color="['#f5af19', '#fa0a74']"
+          ></k-progress>
+        </div>
+        <div class="progress_test_right">
+          <p class="text_p1">完成重量</p>
+          <p class="text_p2">{{ traininfo.Weight || 0 }}KG</p>
         </div>
       </div>
     </div>
@@ -258,19 +253,11 @@
       <div class="end_btn"></div>
       <div class="den_icon"></div>
     </div>
-    <div class="popup_close" v-if="showPopup">
-      <p class="close_p1">您的训练时间过短,是否退出当前训练</p>
-      <section class="btn_list">
-        <div class="close_btn1" @touchstart="popupbtn(0)">结束训练</div>
-        <div class="close_btn2" @touchstart="popupbtn(1)">再练一会</div>
-      </section>
-    </div>
-    <!-- <audio ref="audio_A" preload="auto">
-      <source
-        :src="`${publicPath}powerStatic/audio/1RM值测试.mp3`"
-        type="audio/mp3"
-      />
-    </audio> -->
+    <aduio-popup
+      v-if="showPopup"
+      :endType="endType"
+      @closepopup="closepopup"
+    ></aduio-popup>
     <cue-tone
       :planstate="planstate"
       :currentNum="plannum.currentNum"
@@ -280,17 +267,21 @@
 </template>
 
 <script>
+import AduioPopup from '@/components/power/AduioPopup.vue'
 import CueTone from '@/components/power/CueTone.vue'
 import { mapGetters, mapMutations } from 'vuex'
 import Format from '@/assets/js/Format'
 import { HandleSeatedAbTrainerData } from '@/assets/js/index'
 import RestPage from './RestPage.vue'
 import RadialProgressBar from 'vue-radial-progress'
+import KProgress from 'k-progress'
 export default {
   components: {
     CueTone,
     RestPage,
     RadialProgressBar,
+    KProgress,
+    AduioPopup,
   },
   data() {
     return {
@@ -302,7 +293,6 @@ export default {
       totalSteps: 30, //休息时长
       restweight: 6, //休息重量
       firststate: false,
-      startstate: false,
       footlist: [
         '训练时间',
         '当前组数/总组数',
@@ -337,7 +327,7 @@ export default {
       pyramidgroup: {}, //金字塔组
       auxiliarygroup: {}, //辅助组
       planstate: 0, //0热身组 1极限组 2负重组 3金字塔组 4.辅助组
-      showPopup: false,
+
       targetPercent: 0,
       completePercent: 80,
       addPercent: null,
@@ -348,23 +338,33 @@ export default {
         data: '',
         score: '',
       },
+      showPopup: false,
+      endType: null,
+      windowtimer: null, //时间计时器
     }
   },
   computed: {
-    ...mapGetters(['actionValue', 'coursegroup', 'lesson_id', 'publicPath']),
+    ...mapGetters([
+      'actionValue',
+      'coursegroup',
+      'lesson_id',
+      'publicPath',
+      'moloopval',
+      'powerEndData',
+    ]),
   },
   watch: {
-    targetPercent: {},
     actionValue(val, oldval) {
-      if (val.height > 5) {
-        // console.log('当前重量', val)
-      }
       this.$store.commit('set_moheight', val.height)
-      this.completePercent = 80 - val.height
-
+      if (val.height > 5) {
+        this.completePercent = 20 + val.height
+      } else {
+        this.completePercent = 0
+      }
+      let num = val.extra_weight ? val.weight * 6 + 3 : val.weight * 6
       // console.log(this.completepercent)
-      HandleSeatedAbTrainerData(val, val.weight, (e) => {
-        // console.log('回调', e)
+      HandleSeatedAbTrainerData(val, num, (e) => {
+        console.log('回调', e)
 
         this.$store.commit('add_detail', {
           info: e,
@@ -372,11 +372,31 @@ export default {
         })
 
         this.traininfo = e
-        let amount = (e.Height / 100) * (e.Weight * 100) * 9.8
-
+        let amount = (e.Height / 100) * e.Weight * 9.8
         this.traininfo.amount = Math.floor(amount)
-
         this.$store.commit('set_totalweight', this.traininfo) //计算平均得分
+
+        if (e.Percent > 85) {
+          this.recordScore = {
+            data: new Date().getTime(),
+            score: 'A',
+          }
+        } else if (e.Percent < 85 && e.Percent > 70) {
+          this.recordScore = {
+            data: new Date().getTime(),
+            score: 'B',
+          }
+        } else if (e.Percent < 70 && e.Percent > 50) {
+          this.recordScore = {
+            data: new Date().getTime(),
+            score: 'C',
+          }
+        } else if (e.Percent < 50) {
+          this.recordScore = {
+            data: new Date().getTime(),
+            score: 'D',
+          }
+        }
 
         if (this.reststate) this.reststate = false
 
@@ -479,15 +499,12 @@ export default {
     planstate(val, oldval) {
       this.$store.commit('add_total_group')
       if (val == 1) {
-        // this.audiosrc = `${this.publicPath}powerStatic/audio/1RM值测试.mp3`
-        // this.$refs.audio_A.play()
         this.playAudio()
         this.groupnum.totalNum = '01'
         this.groupnum.currentNum = '01'
         this.plannum.totalNum = '01'
         this.plannum.currentNum = '00'
       }
-
       if (val == 2 || val == 3 || val == 4) {
         let data = []
         if (val == 2) {
@@ -505,6 +522,18 @@ export default {
         this.groupnum.weight = data[0]['weight']
         this.totalSteps = data[0].rest
       }
+    },
+    //监听休息
+    reststate: {
+      handler: function (e) {
+        if (!e) {
+          this.timestart()
+        } else {
+          clearInterval(this.windowtimer)
+        }
+      },
+      immediate: true, // 首次加载的时候执行函数
+      deep: true, // 深入观察,监听数组值，对象属性值的变化
     },
   },
   created() {},
@@ -524,8 +553,7 @@ export default {
     this.$store.commit('set_couserTimer', {
       type: 'start',
     })
-    //开始计时
-    this.timestart()
+    // console.log(powerInfo.frames)
   },
   //离开页面
   destroyed: function () {
@@ -542,7 +570,7 @@ export default {
         this.audio_1 = null
       }
       this.audio_1 = new Audio()
-      this.audio_1.src = `${this.publicPath}powerStatic/audio/1RM值测试.mp3`
+      this.audio_1.src = `${this.publicPath}powerStatic/audio/首页/1RM值测试.mp3`
       this.audio_1.play()
     },
     //跳过
@@ -584,17 +612,7 @@ export default {
           return '辅助组'
       }
     },
-    //最大组次
-    // groupmax() {
-    //   switch (this.planstate) {
-    //     case 1:
-    //       return { mix: this.groupnum.currentNum, max: this.groupnum.totalNum }
-    //   }
-    // },
-    //休息结束
-    endrest() {
-      this.reststate = false
-    },
+
     //开始课程
     StartTrain() {
       const rmkg = this.traininfo.Weight
@@ -631,18 +649,6 @@ export default {
       this.reststate = true
     },
 
-    randomNum(minNum, maxNum) {
-      switch (arguments.length) {
-        case 1:
-          return parseInt(Math.random() * minNum + 1, 10)
-        case 2:
-          return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10)
-        //或者 Math.floor(Math.random()*( maxNum - minNum + 1 ) + minNum );
-        default:
-          return 0
-      }
-    },
-
     //底部value值
     footvalue(item) {
       switch (item) {
@@ -659,22 +665,18 @@ export default {
           }
           return 0
         case 4:
-          return this.traininfo.amount || 0
+          return this.powerEndData.amount || 0
       }
     },
     //按钮事件
     btn_click(index) {
-      if (index == 0) {
-        this.showPopup = true
-      } else if (index == 1) {
-        this.startstate = !this.startstate
+      this.showPopup = true
+      if (Math.floor(this.timeMeter) > 300) {
+        this.endType = 1
+      } else {
+        this.endType = 2
       }
-
       // this.plannum.currentNum += 1
-      // this.recordScore = {
-      //   data: new Date().getTime(),
-      //   score: 'A',
-      // }
 
       // this.$store.commit('set_resHeightWeight', {
       //   extra_weight: true,
@@ -682,16 +684,9 @@ export default {
       //   weight: 2,
       // })
     },
-    //弹框事件
-    popupbtn(type) {
-      if (type == 0) {
-        this.$router.push({
-          path: '/endpage',
-          query: { reneging: 1, timevalue: this.timevalue },
-        })
-      } else {
-        this.showPopup = false
-      }
+    closepopup() {
+      this.showPopup = false
+      this.endType = 0
     },
   },
 }

@@ -110,16 +110,18 @@ export default {
     //准备
     Render() {
       // this.audio_dom.play()
-      this.$axios.get(`/powerStatic/js/audio.json`).then((res) => {
-        const info = res.data.filter((item) => item.type == this.projecttype)
-        console.log(info[0].data)
-        this.audioList = info[0].data
-      })
+      this.$axios
+        .get(`${this.publicPath}powerStatic/js/audio.json`)
+        .then((res) => {
+          const info = res.data.filter((item) => item.type == this.projecttype)
+          console.log(info[0].data)
+          this.audioList = info[0].data
+        })
     },
     //背景音乐
     back_music(name) {
       this.audio_music = new Audio()
-      this.audio_music.src = `${this.$publicPath}53748b0c3eb50a6971ca9544aecb6595/music/${name}`
+      this.audio_music.src = ''
       this.audio_music.play()
       this.audio_music.volume = 0.6
     },
