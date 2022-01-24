@@ -1,6 +1,7 @@
 export default {
   //通用
   publicPath: state => state.common.publicPath,
+  evenfPublic: state => state.common.evenfPublic,
   ouid: state => state.common.ouid,      //ouid
   Qrcode: state => state.common.Qrcode,  //二维码
   PAGEID: state => state.common.PAGEID,         //pageid

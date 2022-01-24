@@ -339,6 +339,7 @@ export default {
       'MakeCareDesc',
       'user_rmvalue',
       'projecttype', //类型
+      'evenfPublic',
     ]),
     get_viewindex() {
       return this.viewindex
@@ -353,7 +354,7 @@ export default {
         (this.itemindex == 1 && val == '1') ||
         (this.itemindex == 2 && val == '2')
       ) {
-        this.videourl1 = `${this.publicPath}powerStatic/video/${this.projecttype}1.mp4`
+        this.videourl1 = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/video/${this.projecttype}1.mp4`
         // this.videourl1 = `${this.publicPath}powerStatic/video/双轴肩部推举器（器械调节）.mp4`
         setTimeout(() => {
           this.$refs.myvideo1.play()
@@ -365,7 +366,7 @@ export default {
         (this.itemindex == 2 && val == '3')
       ) {
         // this.videourl1 = `${this.publicPath}powerStatic/video/${this.projecttype}2.mp4`
-        this.videourl2 = `${this.publicPath}powerStatic/video/双轴肩部推举器（动作演示）.mp4`
+        this.videourl2 = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/video/双轴肩部推举器（动作演示）.mp4`
         setTimeout(() => {
           this.$refs.myvideo2.play()
         }, 500)

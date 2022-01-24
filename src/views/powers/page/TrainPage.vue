@@ -1,190 +1,12 @@
 <style scoped lang="scss">
-.page {
-  width: 100%;
-  height: 100%;
-  // background: rgb(35, 36, 42);
-  background-color: #5a4f5f;
-}
-.page_header {
-  .page_header_line {
-    width: 100%;
-    height: 0.13rem;
-    // background: #a3d5f2;
-  }
-  h1 {
-    padding: 0.2rem 0;
-    color: #ffffff;
-    font-size: 0.38rem;
-  }
-}
-.page_action {
-  display: flex;
-  &_item {
-    width: 3.92rem;
-    margin-left: 1.73rem;
-    H2 {
-      font-size: 24px;
-      font-family: SourceHanSansCN;
-      font-weight: 400;
-      color: #ffffff;
-      line-height: 40px;
-      opacity: 0.5;
-    }
-    .cover_container {
-      width: 100%;
-      height: 4.5rem;
-    }
-  }
-}
-.page_footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 1.04rem;
-  width: 100%;
-  background: #7d89e2;
-  color: #ffffff;
-  ul {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    li {
-      width: 20%;
-      height: 100%;
-      background: #37303a;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      .foot_li_p1 {
-        font-size: 0.34rem;
-      }
-      .foot_li_p2 {
-        font-size: 0.18rem;
-        margin-top: 0.16rem;
-      }
-    }
-  }
-}
-.end_btn {
-  border-left: 100px solid transparent;
-  border-top: 100px solid transparent;
-  border-bottom: 100px solid #ed4d71;
-  border-right: 100px solid transparent;
-  position: fixed;
-  top: 0;
-  right: 0;
-  transform: translateX(100px) translateY(-100px) rotate(45deg);
-}
-.den_icon {
-  position: fixed;
-  right: 15px;
-  top: 25px;
-  width: 40px;
-  height: 40px;
-  background: url('~assets/images/common/home_icon4.png') no-repeat;
-  background-size: 100% 100%;
-}
-::v-deep .el-progress-bar__outer {
-  height: 0.13rem !important;
-  border-radius: 0 !important;
-}
-::v-deep .el-progress-bar__inner  {
-  border-radius: 0 !important;
-}
-
-.fixed_left,
-.fixed_right {
-  width: 300px;
-  height: 60vh;
-  position: fixed;
-  right: 0;
-  top: 28vh;
-  .progress_test_left {
-    position: absolute;
-    bottom: 12%;
-    left: 12%;
-  }
-  .progress_test_right {
-    position: absolute;
-    bottom: 12%;
-    right: 12%;
-  }
-  .progress_rotate_left {
-    width: 500px;
-    transform: rotate(-90deg);
-    position: relative;
-    top: 200px;
-    right: 150px;
-  }
-  .progress_rotate_right {
-    width: 500px;
-    transform: rotate(-90deg);
-    position: relative;
-    top: 200px;
-    right: 50px;
-  }
-  .text_p1 {
-    font-size: 0.16rem;
-  }
-  .text_p2 {
-    background-color: #000;
-    border-radius: 0.2rem;
-    padding: 0.1rem 0.2rem;
-    margin-top: 10px;
-  }
-}
-.fixed_left {
-  position: fixed;
-  left: 0;
-  top: 28vh;
-}
-.end_test_btn {
-  width: 2rem;
-  height: 0.6rem;
-  background-color: #d1194f;
-  position: fixed;
-  left: 21vw;
-  border-radius: 10px;
-  display: flex;
-  bottom: 15vh;
-  z-index: 9;
-  justify-content: center;
-  align-items: center;
-}
-::v-deep #progress_left .ant-progress-circle-trail {
-  stroke: #cfd7da !important;
-  // color: rgb(#cfd7da);
-}
-::v-deep .ant-progress-circle-trail {
-  stroke: #f03985 !important;
-  // color: rgb(#cfd7da);
-}
-.stop_skip {
-  width: 0.4rem;
-  height: 0.4rem;
-  position: absolute;
-  right: 0.4rem;
-  top: 0.14rem;
-  background: url('~assets/images/common/skip.png');
-}
-.stop_skip::after {
-  content: '';
-  width: 0.3rem;
-  height: 0.3rem;
-  position: absolute;
-  left: 0.1rem;
-  top: 0;
-  background: url('~assets/images/common/skip.png');
-}
+@import '~assets/css/trainpage.scss';
 </style>
 
 <template>
   <div class="page">
     <div>
       <header class="page_header">
-        <h1>{{ plantitle() }}</h1>
+        <h1>{{ planText[this.planstate] }}{{ ttt }}</h1>
       </header>
       <section class="page_action">
         <div class="page_action_item">
@@ -214,7 +36,11 @@
       <footer class="page_footer">
         <ul>
           <li v-for="(item, index) of footlist" :key="item">
-            <div v-if="index == 1" class="stop_skip" @click="skipstop"></div>
+            <div
+              v-if="index == 1 && planstate !== 1"
+              class="stop_skip"
+              @click="skipstop"
+            ></div>
             <p class="foot_li_p1">{{ footvalue(index) }}</p>
             <p class="foot_li_p2">{{ item }}</p>
           </li>
@@ -259,6 +85,7 @@
       @closepopup="closepopup"
     ></aduio-popup>
     <cue-tone
+      v-if="planstate !== 1"
       :planstate="planstate"
       :currentNum="plannum.currentNum"
       :recordScore="recordScore"
@@ -275,6 +102,7 @@ import { HandleSeatedAbTrainerData } from '@/assets/js/index'
 import RestPage from './RestPage.vue'
 import RadialProgressBar from 'vue-radial-progress'
 import KProgress from 'k-progress'
+import train from '@/power/train/index.js'
 export default {
   components: {
     CueTone,
@@ -283,8 +111,10 @@ export default {
     KProgress,
     AduioPopup,
   },
+  mixins: [train],
   data() {
     return {
+      // planText: ['热身组', '极限组 (1RM测试)', '负重组', '金字塔组', '辅助组'],
       timeMeter: 0,
       timevalue: null, //时间
       timestate: false,
@@ -293,13 +123,13 @@ export default {
       totalSteps: 30, //休息时长
       restweight: 6, //休息重量
       firststate: false,
-      footlist: [
-        '训练时间',
-        '当前组数/总组数',
-        '当前次数/总次数',
-        '单次动作评分',
-        '训练量',
-      ],
+      // footlist: [
+      //   '训练时间',
+      //   '当前组数/总组数',
+      //   '当前次数/总次数',
+      //   '单次动作评分',
+      //   '训练量',
+      // ],
       restinfo: {
         group: 1,
         weight: 12,
@@ -324,11 +154,9 @@ export default {
         times: 8,
         weight: 18,
       }, //负重组
-      pyramidgroup: {}, //金字塔组
+      pyramidgroup: [], //金字塔组
       auxiliarygroup: {}, //辅助组
       planstate: 0, //0热身组 1极限组 2负重组 3金字塔组 4.辅助组
-
-      targetPercent: 0,
       completePercent: 80,
       addPercent: null,
       downPercent: null,
@@ -355,17 +183,16 @@ export default {
   },
   watch: {
     actionValue(val, oldval) {
-      this.$store.commit('set_moheight', val.height)
+      this.$store.commit('set_moheight', val.height) //设置模型下压
       if (val.height > 5) {
         this.completePercent = 20 + val.height
       } else {
         this.completePercent = 0
       }
       let num = val.extra_weight ? val.weight * 6 + 3 : val.weight * 6
-      // console.log(this.completepercent)
+
       HandleSeatedAbTrainerData(val, num, (e) => {
         console.log('回调', e)
-
         this.$store.commit('add_detail', {
           info: e,
           timeMeter: this.timeMeter,
@@ -376,44 +203,35 @@ export default {
         this.traininfo.amount = Math.floor(amount)
         this.$store.commit('set_totalweight', this.traininfo) //计算平均得分
 
-        if (e.Percent > 85) {
-          this.recordScore = {
-            data: new Date().getTime(),
-            score: 'A',
-          }
-        } else if (e.Percent < 85 && e.Percent > 70) {
-          this.recordScore = {
-            data: new Date().getTime(),
-            score: 'B',
-          }
-        } else if (e.Percent < 70 && e.Percent > 50) {
-          this.recordScore = {
-            data: new Date().getTime(),
-            score: 'C',
-          }
-        } else if (e.Percent < 50) {
-          this.recordScore = {
-            data: new Date().getTime(),
-            score: 'D',
-          }
-        }
+        let percent = Math.round(e.Percent * 100)
+        this.$store.commit('set_echartData', percent) //图表
+
+        this.send_percent(percent)
 
         if (this.reststate) this.reststate = false
 
-        if (this.planstate == 0) {
-          this.plannum['currentNum'] += 1
-          if (this.plannum['currentNum'] == this.plannum.totalNum) {
-            this.firststate = true
-            setTimeout(() => {
-              this.planstate = 1
-              this.reststate = true
-              this.restinfo.weight =
-                e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6
-              this.restinfo.num = 1
-            }, 1000)
-          }
-          return
+        switch (this.planstate) {
+          case 0:
+            this.warmup()
+            break
         }
+
+        return
+
+        // if (this.planstate == 0) {
+        //   this.plannum['currentNum'] += 1
+        //   if (this.plannum['currentNum'] == this.plannum.totalNum) {
+        //     this.firststate = true
+        //     setTimeout(() => {
+        //       this.planstate = 1
+        //       this.reststate = true
+        //       this.restinfo.weight =
+        //         e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6
+        //       this.restinfo.num = 1
+        //     }, 1000)
+        //   }
+        //   return
+        // }
 
         if (this.planstate == 1) {
           this.firststate = false
@@ -498,6 +316,9 @@ export default {
     //监听步骤
     planstate(val, oldval) {
       this.$store.commit('add_total_group')
+      if (this.audio_1) {
+        this.audio_1.pause()
+      }
       if (val == 1) {
         this.playAudio()
         this.groupnum.totalNum = '01'
@@ -538,21 +359,7 @@ export default {
   },
   created() {},
   mounted() {
-    if (this.lesson_id) {
-      this.$store.dispatch('clientstart', {
-        lesson_id: this.lesson_id,
-        lesson_name: '标准模式',
-      })
-    } else {
-      this.$store.dispatch('clientstart', {
-        lesson_id: '445dab66e033da6f0000000000000003',
-        lesson_name: '标准模式',
-      })
-    }
-    //课程开始时间
-    this.$store.commit('set_couserTimer', {
-      type: 'start',
-    })
+    this.loadTrain()
     // console.log(powerInfo.frames)
   },
   //离开页面
@@ -563,6 +370,36 @@ export default {
   },
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_resHeightWeight']),
+    loadTrain() {
+      if (this.lesson_id) {
+        this.$store.dispatch('clientstart', {
+          lesson_id: this.lesson_id,
+          lesson_name: '标准模式',
+        })
+      } else {
+        this.$store.dispatch('clientstart', {
+          lesson_id: '445dab66e033da6f0000000000000003',
+          lesson_name: '标准模式',
+        })
+      }
+      //课程开始时间
+      this.$store.commit('set_couserTimer', {
+        type: 'start',
+      })
+    },
+    warmup() {
+      this.plannum['currentNum'] += 1
+      if (this.plannum['currentNum'] == this.plannum.totalNum) {
+        this.firststate = true
+        setTimeout(() => {
+          this.planstate = 1
+          this.reststate = true
+          this.restinfo.weight =
+            e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6
+          this.restinfo.num = 1
+        }, 1000)
+      }
+    },
     //音频
     playAudio() {
       if (this.audio_1) {
@@ -597,22 +434,6 @@ export default {
         this.timevalue = Format.FormatTime(this.timeMeter.toFixed())
       }, 100)
     },
-    //头部文字
-    plantitle() {
-      switch (this.planstate) {
-        case 0:
-          return '热身组'
-        case 1:
-          return '极限组 (1RM测试)'
-        case 2:
-          return '负重组'
-        case 3:
-          return '金字塔组'
-        case 4:
-          return '辅助组'
-      }
-    },
-
     //开始课程
     StartTrain() {
       const rmkg = this.traininfo.Weight
@@ -648,7 +469,6 @@ export default {
 
       this.reststate = true
     },
-
     //底部value值
     footvalue(item) {
       switch (item) {
@@ -671,7 +491,7 @@ export default {
     //按钮事件
     btn_click(index) {
       this.showPopup = true
-      if (Math.floor(this.timeMeter) > 300) {
+      if (this.planstate > 2) {
         this.endType = 1
       } else {
         this.endType = 2
@@ -684,6 +504,31 @@ export default {
       //   weight: 2,
       // })
     },
+    //传递评分
+    send_percent(percent) {
+      if (percent > 85) {
+        this.recordScore = {
+          data: new Date().getTime(),
+          score: 'A',
+        }
+      } else if (percent < 85 && percent > 70) {
+        this.recordScore = {
+          data: new Date().getTime(),
+          score: 'B',
+        }
+      } else if (percent < 70 && percent > 50) {
+        this.recordScore = {
+          data: new Date().getTime(),
+          score: 'C',
+        }
+      } else if (percent < 50) {
+        this.recordScore = {
+          data: new Date().getTime(),
+          score: 'D',
+        }
+      }
+    },
+    //关闭弹框
     closepopup() {
       this.showPopup = false
       this.endType = 0

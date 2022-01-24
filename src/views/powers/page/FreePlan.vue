@@ -297,29 +297,26 @@ export default {
     //   },
     //   immediate: true,
     // },
+
     actionValue(val, oldval) {
       this.$store.commit('set_moheight', val.height)
       let num = val.extra_weight ? val.weight * 6 + 3 : val.weight * 6
-
       if (val.height > 5) {
         this.completePercent = 20 + val.height
       } else {
         this.completePercent = 0
       }
       HandleSeatedAbTrainerData(val, num, (e) => {
-        console.log('当前重量', num)
+        // console.log('当前重量', num, e)
         // console.log('回调', e)
         this.$store.commit('add_detail', {
           info: e,
           timeMeter: this.timeMeter,
         })
         this.traininfo = e
-
         let amount = (e.Height / 100) * e.Weight * 9.8
-
         this.traininfo.amount = Math.floor(amount)
         this.$store.commit('set_totalweight', this.traininfo) //计算平均得分
-
         this.plannum['currentNum'] += 1
         if (this.plannum.currentNum % 3 == 0) {
           if (!this.audio_free) {
@@ -353,6 +350,7 @@ export default {
 
     this.timestart()
     this.loadAudioList()
+    this.initStart()
   },
   //离开页面
   destroyed: function () {
@@ -368,6 +366,11 @@ export default {
         const info = res.data.filter((item) => item.type == this.projecttype)
         this.audioList = info[0].data
       })
+    },
+    initStart() {
+      this.audio_free = new Audio()
+      this.audio_free.src = `${this.publicPath}powerStatic/audio/首页/07开始训练.mp3`
+      this.audio_free.play()
     },
     //时间计时
     timestart() {

@@ -78,12 +78,13 @@
     }
     .right_echart {
       width: 100%;
-      margin-top: 0.2rem;
+      margin-top: 0.2rem 0;
       h3 {
         font-size: 0.16rem;
         font-weight: 600;
         text-align: left;
         padding: 0 0 0rem 5%;
+        margin-bottom: 0.3rem;
       }
       .echart_size {
         width: 90%;
@@ -242,16 +243,6 @@
         <EchartsLine class="echart_size" />
       </div> -->
       <div class="right_foot">
-        <!-- <div>
-          <a-progress
-            type="dashboard"
-            :percent="100"
-            stroke-linecap="square"
-            gapPosition="bottom"
-            :gapDegree="130"
-          />
-        </div> -->
-
         <div class="btn_btn" @click="footbtn(0)" v-if="loginState">
           推荐课程
         </div>
@@ -369,6 +360,7 @@ export default {
     if (this.lesson_id) {
       this.$store.commit('set_lesson_id', '')
     }
+    this.$store.commit('clear_powerEndData')
   },
   computed: {
     ...mapGetters([

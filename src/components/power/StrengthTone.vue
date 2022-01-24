@@ -102,6 +102,9 @@ export default {
   created() {},
   mounted() {
     this.Render()
+    if (this.planstate == 0) {
+      this.initStart()
+    }
   },
   unmounted: function () {},
   methods: {
@@ -115,7 +118,6 @@ export default {
           console.log(info[0].data)
           this.audioList = info[0].data
         })
-      this.initStart()
     },
     //背景音乐
     back_music(name) {

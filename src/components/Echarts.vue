@@ -17,6 +17,7 @@
 
 <script>
 import echarts from 'echarts/lib/echarts'
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {}
@@ -24,11 +25,21 @@ export default {
   created() {},
   mounted() {
     this.drawLine()
+    // console.log('还行', this.echartData)
+  },
+  computed: {
+    ...mapGetters(['echartData']),
   },
   methods: {
     drawLine() {
       // console.log(document.getElementById('myChart'))
       // 基于准备好的dom，初始化echarts实例
+      let Adata = []
+      for (let i = 1; i < this.echartData.length + 1; i++) {
+        Adata.push(i + '')
+      }
+      console.log(1, Adata)
+
       let myChart = this.$echarts.init(document.getElementById('myChart'))
       // 绘制图表
       myChart.setOption({
@@ -40,57 +51,9 @@ export default {
           containLabel: true,
         },
         xAxis: {
-          data: [
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-          ],
-          //x轴下划线
+          type: 'category',
+          boundaryGap: false,
+          data: Adata,
           axisLine: {
             lineStyle: {
               color: '#243B63',
@@ -98,34 +61,30 @@ export default {
           },
         },
         yAxis: {
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: '#243B63',
-              // opacity: 0.3,
-            },
-          },
-          axisLine: {
-            show: true,
-            lineStyle: {
-              color: '#243B63',
-            },
-          },
-          axisLabel: {
-            color: '#B6D1FF',
-            // fontWeight: "bold",
-          },
+          type: 'value',
+          // splitLine: {
+          //   show: true,
+          //   lineStyle: {
+          //     color: '#243B63',
+          //     // opacity: 0.3,
+          //   },
+          // },
+          // axisLine: {
+          //   show: true,
+          //   lineStyle: {
+          //     color: '#243B63',
+          //   },
+          // },
+          // axisLabel: {
+          //   color: '#B6D1FF',
+          //   // fontWeight: "bold",
+          // },
         },
         series: [
           {
-            name: '分值',
-            type: 'bar',
-            barWidth: 4,
-            label: {
-              show: false,
-              position: 'right',
-              color: '#ffffff',
-            },
+            data: this.echartData,
+            type: 'line',
+            areaStyle: {},
             itemStyle: {
               normal: {
                 //颜色渐变
@@ -138,11 +97,6 @@ export default {
                 barBorderRadius: [5, 5, 0, 0],
               },
             },
-            data: [
-              5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10,
-              20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10,
-              10, 20, 5, 20, 36, 10, 10, 20, 5, 20, 36, 10, 10, 20,
-            ],
           },
         ],
       })

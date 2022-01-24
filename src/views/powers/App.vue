@@ -42,9 +42,9 @@ p {
 
     <Login v-if="StandbyState"></Login>
 
-    <div class="iframe_conver1">
+    <!-- <div class="iframe_conver1">
       <iframe
-        :src="`${publicPath}powerStatic/${projecttype}3.html`"
+        :src="`${evenfPublic}012fb7b6d5a802614a264827c92194db/${projecttype}3.html`"
         id="mo1"
         style="width: 100%; height: 100%"
         frameborder="0"
@@ -52,12 +52,12 @@ p {
     </div>
     <div class="iframe_conver2">
       <iframe
-        :src="`${publicPath}powerStatic/${projecttype}2.html`"
+        :src="`${evenfPublic}012fb7b6d5a802614a264827c92194db/${projecttype}2.html`"
         id="mo2"
         style="width: 100%; height: 100%"
         frameborder="0"
       ></iframe>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -99,8 +99,8 @@ export default {
     },
     //模型下压
     moheight(val) {
-      var moPage2 = document.getElementById('mo2').contentWindow
-      moPage2.ControlAnimationTime(val)
+      // var moPage2 = document.getElementById('mo2').contentWindow
+      // moPage2.ControlAnimationTime(val)
     },
   },
   computed: {
@@ -110,6 +110,7 @@ export default {
       'userMakeState', //预约
       'resLogoutUser',
       'publicPath',
+      'evenfPublic',
       'moheight',
       'projecttype',
     ]),

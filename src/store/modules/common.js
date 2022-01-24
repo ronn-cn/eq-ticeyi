@@ -16,6 +16,7 @@ const state = {
   sport_end_time: 0, //课程结束时间
   projecttype: project.projecttype,   //设备类型
   publicPath: process.env.NODE_ENV == "development" ? '/' : './',
+  evenfPublic: process.env.NODE_ENV == "development" ? '/' : '../',
   MakeCareTitle: powerInfo.name,  //预约课程名称
   MakeCareDesc: powerInfo.desc,    //预约课程简介
   client_id: '',       //推荐课程id
@@ -24,14 +25,6 @@ const state = {
 }
 
 const mutations = {
-  //点击音频
-  click_effects ({ state, dispatch }) {
-    if (!state.Audio_effects) {
-      state.Audio_effects = new Audio()
-      state.Audio_effects.src = require(`../../assets/audio/click.mp3`)
-    }
-    state.Audio_effects.play()
-  },
   //登陆二维码
   set_qrcodeId (state, data) {
     let i = data.indexOf('ouid=')
@@ -147,6 +140,14 @@ const actions = {
     dispatch('send_askLedState', { r: 0, g: 0, b: 0 })
     // this.$router.push('/trainpage')
     // window.location.replace("/")
+  },
+  //点击音频
+  click_effects ({ state, dispatch }) {
+    if (!state.Audio_effects) {
+      state.Audio_effects = new Audio()
+      state.Audio_effects.src = require(`../../assets/audio/click.mp3`)
+    }
+    state.Audio_effects.play()
   },
 }
 

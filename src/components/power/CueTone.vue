@@ -104,6 +104,9 @@ export default {
   created() {},
   mounted() {
     this.Render()
+    if (this.planstate == 0) {
+      this.initStart()
+    }
   },
   unmounted: function () {},
   methods: {
@@ -124,6 +127,11 @@ export default {
       this.audio_music.src = ''
       this.audio_music.play()
       this.audio_music.volume = 0.6
+    },
+    initStart() {
+      this.audio_a = new Audio()
+      this.audio_a.src = `${this.publicPath}powerStatic/audio/首页/07开始训练.mp3`
+      this.audio_a.play()
     },
     //激励话术
     play_encourage(score) {

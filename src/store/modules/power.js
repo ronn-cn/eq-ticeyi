@@ -14,7 +14,8 @@ const state = {
     averagenum: 0,  //总次数
     averagescore: 0,  //平均负重
     amount: 0, //训练量
-  }
+  },
+  echartData: []
 }
 
 const mutations = {
@@ -56,6 +57,21 @@ const mutations = {
       // console.log(state.totalweight, state.averagenum, state.averagescore, state.combinedscore)
     }
   },
+  //这是图标的数据
+  set_echartData (state, data) {
+    state.echartData.push(data)
+  },
+  //清空数据
+  clear_powerEndData () {
+    this.powerEndData = {
+      combinedscore: 0,  //综合分
+      totalweight: 0, //总负重
+      averagenum: 0,  //总次数
+      averagescore: 0,  //平均负重
+      amount: 0, //训练量
+    }
+    state.echartData = []
+  },
   //动作数据
   set_resHeightWeight (state, data) {
     // console.log(1232, data)
@@ -69,7 +85,8 @@ const mutations = {
 const getters = {
   completion (state) {
     return '别急'
-  }
+  },
+  echartData: state => state.echartData
 }
 
 const actions = {

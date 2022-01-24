@@ -303,7 +303,8 @@ export default {
     ...mapActions(['send_askLedState', 'click_effects']),
     //快速开始
     quickchang() {
-      this.indexAudio('08快速开始')
+      this.click_effects()
+      // this.indexAudio('08快速开始')
       setTimeout(() => {
         if (this.itemindex == 2) {
           this.$router.push('/strengthtest')
@@ -312,7 +313,7 @@ export default {
         } else {
           this.$router.push('/trainpage')
         }
-      }, 1500)
+      }, 500)
     },
     indexAudio(index) {
       if (!this.audio_a) {
@@ -372,13 +373,14 @@ export default {
           let uid = `footer_li${this.viewindex}`
           document.getElementById(uid).setAttribute('class', 'view_active')
         } else {
-          this.indexAudio('07开始训练')
+          // this.indexAudio('07开始训练')
+          this.click_effects()
           setTimeout(() => {
             this.$router.push({
               path: arr[index].route,
               query: arr[index].query || {},
             })
-          }, 1500)
+          }, 500)
         }
       } else {
         this.courseState = true

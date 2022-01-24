@@ -56,6 +56,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      position: relative;
       .foot_li_p1 {
         font-size: 0.34rem;
       }
@@ -273,6 +274,24 @@
   top: 26px;
   transform: rotate(320deg);
 }
+
+.stop_skip {
+  width: 0.4rem;
+  height: 0.4rem;
+  position: absolute;
+  right: 0.4rem;
+  top: 0.14rem;
+  background: url('~assets/images/common/skip.png');
+}
+.stop_skip::after {
+  content: '';
+  width: 0.3rem;
+  height: 0.3rem;
+  position: absolute;
+  left: 0.1rem;
+  top: 0;
+  background: url('~assets/images/common/skip.png');
+}
 </style>
 
 <template>
@@ -318,6 +337,11 @@
       <footer class="page_footer">
         <ul>
           <li v-for="(item, index) of footlist" :key="item">
+            <div
+              class="stop_skip"
+              v-if="index == 1 && planstate !== 0"
+              @click="skipstop"
+            ></div>
             <p class="foot_li_p1">{{ footvalue(index) }}</p>
             <p class="foot_li_p2">{{ item }}</p>
           </li>
@@ -480,30 +504,31 @@ export default {
         this.traininfo = e
         let amount = (e.Height / 100) * e.Weight * 9.8
         this.traininfo.amount = Math.floor(amount)
+        this.$store.commit('set_totalweight', this.traininfo) //计算平均得分
 
-        if (e.Percent > 85) {
+        let percent = Math.round(e.Percent * 100)
+        this.$store.commit('set_echartData', percent)
+        if (percent > 85) {
           this.recordScore = {
             data: new Date().getTime(),
             score: 'A',
           }
-        } else if (e.Percent < 85 && e.Percent > 70) {
+        } else if (percent < 85 && percent > 70) {
           this.recordScore = {
             data: new Date().getTime(),
             score: 'B',
           }
-        } else if (e.Percent < 70 && e.Percent > 50) {
+        } else if (percent < 70 && percent > 50) {
           this.recordScore = {
             data: new Date().getTime(),
             score: 'C',
           }
-        } else if (e.Percent < 50) {
+        } else if (percent < 50) {
           this.recordScore = {
             data: new Date().getTime(),
             score: 'D',
           }
         }
-
-        this.$store.commit('set_totalweight', this.traininfo) //计算平均得分
 
         if (this.reststate) this.reststate = false
 
@@ -696,6 +721,20 @@ export default {
         this.timevalue = Format.FormatTime(this.timeMeter.toFixed())
       }, 100)
     },
+    skipstop() {
+      if (this.planstate == 4) {
+        this.$router.push({
+          path: '/endpage',
+          query: { reneging: 1, timevalue: this.timevalue },
+        })
+      } else {
+        this.planstate += 1
+        this.reststate = false
+        this.$nextTick(() => {
+          this.reststate = true
+        })
+      }
+    },
     //头部文字
     plantitle() {
       switch (this.planstate) {
@@ -826,7 +865,7 @@ export default {
     //按钮事件
     btn_click(index) {
       this.showPopup = true
-      if (Math.floor(this.timeMeter) > 300) {
+      if (this.planstate > 2) {
         this.endType = 1
       } else {
         this.endType = 2

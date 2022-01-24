@@ -103,15 +103,10 @@ const actions = {
       case "resLoginUser":  //登陆信息
         window.localStorage.setItem('userInfo', JSON.stringify(data.data));
         const userinfo = window.localStorage.getItem('userInfo');
-        let user = JSON.parse(userinfo)
-        console.log(user)
-        // if (user.transfer_client_id) {
-        //   commit('setLoginStatus', userinfo)
-        //   dispatch('clientlogin')
-        // } else {
-        //   dispatch('clientlogin')
-        // }
-
+        // let user = JSON.parse(userinfo)
+        // console.log(user)
+        commit('setLoginStatus', userinfo)
+        dispatch('clientlogin')
         break;
       case "resServiceBusiness":  //返回http地址
         if (data.data) {
