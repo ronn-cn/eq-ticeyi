@@ -113,9 +113,9 @@ p {
       <section class="plan_group_left">下一组</section>
       <div class="plan_group_line"></div>
       <section class="plan_group_right">
-        <p>{{ plantitle() }} | 第{{ restinfo.group }}组</p>
+        <p>{{ plantitle() }} | 第{{ restinfo.group_currentNum }}组</p>
         <p style="margin-top: 10px">
-          {{ restinfo.weight }}KG/{{ restinfo.num }}次
+          {{ restinfo.weight }}KG/{{ restinfo.totalNum }}次
         </p>
       </section>
     </div>
@@ -148,10 +148,6 @@ export default {
     },
     restinfo: {
       type: Object,
-    },
-    firststate: {
-      type: Boolean,
-      default: false,
     },
   },
   data() {

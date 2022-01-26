@@ -42,7 +42,7 @@ p {
 
     <Login v-if="StandbyState"></Login>
 
-    <!-- <div class="iframe_conver1">
+    <div class="iframe_conver1">
       <iframe
         :src="`${evenfPublic}012fb7b6d5a802614a264827c92194db/${projecttype}3.html`"
         id="mo1"
@@ -57,7 +57,7 @@ p {
         style="width: 100%; height: 100%"
         frameborder="0"
       ></iframe>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -99,8 +99,8 @@ export default {
     },
     //模型下压
     moheight(val) {
-      // var moPage2 = document.getElementById('mo2').contentWindow
-      // moPage2.ControlAnimationTime(val)
+      var moPage2 = document.getElementById('mo2').contentWindow
+      moPage2.ControlAnimationTime(val)
     },
   },
   computed: {

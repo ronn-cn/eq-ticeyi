@@ -38,7 +38,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['publicPath', 'projecttype']),
+    ...mapGetters(['publicPath', 'projecttype', 'evenfPublic']),
     audio_dom() {
       return this.$refs.audio_A
     },
@@ -134,12 +134,12 @@ export default {
       if (!this.audio_c) {
         this.audio_c = new Audio()
       }
-      this.audio_c.src = `${this.publicPath}powerStatic/audio/激励话术/${score}/${encourageUrl}.mp3`
+      this.audio_c.src = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/audio/激励话术/${score}/${encourageUrl}.mp3`
       this.audio_c.play()
     },
     initStart() {
       this.audio_a = new Audio()
-      this.audio_a.src = `${this.publicPath}powerStatic/audio/首页/07开始训练.mp3`
+      this.audio_a.src = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/audio/首页/07开始训练.mp3`
       this.audio_a.play()
     },
     //热身与辅助
@@ -154,7 +154,7 @@ export default {
         if (!this.audio_a) {
           this.audio_a = new Audio()
         }
-        this.audio_a.src = `${this.publicPath}powerStatic/audio/${this.projecttype}/话术弹框/${playsrc}.mp3`
+        this.audio_a.src = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/audio/${this.projecttype}/话术弹框/${playsrc}.mp3`
         this.audio_a.play()
       }
     },
@@ -170,7 +170,7 @@ export default {
         if (!this.audio_b) {
           this.audio_b = new Audio()
         }
-        this.audio_b.src = `${this.publicPath}powerStatic/audio/${this.projecttype}/话术弹框/${playurl1}.mp3`
+        this.audio_b.src = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/audio/${this.projecttype}/话术弹框/${playurl1}.mp3`
         this.audio_b.play()
       }
     },

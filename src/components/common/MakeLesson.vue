@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import RadialProgressBar from 'vue-radial-progress'
 export default {
   components: {
@@ -95,7 +95,7 @@ export default {
     this.set_userMakeState(false)
   },
   methods: {
-    ...mapMutations(['set_userMakeState']),
+    ...mapActions(['set_userMakeState']),
     loaddown() {
       this.timer = setInterval(() => {
         if (this.completedSteps == 0) {

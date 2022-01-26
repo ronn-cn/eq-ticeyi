@@ -145,7 +145,7 @@ header {
     width: 4rem;
     // height: 1.3rem;
     position: absolute;
-    right: 0.4rem;
+    right: 3rem;
     display: flex;
     .ability_icon,
     .ability_icon1,
@@ -407,14 +407,17 @@ header {
   transform: rotate(45deg);
 }
 //轮播图
-.my-swipe .van-swipe-item {
-  // width: 520px !important;
+.van-swipe-item {
+  width: 500px;
   padding: 0.3rem 0.2rem;
   background-color: rgb(220, 238, 252);
   box-sizing: border-box;
   border-radius: 5px;
   margin-right: 0.2rem;
   display: flex;
+}
+.ability_title_p2 {
+  line-height: 0.2rem;
 }
 </style>
 
@@ -439,44 +442,28 @@ header {
         </ul>
       </div>
       <div class="user_ability">
-        <van-swipe
-          class="my-swipe"
-          :autoplay="0"
-          indicator-color="white"
-          :loop="false"
-        >
-          <van-swipe-item>
-            <div class="ability_icon"></div>
-            <div class="ability_title">
-              <p class="ability_title_p1">
-                运动能力 {{ userData.data.sport_power || 0 }}/100
-              </p>
-              <p class="ability_title_p2">
-                运动能力是指综合身体各项基础数据的指数维度
-              </p>
-            </div>
-          </van-swipe-item>
-          <van-swipe-item>
-            <div class="ability_icon1"></div>
-            <div class="ability_title">
-              <p class="ability_title_p1">
-                活力 {{ userData.data.vitality || 0 }}/100
-              </p>
-              <p class="ability_title_p2">
-                活动是指通过运动训练使人们的运动能力发生变化的指数维度
-              </p>
-            </div>
-          </van-swipe-item>
-          <van-swipe-item>
-            <div class="ability_icon2"></div>
-            <div class="ability_title">
-              <p class="ability_title_p1">
-                星星 {{ userData.total.star_count || 0 }}
-              </p>
-              <p class="ability_title_p2">用户获得星星总数</p>
-            </div>
-          </van-swipe-item>
-        </van-swipe>
+        <div class="van-swipe-item">
+          <div class="ability_icon"></div>
+          <div class="ability_title">
+            <p class="ability_title_p1">
+              运动能力 {{ userData.data.sport_power || 0 }}/100
+            </p>
+            <p class="ability_title_p2">
+              运动能力是指综合身体各项基础数据的指数维度
+            </p>
+          </div>
+        </div>
+        <div class="van-swipe-item">
+          <div class="ability_icon1"></div>
+          <div class="ability_title">
+            <p class="ability_title_p1">
+              活力 {{ userData.data.vitality || 0 }}/100
+            </p>
+            <p class="ability_title_p2">
+              活动是指通过运动训练使人们的运动能力发生变化的指数维度
+            </p>
+          </div>
+        </div>
       </div>
     </header>
     <section class="main_cover">
@@ -494,13 +481,17 @@ header {
         :style="showTable ? 'height:3.4rem' : 'Height:5rem'"
       >
         <section class="plan_day">
-          <h3 class="day_h3">今日训练计划</h3>
-          <div class="plan_day_item">
+          <h3 class="day_h3">
+            {{ showTable ? '今日训练计划' : '今日推荐课程' }}
+          </h3>
+          <div class="plan_day_item" v-if="showTable">
             <div class="item_left">
-              <p>胸肩课程</p>
-              <p class="item_left_p2">2021.12.17</p>
+              <p>{{ plantitle(this.todayInfo.sport_guider) }}训练</p>
+              <p class="item_left_p2">{{ this.todayInfo.date }}</p>
             </div>
-            <div class="item_right">已完成</div>
+            <div class="item_right">
+              {{ this.todayInfo.value == 0 ? '未完成' : '已完成' }}
+            </div>
           </div>
           <div class="plan_day_img"></div>
         </section>
@@ -563,6 +554,7 @@ export default {
           star_count: 0,
         },
       },
+      todayInfo: {},
     }
   },
   created() {
@@ -721,7 +713,6 @@ export default {
       this.currentdate = this.$moment(new Date())
         .add('year', 0)
         .format('YYYY-MM-DD')
-      console.log('今天', this.currentdate)
       // 第一步: 获取今天是本周的第几天
       const weekOfday = this.$moment().format('E')
       // 第二步: 获取本周周一的日期
@@ -742,6 +733,8 @@ export default {
             if (item.date == day) {
               obj = item
               if (this.currentdate == day) {
+                // console.log('这是今天', item)
+                this.todayInfo = item
                 obj.current = true
               } else {
                 obj.current = false
@@ -796,6 +789,48 @@ export default {
           this.$router.push('/')
         }
       }, 1000)
+    },
+    plantitle(title) {
+      switch (title) {
+        case 'endurance':
+          return '耐力'
+        case 'power':
+          return '力量'
+        case 'control':
+          return '控制'
+        case 'balance':
+          return '平衡'
+        case 'flexibility':
+          return '柔韧'
+        case 'cardio':
+          return '心肺'
+        case 'fat':
+          return '脂肪'
+        case 'muscle':
+          return '肌肉'
+        case 'neck':
+          return '颈部'
+        case 'shoulder':
+          return '肩部'
+        case 'back':
+          return '背部'
+        case 'chest':
+          return '胸部'
+        case 'arm':
+          return '上臂'
+        case 'forearm':
+          return '前臂'
+        case 'abdominal':
+          return '核心'
+        case 'hip':
+          return '臀部'
+        case 'leg':
+          return '大腿'
+        case 'calf':
+          return '小腿'
+        default:
+          return ''
+      }
     },
   },
 }

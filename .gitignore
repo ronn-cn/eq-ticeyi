@@ -3,6 +3,8 @@ node_modules
 /dist
 /public/powerStatic/models
 /public/powerStatic/video
+/public/012fb7b6d5a802614a264827c92194db
+/public/fd57a4b1acfa40a665a28686d746789e
 
 # local env files
 .env.local

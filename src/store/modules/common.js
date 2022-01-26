@@ -40,13 +40,6 @@ const mutations = {
       state.sport_end_time = Number(Date.parse(new Date()).toString().substr(0, 10))
     }
   },
-  //用户转移
-  set_userMakeState (state, boolean) {
-    state.userMakeState = boolean
-    if (state.StandbyState) {
-      state.StandbyState = false
-    }
-  },
   //设置课程id
   set_lesson_id (state, data) {
     state.lesson_id = data
@@ -131,6 +124,14 @@ const actions = {
       },
     }
     commit('SEND_SOCKET', JSON.stringify(sendData))
+  },
+  //用户转移
+  set_userMakeState ({ state, commit, dispatch }, boolean) {
+    state.userMakeState = boolean
+    if (state.StandbyState) {
+      state.StandbyState = false
+      dispatch('send_askLedState', { r: 0, g: 0, b: 0 })
+    }
   },
   //用户转移退出 || 退出
   set_resLogoutUser ({ commit, dispatch }, data) {

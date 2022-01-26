@@ -129,7 +129,7 @@ export default {
           g: arr[1],
           b: arr[2],
         })
-        this.$store.commit('set_userMakeState', true)
+        this.$store.dispatch('set_userMakeState', true)
         const lesson_id = val.lesson.md5
         this.set_lesson_id(lesson_id)
         const data = val.lesson

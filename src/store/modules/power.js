@@ -8,6 +8,7 @@ const state = {
   powerDetail: [],
   moheight: 0,
   moloopval: 0,
+  total_Percent: 0,
   powerEndData: {
     combinedscore: 0,  //综合分
     totalweight: 0, //总负重
@@ -48,8 +49,9 @@ const mutations = {
     if (data) {
       state.powerEndData.totalweight += data.Weight  //总重量
       state.powerEndData.averagenum += 1             //总次数
+      state.total_Percent = state.total_Percent += Math.ceil(data.Percent * 100)  //总分
       state.powerEndData.averagescore = Math.ceil(state.powerEndData.totalweight / state.powerEndData.averagenum)  //平均负重
-      state.powerEndData.combinedscore = Math.ceil(Math.ceil(data.Percent * 100) / state.powerEndData.averagenum) //综合得分
+      state.powerEndData.combinedscore = Math.ceil(state.total_Percent / state.powerEndData.averagenum) //综合得分
       state.powerEndData.amount += data.amount
       if (data.Weight > state.weight_max) {
         state.weight_max = data.Weight
@@ -62,14 +64,12 @@ const mutations = {
     state.echartData.push(data)
   },
   //清空数据
-  clear_powerEndData () {
-    this.powerEndData = {
-      combinedscore: 0,  //综合分
-      totalweight: 0, //总负重
-      averagenum: 0,  //总次数
-      averagescore: 0,  //平均负重
-      amount: 0, //训练量
-    }
+  clear_powerEndData (state) {
+    state.powerEndData.combinedscore = 0
+    state.powerEndData.totalweight = 0
+    state.powerEndData.averagenum = 0
+    state.powerEndData.averagescore = 0
+    state.powerEndData.amount = 0
     state.echartData = []
   },
   //动作数据

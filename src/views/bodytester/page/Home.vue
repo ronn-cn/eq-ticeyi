@@ -284,7 +284,7 @@ export default {
     },
     swichindex(index) {
       if (this.userMakeState) {
-        this.$store.commit('set_userMakeState', false)
+        this.$store.dispatch('set_userMakeState', false)
       }
       this.itemindex = index
       // console.log(this.userMakeState);

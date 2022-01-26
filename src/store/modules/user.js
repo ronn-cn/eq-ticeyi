@@ -40,7 +40,7 @@ const actions = {
       dispatch('clientExit')
     }
     if (getters.userMakeState) {
-      commit('set_userMakeState', false)
+      dispatch('set_userMakeState', false)
     }
 
   },

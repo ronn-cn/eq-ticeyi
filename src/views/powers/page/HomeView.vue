@@ -243,7 +243,7 @@ export default {
     itemindex(val) {
       this.viewindex = 0
       if (this.userMakeState) {
-        this.$store.commit('set_userMakeState', false) //取消预约
+        this.$store.dispatch('set_userMakeState', false) //取消预约
       }
       for (let i = 0; i < this.stepList.length; i++) {
         let step = 'step_li' + i
@@ -282,7 +282,7 @@ export default {
           g: arr[1],
           b: arr[2],
         })
-        this.$store.commit('set_userMakeState', true) //设置用户预约
+        this.$store.dispatch('set_userMakeState', true) //设置用户预约
         const lesson_id = val.lesson.md5
         this.set_lesson_id(lesson_id) //设置课程id
         this.set_MakeCareInfo({ name: val.lesson.name, desc: val.lesson.desc }) //设置提示文字

@@ -53,6 +53,7 @@ export default {
     endType: {
       type: [Number, String],
     },
+    timevalue: String,
   },
   watch: {},
   data() {

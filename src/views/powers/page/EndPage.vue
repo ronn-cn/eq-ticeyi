@@ -356,7 +356,7 @@ export default {
     clearInterval(this.downtimer)
     this.$store.commit('set_recommendid', '') //离开设置课程为空
     this.$store.dispatch('clientEnd')
-    this.logout()
+    // this.logout()
     if (this.lesson_id) {
       this.$store.commit('set_lesson_id', '')
     }

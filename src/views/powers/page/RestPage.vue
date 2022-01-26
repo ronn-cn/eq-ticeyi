@@ -113,9 +113,9 @@ p {
       <section class="plan_group_left">下一组</section>
       <div class="plan_group_line"></div>
       <section class="plan_group_right">
-        <p>{{ plantitle() }} | 第{{ restinfo.group }}组</p>
+        <p>{{ plantitle() }} | 第{{ restinfo.group_currentNum }}组</p>
         <p style="margin-top: 10px">
-          {{ restinfo.weight }}KG/{{ restinfo.num }}次
+          {{ restinfo.weight }}KG/{{ restinfo.totalNum }}次
         </p>
       </section>
     </div>
@@ -124,21 +124,6 @@ p {
       <p>立即开始</p>
       <p>开始运动即开启训练</p>
     </div>
-    <!-- 
-    <section class="rest_page_right">
-      <div class="jixianvalue" v-show="planstate == 1 && !firststate">
-        <p style="margin-bottom: 26px">当前器械1RM为</p>
-        <p>{{ restweight }}KG/--1b</p>
-      </div>
-
-      <div class="planzu" v-show="planstate == 1 && firststate">
-        <section class="planzu_left">下一组</section>
-        <section class="planzu_right">
-          <p style="margin-bottom: 26px">{{ plantitle() }} | 第1组</p>
-          <p>--KG/1次</p>
-        </section>
-      </div>
-    </section> -->
   </div>
 </template>
 
@@ -182,15 +167,16 @@ export default {
         innerStrokeWidth: 15,
         strokeLinecap: 'line',
       },
+      downtimer: null,
     }
   },
   created() {
-    window.timer = setInterval(() => {
+    this.downtimer = setInterval(() => {
       if (this.completedSteps !== 0) {
         this.completedSteps -= 1
       } else {
         console.log('休息结束了')
-        clearInterval(window.timer)
+        clearInterval(this.downtimer)
         this.$emit('endrest')
       }
     }, 1000)
@@ -204,11 +190,11 @@ export default {
     // console.log('传的数据', this.restinfo)
   },
   destroyed() {
-    clearInterval(window.timer)
+    clearInterval(this.downtimer)
   },
   methods: {
     skipRest() {
-      clearInterval(window.timer)
+      clearInterval(this.downtimer)
       this.$emit('endrest')
     },
     plantitle() {

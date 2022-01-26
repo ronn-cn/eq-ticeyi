@@ -88,6 +88,7 @@ const actions = {
         };
         ws.onerror = function () {
           console.log('连接错误');
+          dispatch('init_socket')
         }
         ws.close = function () {
           console.log('连接已断开');

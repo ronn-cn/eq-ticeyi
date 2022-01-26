@@ -1,0 +1,364 @@
+[
+  {
+    "equipment": "坐姿卷腹训练器",
+    "audioKVs": [
+      { "number": "aa01", "content": "下压时吐气，返回时吸气" },
+      { "number": "aa02", "content": "身体挺直，下颚微收" },
+      { "number": "aa03", "content": "核心收紧" },
+      { "number": "aa04", "content": "将身体向下压" },
+      { "number": "ab01", "content": "保持均匀呼吸" },
+      { "number": "ab02", "content": "充分感受到腹部的酸胀感" },
+      { "number": "ab03", "content": "注意保持腹部高张力" },
+      { "number": "ab04", "content": "回落时配重片不要发生碰撞" },
+      { "number": "ab05", "content": "注意脚和腿部呈放松状态" },
+      { "number": "ab06", "content": "臀部不要离开后侧靠垫" },
+      { "number": "ab07", "content": "发力时呼气，保持腹部核心肌群稳定" },
+      { "number": "ab08", "content": "向下卷腹，缓慢回收" },
+      { "number": "ab09", "content": "保持节奏，控制速度" },
+      { "number": "ab10", "content": "腰椎保持稳定" },
+      { "number": "ab11", "content": "全程用腹肌发力" },
+      { "number": "ab12", "content": "过程中保持骨盆稳定" }
+    ]
+  },
+  {
+    "equipment": "双轴胸部推举机",
+    "audioKVs": [
+      { "number": "ba01", "content": "推举时吐气，回落时吸气" },
+      { "number": "ba02", "content": "不要耸肩" },
+      { "number": "ba03", "content": "双脚踩实，与肩同宽" },
+      { "number": "ba04", "content": "核心收紧、保持稳定" },
+      { "number": "bb01", "content": "抬头挺胸，腰部挺直" },
+      { "number": "bb02", "content": "腰背挺直，腹部收紧" },
+      { "number": "bb03", "content": "肩部下沉，下颚微收" },
+      { "number": "bb04", "content": "顶峰收缩稍作停留" },
+      { "number": "bb05", "content": "注意不要锁住肘关节" },
+      { "number": "bb06", "content": "肩胛骨收紧，保持稳定" },
+      { "number": "bb07", "content": "发力吐气同时核心收紧" },
+      { "number": "bb08", "content": "保持胸大肌的持续紧张" },
+      { "number": "bb09", "content": "缓慢回收，控制速度" },
+      { "number": "bb10", "content": "始终保持肩胛骨下沉" },
+      { "number": "bb11", "content": "保持胸部持续发力" },
+      { "number": "bb12", "content": "肘部向躯干方向微收" },
+      { "number": "bb13", "content": "结束时用脚辅助踩踏板，避免拉伤" }
+    ]
+  },
+  {
+    "equipment": "坐姿划船训练器",
+    "audioKVs": [
+      { "number": "ca01", "content": "用力时吐气，放松时吸气" },
+      { "number": "ca02", "content": "核心收紧，腰背挺直" },
+      { "number": "ca03", "content": "发力前内收肩胛骨" },
+      { "number": "ca04", "content": "还原时肩胛骨前移" },
+      { "number": "cb01", "content": "保持身体张力" },
+      { "number": "cb02", "content": "膝关节不要内扣" },
+      { "number": "cb03", "content": "肩膀始终下沉" },
+      { "number": "cb04", "content": "注意身体不要过分后仰" },
+      { "number": "cb05", "content": "不要过度前倾或后仰" },
+      { "number": "cb06", "content": "胸部不要离开靠垫" },
+      { "number": "cb07", "content": "向前时不要过分含胸" },
+      { "number": "cb08", "content": "背部挺直，不要过分反弓" },
+      { "number": "cb09", "content": "感受到中下斜方的拉伸感" },
+      { "number": "cb10", "content": "把手拉直胸肌下沿的外侧" },
+      { "number": "cb11", "content": "手肘屈于90度大臂贴肋" },
+      { "number": "cb12", "content": "肩关节中分前引后缩" },
+      { "number": "cb13", "content": "背部主导发力" },
+      { "number": "cb14", "content": "维持腹内压，保持身体稳定" }
+    ]
+  },
+  {
+    "equipment": "大腿伸展机",
+    "audioKVs": [
+      { "number": "da01", "content": "抬腿时吐气，回落时吸气" },
+      { "number": "da02", "content": "大腿前侧发力" },
+      { "number": "da03", "content": "挺腰收腹，身体下压" },
+      { "number": "da04", "content": "核心收紧，下颚微收" },
+      { "number": "db01", "content": "始终保持肌肉张力" },
+      { "number": "db02", "content": "使用腹式呼吸法" },
+      { "number": "db03", "content": "注意大腿位置，脚尖向上" },
+      { "number": "db04", "content": "注意膝关节之间的距离" },
+      { "number": "db05", "content": "腿部上升至顶峰时收缩稍作停留" },
+      { "number": "db06", "content": "回落时放置最低点前" },
+      { "number": "db07", "content": "膝关节不要超伸" },
+      { "number": "db08", "content": "用力伸小腿提起重量" },
+      { "number": "db09", "content": "身体挺直，腰背部贴近靠板" },
+      { "number": "db10", "content": "全程保持缓慢匀速" },
+      { "number": "db11", "content": "背部靠在靠垫上，保持稳定" },
+      { "number": "db12", "content": "两腿屈膝下垂，脚尖向前" }
+    ]
+  },
+  {
+    "equipment": "坐式腿部弯曲器",
+    "audioKVs": [
+      { "number": "ha01", "content": "下压时吐气，放松时吸气" },
+      { "number": "ha02", "content": "感受大腿后侧发力" },
+      { "number": "ha03", "content": "挺胸抬头，腿部发力向下收紧" },
+      { "number": "ha04", "content": "核心收紧，下颚微收" },
+      { "number": "hb01", "content": "背部靠在椅背上，保持身体稳定" },
+      { "number": "hb02", "content": "采用腹式呼吸法" },
+      { "number": "hb03", "content": "大腿保持稳定" },
+      { "number": "hb04", "content": "感受到大腿后侧收紧后，微微停顿" },
+      { "number": "hb05", "content": "还原时不要让配重片发生碰撞" },
+      { "number": "hb06", "content": "脚尖微微向上勾起" },
+      { "number": "hb07", "content": "身体挺直，目视前方" },
+      { "number": "hb08", "content": "双脚与胯同款" },
+      { "number": "hb09", "content": "下压时脚后跟向臀部收紧" },
+      { "number": "hb10", "content": "下压收腿时收到顶点" },
+      { "number": "hb11", "content": "训练过程中臀部不要离开凳面" },
+      { "number": "hb12", "content": "保持肌肉张力" },
+      { "number": "hb13", "content": "保持腿部微微弯曲，不要完全伸直" },
+      { "number": "hb14", "content": "保持小腿与脚的放松" }
+    ]
+  },
+  {
+    "equipment": "高位蝴蝶训练器",
+    "audioKVs": [
+      { "number": "ia01", "content": "用力时呼气，还原时吸气" },
+      { "number": "ia02", "content": "腰背挺直，核心收紧" },
+      { "number": "ia03", "content": "感受胸大肌的发力感" },
+      { "number": "ia04", "content": "顶峰收缩时肘关节自然伸直" },
+      { "number": "ib01", "content": "臀部与上背部紧贴背部靠垫" },
+      { "number": "ib02", "content": "挺胸抬头，下颚微收" },
+      { "number": "ib03", "content": "挺胸沉肩" },
+      { "number": "ib04", "content": "肘关节向后拉动胸肌" },
+      { "number": "ib05", "content": "拉伸到极限时肘关节在肩膀的后侧" },
+      { "number": "ib06", "content": "拉伸时让气充满胸腔" },
+      { "number": "ib07", "content": "顶峰收缩时手内侧相对" },
+      { "number": "ib08", "content": "肘关节低于肩关节" },
+      { "number": "ib09", "content": "肘窝水平指向前侧" },
+      { "number": "ib10", "content": "发力时双手用力向前环抱，肘关节自然伸直" }
+    ]
+  },
+  {
+    "equipment": "双轴肩部推举器",
+    "audioKVs": [
+      { "number": "ja01", "content": "推举时呼气，下落时吸气" },
+      { "number": "ja02", "content": "身体挺直，核心收紧" },
+      { "number": "ja03", "content": "抬头挺胸，双脚踩实" },
+      { "number": "ja04", "content": "肩部三角肌发力向上推起" },
+      { "number": "jb01", "content": "身体保持挺胸收腹" },
+      { "number": "jb02", "content": "挺胸沉肩，下颚微微内收" },
+      { "number": "jb03", "content": "肘关节弯曲，双臂不要锁死" },
+      { "number": "jb04", "content": "下落时大臂放至与地面平行或略低" },
+      { "number": "jb05", "content": "下落时不要让配重片发生碰撞" },
+      { "number": "jb06", "content": "推举时肘关节不要完全伸直外翻" },
+      { "number": "jb07", "content": "过程中保持躯干直立、挺胸、注视前方" },
+      { "number": "jb08", "content": "推举到顶峰时稍作停留" },
+      { "number": "jb09", "content": "全程保持规律有节奏的呼吸" },
+      { "number": "jb10", "content": "过程中保持腿部放松" },
+      { "number": "jb11", "content": "双脚自然分开，与肩同宽" }
+    ]
+  },
+  {
+    "equipment": "蝴蝶夹胸训练器",
+    "audioKVs": [
+      { "number": "ka01", "content": "用力时呼气，还原时吸气" },
+      { "number": "ka02", "content": "挺胸抬头，核心收紧" },
+      { "number": "ka03", "content": "臀部后移，贴紧靠背" },
+      { "number": "ka04", "content": "感受胸部持续收紧" },
+      { "number": "kb01", "content": "保持身体稳定" },
+      { "number": "kb02", "content": "胸大肌匀速发力" },
+      { "number": "kb03", "content": "向内使器械力臂相碰" },
+      { "number": "kb04", "content": "顶峰收缩时稍作停留，持续发力" },
+      { "number": "kb05", "content": "缓慢回放至胸大肌充分伸展" },
+      { "number": "kb06", "content": "双脚回收，踏实地面" },
+      { "number": "kb07", "content": "大臂与身体成75度夹角" },
+      { "number": "kb08", "content": "挺胸沉肩，上背贴紧靠背" }
+    ]
+  },
+  {
+    "equipment": "坐姿背肌训练器",
+    "audioKVs": [
+      { "number": "la01", "content": "后压时呼气，还原时吸气" },
+      { "number": "la02", "content": "脊柱屈伸，主导发力" },
+      { "number": "la03", "content": "保持身体稳定" },
+      { "number": "la04", "content": "感受背部的持续发力" },
+      { "number": "lb01", "content": "注意臀部后移，靠实坐垫" },
+      { "number": "lb02", "content": "保持臀腿的稳定" },
+      { "number": "lb03", "content": "臀部不要过多参与发力" },
+      { "number": "lb04", "content": "竖脊肌发力向上使脊柱伸展" },
+      { "number": "lb05", "content": "还原时使脊柱弯曲" },
+      { "number": "lb06", "content": "注意还原时软轮随身体滚动" },
+      { "number": "lb07", "content": "发力时脊柱伸展至自然伸直，不要超伸" },
+      { "number": "lb08", "content": "保持肌肉张力" },
+      { "number": "lb09", "content": "动作启动时，身体与大腿角度略小于30度" },
+      { "number": "lb10", "content": "双脚与胯同款，踏实脚踏板" }
+    ]
+  },
+  {
+    "equipment": "坐姿蹬腿训练器",
+    "audioKVs": [
+      { "number": "ma01", "content": "后蹬时呼气，还原时吸气" },
+      { "number": "ma02", "content": "身体挺直，核心收紧" },
+      { "number": "ma03", "content": "脚尖与膝盖方向保持一致" },
+      { "number": "ma04", "content": "感受到腿部肌肉的持续发力" },
+      { "number": "mb01", "content": "挺胸收腹，核心收紧，下颚微收" },
+      { "number": "mb02", "content": "腰背贴实靠垫" },
+      { "number": "mb03", "content": "双脚微微分开，与肩同宽" },
+      { "number": "mb04", "content": "发力前膝盖微曲" },
+      { "number": "mb05", "content": "骨盆保持中立" },
+      { "number": "mb06", "content": "整个过程保持核心收紧" },
+      { "number": "mb07", "content": "发力时用脚后跟发力" },
+      { "number": "mb08", "content": "回落时让配重片不要发生碰撞" },
+      { "number": "mb09", "content": "脚尖朝前，膝盖对准脚尖方向" },
+      { "number": "mb10", "content": "发力至腿自然伸直，关节不要锁死" },
+      { "number": "mb11", "content": "蹬直时膝盖不要超伸" },
+      { "number": "mb12", "content": "膝盖不要内扣或外展" },
+      { "number": "mb13", "content": "保持腿部肌肉张力" }
+    ]
+  },
+  {
+    "equipment": "坐姿高拉训练器 ",
+    "audioKVs": [
+      { "number": "na01", "content": "下拉时呼气，还原时吸气" },
+      { "number": "na02", "content": "双手握距略大于肩宽" },
+      { "number": "na03", "content": "背部挺直，保持稳定" },
+      { "number": "na04", "content": "下拉时感受到背部充分收紧" },
+      { "number": "nb01", "content": "全程保持匀速发力" },
+      { "number": "nb02", "content": "下拉时拉至下巴下方" },
+      { "number": "nb03", "content": "注意保持身体稳定" },
+      { "number": "nb04", "content": "呼气下拉至小臂垂直地面" },
+      { "number": "nb05", "content": "背部挺直，保持稳定" },
+      { "number": "nb06", "content": "向上返回时肘关节自然伸直" },
+      { "number": "nb07", "content": "肘关节不要超伸或者锁死" },
+      { "number": "nb08", "content": "注意保持全程不要耸肩" },
+      { "number": "nb09", "content": "还原时配重片不要发生碰撞" },
+      { "number": "nb10", "content": "微收下颚，目视前方" },
+      { "number": "nb11", "content": "保持肩胛骨稳定" },
+      { "number": "nb12", "content": "挺胸沉肩，核心收紧" },
+      { "number": "nb13", "content": "下拉后大臂加紧，肩胛骨收紧" }
+    ]
+  },
+  {
+    "equipment": "大腿内侧肌训练器",
+    "audioKVs": [
+      { "number": "oa01", "content": "内收时呼气，外展时吸气" },
+      { "number": "oa02", "content": "上身挺直，核心收紧" },
+      { "number": "oa03", "content": "全程保持速度缓慢" },
+      { "number": "oa04", "content": "感受大腿内侧肌肉的拉伸感" },
+      { "number": "ob01", "content": "臀部与背部紧贴于器械座椅靠背，身体挺直" },
+      { "number": "ob02", "content": "双脚踩实脚踏板" },
+      { "number": "ob03", "content": "注意保持身体稳定" },
+      { "number": "ob04", "content": "发力时双腿用力夹紧至阻力板相互碰撞" },
+      { "number": "ob05", "content": "双腿在重量的拉动下自然外展" },
+      { "number": "ob06", "content": "注意不要含胸驼背" },
+      { "number": "ob07", "content": "脚尖朝前，不要外翻" },
+      { "number": "ob08", "content": "注意呼吸节奏" },
+      { "number": "ob09", "content": "全程控制好腿部力量，缓慢匀速" },
+      { "number": "ob10", "content": "时刻保持肌肉张力" },
+      { "number": "ob11", "content": "骨盆保持中立稳定" },
+      { "number": "ob12", "content": "外展时不要完全放开" }
+    ]
+  },
+  {
+    "equipment": "大腿外侧肌训练器",
+    "audioKVs": [
+      { "number": "pa01", "content": "外展时呼气，还原时吸气" },
+      { "number": "pa02", "content": "保持挺胸收腹，下颚微收" },
+      { "number": "pa03", "content": "吸气缓慢内收，保持稳定" },
+      { "number": "pa04", "content": "感受臀部的发力感" },
+      { "number": "pb01", "content": "吸气肩胛骨下沉" },
+      { "number": "pb02", "content": "外展时角度打开到最大" },
+      { "number": "pb03", "content": "还原时双腿的膝关节之间保持一定的距离" },
+      { "number": "pb04", "content": "始终保持肌肉张力" },
+      { "number": "pb05", "content": "整个过程保持匀速缓慢" },
+      { "number": "pb06", "content": "大腿外展时，小腿与脚部呈放松状态" },
+      { "number": "pb07", "content": "保持顶端收缩稍作停留" },
+      { "number": "pb08", "content": "脚踏实脚踏板，脚尖向前" },
+      { "number": "pb09", "content": "臀部及背部紧贴于器械座椅靠背，身体挺直" },
+      { "number": "pb10", "content": "慢速控制做髋外展" }
+    ]
+  },
+  {
+    "equipment": "坐姿扭腰训练器",
+    "audioKVs": [
+      { "number": "qa01", "content": "旋转时呼气，还原时吸气" },
+      { "number": "qa02", "content": "身体挺直，核心收紧" },
+      { "number": "qa03", "content": "全程保持匀速缓慢" },
+      { "number": "qa04", "content": "感受到腹部肌肉的拉伸感" },
+      { "number": "qb01", "content": "保持臀腿的稳定" },
+      { "number": "qb02", "content": "后背紧贴座椅靠背" },
+      { "number": "qb03", "content": "还原时不要让配重片发生碰撞" },
+      { "number": "qb04", "content": "肩胛骨下沉，下颚微收" },
+      { "number": "qb05", "content": "注意保持全程腰背挺直" },
+      { "number": "qb06", "content": "胳膊不要参与发力" },
+      { "number": "qb07", "content": "注意呼吸节奏" },
+      { "number": "qb08", "content": "时刻保持腹部肌肉张力" },
+      { "number": "qb09", "content": "挺胸收腹，顶峰收缩稍作停留" }
+    ]
+  },
+  {
+    "equipment": "三头肌训练器",
+    "audioKVs": [
+      { "number": "ra01", "content": "下拉时呼气，还原时吸气" },
+      { "number": "ra02", "content": "腰背挺直，核心收紧" },
+      { "number": "ra03", "content": "全程保持身体稳定" },
+      { "number": "ra04", "content": "注意保持顶峰收缩" },
+      { "number": "rb01", "content": "双脚踩实地面，与肩同宽" },
+      { "number": "rb02", "content": "膝关节与脚尖保持一致" },
+      { "number": "rb03", "content": "屈肘自然还原" },
+      { "number": "rb04", "content": "后背紧贴座椅靠背" },
+      { "number": "rb05", "content": "腰腹挺直，核心收紧" },
+      { "number": "rb06", "content": "大臂保持稳定，感受三头肌发力" },
+      { "number": "rb07", "content": "下拉时至手臂自然伸直，不要超伸" },
+      { "number": "rb08", "content": "手臂夹住身体，不要外扩" },
+      { "number": "rb09", "content": "肩胛骨下沉，下颚微收" },
+      { "number": "rb10", "content": "注意胸部不要参与发力" }
+    ]
+  },
+  {
+    "equipment": "二头肌训练器 ",
+    "audioKVs": [
+      { "number": "sa01", "content": "上抬时呼气，下放时吸气" },
+      { "number": "sa02", "content": "挺胸抬头，肩部下沉" },
+      { "number": "sa03", "content": "全程保持缓慢匀速" },
+      { "number": "sa04", "content": "注意小臂不要参与发力" },
+      { "number": "sb01", "content": "背部贴紧器械座椅靠背" },
+      { "number": "sb02", "content": "向上抬起至与大小臂约成45度" },
+      { "number": "sb03", "content": "向下至肘关节自然伸直" },
+      { "number": "sb04", "content": "注意向下肘关节不要超伸" },
+      { "number": "sb05", "content": "大臂紧靠器械护垫" },
+      { "number": "sb06", "content": "身体挺直，核心收紧" },
+      { "number": "sb07", "content": "采用腹式呼吸法" },
+      { "number": "sb08", "content": "保持肘关节稳定" },
+      { "number": "sb09", "content": "保持肌肉张力" }
+    ]
+  },
+  {
+    "equipment": "立式蹬腿训练器",
+    "audioKVs": [
+      { "number": "ta01", "content": "后蹬时呼气，还原时吸气" },
+      { "number": "ta02", "content": "保持身体稳定，核心收紧" },
+      { "number": "ta03", "content": "臀部始终保持受力状态" },
+      { "number": "ta04", "content": "训练过程中脚尖朝下，避免骨盆翻转" },
+      { "number": "tb01", "content": "后蹬至腿自然伸直" },
+      { "number": "tb02", "content": "臀大肌充分收缩" },
+      { "number": "tb03", "content": "训练过程中关节不要锁死" },
+      { "number": "tb04", "content": "时刻保持肌肉张力" },
+      { "number": "tb05", "content": "发力重心放在后脚跟" },
+      { "number": "tb06", "content": "后蹬时腿部不要过度超伸" },
+      { "number": "tb07", "content": "双手发力保持身体稳定" },
+      { "number": "tb08", "content": "臀大肌带动大腿后蹬" },
+      { "number": "tb09", "content": "注意腰部不要代偿" },
+      { "number": "tb10", "content": "还原时不要让配重片发生碰撞" }
+    ]
+  },
+  {
+    "equipment": "三头肌下压器",
+    "audioKVs": [
+      { "number": "ua01", "content": "下压时呼气，还原时吸气" },
+      { "number": "ua02", "content": "身体挺直，核心收紧" },
+      { "number": "ua03", "content": "始终保持肩膀下沉" },
+      { "number": "ua04", "content": "感受大臂后侧发力" },
+      { "number": "ub01", "content": "注意保持顶峰收缩" },
+      { "number": "ub02", "content": "训练过程中双肘不要外扩" },
+      { "number": "ub03", "content": "下压时肘关节向后弯曲" },
+      { "number": "ub04", "content": "全程保持身体稳定" },
+      { "number": "ub05", "content": "注意肩部不要代偿" },
+      { "number": "ub06", "content": "还原时不要让配重片发生碰撞" },
+      { "number": "ub07", "content": "全程保持匀速缓慢" },
+      { "number": "ub08", "content": "注意呼吸节奏" },
+      { "number": "ub09", "content": "背部贴紧器械座椅靠背" }
+    ]
+  },
+  { "equipment": "其他", "audioKVs": [] }
+]
