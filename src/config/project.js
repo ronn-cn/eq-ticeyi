@@ -4,7 +4,7 @@ let lesson_id;
 
 import md5 from 'js-md5';
 
-let data = powerInfo
+let data = powerInfo || {}
 
 if (process.env.VUE_APP_PAGE_ID == 0) {
   // let index = process.env.VUE_APP_PAGE_TYPE

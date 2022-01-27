@@ -154,8 +154,8 @@ export default {
     actionValue(val, oldval) {
       this.$store.commit('set_moheight', val.height) //设置模型下压
       if (val.height > 5) {
-        // console.log(val.height)
-        this.completePercent = 20 + val.height
+        console.log(val.height)
+        this.completePercent = 40 + val.height
       } else {
         this.completePercent = 0
       }
@@ -403,7 +403,12 @@ export default {
       } else {
         this.endType = 2
       }
+
       // this.plannum.currentNum += 1
+      // this.recordScore = {
+      //   data: new Date().getTime(),
+      //   score: 'B',
+      // }
 
       // this.$store.commit('set_resHeightWeight', {
       //   extra_weight: true,

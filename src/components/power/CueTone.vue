@@ -21,13 +21,16 @@ export default {
     recordScore: {
       type: Object,
     },
+    pagetype: {
+      type: [Number, String],
+    },
   },
   data() {
     return {
       audiosrc: '',
       audio_a: null,
-      audio_b: null,
-      audio_c: null,
+      // audio_a: null,
+      // audio_a: null,
       audioList: [],
       scoreList: [
         { type: 'A', num: 0 },
@@ -35,6 +38,7 @@ export default {
         { type: 'C', num: 0 },
         { type: 'D', num: 0 },
       ],
+      encourageList: [],
     }
   },
   computed: {
@@ -45,38 +49,54 @@ export default {
     cuetoneText() {
       return [this.planstate, this.currentNum]
     },
+    weightList() {
+      const data = this.audioList.slice(4, this.audioList.length)
+      return data
+    },
   },
   watch: {
     cuetoneText(val) {
-      switch (val[0]) {
-        case 0:
-          this.play_audioA(val)
-          break
-        case 1:
-          console.log('')
-          break
-        case 2:
-          this.play_audiob(val)
-        case 3:
-          this.play_audiob(val)
-          break
-        case 4:
-          this.play_audioA(val)
-          break
+      if (this.pagetype == 1) {
+        switch (val[0]) {
+          case 1:
+            this.play_audioA(val)
+            break
+          case 2:
+            this.play_audiob(val)
+            break
+          case 3:
+            this.play_audiob(val)
+            break
+          case 4:
+            this.play_audioA(val)
+            break
+        }
+      } else {
+        switch (val[0]) {
+          case 0:
+            this.play_audioA(val)
+            break
+          case 2:
+            this.play_audiob(val)
+            break
+          case 3:
+            this.play_audiob(val)
+            break
+          case 4:
+            this.play_audioA(val)
+            break
+        }
       }
-    },
-    currentNum(val) {
-      // console.log(this.planstate, val)
     },
     recordScore: {
       handler(val) {
-        // console.log(val)
+        console.log(val)
         // console.log(this.audioList)
-        this.scoreList.map((item) => {
+        this.scoreList.map((item, index) => {
           if (item.type == val.score) {
             item.num += 1
             if (item.num == 4) {
-              console.log('播放,然后清空')
+              item.num = 0
               switch (val.score) {
                 case 'A':
                   this.play_encourage('A')
@@ -96,7 +116,6 @@ export default {
             item.num = 0
           }
         })
-        // console.log(this.scoreList)
       },
       deep: true,
     },
@@ -112,21 +131,15 @@ export default {
   methods: {
     //准备
     Render() {
-      // this.audio_dom.play()
       this.$axios
-        .get(`${this.publicPath}powerStatic/js/audio.json`)
+        .get(`${this.publicPath}powerStatic/js/poweraudio.json`)
         .then((res) => {
-          const info = res.data.filter((item) => item.type == this.projecttype)
-          console.log(info[0].data)
-          this.audioList = info[0].data
+          const info = res.data.filter(
+            (item) => item.equipment == this.projecttype
+          )
+          this.audioList = info[0].audioKVs
+          this.encourageList = res.data[0].encourage
         })
-    },
-    //背景音乐
-    back_music(name) {
-      this.audio_music = new Audio()
-      this.audio_music.src = ''
-      this.audio_music.play()
-      this.audio_music.volume = 0.6
     },
     initStart() {
       this.audio_a = new Audio()
@@ -135,30 +148,22 @@ export default {
     },
     //激励话术
     play_encourage(score) {
-      let data = this.audioList[2]
+      let data = this.encourageList
+
       let playList = data[`${score}`]
       let encourageUrl = playList[Math.floor(Math.random() * playList.length)]
-      if (!this.audio_c) {
-        this.audio_c = new Audio()
+      if (!this.audio_a) {
+        this.audio_a = new Audio()
       }
-      this.audio_c.src = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/audio/激励话术/${score}/${encourageUrl}.mp3`
-      this.audio_c.play()
+      this.audio_a.src = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/audio/激励话术/${score}/${encourageUrl}.mp3`
+      this.audio_a.play()
     },
     //热身与辅助
     play_audioA(val) {
-      if (this.audio_c) {
-        this.audio_c.pause()
-      }
-      // const index = { 1: 0, 5: 1, 10: 2, 15: 3 }
-      // if(index[`${val[1]}`]){
-
-      // }
-      let info = this.audioList[0]
-
-      if (info[`${val[1]}`]) {
-        // console.log(info[`${val[1]}`])
-        let playsrc = info[`${val[1]}`]
-
+      const index = { 1: 0, 5: 1, 10: 2, 15: 3 }
+      if (index[`${val[1]}`]) {
+        let i = index[`${val[1]}`]
+        let playsrc = this.audioList[i].number
         if (!this.audio_a) {
           this.audio_a = new Audio()
         }
@@ -168,18 +173,15 @@ export default {
     },
     //负重与金字塔组音频
     play_audiob(val) {
-      if (this.audio_c) {
-        this.audio_c.pause()
-      }
-      let data = this.audioList[1]
+      let data = this.weightList
       if (val[1] % 3 == 0) {
-        // console.log(data[Math.floor(Math.random() * data.length)])
         let playurl1 = data[Math.floor(Math.random() * data.length)]
-        if (!this.audio_b) {
-          this.audio_b = new Audio()
+
+        if (!this.audio_a) {
+          this.audio_a = new Audio()
         }
-        this.audio_b.src = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/audio/${this.projecttype}/话术弹框/${playurl1}.mp3`
-        this.audio_b.play()
+        this.audio_a.src = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/audio/${this.projecttype}/话术弹框/${playurl1.number}.mp3`
+        this.audio_a.play()
       }
     },
   },

@@ -42,7 +42,7 @@ p {
 
     <Login v-if="StandbyState"></Login>
 
-    <div class="iframe_conver1">
+    <div class="iframe_conver1" v-if="this.projecttype !== '体测仪'">
       <iframe
         :src="`${evenfPublic}012fb7b6d5a802614a264827c92194db/${projecttype}3.html`"
         id="mo1"
@@ -50,7 +50,7 @@ p {
         frameborder="0"
       ></iframe>
     </div>
-    <div class="iframe_conver2">
+    <div class="iframe_conver2" v-if="this.projecttype !== '体测仪'">
       <iframe
         :src="`${evenfPublic}012fb7b6d5a802614a264827c92194db/${projecttype}2.html`"
         id="mo2"

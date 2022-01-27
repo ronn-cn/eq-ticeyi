@@ -142,11 +142,12 @@
       :endType="endType"
       @closepopup="closepopup"
     ></strength-aduio>
-    <strength-tone
+    <CueTone
       :planstate="planstate"
       :currentNum="plannum.currentNum"
+      :pagetype="2"
       :recordScore="recordScore"
-    ></strength-tone>
+    ></CueTone>
   </div>
 </template>
 
@@ -157,7 +158,7 @@ import { mapGetters, mapMutations } from 'vuex'
 import { HandleSeatedAbTrainerData } from '@/assets/js/index'
 import RadialProgressBar from 'vue-radial-progress'
 import KProgress from 'k-progress'
-import StrengthTone from '../../../components/power/StrengthTone.vue'
+import CueTone from '../../../components/power/CueTone.vue'
 import train from '@/power/train/index.js'
 import Trainaudio from '@/power/common/Trainaudio.js'
 export default {
@@ -166,7 +167,7 @@ export default {
     RadialProgressBar,
     KProgress,
     StrengthAduio,
-    StrengthTone,
+    CueTone,
   },
   mixins: [train, Trainaudio],
   data() {

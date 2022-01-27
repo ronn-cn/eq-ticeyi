@@ -17,8 +17,8 @@ const state = {
   projecttype: project.projecttype,   //设备类型
   publicPath: process.env.NODE_ENV == "development" ? '/' : './',
   evenfPublic: process.env.NODE_ENV == "development" ? '/' : '../',
-  MakeCareTitle: powerInfo.name,  //预约课程名称
-  MakeCareDesc: powerInfo.desc,    //预约课程简介
+  MakeCareTitle: powerInfo.name || '',  //预约课程名称
+  MakeCareDesc: powerInfo.desc || '',    //预约课程简介
   client_id: '',       //推荐课程id
   lesson_id: project.lesson_id, //课程id
   Audio_effects: null

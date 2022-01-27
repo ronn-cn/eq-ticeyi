@@ -67,7 +67,10 @@ const actions = {
           let data = JSON.parse(e.data);
 
           if (data.cmd !== "resHeightWeight") {
-            console.log(data)
+            if (data.cmd !== 'resMeasureHeight') {
+              console.log(data)
+            }
+
           }
 
           const cmdList = ['resLoginQrcode', 'resLoginUser', 'resServiceBusiness', 'resLastTouchTime', 'resStartLesson', 'resLogoutUser']  //登陆二维码，登陆用户，主机http,间隔时间,课程预约

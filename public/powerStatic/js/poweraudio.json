@@ -1,6 +1,6 @@
 [
   {
-    "equipment": "坐姿卷腹训练器",
+    "equipment": "坐姿腹肌训练器",
     "audioKVs": [
       { "number": "aa01", "content": "下压时吐气，返回时吸气" },
       { "number": "aa02", "content": "身体挺直，下颚微收" },
@@ -18,7 +18,13 @@
       { "number": "ab10", "content": "腰椎保持稳定" },
       { "number": "ab11", "content": "全程用腹肌发力" },
       { "number": "ab12", "content": "过程中保持骨盆稳定" }
-    ]
+    ],
+    "encourage": {
+      "A": ["fd01", "fd02", "fd03", "fd04", "fd05"],
+      "B": ["fc01", "fc02", "fc03", "fc04", "fc05", "fc06"],
+      "C": ["fb01", "fb02", "fb03", "fb04"],
+      "D": ["fa01", "fa02", "fa03"]
+    }
   },
   {
     "equipment": "双轴胸部推举机",
