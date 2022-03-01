@@ -127,18 +127,34 @@ const actions = {
     dispatch('addSportDetail', masg)
   },
   //
-  async updateRM ({ state, getters }, value) {
+  async updateRM ({ state, getters, dispatch }, value) {
     console.log(value)
     const rs = await api.post('/update-user-RM', {
       user_id: getters.userInfo.user_id,
       user_RM: [{
-        part: '坐姿腹肌训练器RM值',
+        part: `${getters.projecttype}RM值`,
         value: value,
         date: Number(Date.parse(new Date()).toString().substr(0, 10))
       }]
     })
-    console.log('更新rm值', rs)
+    console.log('更新rm值', rs.data)
+    if (rs.data.code == '200') {
+      dispatch('all_user')
+    }
+
   },
+  send_RM (context, value) {
+    var sendData = {
+      cmd: 'askGenerateLesson',
+      data: {
+        'rm-kg': value || 12,
+        'limit-type': '通用',
+        sex: 1,
+        weight: 50,
+      },
+    }
+    context.commit('SEND_SOCKET', JSON.stringify(sendData))
+  }
 }
 
 export default {

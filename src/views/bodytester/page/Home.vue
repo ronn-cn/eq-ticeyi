@@ -4,27 +4,19 @@
   height: 100%;
 }
 .home {
-  width: 100%;
-  height: 100%;
+  height: calc(100% - 40px);
   display: flex;
-  background: rgb(27, 26, 26);
-  .home_nav::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 0.04rem;
-    height: 100%;
-    background-color: #2386be;
-  }
+  background: #1b254b;
+  padding: 20px;
   .home_nav {
     color: #fff;
-    width: 3.59rem;
+    margin-right: 18px;
     position: relative;
     &_qrcode {
-      height: 2.5rem;
-      width: 100%;
-      background: linear-gradient(0deg, #4668bf 0%, #3a4199 100%);
+      width: 455px;
+      height: 434px;
+      background: url('~assets/images/phase2/qrback.svg');
+
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -89,31 +81,51 @@
     }
     ul {
       li {
-        height: 1.1rem;
+        width: 455px;
+        height: 132px;
         font-size: 0.26rem;
         display: flex;
-        // justify-content: center;
+        justify-content: center;
         align-items: center;
-        padding-left: 20%;
-        border-bottom: 1px solid #31353c;
-      }
-      .active {
-        background: url('~assets/images/nav_li.png') no-repeat;
-        background-size: cover;
+        margin: 20px 0;
+        background: linear-gradient(180deg, #323647 0%, #222631 100%);
+        box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
+        border-radius: 20px;
         position: relative;
       }
-      .active::after {
-        content: '';
-        width: 0px;
-        height: 0px;
-        border-top: 0.12rem solid transparent;
-        border-bottom: 0.12rem solid transparent;
-        border-left: 0.12rem solid #ffffff;
-        position: absolute;
-        top: 0.44rem;
-        right: -0.1rem;
-        z-index: 99;
+      .active {
+        background: url('~assets/images/phase2/home_active.svg') no-repeat;
+        background-size: cover;
+        position: relative;
+        .home_icon {
+          color: #007aff;
+          background: #ffffff;
+        }
       }
+      .user_liout {
+        background: #ff3b30 !important;
+        color: rgba(255, 255, 255, 0.97);
+        .shape {
+          width: 40px;
+          height: 40px;
+          margin-right: 10px;
+          box-sizing: border-box;
+          background-image: url('/common/images/home/home_icon4.png');
+          background-size: 100% 100%;
+        }
+      }
+      // .active::after {
+      //   content: '';
+      //   width: 0px;
+      //   height: 0px;
+      //   border-top: 0.12rem solid transparent;
+      //   border-bottom: 0.12rem solid transparent;
+      //   border-left: 0.12rem solid #ffffff;
+      //   position: absolute;
+      //   top: 0.44rem;
+      //   right: -0.1rem;
+      //   z-index: 99;
+      // }
     }
     &_out {
       height: 1.28rem;
@@ -178,10 +190,11 @@
               :value="voicestate"
             ></VoiceSwitch>
           </li>
+          <li class="user_liout" @click="logout" v-if="loginState">
+            <div class="home_icon">x</div>
+            退出账号
+          </li>
         </ul>
-        <div class="home_nav_out" @click="logout" v-if="loginState">
-          <span>退出当前账号</span>
-        </div>
       </div>
       <home-view
         :itemindex="itemindex"

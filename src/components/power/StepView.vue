@@ -1,17 +1,15 @@
 <style scoped lang="scss">
 .home_view_introduce {
-  height: 6.37rem;
-  width: 100%;
-  position: relative;
-  background-color: #000;
+  width: 1405px;
+  height: 889px;
+  margin-bottom: 20px;
+  background-color: rgb(25, 211, 18);
+  background: url('~assets/images/phase2/back2.svg') no-repeat;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 20px;
   .introduce_start_before {
-    .introduce_make {
-      color: #40f9ef;
-      font-size: 0.2rem;
-      position: absolute;
-      right: 0.2rem;
-      top: 0.2rem;
-    }
     .introduce_title {
       padding-top: 1rem;
       &_p1 {
@@ -58,19 +56,19 @@
       }
     }
     .action_demo {
-      ol {
-        margin-top: 0.2rem;
-        text-align: left;
-        padding-left: 1rem;
-        counter-reset: section;
-        li {
-          padding-bottom: 0.14rem;
-        }
-        li::before {
-          counter-increment: section;
-          content: counter(section) '、';
-        }
-      }
+      // ol {
+      //   margin-top: 0.2rem;
+      //   text-align: left;
+      //   padding-left: 1rem;
+      //   counter-reset: section;
+      //   li {
+      //     padding-bottom: 0.14rem;
+      //   }
+      //   li::before {
+      //     counter-increment: section;
+      //     content: counter(section) '、';
+      //   }
+      // }
     }
     .h1 {
       color: #fff;
@@ -171,18 +169,33 @@
   font-size: 0.24rem;
   margin-top: 1.2rem;
 }
+
+.video_cover {
+  margin-top: 0.5rem;
+  width: 832px;
+  height: 520px;
+  z-index: 99;
+}
+.introduce_active {
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(180deg, #323647 0%, #222631 100%) !important;
+}
 </style>
 
 <template>
   <div>
-    <div class="home_view_introduce">
+    <div
+      class="home_view_introduce"
+      :class="courseState ? 'introduce_active' : ''"
+    >
       <div class="introduce_start_before" v-if="!courseState && !userMakeState">
         <!-- <div class="introduce_logo">
           <img :src="`${publicPath}common/images/login_img1.png`" />
         </div> -->
-        <div class="introduce_make">
+        <!-- <div class="introduce_make">
           {{ userMakeState ? '设备已预约' : '设备可使用' }}
-        </div>
+        </div> -->
 
         <div class="introduce_title" v-if="itemindex == 0">
           <p class="introduce_title_p1">标准模式</p>
@@ -190,6 +203,7 @@
             根据规定重量开始进行热身组及正式组的锻炼和提升
           </p>
         </div>
+
         <div class="introduce_title" v-if="itemindex == 1">
           <p class="introduce_title_p1">自由模式</p>
           <p class="introduce_title_p2">自主选择重量及组次,开始自由训练模式</p>
@@ -241,11 +255,18 @@
             <div class="home_back"></div>
           </div>
           <h1 class="h1">课程目标</h1>
-          <ul>
-            <li v-for="item of targetList" :key="item.zname">
+          <ul v-if="targetList.length > 0">
+            <li v-for="(item, index) of targetList" :key="index">
               <span>{{ item.zname }}</span>
-              <span>{{ item.numname }}</span>
-              <span>{{ item.totalnum }}</span>
+              <span> {{ item.weight }}KG/{{ item.numname }}次</span>
+              <span>{{ item.totalnum }}组</span>
+            </li>
+          </ul>
+          <ul v-else>
+            <li v-for="(item, index) of target" :key="index">
+              <span>{{ item.zname }}</span>
+              <span> {{ item.weight }}KG/{{ item.numname }}次</span>
+              <span>{{ item.totalnum }}组</span>
             </li>
           </ul>
         </div>
@@ -262,44 +283,29 @@
           </div>
           <p class="target_title2">请调整配重至个人极限重量,开启RM值测试</p>
         </div>
-        <div
-          class="apparatus_test"
-          v-show="
-            (itemindex == 0 && viewindex == 2) ||
-            (itemindex == 1 && viewindex == 1) ||
-            (itemindex == 2 && viewindex == 2)
-          "
-        >
+        <div class="apparatus_test" v-if="isVideo1">
           <div @click="backindex">
             <div class="step_back"></div>
             <div class="home_back"></div>
           </div>
           <h1 class="h1">器械调试</h1>
           <video
-            style="margin-top: 0.5rem; width: 832px; height: 520px"
-            :src="videourl1"
+            class="video_cover"
+            :src="`${evenfPublic}fd57a4b1acfa40a665a28686d746789e/video/${projecttype}/${projecttype}（器械调节）.mp4`"
             ref="myvideo1"
           >
             Your browser does not support the video tag.
           </video>
         </div>
-        <div
-          class="action_demo"
-          v-show="
-            (itemindex == 0 && viewindex == 3) ||
-            (itemindex == 1 && viewindex == 2) ||
-            (itemindex == 2 && viewindex == 3)
-          "
-        >
+        <div class="action_demo" v-if="isVideo2">
           <div @click="backindex">
             <div class="step_back"></div>
             <div class="home_back"></div>
           </div>
           <h1 class="h1">动作演示</h1>
-
           <video
-            style="margin-top: 0.5rem; width: 832px; height: 520px"
-            :src="videourl2"
+            class="video_cover"
+            :src="`${evenfPublic}fd57a4b1acfa40a665a28686d746789e/video/${projecttype}/${projecttype}（动作演示）.mp4`"
             ref="myvideo2"
           >
             Your browser does not support the video tag.
@@ -326,6 +332,10 @@ export default {
     courseState: {
       type: Boolean,
     },
+    targetList: {
+      type: Array,
+      default: [],
+    },
   },
   components: {
     RadialProgressBar,
@@ -345,61 +355,77 @@ export default {
     get_viewindex() {
       return this.viewindex
     },
+    isVideo1() {
+      if (
+        (this.itemindex == 0 && this.viewindex == '2') ||
+        (this.itemindex == 1 && this.viewindex == '1') ||
+        (this.itemindex == 2 && this.viewindex == '2')
+      ) {
+        return true
+      }
+      return false
+    },
+    isVideo2() {
+      if (
+        (this.itemindex == 0 && this.viewindex == '3') ||
+        (this.itemindex == 1 && this.viewindex == '2') ||
+        (this.itemindex == 2 && this.viewindex == '3')
+      ) {
+        return true
+      }
+      return false
+    },
   },
   watch: {
     get_viewindex(val) {
-      this.videourl1 = ''
-      this.videourl2 = ''
-      if (
-        (this.itemindex == 0 && val == '2') ||
-        (this.itemindex == 1 && val == '1') ||
-        (this.itemindex == 2 && val == '2')
-      ) {
-        this.videourl1 = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/video/${this.projecttype}/${this.projecttype}（器械调节）.mp4`
-        // this.videourl1 = `${this.publicPath}powerStatic/video/双轴肩部推举器（器械调节）.mp4`
-        setTimeout(() => {
+      if (this.isVideo1) {
+        this.$nextTick(() => {
           this.$refs.myvideo1.play()
-        }, 500)
+        })
       }
-      if (
-        (this.itemindex == 0 && val == '3') ||
-        (this.itemindex == 1 && val == '2') ||
-        (this.itemindex == 2 && val == '3')
-      ) {
-        // this.videourl1 = `${this.publicPath}powerStatic/video/${this.projecttype}2.mp4`
-        this.videourl2 = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/video/${this.projecttype}/${this.projecttype}（动作演示）.mp4`
-        setTimeout(() => {
+      if (this.isVideo2) {
+        this.$nextTick(() => {
           this.$refs.myvideo2.play()
-        }, 500)
+        })
+        // this.videourl1 = `${this.publicPath}powerStatic/video/${this.projecttype}2.mp4`
+        // this.videourl2 = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/video/${this.projecttype}/${this.projecttype}（动作演示）.mp4`
+        // setTimeout(() => {
+        //   this.$refs.myvideo2.play()
+        // }, 500)
       }
     },
   },
   data() {
     return {
-      targetList: [
+      target: [
         {
           zname: '热身组',
-          numname: '6KG/10次',
-          totalnum: '2组',
+          weight: '12',
+          numname: '20',
+          totalnum: '1组',
         },
         {
           zname: '极限组(RM值测试)',
-          numname: '12KG/次 → Max KG/次',
+          weight: '12',
+          numname: 'Max KG/',
           totalnum: '1次/Max KG',
         },
         {
           zname: '金字塔组',
-          numname: '3~20 RM/5次',
+          weight: '3~20',
+          numname: '5',
           totalnum: '各1组',
         },
         {
           zname: '负重组',
-          numname: '4~12 RM/6~12次',
+          weight: '4~12',
+          numname: '6~12',
           totalnum: '3~8组',
         },
         {
           zname: '辅助组',
-          numname: '4~12 RM/15次',
+          weight: '4~12',
+          numname: '15',
           totalnum: '2组',
         },
       ],
@@ -412,6 +438,7 @@ export default {
   created() {},
   mounted() {
     // this.createdVideo()
+    console.log(this.targetList)
   },
   methods: {
     backindex() {
@@ -419,7 +446,7 @@ export default {
     },
     createdVideo() {
       let videourl = `${this.publicPath}powerStatic/video/tiaoshi.mp4`
-      this.video1 = `<video 
+      this.video1 = `<video
                id="videoaction1"
                src="${videourl}"
                style="width:100%"

@@ -23,5 +23,10 @@ export default [
     name: "DataDetection",
     component: _import('bodytester/page/DataDetection'),
   },
+  {
+    path: "/threemo",
+    name: "threemo",
+    component: _import('bodytester/page/threeMo'),
+  },
 ]
 

@@ -74,15 +74,18 @@
   right: 0;
   transform: translateX(100px) translateY(-100px) rotate(45deg);
 }
-.den_icon {
-  position: fixed;
-  right: 15px;
-  top: 25px;
+.end_btn::after {
+  content: '';
+  position: absolute;
+  right: -32px;
+  top: 40px;
   width: 40px;
   height: 40px;
   background: url('~assets/images/common/home_icon4.png') no-repeat;
   background-size: 100% 100%;
+  transform: rotate(45deg);
 }
+
 ::v-deep .el-progress-bar__outer {
   height: 0.13rem !important;
   border-radius: 0 !important;
@@ -172,4 +175,24 @@
   left: 0.1rem;
   top: 0;
   background: url('~assets/images/common/skip.png');
+}
+.audio_text {
+  width: 600px;
+  position: fixed;
+  right: 270px;
+  bottom: 170px;
+  z-index: 999;
+}
+
+.jojo-leave-active {
+  animation: jojo 0.5s linear;
+}
+
+@keyframes jojo {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }

@@ -66,12 +66,11 @@ const actions = {
         ws.onmessage = function (e) {
           let data = JSON.parse(e.data);
 
-          if (data.cmd !== "resHeightWeight") {
-            if (data.cmd !== 'resMeasureHeight') {
-              console.log(data)
-            }
-
-          }
+          // if (data.cmd !== "resHeightWeight") {
+          //   if (data.cmd !== 'resMeasureHeight') {
+          //     console.log(data)
+          //   }
+          // }
 
           const cmdList = ['resLoginQrcode', 'resLoginUser', 'resServiceBusiness', 'resLastTouchTime', 'resStartLesson', 'resLogoutUser']  //登陆二维码，登陆用户，主机http,间隔时间,课程预约
           const powerList = ['resHeightWeight', 'resGenerateLesson']  //下压数据,课程开始
@@ -123,7 +122,7 @@ const actions = {
           commit('set_httpUrl', {})
           window.businesstime = setInterval(() => {
             ws.send('{"cmd":"askServiceBusiness"}');
-          }, 1000 * 300);
+          }, 1000 * 3);
         }
         break;
       case "resLastTouchTime":   //屏幕间隔时间

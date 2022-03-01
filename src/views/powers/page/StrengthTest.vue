@@ -1,64 +1,30 @@
 <style scoped lang="scss">
-@import '~assets/css/trainpage.scss';
-.test_page {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: #797979;
+@import '~assets/css/strengthtest.scss';
+.audio_text {
+  width: 600px;
+  position: fixed;
+  right: 270px;
+  bottom: 170px;
   z-index: 999;
-  .test_p1 {
-    font-size: 0.36rem;
-    margin-top: 1.3rem;
+}
+
+.jojo-leave-active {
+  animation: jojo 0.5s linear;
+}
+
+@keyframes jojo {
+  from {
+    opacity: 1;
   }
-  .test_p2 {
-    font-size: 0.28rem;
-    margin: 0.8rem 0;
-  }
-  .test_p3 {
-    font-size: 0.7rem;
-  }
-  .test_page_btn {
-    padding: 0.1rem;
-    height: 16%;
-    position: absolute;
-    bottom: 0;
-    // background-color: cyan;
-    display: flex;
-    .test_btn1 {
-      padding: 20px;
-      width: 4rem;
-      margin-right: 0.2rem;
-      border-radius: 5px;
-      background-color: #017aff;
-      box-sizing: border-box;
-      box-shadow: 5px 5px 20px 0px #017aff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 0.3rem;
-    }
-    .test_btn2 {
-      padding: 20px;
-      width: 8.3rem;
-      border-radius: 5px;
-      background-color: #1fac4a;
-      box-sizing: border-box;
-      box-shadow: 5px 5px 20px 0px #10c98f,
-        inset 5px 5px 20px 0px rgba(255, 255, 255, 0.35);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 0.3rem;
-    }
+  to {
+    opacity: 0;
   }
 }
 </style>
 
 <template>
   <div class="page">
-    <div class="test_page" v-if="testShow">
+    <section class="test_page" v-if="testShow">
       <div class="test_back" @click="backHome"></div>
       <p class="test_p1">当前器械1RM测定值</p>
       <p class="test_p2">当前器械能举起的最大重量为</p>
@@ -67,7 +33,8 @@
         <div class="test_btn1" @click="testBtn(0)">重新测试</div>
         <div class="test_btn2" @click="testBtn(1)">继续训练</div>
       </div>
-    </div>
+    </section>
+
     <div v-if="!testShow">
       <header class="page_header">
         <h1>{{ planText2[this.planstate] }}</h1>
@@ -85,7 +52,7 @@
           <div
             class="end_test_btn"
             v-if="planstate == 0 && !reststate"
-            @touchstart="testShow = true"
+            @touchstart="savatest"
           >
             结束测试
           </div>
@@ -132,33 +99,41 @@
           <p class="text_p2">{{ traininfo.Weight || 0 }}KG</p>
         </div>
       </div>
+      <transition name="jojo" appear>
+        <div class="audio_text" v-if="audioText">{{ audioText }}</div>
+      </transition>
     </div>
+
     <div @click="btn_click(0)">
       <div class="end_btn"></div>
       <div class="den_icon"></div>
     </div>
+
     <strength-aduio
       v-if="showPopup"
       :endType="endType"
       @closepopup="closepopup"
     ></strength-aduio>
+
     <CueTone
       :planstate="planstate"
       :currentNum="plannum.currentNum"
       :pagetype="2"
       :recordScore="recordScore"
+      @setAudioText="setAudioText"
     ></CueTone>
   </div>
 </template>
 
 <script>
-import StrengthAduio from '@/components/power/StrengthAduio.vue'
+import StrengthAduio from '@/components/power/AduioPopup.vue'
+import CueTone from '../../../components/power/CueTone.vue'
+
 import RestPage from './TestRest.vue'
 import { mapGetters, mapMutations } from 'vuex'
 import { HandleSeatedAbTrainerData } from '@/assets/js/index'
 import RadialProgressBar from 'vue-radial-progress'
 import KProgress from 'k-progress'
-import CueTone from '../../../components/power/CueTone.vue'
 import train from '@/power/train/index.js'
 import Trainaudio from '@/power/common/Trainaudio.js'
 export default {
@@ -192,18 +167,12 @@ export default {
         weight: 12,
       },
       //组数
-      // groupnum: {
-      //   totalNum: 0,
-      //   currentNum: 0,
-      //   pyramid: 0,
-      //   weight: 0,
-      // },
       weightgroup: [], //负重组
       pyramidgroup: [], //金字塔组
       auxiliarygroup: [], //辅助组
       planstate: 0, //极限组 1热身组 2负重组 3金字塔组 4.辅助组
       targetPercent: 20,
-      completePercent: 80,
+      completePercent: 0,
       addPercent: null,
       downPercent: null,
       testShow: false,
@@ -214,13 +183,10 @@ export default {
     ...mapGetters([
       'actionValue',
       'coursegroup',
-      'lesson_id',
-      'publicPath',
       'loginState',
       'userInfo',
       'user_rmvalue',
       'moloopval',
-      'powerEndData',
     ]),
   },
   watch: {
@@ -334,7 +300,7 @@ export default {
     }
   },
   mounted() {
-    this.loadTrain()
+    this.loadTrain() //初始化开始课程
   },
   //离开页面
   destroyed: function () {
@@ -344,21 +310,12 @@ export default {
   },
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_resHeightWeight']),
-    //设置参数
-    set_plannum(setkey) {
-      let ketList = setkey || []
-      for (let i in ketList) {
-        let data = setkey[i].split(',')
-        this.plannum[data[0]] = data[1]
-      }
-    },
     limit(e) {
       setTimeout(() => {
         this.reststate = true
         this.totalSteps = 20 //休息时长
         this.plannum.weight = e.Weight
         // this.plannum.group_currentNum += 1
-
         if (e.Weight + 6 > this.plannum.weight) {
           this.plannum.weight =
             e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6 //比上一组做的重量大才赋值
@@ -411,7 +368,7 @@ export default {
           } else {
             // console.log(this.planstate)
             if (this.planstate == 3) {
-              if (JSON.stringify(this.auxiliarygroup) == '{}') {
+              if (this.auxiliarygroup.length == 0) {
                 this.$router.push('/endpage')
               }
             } else if (this.planstate == 4) {
@@ -434,7 +391,6 @@ export default {
           }
       }
     },
-
     async backHome() {
       if (this.loginState) {
         this.$store.dispatch('updateRM', this.traininfo.Weight || 0)
@@ -450,10 +406,11 @@ export default {
         rmkg = this.traininfo.Weight
       }
       this.$store.commit('set_weight_rm', rmkg)
+
       var sendData = {
         cmd: 'askGenerateLesson',
         data: {
-          'rm-kg': rmkg || 24,
+          'rm-kg': rmkg || 12,
           'limit-type': '通用',
           sex: 1,
           weight: 50,
@@ -482,47 +439,6 @@ export default {
     startrest() {
       this.reststate = true
     },
-    //底部value值
-    footvalue(item) {
-      switch (item) {
-        case 0:
-          return this.timevalue || '00.00'
-        case 1:
-          return (
-            this.plannum.group_currentNum + ' / ' + this.plannum.group_totalNum
-          )
-        case 2:
-          return this.plannum.currentNum + ' / ' + this.plannum.totalNum
-        case 3:
-          let num = this.traininfo.Percent
-          if (num) {
-            return Math.round(num * 100)
-          }
-          return 0
-        case 4:
-          return this.powerEndData.amount || 0
-      }
-    },
-    //按钮事件
-    btn_click(index) {
-      this.showPopup = true
-      if (this.planstate > 2) {
-        this.endType = 1
-      } else {
-        this.endType = 2
-      }
-    },
-    //弹框事件
-    popupbtn(type) {
-      if (type == 0) {
-        this.$router.push({
-          path: '/endpage',
-          query: { reneging: 1, timevalue: this.timevalue },
-        })
-      } else {
-        this.showPopup = false
-      }
-    },
     //跳过
     skipstop() {
       if (this.planstate == 4) {
@@ -541,6 +457,9 @@ export default {
           })
         }
       }
+    },
+    savatest() {
+      this.testShow = true
     },
   },
 }

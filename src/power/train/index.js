@@ -21,10 +21,18 @@ export default {
         data: '',
         score: '',
       },
+      audioText: '',
     }
   },
   computed: {
-    ...mapGetters(['projecttype', 'lesson_id'])
+    ...mapGetters(['projecttype', 'lesson_id', 'powerEndData', 'user_rmvalue'])
+  },
+  watch: {
+    audioText (ntext) {
+      setTimeout(() => {
+        this.audioText = ''
+      }, 2500)
+    },
   },
   methods: {
     //开始初始化
@@ -77,20 +85,86 @@ export default {
     },
     //跳过
     skipstop () {
-      if (this.planstate !== 1) {
-        if (this.planstate == 4) {
+      // console.log(this.user_rmvalue.state)
+      if (this.planstate == 0) {
+        if (this.user_rmvalue.state) {
+          this.StartTrain(this.user_rmvalue.value)
+          // if (!this.courseStatus) {
+          //   this.StartTrain(this.userRMState.user_rm)
+          // } else {
+          //   this.wuhu()
+          // }          
+        } else {
+          this.wuhu()
+        }
+      } else if (this.planstate == 3) {
+        if (this.auxiliarygroup.length > 0) {
+          this.wuhu()
+        } else {
           this.$router.push({
             path: '/endpage',
             query: { reneging: 1, timevalue: this.timevalue },
           })
-        } else {
-          this.planstate += 1
-          this.reststate = false
-          this.$nextTick(() => {
-            this.reststate = true
-          })
         }
+      } else if (this.planstate == 4) {
+        this.$router.push({
+          path: '/endpage',
+          query: { reneging: 1, timevalue: this.timevalue },
+        })
+      } else {
+        this.wuhu()
       }
+    },
+    wuhu () {
+      this.planstate += 1
+      this.reststate = false
+      this.$nextTick(() => {
+        this.reststate = true
+      })
+    },
+    //底部value值
+    footvalue (item) {
+      switch (item) {
+        case 0:
+          return this.timevalue || '00.00'
+        case 1:
+          return (
+            this.plannum.group_currentNum + ' / ' + this.plannum.group_totalNum
+          )
+        case 2:
+          return this.plannum.currentNum + ' / ' + this.plannum.totalNum
+        case 3:
+          let num = this.traininfo.Percent
+          if (num) {
+            return Math.round(num * 100)
+          }
+          return 0
+        case 4:
+          return this.powerEndData.amount || 0
+      }
+    },
+    //按钮事件
+    btn_click (index) {
+      this.showPopup = true
+      if (this.planstate > 2) {
+        this.endType = 1
+      } else {
+        this.endType = 2
+      }
+
+      // this.plannum.currentNum += 1
+      // this.recordScore = {
+      //   data: new Date().getTime(),
+      //   score: 'B',
+      // }
+      // this.$store.commit('set_resHeightWeight', {
+      //   extra_weight: true,
+      //   height: 13,
+      //   weight: 2,
+      // })
+    },
+    setAudioText (text) {
+      this.audioText = text
     },
   }
 }

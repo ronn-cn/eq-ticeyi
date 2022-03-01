@@ -1,5 +1,23 @@
 <style scoped lang="scss">
 @import '~assets/css/trainpage.scss';
+.audio_text {
+  width: 600px;
+  position: fixed;
+  right: 270px;
+  bottom: 170px;
+  z-index: 999;
+}
+.freejojo-leave-active {
+  animation: jojo 0.5s linear;
+}
+@keyframes jojo {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 </style>
 
 <template>
@@ -46,6 +64,9 @@
       <div class="end_btn"></div>
       <div class="den_icon"></div>
     </div>
+    <transition name="freejojo" appear>
+      <div class="audio_text" v-if="audioText">{{ audioText }}</div>
+    </transition>
   </div>
 </template>
 
@@ -82,6 +103,7 @@ export default {
       targetdown: null,
       audioList: [],
       audio_free: null,
+      audioText: '',
     }
   },
   mixins: [train, Trainaudio],
@@ -96,6 +118,27 @@ export default {
     ]),
   },
   watch: {
+    audioText(ntext) {
+      setTimeout(() => {
+        this.audioText = ''
+      }, 2500)
+    },
+    // plannum: {
+    //   handler(nval) {
+    //     if (this.plannum.currentNum % 3 == 0) {
+    //       if (!this.audio_free) {
+    //         this.audio_free = new Audio()
+    //       }
+    //       let free =
+    //         this.audioList[Math.floor(Math.random() * this.audioList.length)]
+    //       this.audioText = free.content
+
+    //       this.audio_free.src = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/audio/${this.projecttype}/话术弹框/${free.number}.mp3`
+    //       this.audio_free.play()
+    //     }
+    //   },
+    //   deep: true,
+    // },
     actionValue(val, oldval) {
       this.$store.commit('set_moheight', val.height)
       let num = val.extra_weight ? val.weight * 6 + 3 : val.weight * 6
@@ -127,7 +170,9 @@ export default {
           }
           let free =
             this.audioList[Math.floor(Math.random() * this.audioList.length)]
-          this.audio_free.src = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/audio/${this.projecttype}/话术弹框/${free}.mp3`
+          this.audioText = free.content
+
+          this.audio_free.src = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/audio/${this.projecttype}/话术弹框/${free.number}.mp3`
           this.audio_free.play()
         }
       })
@@ -135,7 +180,7 @@ export default {
   },
   created() {},
   mounted() {
-    this.initStart()
+    // this.initStart()
     this.loadTrain()
     this.timestart()
     this.loadAudioList()
@@ -149,9 +194,11 @@ export default {
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_resHeightWeight']),
     loadAudioList() {
-      this.$axios.get(`/powerStatic/js/free_audio.json`).then((res) => {
-        const info = res.data.filter((item) => item.type == this.projecttype)
-        this.audioList = info[0].data
+      this.$axios.get(`/powerStatic/js/poweraudio.json`).then((res) => {
+        const info = res.data.filter(
+          (item) => item.equipment == this.projecttype
+        )
+        this.audioList = info[0].audioKVs
       })
     },
     //底部value值
@@ -179,6 +226,12 @@ export default {
         path: '/endpage',
         query: { timevalue: this.timevalue },
       })
+
+      // this.plannum.currentNum += 1
+      // this.recordScore = {
+      //   data: new Date().getTime(),
+      //   score: 'B',
+      // }
     },
   },
 }

@@ -67,6 +67,9 @@ const actions = {
       if (userrm[0].value != 0) {
         state.user_rmvalue.state = true
         state.user_rmvalue.value = userrm[0].value
+      } else {
+        state.user_rmvalue.state = false
+        state.user_rmvalue.value = 0
       }
     }
 

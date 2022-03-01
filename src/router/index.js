@@ -7,8 +7,6 @@ import RouterCommon from './common' // 引入通用模块
 
 Vue.use(Router)
 
-
-
 const router = new Router({
   //mode: routerMode, // history模式需要服务端支持
   scrollBehavior (to, from, savedPosition) {

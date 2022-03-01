@@ -15,8 +15,8 @@ const state = {
   sport_start_time: 0, //课程开始时间
   sport_end_time: 0, //课程结束时间
   projecttype: project.projecttype,   //设备类型
-  publicPath: process.env.NODE_ENV == "development" ? '/' : './',
-  evenfPublic: process.env.NODE_ENV == "development" ? '/' : '../',
+  publicPath: process.env.NODE_ENV == "development" ? '/' : './',   //打包目录
+  evenfPublic: process.env.NODE_ENV == "development" ? '/' : '../', //资源目录
   MakeCareTitle: powerInfo.name || '',  //预约课程名称
   MakeCareDesc: powerInfo.desc || '',    //预约课程简介
   client_id: '',       //推荐课程id
@@ -146,7 +146,9 @@ const actions = {
   click_effects ({ state, dispatch }) {
     if (!state.Audio_effects) {
       state.Audio_effects = new Audio()
-      state.Audio_effects.src = require(`../../assets/audio/click.mp3`)
+      // state.Audio_effects.src = require(`${state.evenfPublic}../../assets/audio/click.mp3`)
+      state.Audio_effects.src = `${state.publicPath}powerStatic/audio/首页/click.mp3`
+
     }
     state.Audio_effects.play()
   },

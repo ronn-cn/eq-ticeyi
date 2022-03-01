@@ -1,202 +1,5 @@
 <style scoped lang="scss">
-.end_page {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  z-index: 1;
-  display: flex;
-  &_right {
-    color: #000;
-    width: 100%;
-    background: #f2f2f2;
-    position: relative;
-    .rignt_head {
-      display: flex;
-      align-items: center;
-      padding-left: 5%;
-      margin-top: 0.31rem;
-      position: relative;
-      &_badge {
-        width: 75%;
-        height: 0.84rem;
-        background-position: left;
-        background-repeat: repeat-y;
-        border-bottom: 1px solid #000;
-        display: flex;
-        align-items: center;
-        .plan_text {
-          font-size: 0.22rem;
-          letter-spacing: 0.04rem;
-        }
-      }
-      &_grade {
-        position: absolute;
-        top: -0.5rem;
-        right: 2.4rem;
-        img {
-          width: 1.3rem;
-          height: 1.5rem;
-        }
-      }
-    }
-    .right_type {
-      margin: 0.34rem 0;
-      ul {
-        width: 80%;
-        display: flex;
-        // justify-content: space-between;
-        padding-left: 5%;
-        li {
-          position: relative;
-          text-align: left;
-          padding-bottom: 0.2rem;
-          margin-left: 0.3rem;
-          margin-right: 0.9rem;
-          .type_icon {
-            position: absolute;
-            top: 0.1rem;
-            left: -0.35rem;
-            width: 45px;
-            height: 45px;
-            // background-color: aqua;
-            img {
-              width: 100%;
-              height: 100%;
-            }
-          }
-          .right_type_value {
-            width: 35%;
-            font-size: 0.28rem;
-            font-weight: bold;
-          }
-          .right_type_title {
-            font-size: 0.2rem;
-            font-weight: 400;
-          }
-        }
-      }
-    }
-    .right_echart {
-      width: 100%;
-      margin-top: 0.2rem 0;
-      h3 {
-        font-size: 0.16rem;
-        font-weight: 600;
-        text-align: left;
-        padding: 0 0 0rem 5%;
-        margin-bottom: 0.3rem;
-      }
-      .echart_size {
-        width: 90%;
-        height: 2.6rem;
-      }
-    }
-  }
-  .right_foot {
-    width: 100%;
-    height: 0.8rem;
-    position: absolute;
-    left: 0;
-    bottom: 0.1rem;
-    display: flex;
-    .btn_btn {
-      margin-left: 5%;
-      margin-right: 2%;
-      width: 60%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-      background-color: rgb(31, 172, 74);
-    }
-    .btn_btn1,
-    .btn_btn2 {
-      width: 20%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: rgb(237, 77, 113);
-      position: relative;
-      .btn_end1 {
-        position: absolute;
-        left: 0;
-        // animation: backTo 30s linear;
-        height: 100%;
-        background-color: rgba(214, 199, 199, 0.753);
-      }
-      .btn_end2 {
-        position: absolute;
-        left: 0;
-        // animation: backTo2 30s linear;
-        height: 100%;
-        background-color: rgba(167, 167, 167, 0.753);
-      }
-    }
-    .btn_btn2 {
-      width: 70%;
-      margin-left: 5%;
-    }
-  }
-}
-@keyframes backTo {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-@keyframes backTo2 {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-.login_qr {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 2rem;
-  height: 2rem;
-  // background-color: bisque;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  p {
-    font-size: 0.12rem;
-    font-weight: bold;
-  }
-}
-.login_activer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  margin-right: 0.2rem;
-  // background-color: bisque;
-  .user_text1 {
-    margin-left: 15px;
-    font-size: 0.18rem;
-  }
-  .user_text2 {
-    width: 0.6rem;
-    height: 0.6rem;
-    border-radius: 50%;
-    font-size: 0.12rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #fff;
-  }
-  .user_img {
-    width: 0.6rem;
-    height: 0.6rem;
-    border-radius: 50%;
-  }
-}
+@import '~assets/css/end_page.scss';
 </style>
 
 <template>
@@ -280,7 +83,6 @@ import { mapGetters, mapActions } from 'vuex'
 import QRCode from '@/components/QRCode.vue'
 import RecommCourses from '@/components/RecommCourses.vue'
 import RecommUser from '@/components/RecommUser.vue'
-import api from '@/api/api.js'
 export default {
   components: {
     Echarts,
@@ -341,7 +143,7 @@ export default {
     this.typeList[4].value = this.powerEndData.amount //平均负重
   },
   mounted() {
-    console.log(this.completion)
+    // console.log(this.completion)
     if (!this.loginState) {
       this.init_qrcode()
     }
@@ -366,7 +168,6 @@ export default {
     ...mapGetters([
       'Qrcode',
       'loginState',
-      'ouid',
       'userInfo',
       'lesson_id',
       'publicPath',

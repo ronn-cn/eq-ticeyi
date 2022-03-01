@@ -4,41 +4,51 @@
   height: 100%;
   position: relative;
   &_footer {
-    position: absolute;
-    left: 0;
-    bottom: 0;
     .footer_step {
+      width: 1320px;
+      position: fixed;
+      bottom: 190px;
+      left: 545px;
+
       ul {
+        width: 100%;
         display: flex;
+        justify-content: space-between;
+        margin-bottom: 0;
         li {
           color: #fff;
-          width: 3.07rem;
-          height: 0.33rem;
-          font-size: 0.2rem;
+          width: 33%;
+          height: 10px;
+          font-size: 0.18rem;
           text-align: center;
-          line-height: 0.33rem;
-          background-color: rgb(26, 28, 45);
+          border-radius: 10px;
+          background-color: #7f7f7f;
+          position: relative;
+          margin-bottom: 12px;
         }
         .view_active {
-          background-color: rgb(65, 65, 73);
+          background-color: rgb(80, 187, 127);
+          color: #000;
+          font-weight: 600;
+          position: relative;
         }
       }
     }
     .footer_start {
       width: 100%;
-      height: 1.3rem;
+      height: 131px;
+      background: #28cd41;
+      border-radius: 20px;
       display: flex;
       color: #fff;
+      justify-content: space-between;
       .start_text1 {
         width: 100%;
-        font-size: 0.36rem;
         font-family: SourceHanSansCN;
         font-weight: 400;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: url('~assets/images/view_23.png') no-repeat;
-        background-size: 100% 100%;
       }
     }
   }
@@ -57,14 +67,14 @@
         v-if="isRouterShow"
       ></step-view>
       <div class="home_view_footer" v-if="itemindex == 0">
-        <div class="footer_step">
+        <div class="footer_step" v-show="courseState">
           <ul>
             <li
               v-for="(item, index) of stepList"
               :id="'footer_li' + index"
               :key="item"
             >
-              {{ item }}
+              <!-- {{ item }} -->
             </li>
           </ul>
         </div>

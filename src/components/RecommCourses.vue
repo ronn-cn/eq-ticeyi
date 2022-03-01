@@ -480,7 +480,7 @@ header {
         class="main_cover_plan"
         :style="showTable ? 'height:3.4rem' : 'Height:5rem'"
       >
-        <section class="plan_day">
+        <section class="plan_day" v-show="showTable">
           <h3 class="day_h3">
             {{ showTable ? '今日训练计划' : '今日推荐课程' }}
           </h3>
@@ -495,7 +495,10 @@ header {
           </div>
           <div class="plan_day_img"></div>
         </section>
-        <section class="suggest_plan">
+        <section
+          class="suggest_plan"
+          :style="showTable ? 'width:70%' : 'width:100%'"
+        >
           <h3>通过以下推荐课程继续训练</h3>
           <ul class="suggest_ul">
             <li v-for="item of curriculum" :key="item.title">
@@ -654,8 +657,9 @@ export default {
     },
     //开始课程
     async new_details(info) {
-      const groupname = info.groupname
+      const groupname = [info.groupname]
       const user_id = this.userInfo.user_id
+
       const rs = await api.post('/new-lesson-select', {
         user_id,
         groupname,

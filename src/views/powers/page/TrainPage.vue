@@ -22,13 +22,15 @@
           <div
             class="end_test_btn"
             v-if="planstate == 1 && !reststate"
-            @touchstart="StartTrain"
+            @touchstart="StartTrain()"
           >
             结束测试
           </div>
         </div>
       </section>
-
+      <transition name="jojo" appear>
+        <div class="audio_text" v-if="audioText">{{ audioText }}</div>
+      </transition>
       <footer class="page_footer">
         <ul>
           <li v-for="(item, index) of footlist" :key="item">
@@ -73,10 +75,9 @@
         </div>
       </div>
     </div>
-    <div @click="btn_click(0)">
-      <div class="end_btn"></div>
-      <div class="den_icon"></div>
-    </div>
+
+    <div @click="btn_click(0)" class="end_btn"></div>
+
     <aduio-popup
       v-if="showPopup"
       :endType="endType"
@@ -84,44 +85,41 @@
       @closepopup="closepopup"
     ></aduio-popup>
     <cue-tone
-      v-if="planstate !== 1"
+      ref="ctone"
       :planstate="planstate"
+      :restnum="restnum"
       :currentNum="plannum.currentNum"
       :recordScore="recordScore"
+      @setAudioText="setAudioText"
     ></cue-tone>
   </div>
 </template>
 
 <script>
-import AduioPopup from '@/components/power/AduioPopup.vue'
-import CueTone from '@/components/power/CueTone.vue'
+import { Dialog } from 'vant'
 import { mapGetters, mapMutations } from 'vuex'
 import { HandleSeatedAbTrainerData } from '@/assets/js/index'
 import RestPage from './RestPage.vue'
-import RadialProgressBar from 'vue-radial-progress'
 import KProgress from 'k-progress'
 import train from '@/power/train/index.js'
 import Trainaudio from '@/power/common/Trainaudio.js'
+import AduioPopup from '@/components/power/AduioPopup.vue'
+import CueTone from '@/components/power/CueTone.vue'
 export default {
   components: {
     CueTone,
     RestPage,
-    RadialProgressBar,
     KProgress,
     AduioPopup,
   },
   mixins: [train, Trainaudio],
   data() {
     return {
+      // userRMState: {},
       traininfo: {},
       reststate: true, //休息状态
       totalSteps: 30, //休息时长
       restweight: 6, //休息重量
-      // restinfo: {
-      //   group: 1,
-      //   weight: 12,
-      //   num: 20,
-      // },
       //次数
       plannum: {
         totalNum: 20,
@@ -138,23 +136,33 @@ export default {
       completePercent: 0,
       addPercent: null,
       downPercent: null,
+      restnum: 0, //休息话术
+      audioText: '',
+      courseStatus: false, //是否已开组
     }
   },
   computed: {
     ...mapGetters([
+      'loginState',
       'actionValue',
       'coursegroup',
       'lesson_id',
       'publicPath',
       'moloopval',
       'powerEndData',
+      'user_rmvalue',
     ]),
   },
   watch: {
+    audioText(ntext) {
+      setTimeout(() => {
+        this.audioText = ''
+      }, 2500)
+    },
     actionValue(val, oldval) {
       this.$store.commit('set_moheight', val.height) //设置模型下压
       if (val.height > 5) {
-        console.log(val.height)
+        // console.log(val.height)
         this.completePercent = 40 + val.height
       } else {
         this.completePercent = 0
@@ -182,13 +190,13 @@ export default {
 
         switch (this.planstate) {
           case 0:
-            this.warmup(e)
+            this.warmup(e) //热身
             return
           case 1:
-            this.limit(e)
+            this.limit(e) //极限
             return
           default:
-            this.otherPlan(e)
+            this.otherPlan(e) //其他
         }
         //结束
       })
@@ -196,6 +204,7 @@ export default {
     //监听课程
     coursegroup(val, oldval) {
       console.log('课程组', val, val['负重组'].length)
+      this.courseStatus = true //已经开启过组了
       if (val['负重组'].length !== 0) {
         this.weightgroup = val['负重组']
         this.planstate = 2
@@ -215,7 +224,7 @@ export default {
         this.audio_1.pause()
       }
       if (val == 1) {
-        this.playAudio()
+        this.$refs.ctone.playRMAudio()
         this.plannum['group_totalNum'] = 1
         this.plannum['group_currentNum'] = 1
         this.plannum.totalNum = 1
@@ -231,10 +240,13 @@ export default {
           data = this.auxiliarygroup
         }
 
-        this.plannum['group_totalNum'] = data[0]['groups']
-        this.plannum['group_currentNum'] = 0
-        this.plannum.totalNum = data[0]['times']
+        // this.plannum['group_currentNum'] = data[0]['groups'] - 1
+        // this.plannum.currentNum = data[0]['times'] - 1
         this.plannum.currentNum = 0
+        this.plannum['group_currentNum'] = 0
+        this.plannum['group_totalNum'] = data[0]['groups']
+        this.plannum.totalNum = data[0]['times']
+
         this.plannum.pyramid = 0
         this.plannum.weight = data[0]['weight']
 
@@ -254,7 +266,11 @@ export default {
       deep: true, // 深入观察,监听数组值，对象属性值的变化
     },
   },
-  created() {},
+  created() {
+    // if (this.$route.query.state) {
+    //   this.userRMState = this.$route.query
+    // }
+  },
   mounted() {
     this.loadTrain()
     // console.log(powerInfo.frames)
@@ -267,6 +283,10 @@ export default {
   },
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_resHeightWeight']),
+    //
+    setAudioText(text) {
+      this.audioText = text
+    },
     //设置参数
     set_plannum(setkey) {
       let ketList = setkey || []
@@ -279,18 +299,23 @@ export default {
     warmup(e) {
       this.plannum['currentNum'] += 1
       if (this.plannum['currentNum'] == this.plannum.totalNum) {
-        setTimeout(() => {
-          this.planstate = 1
-          this.reststate = true
-          this.plannum.weight =
-            e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6
-          // this.plannum.currentNum = 0
-        }, 1000)
+        if (!this.user_rmvalue.state) {
+          setTimeout(() => {
+            // this.$refs.ctone.playRest(0)
+            this.planstate = 1
+            this.reststate = true
+            this.plannum.weight =
+              e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6
+            // this.plannum.currentNum = 0
+          }, 1000)
+        } else {
+          this.StartTrain(this.user_rmvalue.user_rm)
+        }
       }
     },
     //极限组
     limit(e) {
-      this.playAudio()
+      this.$refs.ctone.playRMAudio()
       setTimeout(() => {
         this.reststate = true
         this.totalSteps = 10 //休息时长
@@ -337,7 +362,7 @@ export default {
           } else {
             // console.log(this.planstate)
             if (this.planstate == 3) {
-              if (JSON.stringify(this.auxiliarygroup) == '{}') {
+              if (this.auxiliarygroup.length == 0) {
                 this.$router.push('/endpage')
               }
             } else if (this.planstate == 4) {
@@ -351,70 +376,42 @@ export default {
       }
     },
     //开始课程
-    StartTrain() {
-      const rmkg = this.traininfo.Weight
-
-      this.$store.commit('set_weight_rm', rmkg) //设置rm极限值
-      var sendData = {
-        cmd: 'askGenerateLesson',
-        data: {
-          'rm-kg': rmkg || 24,
-          'limit-type': '通用',
-          sex: 1,
-          weight: 50,
-        },
+    StartTrain(value) {
+      let rmkg = 0
+      if (value) {
+        rmkg = value
+      } else {
+        rmkg = this.traininfo.Weight
+        console.log('这是rm', rmkg)
+        if (this.loginState && rmkg) {
+          this.$store.dispatch('updateRM', rmkg)
+        }
       }
-      this.SEND_SOCKET(JSON.stringify(sendData))
-
-      setTimeout(() => {
-        this.startrest()
-      }, 500)
+      if (rmkg) {
+        var sendData = {
+          cmd: 'askGenerateLesson',
+          data: {
+            'rm-kg': rmkg,
+            'limit-type': '通用',
+            sex: 1,
+            weight: 50,
+          },
+        }
+        this.SEND_SOCKET(JSON.stringify(sendData))
+        setTimeout(() => {
+          this.startrest()
+          // this.$refs.ctone.playRest(1)
+        }, 500)
+      } else {
+        Dialog({
+          width: '550px',
+          message: '您还没有测定RM值，请测试RM或者选择自由训练',
+        })
+      }
     },
     //休息开始
     startrest() {
       this.reststate = true
-    },
-    //底部value值
-    footvalue(item) {
-      switch (item) {
-        case 0:
-          return this.timevalue || '00.00'
-        case 1:
-          return (
-            this.plannum.group_currentNum + ' / ' + this.plannum.group_totalNum
-          )
-        case 2:
-          return this.plannum.currentNum + ' / ' + this.plannum.totalNum
-        case 3:
-          let num = this.traininfo.Percent
-          if (num) {
-            return Math.round(num * 100)
-          }
-          return 0
-        case 4:
-          return this.powerEndData.amount || 0
-      }
-    },
-    //按钮事件
-    btn_click(index) {
-      this.showPopup = true
-      if (this.planstate > 2) {
-        this.endType = 1
-      } else {
-        this.endType = 2
-      }
-
-      // this.plannum.currentNum += 1
-      // this.recordScore = {
-      //   data: new Date().getTime(),
-      //   score: 'B',
-      // }
-
-      // this.$store.commit('set_resHeightWeight', {
-      //   extra_weight: true,
-      //   height: 13,
-      //   weight: 2,
-      // })
     },
   },
 }

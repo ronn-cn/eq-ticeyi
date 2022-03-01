@@ -54,13 +54,6 @@ export default [
       title: '结束页'
     },
     // component: () => import(/* webpackChunkName: "about" */ "../views/EndPage.vue"),
-  },
-  {
-    path: "/limittest",
-    name: "LimitTest",
-    component: _import('powers/page/LimitTest'),
-    // component: () => import(/* webpackChunkName: "about" */ "../views/LimitTest.vue"),
-    meta: { title: '极限组测试' }
   }
 ]
 

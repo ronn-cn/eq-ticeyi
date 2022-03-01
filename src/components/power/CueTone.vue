@@ -24,13 +24,14 @@ export default {
     pagetype: {
       type: [Number, String],
     },
+    restnum: {
+      type: [Number, String],
+    },
   },
   data() {
     return {
       audiosrc: '',
       audio_a: null,
-      // audio_a: null,
-      // audio_a: null,
       audioList: [],
       scoreList: [
         { type: 'A', num: 0 },
@@ -56,42 +57,24 @@ export default {
   },
   watch: {
     cuetoneText(val) {
+      // console.log(val)
       if (this.pagetype == 1) {
-        switch (val[0]) {
-          case 1:
-            this.play_audioA(val)
-            break
-          case 2:
-            this.play_audiob(val)
-            break
-          case 3:
-            this.play_audiob(val)
-            break
-          case 4:
-            this.play_audioA(val)
-            break
+        if (val[0] == 0 || val[0] == 4) {
+          this.play_audioA(val)
+        } else if (val[0] == 2 || val[0] == 3) {
+          this.play_audiob(val)
         }
       } else {
-        switch (val[0]) {
-          case 0:
-            this.play_audioA(val)
-            break
-          case 2:
-            this.play_audiob(val)
-            break
-          case 3:
-            this.play_audiob(val)
-            break
-          case 4:
-            this.play_audioA(val)
-            break
+        if (val[0] == 1 || val[0] == 4) {
+          this.play_audioA(val)
+        } else if (val[0] == 2 || val[0] == 3) {
+          this.play_audiob(val)
         }
       }
     },
     recordScore: {
       handler(val) {
-        console.log(val)
-        // console.log(this.audioList)
+        // console.log(val)
         this.scoreList.map((item, index) => {
           if (item.type == val.score) {
             item.num += 1
@@ -127,7 +110,12 @@ export default {
       this.initStart()
     }
   },
-  unmounted: function () {},
+  destroyed: function () {
+    if (this.audio_a) {
+      this.audio_a.pause()
+      this.audio_a = null
+    }
+  },
   methods: {
     //准备
     Render() {
@@ -161,9 +149,12 @@ export default {
     //热身与辅助
     play_audioA(val) {
       const index = { 1: 0, 5: 1, 10: 2, 15: 3 }
-      if (index[`${val[1]}`]) {
+      // console.log(index[`${val[1]}`])
+      if (index[`${val[1]}`] !== undefined) {
         let i = index[`${val[1]}`]
         let playsrc = this.audioList[i].number
+        let audioText = this.audioList[i].content
+        this.$emit('setAudioText', audioText) //设置文字
         if (!this.audio_a) {
           this.audio_a = new Audio()
         }
@@ -177,12 +168,33 @@ export default {
       if (val[1] % 3 == 0) {
         let playurl1 = data[Math.floor(Math.random() * data.length)]
 
+        let audioText = playurl1.content
+        this.$emit('setAudioText', audioText) //设置文字
+
         if (!this.audio_a) {
           this.audio_a = new Audio()
         }
         this.audio_a.src = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/audio/${this.projecttype}/话术弹框/${playurl1.number}.mp3`
         this.audio_a.play()
       }
+    },
+    //休息话术
+    playRest(index) {
+      if (!this.audio_a) {
+        this.audio_a = new Audio()
+      }
+      const restList = [
+        { name: 'a热身组', number: 'ga04' },
+        { name: 'b极限组', number: 'gb01' },
+        { name: 'c负重组', number: 'gc01' },
+      ]
+      this.audio_a.src = `${this.evenfPublic}fd57a4b1acfa40a665a28686d746789e/audio/g组间休息话术/${restList[index].name}/${restList[index].number}.mp3`
+      this.audio_a.play()
+    },
+    //测试rm
+    playRMAudio() {
+      this.audio_a.src = `${this.publicPath}powerStatic/audio/首页/1RM值测试.mp3`
+      this.audio_a.play()
     },
   },
 }

@@ -1,8 +1,15 @@
 <style scoped lang="scss">
 .home_view_introduce {
-  // height: 6.37rem;
-  width: 100%;
-  position: relative;
+  width: 1405px;
+  height: 889px;
+  margin-bottom: 20px;
+  background-color: rgb(25, 211, 18);
+  background: url('~assets/images/phase2/back2.svg') no-repeat;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 20px;
+
   .introduce_start_before {
     .introduce_make {
       color: #40f9ef;
@@ -180,12 +187,12 @@
   <div>
     <div class="home_view_introduce">
       <div class="introduce_start_before" v-if="!courseState">
-        <div class="introduce_logo">
+        <!-- <div class="introduce_logo">
           <img :src="`${publicPath}common/images/login_img1.png`" />
-        </div>
-        <div class="introduce_make">
+        </div> -->
+        <!-- <div class="introduce_make">
           {{ userMakeState ? '设备已预约' : '设备可使用' }}
-        </div>
+        </div> -->
 
         <div class="introduce_title" v-if="itemindex == 0 && !userMakeState">
           <p class="introduce_title_p1">体脂秤自助体测</p>

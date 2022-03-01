@@ -1,25 +1,21 @@
 <style scoped lang="scss">
 .home_view {
-  width: (12.8rem-3.59rem);
-  height: 100%;
   position: relative;
   &_footer {
-    position: absolute;
-    width: 98%;
-    padding: 0.1rem 1%;
-    left: 0;
-    bottom: 0;
     .footer_step {
-      position: relative;
+      width: 1806px;
+      position: fixed;
+      bottom: 190px;
+      left: 60px;
       ul {
-        width: 85%;
+        width: 100%;
         display: flex;
         justify-content: space-between;
         margin-bottom: 0;
         li {
           color: #fff;
           width: 24%;
-          height: 0.12rem;
+          height: 10px;
           font-size: 0.18rem;
           text-align: center;
           border-radius: 10px;
@@ -27,54 +23,12 @@
           position: relative;
           margin-bottom: 12px;
         }
-        // li::before {
-        //   content: '';
-        //   border-left: 25px solid #000;
-        //   border-top: 25px solid transparent;
-        //   border-bottom: 25px solid transparent;
-        //   position: absolute;
-        //   left: 0;
-        //   top: 0;
-        // }
-        // li::after {
-        //   content: '';
-        //   border-left: 25px solid #7f7f7f;
-        //   border-top: 25px solid transparent;
-        //   border-bottom: 25px solid transparent;
-        //   position: absolute;
-        //   right: -24px;
-        //   top: 0;
-        //   z-index: 9;
-        // }
-        // li:nth-last-child(1) {
-        // }
-        // li:nth-last-child(1)::after {
-        //   content: '';
-        //   border-left: 25px solid transparent;
-        //   border-top: 25px solid transparent;
-        //   border-bottom: 25px solid transparent;
-        //   position: absolute;
-        //   right: 0;
-        //   top: 0;
-        //   z-index: 9;
-        // }
-
         .view_active {
           background-color: rgb(80, 187, 127);
           color: #000;
           font-weight: 600;
           position: relative;
         }
-        // .view_active::after {
-        //   content: '';
-        //   border-left: 25px solid #fff;
-        //   border-top: 25px solid transparent;
-        //   border-bottom: 25px solid transparent;
-        //   position: absolute;
-        //   right: -24px;
-        //   top: 0;
-        //   z-index: 10;
-        // }
       }
       .li_text {
         font-size: 22px;
@@ -84,74 +38,80 @@
         right: 0.4rem;
       }
     }
+
     .footer_start {
       width: 100%;
-      height: 1rem;
+      height: 131px;
+      // background: #28cd41;
+      border-radius: 20px;
       display: flex;
       color: #fff;
       justify-content: space-between;
       .quick_start {
-        width: 3.26rem;
-        height: 100%;
+        width: 455px;
+        height: 131px;
         font-size: 36px;
         font-family: SourceHanSansCN;
         font-weight: 400;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 5px;
+        border-radius: 20px;
         background-color: #017aff;
-        // box-sizing: border-box;
-        // box-shadow: 5px 5px 20px 0px #017aff;
       }
       .start_text1,
       .start_text2 {
         width: 100%;
-        border-radius: 5px;
-        background: url('~assets/images/common/start.png') no-repeat;
-        background-size: 0.4rem 0.5rem;
-        background-position: 42%;
-        background-color: #1fac4a;
-        // box-sizing: border-box;
-        // box-shadow: 5px 5px 20px 0px #10c98f,
-        //   inset 5px 5px 20px 0px rgba(255, 255, 255, 0.35);
-        font-family: '思源黑体 CN', sans-serif;
+        height: 131px;
+        background: #28cd41;
+        // background: url('~assets/images/common/start.png') no-repeat;
+        // background-size: 0.4rem 0.5rem;
+        // background-position: 42%;
         color: #ffffff;
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 20px;
       }
       .start_text2 {
-        width: 5.6rem;
+        width: 1405px;
         background-position: 38%;
       }
     }
   }
 }
-.a_iframe {
-  width: 500px;
-  height: 500px;
-  position: absolute;
-  top: 20%;
-  right: 100px;
-  background-color: aqua;
-  z-index: 10000;
+.U_test {
+  width: 1405px !important;
+  // background-position: 36% !important;
+}
+.quick_start2 {
+  width: 455px;
+  height: 131px;
+  font-size: 36px;
+  font-family: SourceHanSansCN;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background-color: #017aff;
 }
 </style>
 
 <template>
   <div>
-    <div class="home_view">
+    <div class="home_view" :style="courseState ? 'width:1880px' : ''">
       <step-view
         ref="stepview"
         :itemindex="itemindex"
         :viewindex="viewindex"
         :courseState="courseState"
+        :targetList="targetList"
         @setitemindex="setitemindex"
       ></step-view>
 
       <div class="home_view_footer">
-        <div class="footer_step">
+        <div class="footer_step" v-show="courseState">
           <ul ref="step_ul">
             <li
               v-for="(item, index) of stepList"
@@ -161,23 +121,34 @@
               :style="{ width: operatewidth + '%' }"
             ></li>
           </ul>
-          <div class="li_text">{{ stepList[viewindex] }}</div>
         </div>
         <div class="footer_start">
           <div
             class="quick_start"
-            @click="quickchang"
+            @click="quickchang(), click_effects()"
             v-if="viewindex !== 0 && viewindex < stepList.length - 1"
           >
-            <!-- {{ itemindex == 2 ? '重新测试' : '快速开始' }} -->
             快速开始
           </div>
           <div
-            :class="
+            class="quick_start2"
+            @click="click_effects(), again_test()"
+            v-if="
+              itemindex == 2 &&
+              viewindex == 1 &&
+              loginState &&
+              user_rmvalue.state
+            "
+          >
+            重新测试
+          </div>
+          <div
+            :class="[
               viewindex !== 0 && viewindex < stepList.length - 1
                 ? 'start_text2'
-                : 'start_text1'
-            "
+                : 'start_text1',
+              itemindex == 2 && viewindex == 1 && loginState ? 'U_test' : '',
+            ]"
             @click="initStep"
           >
             {{
@@ -191,9 +162,6 @@
         </div>
       </div>
     </div>
-    <!-- <audio ref="audio_text" preload="auto">
-      <source :src="audiosrc" type="audio/mp3" />
-    </audio> -->
   </div>
 </template>
 
@@ -218,6 +186,7 @@ export default {
       show: true,
       operatewidth: '24',
       audio_a: null,
+      targetList: [],
     }
   },
   computed: {
@@ -228,9 +197,40 @@ export default {
       'user_rmvalue',
       'user_rm',
       'userMakeState',
+      'coursegroup',
     ]),
   },
   watch: {
+    loginState(nval) {
+      if (!nval) {
+        this.targetList = []
+      }
+    },
+    coursegroup(nval) {
+      // console.log(nval)
+      this.targetList = []
+      const planArr = ['负重组', '金字塔组', '辅助组']
+      for (let i in planArr) {
+        let data = nval[`${planArr[i]}`]
+        if (data.length > 0) {
+          data.forEach((item) => {
+            this.targetList.push({
+              zname: planArr[i],
+              weight: item.weight,
+              numname: item.times,
+              totalnum: item.groups,
+            })
+          })
+        }
+      }
+      this.targetList.unshift({
+        zname: '热身组',
+        weight: 12,
+        numname: 20,
+        totalnum: 1,
+      })
+      // console.log(this.targetList)
+    },
     userMakeState(val) {
       if (val) {
         for (let i = 0; i < this.stepList.length; i++) {
@@ -254,13 +254,13 @@ export default {
       if (val == 0) {
         this.stepList = ['运动风险须知', '课程目标', '器械调试', '动作演示']
         this.operatewidth = '24'
-        this.indexAudio('04标准模式')
+        // this.indexAudio('04标准模式')
       } else if (val == 1) {
         this.stepList = ['运动风险须知', '器械调试', '动作演示']
         this.operatewidth = '33'
-        this.indexAudio('15自由模式')
+        // this.indexAudio('15自由模式')
       } else if (val == 2) {
-        this.indexAudio('09力量测试')
+        // this.indexAudio('09力量测试')
         if (this.user_rmvalue.state) {
           this.stepList = ['运动风险须知', '课程目标']
           this.operatewidth = '49'
@@ -270,6 +270,7 @@ export default {
         }
       }
     },
+    //预约
     resStartLesson(val) {
       if (JSON.stringify(val) == '{}') {
         console.log('空')
@@ -289,6 +290,8 @@ export default {
       }
     },
     courseState(val) {
+      // console.log('这是', val)
+      this.$emit('set_startStep', val) //传递开始
       if (val) {
         // this.indexAudio('06开始课程')
         this.indexAudio('02请仔细阅读运动风险须知确认并启开')
@@ -297,14 +300,11 @@ export default {
   },
   created() {},
   mounted() {},
-
   methods: {
     ...mapMutations(['set_lesson_id', 'set_MakeCareInfo']),
     ...mapActions(['send_askLedState', 'click_effects']),
     //快速开始
     quickchang() {
-      this.click_effects()
-      // this.indexAudio('08快速开始')
       setTimeout(() => {
         if (this.itemindex == 2) {
           this.$router.push('/strengthtest')
@@ -335,17 +335,28 @@ export default {
     },
     //开始课程
     initStep() {
+      // console.log(this.user_rmvalue)
       if (this.timer) {
         clearInterval(this.timer)
         this.timer = null
       }
-
       if (this.courseState) {
         this.audio_a.pause()
+        if (
+          this.viewindex == 0 &&
+          this.itemindex == 0 &&
+          this.user_rmvalue.state
+        ) {
+          console.log(123)
+          this.$store.dispatch('send_RM', this.user_rmvalue.value)
+        }
         const arr = [
           {
             num: 3,
             route: '/trainpage',
+            query: this.user_rmvalue.state
+              ? { user_rm: this.user_rmvalue.value, state: true }
+              : {},
           },
           {
             num: 2,
@@ -362,12 +373,6 @@ export default {
         let index = this.itemindex
 
         if (this.viewindex < arr[index].num) {
-          // if (this.viewindex == 0) {
-          //   this.indexAudio('11请确认')
-          // } else {
-          //   this.indexAudio('12下一步')
-          // }
-          // this.indexAudio('12下一步')
           this.click_effects()
           this.viewindex++
           let uid = `footer_li${this.viewindex}`
@@ -388,6 +393,9 @@ export default {
         document.getElementById(uid).setAttribute('class', 'view_active')
       }
     },
+    again_test() {
+      this.$router.push('/strengthtest')
+    },
     starttext() {
       let textArr = []
       if (this.itemindex == 0) {
@@ -396,7 +404,7 @@ export default {
         textArr = ['已确认', '下一步', '开始训练']
       } else if (this.itemindex == 2) {
         if (this.user_rmvalue.state) {
-          textArr = ['已确认', '开始测试']
+          textArr = ['已确认', '开始训练']
         } else {
           textArr = ['已确认', '下一步', '下一步', '开始测试']
         }

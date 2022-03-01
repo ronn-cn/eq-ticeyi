@@ -38,7 +38,11 @@
 
 <template>
   <div class="popup_close">
-    <p class="close_p1">您的训练时间过短,是否退出当前训练</p>
+    <p class="close_p1">
+      {{
+        endType == 2 ? '您的训练时间过短,是否退出当前训练' : '是否退出当前训练'
+      }}
+    </p>
     <section class="btn_list">
       <div class="close_btn1" @touchstart="popupbtn(0)">结束训练</div>
       <div class="close_btn2" @touchstart="popupbtn(1)">再练一会</div>

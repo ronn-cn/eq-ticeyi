@@ -42,7 +42,11 @@ p {
 
     <Login v-if="StandbyState"></Login>
 
-    <div class="iframe_conver1" v-if="this.projecttype !== '体测仪'">
+    <div
+      class="iframe_conver1"
+      :style="isMo ? '' : 'z-index: -1'"
+      v-if="this.projecttype !== '体测仪'"
+    >
       <iframe
         :src="`${evenfPublic}012fb7b6d5a802614a264827c92194db/${projecttype}3.html`"
         id="mo1"
@@ -50,7 +54,11 @@ p {
         frameborder="0"
       ></iframe>
     </div>
-    <div class="iframe_conver2" v-if="this.projecttype !== '体测仪'">
+    <div
+      class="iframe_conver2"
+      :style="isMo ? '' : 'z-index: -1'"
+      v-if="this.projecttype !== '体测仪'"
+    >
       <iframe
         :src="`${evenfPublic}012fb7b6d5a802614a264827c92194db/${projecttype}2.html`"
         id="mo2"
@@ -74,8 +82,12 @@ export default {
   data() {
     return {
       isChangeMe: '123',
+      iframeCSS: {
+        zIndex: '-1',
+      },
     }
   },
+  computed: {},
   watch: {
     getTouchTime(val) {
       if (process.env.NODE_ENV !== 'development') {
@@ -114,6 +126,17 @@ export default {
       'moheight',
       'projecttype',
     ]),
+    isMo() {
+      let path = this.$route.path
+      if (
+        path == '/strengthtest' ||
+        path == '/freeplan' ||
+        path == '/trainpage'
+      ) {
+        return true
+      }
+      return false
+    },
   },
   created() {
     var whdef = 100 / 1280 // 表示1920的设计图,使用100PX的默认值,使用100px只是为了方便计算 其他值都可以
