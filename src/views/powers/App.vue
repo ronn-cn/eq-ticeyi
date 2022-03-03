@@ -17,15 +17,15 @@ body {
 
 .iframe_conver1 {
   position: fixed;
-  top: 14%;
-  left: 12%;
+  top: 9%;
+  left: 7%;
   width: 4.5rem;
   height: 5rem;
 }
 .iframe_conver2 {
   position: fixed;
-  top: 14%;
-  right: 12%;
+  top: 9%;
+  right: 7%;
   width: 4.5rem;
   height: 5rem;
 }

@@ -1,30 +1,34 @@
 <style scoped lang="scss">
 .rest_page {
-  width: 45%;
-  height: 70%;
+  width: 900px;
+  height: 860px;
+  padding: 20px 30px;
   color: #fff;
-  background-color: #5a4f5f;
+  background: #161616;
   position: absolute;
-  left: 1%;
-  bottom: 18%;
-  z-index: 1;
-}
-.rest_progress {
-  padding: 0 0.3rem 0.1rem;
-  display: flex;
-  align-items: center;
-  .bearing {
-    font-size: 0.3rem;
-    margin-top: 0.4rem;
-    margin-left: 1rem;
-    .bearing_p2 {
-      font-size: 0.42rem;
-      margin-top: 0.2rem;
-      color: #10c98f;
-    }
-  }
+  left: 0;
+  top: 0;
+  z-index: 999;
 }
 
+.bearing {
+  font-size: 0.3rem;
+  margin: 145px 0 20px 1rem;
+  .bearing_p2 {
+    font-size: 0.42rem;
+    margin-top: 0.2rem;
+    color: #10c98f;
+  }
+}
+.rest_progress {
+  p {
+    text-align: right;
+    padding: 20px 0;
+  }
+  // padding: 0 0.3rem 0.1rem;
+  // display: flex;
+  // align-items: center;
+}
 .rest_text {
   font-size: 28px;
   text-align: left;
@@ -45,30 +49,55 @@
 }
 .plan_group {
   display: flex;
-  justify-content: center;
-  font-size: 0.2rem;
+  height: 400px;
+  // justify-content: center;
+  // font-size: 0.2rem;
   margin: 0.2rem 0;
   &_left {
+    width: 50%;
+    // background: #28cd41;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    h2 {
+      margin-bottom: 36px;
+    }
   }
-  &_line {
-    width: 4px;
-    height: 65px;
-    background-color: #fff;
-    margin: 0 20px;
+  &_right {
+    width: 50%;
+    .introduce_cover {
+      margin-top: 50px;
+    }
+    // background: #28cd41;
   }
 }
 .rest_btn {
-  width: 90%;
-  height: 130px;
+  width: 100%;
   margin: 0 auto;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  background-color: rgb(16, 201, 143);
+  justify-content: space-between;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+  // border-radius: 5px;
+  // background-color: rgb(16, 201, 143);
+  .btn_a {
+    width: 413px;
+    height: 109px;
+    line-height: 109px;
+    border: 1px solid #fff;
+    border-radius: 20px;
+  }
+  .btn_b {
+    width: 413px;
+    height: 109px;
+    line-height: 109px;
+    background: #28cd41;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
+      inset 15px 15px 10px rgba(255, 255, 255, 0.09);
+    border-radius: 20px;
+  }
 }
 p {
   margin-bottom: 0;
@@ -77,7 +106,7 @@ p {
 
 <template>
   <div class="rest_page">
-    <div class="rest_progress">
+    <!-- <div class="rest_progress">
       <radial-progress-bar
         :diameter="barinfo.diameter"
         :stopColor="barinfo.stopColor"
@@ -94,44 +123,67 @@ p {
 
         <p style="margin-top: 10px">后继续测试</p>
       </radial-progress-bar>
-      <div class="bearing">
-        <p class="bearing_p1">建议器械负重</p>
-        <p class="bearing_p2">"{{ restinfo.weight }}KG"</p>
-      </div>
+    </div> -->
+    <div class="bearing">
+      <p class="bearing_p1">建议器械负重调至 "{{ restinfo.weight }}KG"</p>
+      <!-- <p class="bearing_p2">"{{ restinfo.weight }}KG"</p> -->
     </div>
-
+    <div class="rest_progress">
+      <p>休息时间 | {{ Math.floor(completedSteps) }}s</p>
+      <k-progress
+        :percent="progress"
+        :show-text="false"
+        color="#25CB55"
+      ></k-progress>
+    </div>
+    <!-- 
     <div class="rest_text" v-show="planstate == 0">
-      自由调整配重后,可随时进行器械规范动作训练，无需点击按钮或等待休息结束，即可开启极限组训练
+      自由调整配重后,可随时进行器械规范动作训练，无需点击按钮或等待休息结束，即可开启热身组训练
     </div>
     <div class="rest_text" v-show="planstate !== 0">
       非常棒,你已完成当前重量测试（"{{ restinfo.weight }}KG/{{
         restinfo.weight * 2
       }}lb"），自行调整配重后，可随时进行器械规范动作训练，无需点击按钮或等待休息结束，即可继续测试
-    </div>
+    </div> -->
 
     <div class="plan_group">
-      <section class="plan_group_left">下一组</section>
-      <div class="plan_group_line"></div>
+      <section class="plan_group_left">
+        <h2>下一组</h2>
+        <div>
+          <p>{{ plantitle() }} | 第{{ restinfo.group_currentNum + 1 }}组</p>
+          <p style="margin-top: 10px">
+            {{ restinfo.weight }}KG/{{ restinfo.totalNum }}次
+          </p>
+        </div>
+      </section>
       <section class="plan_group_right">
-        <p>{{ plantitle() }} | 第{{ restinfo.group_currentNum }}组</p>
-        <p style="margin-top: 10px">
-          {{ restinfo.weight }}KG/{{ restinfo.totalNum }}次
-        </p>
+        <div class="introduce_cover">
+          <img
+            :src="`${publicPath}powerStatic/images/${projecttype}.png`"
+            width="296"
+            height="328"
+          />
+        </div>
       </section>
     </div>
 
-    <div class="rest_btn" @click="skipRest">
-      <p>立即开始</p>
-      <p>开始运动即开启训练</p>
+    <div class="rest_btn">
+      <div class="btn_a" @click="suspend">
+        {{ suspendState ? '开始' : '暂停' }}
+      </div>
+      <div class="btn_b" @click="skipRest">快速开始</div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import RadialProgressBar from 'vue-radial-progress'
+import KProgress from 'k-progress'
 export default {
   components: {
     RadialProgressBar,
+    KProgress,
   },
   props: {
     totalSteps: {
@@ -149,9 +201,20 @@ export default {
     restinfo: {
       type: Object,
     },
+    firststate: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    ...mapGetters(['publicPath', 'projecttype']),
+    // progress() {
+    //   return Math.floor(100 / this.totalSteps)
+    // },
   },
   data() {
     return {
+      progress: 100,
       completedSteps: this.totalSteps,
       // totalSteps: 30,
       barinfo: {
@@ -163,33 +226,52 @@ export default {
         innerStrokeWidth: 15,
         strokeLinecap: 'line',
       },
+      downtimer: null,
+      suspendState: false,
     }
   },
   created() {
-    window.timer = setInterval(() => {
-      if (this.completedSteps !== 0) {
-        this.completedSteps -= 1
-      } else {
-        console.log('休息结束了')
-        clearInterval(window.timer)
-        this.$emit('endrest')
-      }
-    }, 1000)
+    this.initDown()
   },
   watch: {
     restinfo(val) {
       console.log(val)
     },
+    suspendState(val) {
+      console.log(val)
+      if (val) {
+        clearInterval(this.downtimer)
+        this.downtimer = null
+      } else {
+        this.initDown()
+      }
+    },
   },
   mounted() {
-    console.log('传的数据', this.restinfo)
+    // console.log('传的数据', this.restinfo)
   },
   destroyed() {
-    clearInterval(window.timer)
+    clearInterval(this.downtimer)
   },
   methods: {
+    initDown() {
+      this.downtimer = setInterval(() => {
+        let a = 100 / this.totalSteps
+        if (this.completedSteps > 1) {
+          this.completedSteps -= 0.1
+          this.progress -= a * 0.1
+        } else {
+          console.log('休息结束了')
+          clearInterval(this.downtimer)
+          this.$emit('endrest')
+        }
+      }, 100)
+    },
+    suspend() {
+      this.suspendState = !this.suspendState
+    },
     skipRest() {
-      clearInterval(window.timer)
+      clearInterval(this.downtimer)
       this.$emit('endrest')
     },
     plantitle() {

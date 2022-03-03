@@ -1,25 +1,94 @@
 <style scoped lang="scss">
-@import '~assets/css/strengthtest.scss';
-.audio_text {
-  width: 600px;
-  position: fixed;
-  right: 270px;
-  bottom: 170px;
+@import '~assets/css/trainpage.scss';
+.test_page {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #797979;
   z-index: 999;
-}
-
-.jojo-leave-active {
-  animation: jojo 0.5s linear;
-}
-
-@keyframes jojo {
-  from {
-    opacity: 1;
+  .test_p1 {
+    font-size: 0.36rem;
+    margin-top: 1.3rem;
   }
-  to {
-    opacity: 0;
+  .test_p2 {
+    font-size: 0.28rem;
+    margin: 0.8rem 0;
+  }
+  .test_p3 {
+    font-size: 0.7rem;
+  }
+  .test_page_btn {
+    padding: 0.1rem;
+    height: 16%;
+    position: absolute;
+    bottom: 0;
+    // background-color: cyan;
+    display: flex;
+    .test_btn1 {
+      padding: 20px;
+      width: 4rem;
+      margin-right: 0.2rem;
+      border-radius: 5px;
+      background-color: #017aff;
+      box-sizing: border-box;
+      box-shadow: 5px 5px 20px 0px #017aff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.3rem;
+    }
+    .test_btn2 {
+      padding: 20px;
+      width: 8.3rem;
+      border-radius: 5px;
+      background-color: #1fac4a;
+      box-sizing: border-box;
+      box-shadow: 5px 5px 20px 0px #10c98f,
+        inset 5px 5px 20px 0px rgba(255, 255, 255, 0.35);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.3rem;
+    }
   }
 }
+.page_mo {
+  width: 1920px;
+  height: 919px;
+  display: flex;
+  .fixed_left {
+    width: 50%;
+    height: 100%;
+    background: #161616;
+    position: relative;
+    h1 {
+      color: #aaaaaa;
+      position: absolute;
+      left: 444px;
+      top: 80px;
+      z-index: 9;
+    }
+  }
+  .fixed_right {
+    width: 50%;
+    height: 100%;
+    background: #303445;
+    position: relative;
+    h1 {
+      position: absolute;
+      left: 444px;
+      top: 80px;
+      z-index: 9;
+    }
+  }
+}
+// .end_test_btn {
+//   position: fixed;
+//   left: 68vw;
+//   bottom: 18vh;
+// }
 </style>
 
 <template>
@@ -36,28 +105,73 @@
     </section>
 
     <div v-if="!testShow">
-      <header class="page_header">
-        <h1>{{ planText2[this.planstate] }}</h1>
-      </header>
       <section class="page_action">
-        <div class="page_action_item">
-          <rest-page
-            v-if="reststate"
-            ref="restpage"
-            @endrest="reststate = false"
-            :planstate="planstate"
-            :restinfo="plannum"
-            :totalSteps="totalSteps"
-          ></rest-page>
-          <div
-            class="end_test_btn"
-            v-if="planstate == 0 && !reststate"
-            @touchstart="savatest"
-          >
-            结束测试
-          </div>
+        <rest-page
+          v-if="reststate"
+          ref="restpage"
+          @endrest="reststate = false"
+          :planstate="planstate"
+          :restinfo="plannum"
+          :totalSteps="totalSteps"
+        ></rest-page>
+        <div
+          class="end_test_btn"
+          v-if="planstate == 0 && !reststate"
+          @touchstart="savatest"
+        >
+          结束测试
         </div>
       </section>
+
+      <div class="page_mo">
+        <div class="fixed_left">
+          <h1>Al演示参考</h1>
+          <div class="progress_rotate_left">
+            <k-progress
+              :percent="moloopval"
+              :show-text="false"
+              :line-height="30"
+              :color="['#f5af19', '#fa0a74']"
+            ></k-progress>
+          </div>
+          <div class="progress_test_left">
+            <van-circle
+              v-model="currentRate"
+              :rate="100"
+              size="130"
+              stroke-width="70"
+              color="#C4C4C4"
+            />
+            <p class="text_p1">{{ plannum.weight }}KG</p>
+            <p class="text_p2">目标重量</p>
+          </div>
+        </div>
+        <div class="fixed_right">
+          <h1>{{ planText2[this.planstate] }}</h1>
+          <transition name="jojo" appear>
+            <div class="audio_text" v-if="audioText">{{ audioText }}</div>
+          </transition>
+          <div class="progress_rotate_right">
+            <k-progress
+              :percent="completePercent"
+              :show-text="false"
+              :line-height="30"
+              :color="['#f5af19', '#fa0a74']"
+            ></k-progress>
+          </div>
+          <div class="progress_test_right">
+            <van-circle
+              v-model="currentRate"
+              :rate="100"
+              size="130"
+              stroke-width="70"
+              :color="fin_weight"
+            />
+            <p class="text_p1">{{ traininfo.Weight || 0 }}KG</p>
+            <p class="text_p2">完成重量</p>
+          </div>
+        </div>
+      </div>
       <footer class="page_footer">
         <ul>
           <li v-for="(item, index) of footlist" :key="item">
@@ -71,43 +185,9 @@
           </li>
         </ul>
       </footer>
-      <div class="fixed_left">
-        <div class="progress_rotate_left">
-          <k-progress
-            :percent="moloopval"
-            :show-text="false"
-            :line-height="30"
-            :color="['#f5af19', '#fa0a74']"
-          ></k-progress>
-        </div>
-        <div class="progress_test_left">
-          <p class="text_p1">目标重量</p>
-          <p class="text_p2">{{ plannum.weight }}KG</p>
-        </div>
-      </div>
-      <div class="fixed_right">
-        <div class="progress_rotate_right">
-          <k-progress
-            :percent="completePercent"
-            :show-text="false"
-            :line-height="30"
-            :color="['#f5af19', '#fa0a74']"
-          ></k-progress>
-        </div>
-        <div class="progress_test_right">
-          <p class="text_p1">完成重量</p>
-          <p class="text_p2">{{ traininfo.Weight || 0 }}KG</p>
-        </div>
-      </div>
-      <transition name="jojo" appear>
-        <div class="audio_text" v-if="audioText">{{ audioText }}</div>
-      </transition>
     </div>
 
-    <div @click="btn_click(0)">
-      <div class="end_btn"></div>
-      <div class="den_icon"></div>
-    </div>
+    <div @click="btn_click(0)" class="end_btn"></div>
 
     <strength-aduio
       v-if="showPopup"
@@ -126,6 +206,7 @@
 </template>
 
 <script>
+import { Dialog, Circle } from 'vant'
 import StrengthAduio from '@/components/power/AduioPopup.vue'
 import CueTone from '../../../components/power/CueTone.vue'
 
@@ -143,10 +224,13 @@ export default {
     KProgress,
     StrengthAduio,
     CueTone,
+    VanCircle: Circle,
   },
   mixins: [train, Trainaudio],
   data() {
     return {
+      fin_weight: '#C4C4C4',
+      currentRate: 0,
       traininfo: {},
       reststate: true, //休息状态
       totalSteps: 30, //休息时长

@@ -47,7 +47,7 @@ export default {
           left: '5%',
           right: '5%',
           bottom: '0',
-          top: '5%',
+          top: '25%',
           containLabel: true,
         },
         xAxis: {
@@ -56,7 +56,7 @@ export default {
           data: Adata,
           axisLine: {
             lineStyle: {
-              color: '#243B63',
+              color: '#ffffff',
             },
           },
         },

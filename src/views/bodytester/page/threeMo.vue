@@ -144,35 +144,25 @@ export default {
     },
     // 创建场景
     createScene() {
-      this.loading = true
+      // this.loading = true
       this.scene = new THREE.Scene()
-      this.initCamera()
       // var grid = new THREE.GridHelper(24, 24, 0xff0000, 0x444444)
       // grid.material.opacity = 0.4
       // grid.material.transparent = true
       // grid.rotation.x = Math.PI / 2.0
       // this.scene.add(grid)
     },
-    initCamera() {
-      // this.camera = new THREE.PerspectiveCamera(
-      //   45,
-      //   window.innerWidth / window.innerHeight,
-      //   0.1,
-      //   50000
-      // )
-      // this.camera.position.set(0, 0, 2900)
-      // this.camera.lookAt(new THREE.Vector3(0,0,0))
-    },
+
     // 加载PLY模型
     loadLoader() {
       let loader = new GLTFLoader()
       loader.load('/glb/体测仪模型.glb', (geometry) => {
         // console.log(geometry)
-        this.loading = false
+        // this.loading = false
         // this.isLoading = false;//关闭载入中效果
         this.mesh = geometry.scene
-        this.mesh.scale.set(0.1, 0.1, 0.1) //设置大小比例
-        //this.mesh.position.set(10, -10, 10) //设置位置
+        this.mesh.scale.set(0.2, 0.12, 0.2) //设置大小比例
+        this.mesh.position.set(0, 0, 0) //设置位置
         this.scene.add(this.mesh) // 将模型引入three、
         // this.animate();
       })
@@ -182,7 +172,7 @@ export default {
     createLight() {
       // 环境光
       let pointColor = '#ffffff'
-      const ambientLight = new THREE.AmbientLight(0x222222, 0.35) // 创建环境光
+      const ambientLight = new THREE.AmbientLight(0xffffff) // 创建环境光
       this.scene.add(ambientLight) // 将环境光添加到场景
       const spotLight = new THREE.SpotLight(0xffffff) // 创建聚光灯
       spotLight.position.set(50, 50, 50)
@@ -193,32 +183,18 @@ export default {
 
     // 创建相机
     createCamera() {
-      const element = this.$refs.mainContent
-      const width = element.clientWidth // 窗口宽度
-      const height = element.clientHeight //
-      this.cWidth = width
-      this.cHeight = height
-      const k = width / height // 窗口宽高比
-      this.aspect = k
-      // PerspectiveCamera( fov, aspect, near, far )
-      // this.camera = new THREE.PerspectiveCamera(100, k, 1, 10000)
+      // 摄像机
       this.camera = new THREE.PerspectiveCamera(
         50,
         window.innerWidth / window.innerHeight,
         0.1,
         1000
       )
-
-      this.camera.up.set(0, 0, 1)
-      //this.camera.position.set(this.originX, this.originY, this.originZ) // 设置相机位置
-      //this.camera.lookAt(
-      //new THREE.Vector3(this.originX, this.originY, this.originZ)
-      //) // 设置相机方向
       // x横轴y纵轴z前后纵深
-      this.camera.position.set(30, 25, 30)
+      this.camera.position.set(0, 10, 30)
       //相机看向哪个坐标
       this.camera.lookAt({ x: 0, y: 30, z: 0 })
-
+      // this.camera.up.set(0, 0, 1)
       this.scene.add(this.camera)
     },
     // 创建渲染器
@@ -232,8 +208,7 @@ export default {
       this.renderer.setSize(element.clientWidth, element.clientHeight) // 设置渲染区域尺寸
       this.renderer.shadowMap.enabled = true // 显示阴影
       this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
-      this.renderer.setClearColor(new THREE.Color(0xeeeeee)) // 设置背景颜色
-      // this.renderer.setClearColor(new THREE.Color(0x111111)) // 设置背景颜色
+      this.renderer.setClearColor(new THREE.Color(0x25293c)) // 设置背景颜色
       element.innerHTML = ''
       element.appendChild(this.renderer.domElement)
     },

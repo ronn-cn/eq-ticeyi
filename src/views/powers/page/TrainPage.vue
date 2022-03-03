@@ -1,51 +1,42 @@
 <style scoped lang="scss">
 @import '~assets/css/trainpage.scss';
+.page_mo {
+  width: 1920px;
+  height: 919px;
+  display: flex;
+  .fixed_left {
+    width: 50%;
+    height: 100%;
+    background: #161616;
+    position: relative;
+    h1 {
+      color: #aaaaaa;
+      position: absolute;
+      left: 444px;
+      top: 80px;
+      z-index: 9;
+    }
+  }
+  .fixed_right {
+    width: 50%;
+    height: 100%;
+    background: #303445;
+    position: relative;
+    h1 {
+      position: absolute;
+      left: 444px;
+      top: 80px;
+      z-index: 9;
+    }
+  }
+}
 </style>
 
 <template>
   <div class="page">
-    <div>
-      <header class="page_header">
-        <h1>{{ planText[this.planstate] }}</h1>
-      </header>
-      <section class="page_action">
-        <div class="page_action_item">
-          <rest-page
-            v-if="reststate"
-            ref="restpage"
-            @endrest="reststate = false"
-            :planstate="planstate"
-            :restweight="restweight"
-            :restinfo="plannum"
-            :totalSteps="totalSteps"
-          ></rest-page>
-          <div
-            class="end_test_btn"
-            v-if="planstate == 1 && !reststate"
-            @touchstart="StartTrain()"
-          >
-            结束测试
-          </div>
-        </div>
-      </section>
-      <transition name="jojo" appear>
-        <div class="audio_text" v-if="audioText">{{ audioText }}</div>
-      </transition>
-      <footer class="page_footer">
-        <ul>
-          <li v-for="(item, index) of footlist" :key="item">
-            <div
-              v-if="index == 1 && planstate !== 1"
-              class="stop_skip"
-              @click="skipstop"
-            ></div>
-            <p class="foot_li_p1">{{ footvalue(index) }}</p>
-            <p class="foot_li_p2">{{ item }}</p>
-          </li>
-        </ul>
-      </footer>
-
+    <div class="page_mo">
       <div class="fixed_left">
+        <h1>Al演示参考</h1>
         <div class="progress_rotate_left">
           <k-progress
             :percent="moloopval"
@@ -55,12 +46,22 @@
           ></k-progress>
         </div>
         <div class="progress_test_left">
-          <p class="text_p1">目标重量</p>
-          <p class="text_p2">{{ plannum.weight }}KG</p>
+          <van-circle
+            v-model="currentRate"
+            :rate="100"
+            size="130"
+            stroke-width="70"
+            color="#C4C4C4"
+          />
+          <p class="text_p1">{{ plannum.weight }}KG</p>
+          <p class="text_p2">目标重量</p>
         </div>
       </div>
-
       <div class="fixed_right">
+        <h1>{{ planText[this.planstate] }}</h1>
+        <transition name="jojo" appear>
+          <div class="audio_text" v-if="audioText">{{ audioText }}</div>
+        </transition>
         <div class="progress_rotate_right">
           <k-progress
             :percent="completePercent"
@@ -70,11 +71,51 @@
           ></k-progress>
         </div>
         <div class="progress_test_right">
-          <p class="text_p1">完成重量</p>
-          <p class="text_p2">{{ traininfo.Weight || 0 }}KG</p>
+          <van-circle
+            v-model="currentRate"
+            :rate="100"
+            size="130"
+            stroke-width="70"
+            :color="fin_weight"
+          />
+          <p class="text_p1">{{ traininfo.Weight || 0 }}KG</p>
+          <p class="text_p2">完成重量</p>
         </div>
       </div>
     </div>
+    <!-- 底部 -->
+    <footer class="page_footer">
+      <ul>
+        <li v-for="(item, index) of footlist" :key="item">
+          <div
+            v-if="index == 1 && planstate !== 1"
+            class="stop_skip"
+            @click="skipstop"
+          ></div>
+          <p class="foot_li_p1">{{ footvalue(index) }}</p>
+          <p class="foot_li_p2">{{ item }}</p>
+        </li>
+      </ul>
+    </footer>
+
+    <section class="page_action">
+      <rest-page
+        v-if="reststate"
+        ref="restpage"
+        @endrest="reststate = false"
+        :planstate="planstate"
+        :restweight="restweight"
+        :restinfo="plannum"
+        :totalSteps="totalSteps"
+      ></rest-page>
+      <div
+        class="end_test_btn"
+        v-if="planstate == 1 && !reststate"
+        @touchstart="StartTrain()"
+      >
+        结束测试
+      </div>
+    </section>
 
     <div @click="btn_click(0)" class="end_btn"></div>
 
@@ -96,7 +137,7 @@
 </template>
 
 <script>
-import { Dialog } from 'vant'
+import { Dialog, Circle } from 'vant'
 import { mapGetters, mapMutations } from 'vuex'
 import { HandleSeatedAbTrainerData } from '@/assets/js/index'
 import RestPage from './RestPage.vue'
@@ -105,16 +146,20 @@ import train from '@/power/train/index.js'
 import Trainaudio from '@/power/common/Trainaudio.js'
 import AduioPopup from '@/components/power/AduioPopup.vue'
 import CueTone from '@/components/power/CueTone.vue'
+
 export default {
   components: {
     CueTone,
     RestPage,
     KProgress,
     AduioPopup,
+    VanCircle: Circle,
   },
   mixins: [train, Trainaudio],
   data() {
     return {
+      fin_weight: '#C4C4C4',
+      currentRate: 0,
       // userRMState: {},
       traininfo: {},
       reststate: true, //休息状态
@@ -137,7 +182,7 @@ export default {
       addPercent: null,
       downPercent: null,
       restnum: 0, //休息话术
-      audioText: '',
+      audioText: '下压时吸气,回落时吸气',
       courseStatus: false, //是否已开组
     }
   },
@@ -274,6 +319,9 @@ export default {
   mounted() {
     this.loadTrain()
     // console.log(powerInfo.frames)
+    // setTimeout(() => {
+    //   this.fin_weight = '#9254de'
+    // }, 2000)
   },
   //离开页面
   destroyed: function () {
@@ -363,10 +411,16 @@ export default {
             // console.log(this.planstate)
             if (this.planstate == 3) {
               if (this.auxiliarygroup.length == 0) {
-                this.$router.push('/endpage')
+                this.$router.push({
+                  path: '/endpage',
+                  query: { timevalue: this.timevalue },
+                })
               }
             } else if (this.planstate == 4) {
-              this.$router.push('/endpage')
+              this.$router.push({
+                path: '/endpage',
+                query: { timevalue: this.timevalue },
+              })
             } else {
               this.planstate += 1
               this.startrest()

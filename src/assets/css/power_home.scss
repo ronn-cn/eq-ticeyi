@@ -109,18 +109,15 @@
           background: #ffffff;
         }
       }
-      // .active::after {
-      //   content: '';
-      //   width: 0px;
-      //   height: 0px;
-      //   border-top: 0.12rem solid transparent;
-      //   border-bottom: 0.12rem solid transparent;
-      //   border-right: 0.12rem solid #ffffff;
-      //   position: absolute;
-      //   top: 0.44rem;
-      //   right: 2px;
-      //   z-index: 99;
-      // }
+      .active::after {
+        content: '';
+        width: 48px;
+        height: 48px;
+        background: url('~assets/images/phase2/icon1.svg') no-repeat;
+        position: absolute;
+        top: 56px;
+        right: 2px;
+      }
     }
     .user_liout {
       background: #ff3b30 !important;

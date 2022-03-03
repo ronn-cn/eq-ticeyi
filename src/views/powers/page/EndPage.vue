@@ -22,10 +22,18 @@
             reneging == 0 ? '恭喜你完成本次训练!' : '你已结束本次训练'
           }}</span>
         </div>
-        <div class="rignt_head_grade">
-          <img :src="scoreimg" alt="" />
+        <div class="right_user_evaluate">
+          <div>
+            <p class="ep1">{{ powerEndData.combinedscore || 21 }}</p>
+            <p class="ep2">课程评分</p>
+          </div>
+          <div class="evaluate_item">
+            <p class="ep1">{{ evaluateText }}</p>
+            <p class="ep2">课程评分</p>
+          </div>
         </div>
       </div>
+
       <div class="right_type">
         <ul>
           <li v-for="item of typeList" :key="item.title">
@@ -41,34 +49,30 @@
         <h3>训练完成度</h3>
         <echarts class="echart_size"></echarts>
       </div>
-      <!-- <div class="right_echart">
-        <h3>训练节奏</h3>
-        <EchartsLine class="echart_size" />
-      </div> -->
+
       <div class="right_foot">
-        <div class="btn_btn" @click="footbtn(0)" v-if="loginState">
-          推荐课程
+        <div class="btn_btn1" @click="footbtn(1)">
+          <span>返回首页({{ timenum }}s)</span>
         </div>
-        <div
-          :class="[loginState ? 'btn_btn1' : 'btn_btn2']"
-          @click="footbtn(1)"
-        >
-          <!-- <div :class="loginState ? 'btn_end1' : 'btn_end2'"></div> -->
-          <span>退出课程({{ timenum }}s)</span>
+        <div class="btn_btn" @click="footbtn(0)">推荐课程</div>
+      </div>
+
+      <van-overlay :show="showQR" @click="showQR = false">
+        <div class="wrapper">
+          <div class="block">
+            <QRCode
+              ref="qrcode1"
+              v-if="qrstate"
+              class="vx_qr"
+              :qrwidth="220"
+              :qrheight="220"
+              codeid="3"
+              :codeTest="Qrcode"
+            ></QRCode>
+            <p style="padding-top: 0.15rem">微信扫码查看推荐课程</p>
+          </div>
         </div>
-      </div>
-      <div class="login_qr" v-if="!loginState">
-        <QRCode
-          ref="qrcode1"
-          v-if="qrstate"
-          class="vx_qr"
-          :qrwidth="157"
-          :qrheight="157"
-          codeid="3"
-          :codeTest="Qrcode"
-        ></QRCode>
-        <p style="padding-top: 0.15rem">微信扫码后可同步训练数据</p>
-      </div>
+      </van-overlay>
     </section>
     <section class="end_page_right" v-if="recommstate">
       <recomm-courses :courseList="courseList" />
@@ -77,6 +81,7 @@
 </template>
 
 <script>
+import { Overlay } from 'vant'
 import Echarts from '@/components/Echarts.vue'
 import EchartsLine from '@/components/power/echartsLine.vue'
 import { mapGetters, mapActions } from 'vuex'
@@ -90,15 +95,11 @@ export default {
     RecommCourses,
     RecommUser,
     QRCode,
+    VanOverlay: Overlay,
   },
   data() {
     return {
       typeList: [
-        {
-          title: '综合评分',
-          url: 'pingfen',
-          value: 19,
-        },
         {
           title: '运动时间',
           url: 'shijian',
@@ -127,7 +128,9 @@ export default {
       timenum: 60,
       downtimer: null,
       scoreimg: '',
+      evaluateText: 'B',
       audio_a: null,
+      showQR: false,
     }
   },
   created() {
@@ -135,12 +138,12 @@ export default {
       this.reneging = this.$route.query.reneging
     }
     if (this.$route.query.timevalue) {
-      this.typeList[1].value = this.$route.query.timevalue
+      this.typeList[0].value = this.$route.query.timevalue
     }
-    this.typeList[0].value = this.powerEndData.combinedscore //综合评分
-    this.typeList[2].value = this.powerEndData.totalweight //总负重
-    this.typeList[3].value = this.powerEndData.averagescore //平均负重
-    this.typeList[4].value = this.powerEndData.amount //平均负重
+    //this.combinedscore = this.powerEndData.combinedscore //综合评分
+    this.typeList[1].value = this.powerEndData.totalweight //总负重
+    this.typeList[2].value = this.powerEndData.averagescore //平均负重
+    this.typeList[3].value = this.powerEndData.amount //平均负重
   },
   mounted() {
     // console.log(this.completion)
@@ -180,6 +183,8 @@ export default {
       handler(val, oldval) {
         if (!val) {
           this.init_qrcode()
+        } else {
+          this.recommstate = true
         }
         this.setdowntimer()
       },
@@ -195,28 +200,24 @@ export default {
     },
     //评分图片
     set_scoreimg() {
-      const value = this.typeList[0].value
+      const value = this.powerEndData.combinedscore
       if (value > 80) {
-        this.endAudio('e06')
-        this.scoreimg = `${this.publicPath}common/images/end_imgA.png`
+        this.endAudio('e06', 'A')
       } else if (value < 80 && value > 60) {
-        this.endAudio('e05')
-        this.scoreimg = `${this.publicPath}common/images/end_imgB.png`
+        this.endAudio('e05', 'B')
       } else if (value < 60 && value > 40) {
-        this.endAudio('e04')
-        this.scoreimg = `${this.publicPath}common/images/end_imgC.png`
+        this.endAudio('e04', 'C')
       } else if (value < 40 && value > 20) {
-        this.endAudio('e03')
-        this.scoreimg = `${this.publicPath}common/images/end_imgD.png`
+        this.endAudio('e03', 'D')
       } else if (value < 20 && value >= 0) {
-        this.endAudio('e03')
-        this.scoreimg = `${this.publicPath}common/images/end_imgE.png`
+        this.endAudio('e03', 'E')
       } else {
-        this.endAudio('e03')
-        this.scoreimg = `${this.publicPath}common/images/end_imgD.png`
+        this.endAudio('e03', 'D')
+        // this.scoreimg = `${this.publicPath}common/images/end_imgD.png`
       }
     },
-    endAudio(num) {
+    endAudio(num, evaluate) {
+      this.evaluateText = evaluate
       this.audio_a = new Audio()
       this.audio_a.src = `${this.publicPath}powerStatic/audio/课程结束/${num}.mp3`
       this.audio_a.play()
@@ -242,8 +243,12 @@ export default {
     //推荐结束
     async footbtn(index) {
       if (index == 0) {
-        this.recommstate = true
-        clearInterval(this.downtimer)
+        if (this.loginState) {
+          this.recommstate = true
+          clearInterval(this.downtimer)
+        } else {
+          this.showQR = true
+        }
       } else {
         clearInterval(this.downtimer)
         this.$router.push('/')

@@ -17,9 +17,17 @@ const state = {
   },
   impedance: 0,
   bodydata: {},
+  testState: false
+}
+
+const getters = {
+  testState: state => state.testState
 }
 
 const mutations = {
+  set_testState (state, data) {
+    state.testState = data
+  },
   //设置性别
   set_user_sex (state, data) {
     state.user_sex = data;
@@ -89,10 +97,11 @@ const actions = {
   websocket_body ({ dispatch, commit }, data) {
     switch (data.cmd) {
       case "resMeasureHeight": //测量身高
+        console.log(data)
         commit("set_resMeasureHeight", data.data);
         break;
       case "resMeasureWeight": //测量体重
-        console.log(data)
+        // console.log(data)
         dispatch("set_resMeasureWeight", data.data);
         break;
       case "resMeasureImpedance": //测量体脂
@@ -129,5 +138,6 @@ const actions = {
 export default {
   state,
   mutations,
-  actions
+  actions,
+  getters
 }

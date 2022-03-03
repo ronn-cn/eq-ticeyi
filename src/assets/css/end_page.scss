@@ -5,22 +5,25 @@
   z-index: 1;
   display: flex;
   &_right {
-    color: #000;
-    width: 100%;
-    background: #f2f2f2;
+    color: #fff;
+    width: 1880px;
+    padding: 20px;
+    overflow: hidden;
+    background: #1b254b;
     position: relative;
     .rignt_head {
+      width: 1600px;
+      height: 171px;
+      padding: 56px 200px 56px 80px;
+      background: linear-gradient(180deg, #323647 0%, #222631 100%);
+      box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
+      border-radius: 20px;
       display: flex;
       align-items: center;
-      padding-left: 5%;
-      margin-top: 0.31rem;
       position: relative;
       &_badge {
         width: 75%;
         height: 0.84rem;
-        background-position: left;
-        background-repeat: repeat-y;
-        border-bottom: 1px solid #000;
         display: flex;
         align-items: center;
         .plan_text {
@@ -39,82 +42,110 @@
       }
     }
     .right_type {
-      margin: 0.34rem 0;
+      margin: 20px 0;
       ul {
-        width: 80%;
+        width: 100%;
         display: flex;
-
-        padding-left: 5%;
+        justify-content: space-between;
         li {
+          width: 456px;
+          height: 284px;
+          background: linear-gradient(180deg, #323647 0%, #222631 100%);
+          box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
+          border-radius: 20px;
           position: relative;
-          text-align: left;
-          padding-bottom: 0.2rem;
-          margin-left: 0.3rem;
-          margin-right: 0.9rem;
+          // text-align: left;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
           .type_icon {
             position: absolute;
-            top: 0.1rem;
-            left: -0.35rem;
-            width: 45px;
-            height: 45px;
-
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 80px;
+            background: rgba(78, 80, 90, 0.55);
+            border-radius: 20px 0px;
             img {
-              width: 100%;
-              height: 100%;
+              width: 50px;
+              height: 50px;
+              margin-top: 15px;
             }
           }
-          .right_type_value {
-            width: 35%;
-            font-size: 0.28rem;
-            font-weight: bold;
-          }
           .right_type_title {
-            font-size: 0.2rem;
-            font-weight: 400;
+            font-size: 36px;
+          }
+          .right_type_value {
+            font-size: 64px;
+            margin-top: 40px;
           }
         }
       }
     }
     .right_echart {
       width: 100%;
-      margin-top: 0.2rem 0;
+      height: 283px;
+      background: linear-gradient(180deg, #323647 0%, #222631 100%);
+      box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
+      border-radius: 20px;
+      position: relative;
       h3 {
-        font-size: 0.16rem;
-        font-weight: 600;
-        text-align: left;
-        padding: 0 0 0rem 5%;
-        margin-bottom: 0.3rem;
+        position: absolute;
+        left: 45%;
+        top: 20px;
+        font-size: 36px;
       }
       .echart_size {
-        width: 90%;
-        height: 2.6rem;
+        width: 100%;
+        height: 100%;
       }
     }
   }
+
+  .right_user_evaluate {
+    display: flex;
+    .evaluate_item {
+      margin-left: 150px;
+    }
+    .ep1 {
+      font-size: 96px;
+    }
+    .ep2 {
+      font-size: 36px;
+      margin-top: 30px;
+      white-space: nowrap;
+    }
+  }
+
   .right_foot {
     width: 100%;
-    height: 0.8rem;
-    position: absolute;
-    left: 0;
-    bottom: 0.1rem;
+    margin-top: 20px;
     display: flex;
+    justify-content: space-between;
     .btn_btn {
-      margin-left: 5%;
-      margin-right: 2%;
-      width: 60%;
+      width: 1405px;
+      height: 131px;
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #fff;
-      background-color: rgb(31, 172, 74);
+
+      background: #28cd41;
+      box-shadow: inset 15px 15px 10px rgba(255, 255, 255, 0.09);
+      border-radius: 20px;
     }
     .btn_btn1,
     .btn_btn2 {
-      width: 20%;
+      width: 455px;
+      height: 131px;
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: rgb(237, 77, 113);
+      background: #007aff;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
+        inset 15px 15px 10px rgba(255, 255, 255, 0.09);
+      border-radius: 20px;
       position: relative;
       .btn_end1 {
         position: absolute;
@@ -153,20 +184,20 @@
     width: 100%;
   }
 }
-.login_qr {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 2rem;
-  height: 2rem;
-
+.wrapper {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
-  p {
-    font-size: 0.12rem;
-    font-weight: bold;
+  justify-content: center;
+  height: 100%;
+  .block {
+    color: #000;
+    width: 650px;
+    height: 400px;
+    display: flex;
+    background-color: #fff;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
 }
 .login_activer {
@@ -181,14 +212,18 @@
     font-size: 0.18rem;
   }
   .user_text2 {
-    width: 0.6rem;
-    height: 0.6rem;
+    width: 139px;
+    height: 139px;
+    background: #c4c4c4;
+    border: 3px solid #aaaaaa;
+    box-sizing: border-box;
+    box-shadow: 0px 10px 20px rgba(170, 170, 170, 0.25);
+
     border-radius: 50%;
-    font-size: 0.12rem;
+    font-size: 24px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #fff;
   }
   .user_img {
     width: 0.6rem;

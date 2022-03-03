@@ -81,11 +81,12 @@
     }
     ul {
       li {
-        width: 455px;
+        width: 365px;
         height: 132px;
         font-size: 0.26rem;
+        padding: 0 20px 0 70px;
         display: flex;
-        justify-content: center;
+        // justify-content: center;
         align-items: center;
         margin: 20px 0;
         background: linear-gradient(180deg, #323647 0%, #222631 100%);
@@ -114,18 +115,15 @@
           background-size: 100% 100%;
         }
       }
-      // .active::after {
-      //   content: '';
-      //   width: 0px;
-      //   height: 0px;
-      //   border-top: 0.12rem solid transparent;
-      //   border-bottom: 0.12rem solid transparent;
-      //   border-left: 0.12rem solid #ffffff;
-      //   position: absolute;
-      //   top: 0.44rem;
-      //   right: -0.1rem;
-      //   z-index: 99;
-      // }
+      .active::after {
+        content: '';
+        width: 48px;
+        height: 48px;
+        background: url('~assets/images/phase2/icon1.svg') no-repeat;
+        position: absolute;
+        top: 56px;
+        right: 2px;
+      }
     }
     &_out {
       height: 1.28rem;
@@ -151,7 +149,7 @@
 <template>
   <div class="main">
     <div class="home" v-if="!dataTextState">
-      <div class="home_nav">
+      <div class="home_nav" v-show="!showCourse">
         <div class="home_nav_qrcode" v-if="!loginState">
           <QRCode
             ref="qrcode1"
@@ -176,7 +174,7 @@
           <li
             v-for="(item, index) of patternList"
             :class="{ active: itemindex == index }"
-            @click="swichindex(index)"
+            @click="swichindex(index), click_effects()"
             :key="item.id"
           >
             {{ item.title }}
@@ -186,7 +184,7 @@
               >{{ voicestate ? '已开启' : '已关闭' }}
             </span>
             <VoiceSwitch
-              @change="switchstate"
+              @change="switchstate(voicestate), click_effects()"
               :value="voicestate"
             ></VoiceSwitch>
           </li>
@@ -199,8 +197,10 @@
       <home-view
         :itemindex="itemindex"
         @setdatastate="setdatastate"
+        @set_showCourse="set_showCourse"
       ></home-view>
     </div>
+
     <DataDetection
       v-if="dataTextState"
       @setdatastate="setdatastate"
@@ -252,6 +252,7 @@ export default {
       dataTextState: false,
       qrcode: null,
       qrstate: true,
+      showCourse: false, //左侧是否显示
       //_beforeUnload_time: "",
     }
   },
@@ -265,13 +266,14 @@ export default {
       }
     },
     dataTextState(val) {
+      this.$store.commit('set_testState', val)
       if (!val) {
         this.init_qrcode(this.Qrcode)
       }
     },
   },
   created() {
-    this.switchstate(true)
+    this.switchstate(false)
   },
   mounted() {
     if (!this.loginState) {
@@ -288,7 +290,7 @@ export default {
   destroyed: function () {},
   methods: {
     ...mapMutations(['setLoginStatus', 'SEND_SOCKET']),
-    ...mapActions(['logout']),
+    ...mapActions(['logout', 'click_effects']),
     //调用二维码
     async init_qrcode(text) {
       this.qrstate = false
@@ -305,11 +307,15 @@ export default {
     //开始体测
     setdatastate(boolean) {
       this.dataTextState = boolean
+      this.showCourse = false
     },
     //声音播放
     switchstate(val) {
-      // console.log(val)
-      this.$store.commit('set_voicestate', val)
+      console.log(val)
+      this.$store.commit('set_voicestate', !val)
+    },
+    set_showCourse(val) {
+      this.showCourse = val
     },
   },
 }

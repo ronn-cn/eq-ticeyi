@@ -3,7 +3,7 @@
   position: fixed;
   left: 26vw;
   top: 25vh;
-  z-index: 9;
+  z-index: 999;
   width: 42vw;
   height: 26vh;
   padding: 0.4rem 0.2rem;

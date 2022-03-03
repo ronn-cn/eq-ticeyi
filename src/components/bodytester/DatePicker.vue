@@ -3,6 +3,9 @@
   width: 70%;
   margin: auto;
 }
+::v-deep .vue-picker {
+  background-color: transparent !important;
+}
 </style>
 <template>
   <div class="pickder">

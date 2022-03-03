@@ -14,24 +14,19 @@
   justify-content: space-between;
   padding: 0.4rem 1.28rem 0 1.42rem;
   .body_view {
+    width: 4.97rem;
     h2 {
       font-size: 0.36rem;
       font-weight: 500;
       color: #40f9ef;
     }
-    &_core {
-      width: 4.97rem;
-      height: 5.25rem;
-      margin-top: 0.1rem;
-      background-size: 100% 100%;
-    }
-    p {
-      margin-top: 0.06rem;
-      font-size: 0.16rem;
-      font-weight: 400;
-      color: #ffffff;
-      opacity: 0.4;
-    }
+    // p {
+    //   margin-top: 0.06rem;
+    //   font-size: 0.16rem;
+    //   font-weight: 400;
+    //   color: #ffffff;
+    //   opacity: 0.4;
+    // }
   }
   .text_message {
     width: 4.16rem;
@@ -47,48 +42,7 @@
     }
   }
 }
-.testbody {
-  width: 80%;
-  height: 30%;
-  margin: auto;
-  background-size: inherit;
-  animation: beating 6s linear infinite;
-}
-@keyframes beating {
-  0% {
-    transform: translateY(0px);
-  }
-  10% {
-    transform: translateY(80px);
-  }
-  20% {
-    transform: translateY(160px);
-  }
-  30% {
-    transform: translateY(240px);
-  }
-  40% {
-    transform: translateY(320px);
-  }
-  50% {
-    transform: translateY(400px);
-  }
-  60% {
-    transform: translateY(320px);
-  }
-  70% {
-    transform: translateY(240px);
-  }
-  80% {
-    transform: translateY(160px);
-  }
-  90% {
-    transform: translateY(80px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
+
 .home_back {
   width: 0.62rem;
   height: 0.6rem;
@@ -125,23 +79,7 @@
           ></countTo>
           %
         </h2>
-        <div
-          class="body_view_core"
-          :style="{
-            backgroundImage:
-              'url(' +
-              `${publicPath}bodytesterStatic/images/body_view1.png ` +
-              ')',
-          }"
-        >
-          <div
-            class="testbody"
-            :style="{
-              backgroundImage: `url(${publicPath}bodytesterStatic/images/testbody.png)`,
-            }"
-          ></div>
-        </div>
-        <p>请勿松开手柄，可能会导致测试中断</p>
+        <!-- <p>请勿松开手柄，可能会导致测试中断</p> -->
       </section>
       <section
         class="text_message"
@@ -194,6 +132,7 @@
 </template>
 
 <script>
+// import ThreeMo from './threeMo.vue'
 import countTo from '/node_modules/vue-count-to/src/vue-countTo'
 // import countTo from 'vue-count-to'
 import { mapGetters, mapMutations } from 'vuex'

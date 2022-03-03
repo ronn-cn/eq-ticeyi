@@ -1,15 +1,14 @@
 <style scoped lang="scss">
 .home_view {
-  width: (12.8rem-3.59rem);
+  // width: (12.8rem-3.59rem);
   height: 100%;
   position: relative;
   &_footer {
     .footer_step {
-      width: 1320px;
+      width: 1600px;
       position: fixed;
       bottom: 190px;
-      left: 545px;
-
+      left: 140px;
       ul {
         width: 100%;
         display: flex;
@@ -79,7 +78,7 @@
           </ul>
         </div>
         <div class="footer_start">
-          <div class="start_text1" @click="initStep">
+          <div class="start_text1" @click="initStep(), click_effects()">
             {{ courseState ? '确认' : '开始测试' }}
           </div>
         </div>
@@ -154,6 +153,10 @@ export default {
       },
       immediate: true,
     },
+    courseState(val) {
+      console.log(val)
+      this.$emit('set_showCourse', val)
+    },
   },
   created() {
     this.getSexAge()
@@ -161,7 +164,7 @@ export default {
   mounted() {},
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_lesson_id', 'set_MakeCareInfo']),
-    ...mapActions(['send_askLedState']),
+    ...mapActions(['send_askLedState', 'click_effects']),
     async getSexAge() {
       const rs = await api.get('/get-user-all', {
         user_id: this.userInfo.user_id,
@@ -175,6 +178,7 @@ export default {
     },
     //返回
     setitemindex() {
+      this.click_effects()
       if (this.viewindex == 0) {
         this.courseState = false
         document.getElementById(`footer_li0`).setAttribute('class', '')
@@ -192,6 +196,7 @@ export default {
       }
       if (this.courseState) {
         if (this.viewindex < 2) {
+          this.click_effects()
           this.viewindex++
           let uid = `footer_li${this.viewindex}`
           document.getElementById(uid).setAttribute('class', 'view_active')

@@ -1,37 +1,62 @@
 <style scoped lang="scss">
 @import '~assets/css/trainpage.scss';
-.audio_text {
-  width: 600px;
-  position: fixed;
-  right: 270px;
-  bottom: 170px;
-  z-index: 999;
-}
-.freejojo-leave-active {
-  animation: jojo 0.5s linear;
-}
-@keyframes jojo {
-  from {
-    opacity: 1;
+
+.page_mo {
+  width: 1920px;
+  height: 919px;
+  display: flex;
+  .fixed_left {
+    width: 50%;
+    height: 100%;
+    background: #161616;
+    position: relative;
+    h1 {
+      color: #aaaaaa;
+      position: absolute;
+      left: 444px;
+      top: 80px;
+      z-index: 9;
+    }
   }
-  to {
-    opacity: 0;
+  .fixed_right {
+    width: 50%;
+    height: 100%;
+    background: #303445;
+    position: relative;
+    h1 {
+      position: absolute;
+      left: 444px;
+      top: 80px;
+      z-index: 9;
+    }
   }
 }
+
+// .audio_text {
+//   width: 600px;
+//   position: fixed;
+//   right: 270px;
+//   bottom: 170px;
+//   z-index: 999;
+// }
+// .freejojo-leave-active {
+//   animation: jojo 0.5s linear;
+// }
+// @keyframes jojo {
+//   from {
+//     opacity: 1;
+//   }
+//   to {
+//     opacity: 0;
+//   }
+// }
 </style>
 
 <template>
   <div class="page">
-    <div>
-      <footer class="page_footer">
-        <ul>
-          <li v-for="(item, index) of footlist" :key="item">
-            <p class="foot_li_p1">{{ footvalue(index) }}</p>
-            <p class="foot_li_p2">{{ item }}</p>
-          </li>
-        </ul>
-      </footer>
+    <div class="page_mo">
       <div class="fixed_left">
+        <h1>Al演示参考</h1>
         <div class="progress_rotate_left">
           <k-progress
             :percent="moloopval"
@@ -41,11 +66,22 @@
           ></k-progress>
         </div>
         <div class="progress_test_left">
-          <p class="text_p1">目标重量</p>
-          <p class="text_p2">--KG</p>
+          <van-circle
+            v-model="currentRate"
+            :rate="100"
+            size="130"
+            stroke-width="70"
+            color="#C4C4C4"
+          />
+          <p class="text_p1">--KG</p>
+          <p class="text_p2">目标重量</p>
         </div>
       </div>
       <div class="fixed_right">
+        <!-- <h1>{{ planText[this.planstate] }}</h1> -->
+        <transition name="jojo" appear>
+          <div class="audio_text" v-if="audioText">{{ audioText }}</div>
+        </transition>
         <div class="progress_rotate_right">
           <k-progress
             :percent="completePercent"
@@ -55,22 +91,34 @@
           ></k-progress>
         </div>
         <div class="progress_test_right">
-          <p class="text_p1">完成重量</p>
-          <p class="text_p2">{{ traininfo.Weight || 0 }}KG</p>
+          <van-circle
+            v-model="currentRate"
+            :rate="100"
+            size="130"
+            stroke-width="70"
+            :color="fin_weight"
+          />
+          <p class="text_p1">{{ traininfo.Weight || 0 }}KG</p>
+          <p class="text_p2">完成重量</p>
         </div>
       </div>
     </div>
-    <div @click="btn_click(0)">
-      <div class="end_btn"></div>
-      <div class="den_icon"></div>
-    </div>
-    <transition name="freejojo" appear>
-      <div class="audio_text" v-if="audioText">{{ audioText }}</div>
-    </transition>
+
+    <footer class="page_footer">
+      <ul>
+        <li v-for="(item, index) of footlist" :key="item">
+          <p class="foot_li_p1">{{ footvalue(index) }}</p>
+          <p class="foot_li_p2">{{ item }}</p>
+        </li>
+      </ul>
+    </footer>
+
+    <div @click="btn_click(0)" class="end_btn"></div>
   </div>
 </template>
 
 <script>
+import { Dialog, Circle } from 'vant'
 import { mapGetters, mapMutations } from 'vuex'
 import { HandleSeatedAbTrainerData } from '@/assets/js/index'
 import RestPage from './RestPage.vue'
@@ -83,9 +131,12 @@ export default {
     RestPage,
     RadialProgressBar,
     KProgress,
+    VanCircle: Circle,
   },
   data() {
     return {
+      fin_weight: '#C4C4C4',
+      currentRate: 0,
       traininfo: {},
       restinfo: {
         group: 1,

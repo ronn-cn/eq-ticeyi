@@ -3,7 +3,7 @@
   width: 100%;
   height: 100%;
   position: relative;
-  background-color: rgb(242, 242, 242);
+  background: #1b254b;
 }
 .courses_containr {
   h4 {
@@ -23,10 +23,7 @@
         height: 1.8rem;
         margin-bottom: 0.25rem;
         position: relative;
-        // background: url(../assets/images/course/弹力带减脂塑形跟练_1920x660.jpg)
-        //   no-repeat;
-        // background-size: cover;
-        // background-color: salmon;
+
         .item_text {
           padding-left: 10%;
           text-align: left;
@@ -68,30 +65,18 @@
     }
   }
 }
-footer {
-  width: 100%;
-  height: 0.8rem;
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  background-color: #ffffff;
-  color: #ee494e;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-}
 header {
-  height: 1.8rem;
-  background-color: #ffffff;
+  height: 283px;
+  background: linear-gradient(180deg, #323647 0%, #222631 100%);
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
+  border-radius: 20px;
   display: flex;
   align-items: center;
   position: relative;
   .user_avatar {
-    width: 1rem;
-    height: 1rem;
+    width: 139px;
+    height: 139px;
     border-radius: 50%;
-    // background-color: aqua;
     margin: 0 0.2rem;
     img {
       width: 100%;
@@ -99,13 +84,13 @@ header {
     }
   }
   .user_info {
+    color: #fff;
     text-align: left;
     .info_p1 {
       color: #aaaaaa;
       font-size: 0.16rem;
     }
     .info_p2 {
-      color: #333;
       font-size: 0.2rem;
       margin: 0.16rem 0;
     }
@@ -143,120 +128,107 @@ header {
   }
   .user_ability {
     width: 4rem;
-    // height: 1.3rem;
     position: absolute;
     right: 3rem;
     display: flex;
-    .ability_icon,
-    .ability_icon1,
-    .ability_icon2 {
-      width: 0.6rem;
-      height: 0.6rem;
-      border-radius: 50%;
-      margin-right: 0.2rem;
-      background: url('~assets/images/common/sport_power.png') no-repeat;
-      background-position: center;
-      background-size: 50px 50px;
-      background-color: #333;
-    }
-    .ability_icon1 {
-      background: url('~assets/images/common/vitality.png') no-repeat;
-      background-position: center;
-      background-size: 50px 50px;
-      background-color: #333;
-    }
-    .ability_icon2 {
-      background: url('~assets/images/common/star.png') no-repeat;
-      background-position: center;
-      background-size: 50px 50px;
-      background-color: #333;
-    }
-    .ability_title {
-      text-align: left;
-      &_p1 {
-        font-size: 0.16rem;
-        margin: 0.1rem 0;
-      }
-      &_p2 {
-        font-size: 0.12rem;
-      }
-    }
+  }
+  //结束
+  .end_back {
+    width: 0;
+    height: 0;
+    border-left: 100px solid transparent;
+    border-top: 100px solid transparent;
+    border-bottom: 100px solid #ff3b30;
+    border-right: 100px solid transparent;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(100px) translateY(-100px) rotate(45deg);
+    z-index: 999;
+  }
+  .end_back::after {
+    content: '';
+    width: 25px;
+    height: 25px;
+    background: url('~assets/images/common/home_icon4.png') no-repeat;
+    background-size: cover;
+    position: absolute;
+    left: -6px;
+    top: 46px;
+    transform: rotate(45deg);
   }
 }
 .main_cover {
-  // height: 70vh;
-  padding: 0.2rem;
-  background: rgba(170, 170, 170, 0.35);
-  &_nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.35rem;
-    color: #fff;
-    width: 100%;
-    border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.6);
-    box-sizing: border-box;
-    box-shadow: 5px 5px 15px 0px rgba(85, 85, 85, 0.35);
-    .nav_title {
-      text-align: left;
-      .nav_p1 {
-        font-size: 0.28rem;
-        margin-bottom: 0.1rem;
-      }
-      .nav_p2 {
-        font-size: 0.16rem;
-      }
-    }
-    .nav_btn {
-      width: 2rem;
-      height: 0.6rem;
-      line-height: 0.6rem;
-      border-radius: 12px;
-      background-color: #1fac4a;
-      box-sizing: border-box;
-      box-shadow: 5px 5px 20px 0px #10c98f,
-        inset 5px 5px 20px 0px rgba(255, 255, 255, 0.35);
-    }
-  }
+  // padding: 0.2rem 0;
+  // &_nav {
+  //   display: flex;
+  //   justify-content: space-between;
+  //   align-items: center;
+  //   padding: 0.35rem;
+  //   color: #fff;
+  //   width: 100%;
+  //   border-radius: 5px;
+  //   background-color: rgba(0, 0, 0, 0.6);
+  //   box-sizing: border-box;
+  //   box-shadow: 5px 5px 15px 0px rgba(85, 85, 85, 0.35);
+  //   .nav_title {
+  //     text-align: left;
+  //     .nav_p1 {
+  //       font-size: 0.28rem;
+  //       margin-bottom: 0.1rem;
+  //     }
+  //     .nav_p2 {
+  //       font-size: 0.16rem;
+  //     }
+  //   }
+  //   .nav_btn {
+  //     width: 2rem;
+  //     height: 0.6rem;
+  //     line-height: 0.6rem;
+  //     border-radius: 12px;
+  //     background-color: #1fac4a;
+  //     box-sizing: border-box;
+  //     box-shadow: 5px 5px 20px 0px #10c98f,
+  //       inset 5px 5px 20px 0px rgba(255, 255, 255, 0.35);
+  //   }
+  // }
   &_plan {
     margin-top: 0.2rem;
     width: 100%;
-    // height: calc(1080px-2.2rem);
     display: flex;
     justify-content: space-between;
     .plan_day {
-      width: 25%;
-      padding: 0.2rem 0.1rem;
-      height: 3.4rem;
-      background: #fff;
-      border-radius: 5px;
-      box-sizing: border-box;
-      box-shadow: 5px 5px 15px 0px rgba(170, 170, 170, 0.35);
-      .day_h3 {
-        padding-left: 0.35rem;
-        text-align: left;
-        color: #7f7f7f;
-        font-size: 0.18rem;
-        margin-bottom: 0.2rem;
-        position: relative;
-      }
-      .day_h3::before {
-        content: '';
-        width: 50px;
-        height: 56px;
-        position: absolute;
-        left: 0;
-        bottom: -10px;
-        background: url('~assets/images/common/end_dayplan.png') no-repeat;
-        background-size: contain;
-      }
+      width: calc(455px - 68px);
+      height: calc(737px - 68px);
+      padding: 34px;
+      background: linear-gradient(180deg, #323647 0%, #222631 100%);
+      box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
+      border-radius: 20px;
+      position: relative;
+      // .day_h3 {
+      //   padding-left: 0.35rem;
+      //   text-align: left;
+      //   color: #7f7f7f;
+      //   font-size: 0.18rem;
+      //   margin-bottom: 0.2rem;
+      //   position: relative;
+      // }
+      // .day_h3::before {
+      //   content: '';
+      //   width: 50px;
+      //   height: 56px;
+      //   position: absolute;
+      //   left: 0;
+      //   bottom: -10px;
+      //   background: url('~assets/images/common/end_dayplan.png') no-repeat;
+      //   background-size: contain;
+      // }
       .plan_day_item {
+        margin-top: 20px;
         display: flex;
         justify-content: space-between;
         .item_left {
           text-align: left;
-          color: #aaaaaa;
           font-size: 0.16rem;
           .item_left_p2 {
             margin-top: 0.1rem;
@@ -267,70 +239,75 @@ header {
           display: flex;
           justify-content: center;
           align-items: center;
-          color: #aaaaaa;
           font-size: 0.12rem;
           padding: 0 0.14rem;
-          border: 1px solid #f5f5f5;
-          border-radius: 4px;
+          border: 1px solid #fff;
+          border-radius: 10px;
         }
       }
-      .plan_day_img {
+      .plan_day_btn {
+        font-size: 36px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
         width: 100%;
-        height: 1.5rem;
-        margin-top: 0.2rem;
-        // background-color: chocolate;
-        background: url('~assets/images/common/u559_div.png') no-repeat;
-        background-size: cover;
+        height: 131px;
+        line-height: 131px;
+        background: #28cd41;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
+          inset 15px 15px 10px rgba(255, 255, 255, 0.09);
+        border-radius: 20px;
       }
     }
     .suggest_plan {
-      width: 70%;
-      height: 100%;
+      width: 1407px;
+      height: 677px;
       padding: 0.2rem;
-      background: #fff;
-      box-sizing: border-box;
-      border-radius: 5px;
+      background: linear-gradient(180deg, #323647 0%, #222631 100%);
+      box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
+      border-radius: 20px;
       h3 {
         text-align: left;
-        color: #7f7f7f;
-        font-size: 0.18rem;
-        margin-bottom: 0.2rem;
+        font-size: 36px;
       }
       ul {
-        width: 100%;
-        height: 86%;
-        overflow-y: auto;
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
         li {
-          width: 28%;
-          margin-bottom: 0.2rem;
-          padding: 0.2rem;
+          width: 432px;
+          height: 283px;
+          margin-top: 25px;
+          border-radius: 20px;
+          position: relative;
           .train_title {
-            color: #ffffff;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: calc(100% - 40px);
+            height: 58px;
+            background: rgba(35, 33, 33, 0.74);
+            padding: 20px;
             text-align: left;
-            width: 75%;
             .train_title_p1 {
-              font-size: 0.18rem;
-              margin: 0.2rem 0;
+              font-size: 24px;
             }
             .train_title_p2 {
-              font-size: 0.14rem;
-              line-height: 0.2rem;
+              font-size: 18px;
+              margin-top: 10px;
+              width: 80%;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
-          }
-          .start_btn {
-            width: 0.8rem;
-            height: 0.26rem;
-            border-radius: 20px;
-            background-color: #ffffff;
-            box-sizing: border-box;
-            font-size: 0.14rem;
-            color: #000;
-            line-height: 0.26rem;
-            float: right;
-            margin-top: 0.1rem;
+            .start_btn {
+              position: absolute;
+              top: 20px;
+              right: 20px;
+              width: 44px;
+              height: 44px;
+              background-color: #ffffff;
+            }
           }
         }
       }
@@ -340,38 +317,35 @@ header {
 
 .suggest_ul li:nth-child(1) {
   background: url('~assets/images/common/1001.jpg') no-repeat;
-  background-size: 98.5% 100%;
+  background-size: 100% 100%;
 }
 .suggest_ul li:nth-child(2) {
   background: url('~assets/images/common/1002.jpg') no-repeat;
-  background-size: 98.5% 100%;
-  background-position: right;
+  background-size: 100% 100%;
+  // background-position: right;
 }
 .suggest_ul li:nth-child(3) {
   background: url('~assets/images/common/1003.jpg') no-repeat;
-  background-size: 98.5% 100%;
+  background-size: 100% 100%;
 }
 .suggest_ul li:nth-child(4) {
   background: url('~assets/images/common/1004.jpg') no-repeat;
-  background-size: 98.5% 100%;
-  background-position: right;
+  background-size: 100% 100%;
+  // background-position: right;
 }
 .suggest_ul li:nth-child(5) {
   background: url('~assets/images/common/1005.jpg') no-repeat;
-  background-size: 98.5% 100%;
+  background-size: 100% 100%;
 }
 .suggest_ul li:nth-child(6) {
   background: url('~assets/images/common/1006.jpg') no-repeat;
-  background-size: 98.5% 100%;
-  background-position: right;
+  background-size: 100% 100%;
+  // background-position: right;
 }
 
 .user_date {
 }
 .fixed_start {
-  // position: absolute;
-  // top: 10%;
-  // left: 20%;
   width: 3.8rem;
   height: 6rem;
   padding: 2px 2px 2px 2px;
@@ -380,32 +354,6 @@ header {
   box-sizing: border-box;
 }
 
-//结束
-.end_back {
-  width: 0;
-  height: 0;
-  border-left: 100px solid transparent;
-  border-top: 100px solid transparent;
-  border-bottom: 100px solid #fc2d56;
-  border-right: 100px solid transparent;
-  position: fixed;
-  top: 0;
-  right: 0;
-  transform: translateX(100px) translateY(-100px) rotate(45deg);
-  z-index: 999;
-}
-.end_back::after {
-  content: '';
-  width: 40px;
-  height: 40px;
-  // background-color: #30bb24;
-  background: url('~assets/images/common/home_icon4.png') no-repeat;
-  background-size: cover;
-  position: absolute;
-  left: -16px;
-  top: 36px;
-  transform: rotate(45deg);
-}
 //轮播图
 .van-swipe-item {
   width: 500px;
@@ -423,8 +371,8 @@ header {
 
 <template>
   <div class="main">
-    <div class="end_back" @click="lotrecommend"></div>
     <header>
+      <div class="end_back" @click="lotrecommend"></div>
       <div class="user_avatar">
         <img :src="userInfo.user_avatar || ''" alt="" />
       </div>
@@ -441,33 +389,21 @@ header {
           </li>
         </ul>
       </div>
-      <div class="user_ability">
-        <div class="van-swipe-item">
-          <div class="ability_icon"></div>
-          <div class="ability_title">
-            <p class="ability_title_p1">
-              运动能力 {{ userData.data.sport_power || 0 }}/100
-            </p>
-            <p class="ability_title_p2">
-              运动能力是指综合身体各项基础数据的指数维度
-            </p>
-          </div>
+      <!-- <div class="user_ability">
+        <div class="ability_title">
+          <p class="ability_title_p1">{{ userData.data.vitality || 0 }}</p>
+          <p class="ability_title_p2">活力</p>
         </div>
-        <div class="van-swipe-item">
-          <div class="ability_icon1"></div>
-          <div class="ability_title">
-            <p class="ability_title_p1">
-              活力 {{ userData.data.vitality || 0 }}/100
-            </p>
-            <p class="ability_title_p2">
-              活动是指通过运动训练使人们的运动能力发生变化的指数维度
-            </p>
-          </div>
+        <div class="ability_title">
+          <p class="ability_title_p1">
+            {{ userData.data.sport_power || 0 }}
+          </p>
+          <p class="ability_title_p2">运动能力</p>
         </div>
-      </div>
+      </div> -->
     </header>
     <section class="main_cover">
-      <div class="main_cover_nav" v-if="showTable">
+      <!-- <div class="main_cover_nav" v-if="showTable">
         <div class="nav_title">
           <p class="nav_p1">你的训练计划: {{ planInfo.name || '' }}</p>
           <p class="nav_p2">{{ planInfo.desc || '' }}</p>
@@ -475,11 +411,24 @@ header {
         <div class="nav_btn" @click="selectLesson" v-if="showTable">
           <span>继续我的计划</span>
         </div>
-      </div>
-      <div
-        class="main_cover_plan"
-        :style="showTable ? 'height:3.4rem' : 'Height:5rem'"
-      >
+      </div> -->
+
+      <div class="main_cover_plan">
+        <section
+          class="suggest_plan"
+          :style="showTable ? 'width:70%' : 'width:100%'"
+        >
+          <h3>通过以下推荐课程继续训练</h3>
+          <ul class="suggest_ul">
+            <li v-for="item of curriculum" :key="item.title">
+              <div class="train_title">
+                <p class="train_title_p1">{{ item.groupname }}</p>
+                <p class="train_title_p2">{{ item.introduce }}</p>
+                <div class="start_btn" @click="new_details(item)"></div>
+              </div>
+            </li>
+          </ul>
+        </section>
         <section class="plan_day" v-show="showTable">
           <h3 class="day_h3">
             {{ showTable ? '今日训练计划' : '今日推荐课程' }}
@@ -493,22 +442,7 @@ header {
               {{ this.todayInfo.value == 0 ? '未完成' : '已完成' }}
             </div>
           </div>
-          <div class="plan_day_img"></div>
-        </section>
-        <section
-          class="suggest_plan"
-          :style="showTable ? 'width:70%' : 'width:100%'"
-        >
-          <h3>通过以下推荐课程继续训练</h3>
-          <ul class="suggest_ul">
-            <li v-for="item of curriculum" :key="item.title">
-              <div class="train_title">
-                <p class="train_title_p1">{{ item.groupname }}</p>
-                <p class="train_title_p2">{{ item.introduce }}</p>
-              </div>
-              <div class="start_btn" @click="new_details(item)">开始课程</div>
-            </li>
-          </ul>
+          <div class="plan_day_btn" @click="selectLesson">继续我的计划</div>
         </section>
       </div>
     </section>
@@ -748,14 +682,14 @@ export default {
           })
         }
       } else {
-        for (let i = lastMonday; i <= lastSunday; i++) {
-          let j = String(i)
-          let day = j.slice(0, 4) + '-' + j.slice(4, 6) + '-' + j.slice(6, 8)
-          this.dateArr.push({
-            value: 0,
-            date: day,
-          })
-        }
+        // for (let i = lastMonday; i <= lastSunday; i++) {
+        //   let j = String(i)
+        //   let day = j.slice(0, 4) + '-' + j.slice(4, 6) + '-' + j.slice(6, 8)
+        //   this.dateArr.push({
+        //     value: 0,
+        //     date: day,
+        //   })
+        // }
       }
       // console.log(this.dateArr)
     },

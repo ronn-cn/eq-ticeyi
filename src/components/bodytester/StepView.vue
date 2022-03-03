@@ -86,7 +86,7 @@
         }
       }
       .h1_age {
-        margin-top: 0.9rem;
+        margin: 0.4rem 0;
         font-size: 0.38rem;
       }
     }
@@ -181,11 +181,19 @@
   margin: 0 auto;
   margin-top: 0.8rem;
 }
+.introduce_active {
+  width: 1880px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #323647 0%, #222631 100%) !important;
+}
 </style>
 
 <template>
   <div>
-    <div class="home_view_introduce">
+    <div
+      class="home_view_introduce"
+      :class="courseState ? 'introduce_active' : ''"
+    >
       <div class="introduce_start_before" v-if="!courseState">
         <!-- <div class="introduce_logo">
           <img :src="`${publicPath}common/images/login_img1.png`" />
