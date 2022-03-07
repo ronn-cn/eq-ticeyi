@@ -38,7 +38,10 @@
         <ul>
           <li v-for="item of typeList" :key="item.title">
             <div class="type_icon">
-              <img :src="`/common/images/end/${item.url}.png`" alt="" />
+              <img
+                :src="`${publicPath}common/images/end/${item.url}.svg`"
+                alt=""
+              />
             </div>
             <div class="right_type_title">{{ item.title }}</div>
             <div class="right_type_value">{{ item.value }}</div>
@@ -102,22 +105,22 @@ export default {
       typeList: [
         {
           title: '运动时间',
-          url: 'shijian',
+          url: 'endpage_icon1',
           value: '00:00',
         },
         {
           title: '总负重',
-          url: 'zongfuzhong',
+          url: 'endpage_icon2',
           value: '1',
         },
         {
           title: '平均负重',
-          url: 'fuzhong',
+          url: 'endpage_icon3',
           value: '1',
         },
         {
           title: '训练量',
-          url: 'xunlianliang',
+          url: 'endpage_icon4',
           value: '1',
         },
       ],
@@ -151,6 +154,7 @@ export default {
       this.init_qrcode()
     }
     this.set_scoreimg()
+    this.setdowntimer()
   },
   //离开页面
   destroyed: function () {
@@ -186,9 +190,11 @@ export default {
         } else {
           this.recommstate = true
         }
-        this.setdowntimer()
       },
-      immediate: true,
+      recommstate(val) {
+        clearInterval(this.downtimer)
+      },
+      // immediate: true,
     },
   },
   methods: {
@@ -228,17 +234,17 @@ export default {
         this.timenum = 60
       }
 
-      if (process.env.NODE_ENV !== 'development') {
-        this.downtimer = setInterval(() => {
-          let num = (this.timenum -= 1)
-          if (num !== 0) {
-            this.timenum = num
-          } else {
-            clearInterval(this.downtimer)
-            this.$router.push('/')
-          }
-        }, 1000)
-      }
+      // if (process.env.NODE_ENV !== 'development') {
+      this.downtimer = setInterval(() => {
+        let num = (this.timenum -= 1)
+        if (num !== 0) {
+          this.timenum = num
+        } else {
+          clearInterval(this.downtimer)
+          this.$router.push('/')
+        }
+      }, 1000)
+      //}
     },
     //推荐结束
     async footbtn(index) {

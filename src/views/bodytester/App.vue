@@ -14,87 +14,22 @@ body {
   width: 100%;
   height: 100%;
 }
-.threemo {
-  position: fixed;
-  top: 22%;
-  left: 12%;
-  width: 4.97rem;
-  height: 5.25rem;
-  // background-color: #40f9ef;
-}
-.testbody {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 999;
-  width: 100%;
-  height: 30%;
-  margin: auto;
-  background-size: inherit;
-  animation: beating 6s linear infinite;
-}
-@keyframes beating {
-  0% {
-    transform: translateY(0px);
-  }
-  10% {
-    transform: translateY(80px);
-  }
-  20% {
-    transform: translateY(160px);
-  }
-  30% {
-    transform: translateY(240px);
-  }
-  40% {
-    transform: translateY(320px);
-  }
-  50% {
-    transform: translateY(400px);
-  }
-  60% {
-    transform: translateY(320px);
-  }
-  70% {
-    transform: translateY(240px);
-  }
-  80% {
-    transform: translateY(160px);
-  }
-  90% {
-    transform: translateY(80px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
 </style>
 
 <template>
   <div id="app">
     <router-view></router-view>
     <Login v-if="StandbyState"></Login>
-    <div class="threemo" :style="testState ? '' : 'z-index: -1'">
-      <div
-        class="testbody"
-        :style="{
-          backgroundImage: `url(${publicPath}bodytesterStatic/images/testbody.png)`,
-        }"
-      ></div>
-      <ThreeMo />
-    </div>
   </div>
 </template>
 
 <script>
-import ThreeMo from './page/threeMo.vue'
 import { mapActions, mapGetters } from 'vuex'
 import Login from '@/components/Login.vue'
 export default {
   name: 'App',
   components: {
     Login,
-    ThreeMo,
   },
   data() {
     return {}
@@ -121,10 +56,9 @@ export default {
       'StandbyState',
       'userMakeState',
       'resLogoutUser',
-      'testState',
       'publicPath',
+      'testState',
     ]),
-    isMo() {},
   },
   created() {
     var whdef = 100 / 1280 // 表示1920的设计图,使用100PX的默认值,使用100px只是为了方便计算 其他值都可以

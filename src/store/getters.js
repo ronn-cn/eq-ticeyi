@@ -14,6 +14,7 @@ export default {
   MakeCareTitle: state => state.common.MakeCareTitle,  //预约名称
   MakeCareDesc: state => state.common.MakeCareDesc,  //预约简介
   client_id: state => state.common.client_id,  //
+  powerHieght: state => state.common.powerHieght, //力量器械的高度 
   projecttype: state => state.common.projecttype, //设备类型 
   lesson_id: state => state.common.lesson_id,      //lesson_id
 
@@ -23,6 +24,8 @@ export default {
   userInfo: state => state.user.userinfo, //用户信息
   user_rm: state => state.user.user_rm, //用户rm值
   user_rmvalue: state => state.user.user_rmvalue, //用户rm值 
+  user_data: state => state.user.user_data, //用户rm值 
+
   //websocket
   websocketUrl: state => state.websocket.websocketUrl,  //websocket地址
   getTouchTime: state => state.websocket.TouchTime,  //间隔时间

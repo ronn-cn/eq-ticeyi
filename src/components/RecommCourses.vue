@@ -3,7 +3,7 @@
   width: 100%;
   height: 100%;
   position: relative;
-  background: #1b254b;
+  // background: #1b254b;
 }
 .courses_containr {
   h4 {
@@ -87,11 +87,11 @@ header {
     color: #fff;
     text-align: left;
     .info_p1 {
-      color: #aaaaaa;
-      font-size: 0.16rem;
+      // color: #aaaaaa;
+      font-size: 0.12rem;
     }
     .info_p2 {
-      font-size: 0.2rem;
+      font-size: 36px;
       margin: 0.16rem 0;
     }
     ul {
@@ -104,34 +104,34 @@ header {
         .date_day1 {
           color: #aaaaaa;
           font-size: 0.12rem;
+          margin-bottom: 20px;
         }
         .date_day2 {
           font-size: 0.18rem;
           margin: 10px 0 6px 0;
         }
         .date_dot1 {
-          width: 10px;
-          height: 10px;
+          width: 32px;
+          height: 32px;
           border-radius: 50%;
-          // margin: auto;
-          background-color: #d7d7d7;
+          border: 2px solid #fff;
+          background-color: #555555;
         }
         .date_dot2 {
-          width: 10px;
-          height: 10px;
+          width: 32px;
+          height: 32px;
           border-radius: 50%;
-          // margin: auto;
-          background-color: #017aff;
+          border: 2px solid #fff;
+          background-color: #fff;
+          background-image: url('~assets/images/phase2/end_icon3.svg');
+          background-repeat: no-repeat;
+          background-size: 16px 12px;
+          background-position: center;
         }
       }
     }
   }
-  .user_ability {
-    width: 4rem;
-    position: absolute;
-    right: 3rem;
-    display: flex;
-  }
+
   //结束
   .end_back {
     width: 0;
@@ -266,9 +266,21 @@ header {
       background: linear-gradient(180deg, #323647 0%, #222631 100%);
       box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
       border-radius: 20px;
-      h3 {
+      .plan_h3 {
         text-align: left;
         font-size: 36px;
+        padding-left: 0.55rem;
+        position: relative;
+      }
+      .plan_h3::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 44px;
+        height: 40px;
+        background: url('~assets/images/phase2/end_icon2.svg') no-repeat;
+        background-size: 100% 100%;
       }
       ul {
         display: flex;
@@ -304,9 +316,11 @@ header {
               position: absolute;
               top: 20px;
               right: 20px;
-              width: 44px;
-              height: 44px;
-              background-color: #ffffff;
+              width: 0.38rem;
+              height: 0.38rem;
+              background: url('~assets/images/phase2/end_icon1.svg') no-repeat;
+              background-size: 100% 100%;
+              // background-color: #ffffff;
             }
           }
         }
@@ -322,7 +336,6 @@ header {
 .suggest_ul li:nth-child(2) {
   background: url('~assets/images/common/1002.jpg') no-repeat;
   background-size: 100% 100%;
-  // background-position: right;
 }
 .suggest_ul li:nth-child(3) {
   background: url('~assets/images/common/1003.jpg') no-repeat;
@@ -331,7 +344,6 @@ header {
 .suggest_ul li:nth-child(4) {
   background: url('~assets/images/common/1004.jpg') no-repeat;
   background-size: 100% 100%;
-  // background-position: right;
 }
 .suggest_ul li:nth-child(5) {
   background: url('~assets/images/common/1005.jpg') no-repeat;
@@ -340,12 +352,12 @@ header {
 .suggest_ul li:nth-child(6) {
   background: url('~assets/images/common/1006.jpg') no-repeat;
   background-size: 100% 100%;
-  // background-position: right;
 }
 
 .user_date {
 }
 .fixed_start {
+  color: #000;
   width: 3.8rem;
   height: 6rem;
   padding: 2px 2px 2px 2px;
@@ -354,18 +366,26 @@ header {
   box-sizing: border-box;
 }
 
-//轮播图
-.van-swipe-item {
-  width: 500px;
-  padding: 0.3rem 0.2rem;
-  background-color: rgb(220, 238, 252);
-  box-sizing: border-box;
-  border-radius: 5px;
-  margin-right: 0.2rem;
+.user_ability {
+  width: 4rem;
+  position: absolute;
+  right: 0rem;
   display: flex;
+  &_item {
+    margin-right: 130px;
+    .ability_p1 {
+      font-size: 96px;
+    }
+    .ability_p2 {
+      font-size: 32px;
+    }
+  }
 }
-.ability_title_p2 {
-  line-height: 0.2rem;
+
+.t_ul {
+  li {
+    width: 33% !important;
+  }
 }
 </style>
 
@@ -384,23 +404,23 @@ header {
         <ul class="user_date">
           <li v-for="(item, index) of dateArr" :key="index">
             <span class="date_day1">{{ weekDay(item.date) }}</span>
-            <span class="date_day2">{{ moment_date(item.date) }}</span>
+            <!-- <span class="date_day2">{{ moment_date(item.date) }}</span> -->
             <div :class="item.value == 0 ? 'date_dot1' : 'date_dot2'"></div>
           </li>
         </ul>
       </div>
-      <!-- <div class="user_ability">
-        <div class="ability_title">
-          <p class="ability_title_p1">{{ userData.data.vitality || 0 }}</p>
-          <p class="ability_title_p2">活力</p>
+      <div class="user_ability">
+        <div class="user_ability_item">
+          <p class="ability_p1">{{ userData.data.vitality || 0 }}</p>
+          <p class="ability_p2">活力</p>
         </div>
-        <div class="ability_title">
-          <p class="ability_title_p1">
+        <div class="user_ability_item">
+          <p class="ability_p1">
             {{ userData.data.sport_power || 0 }}
           </p>
-          <p class="ability_title_p2">运动能力</p>
+          <p class="ability_p2">运动能力</p>
         </div>
-      </div> -->
+      </div>
     </header>
     <section class="main_cover">
       <!-- <div class="main_cover_nav" v-if="showTable">
@@ -418,8 +438,8 @@ header {
           class="suggest_plan"
           :style="showTable ? 'width:70%' : 'width:100%'"
         >
-          <h3>通过以下推荐课程继续训练</h3>
-          <ul class="suggest_ul">
+          <h3 class="plan_h3">通过以下推荐课程继续训练</h3>
+          <ul class="suggest_ul" :class="showTable ? '' : 't_ul'">
             <li v-for="item of curriculum" :key="item.title">
               <div class="train_title">
                 <p class="train_title_p1">{{ item.groupname }}</p>
@@ -625,7 +645,11 @@ export default {
           this.details(rs.data.data)
         }
       } else {
-        this.$notify({ type: 'warning', message: '暂无推荐课程' })
+        this.$notify({
+          type: 'warning',
+          message: '暂无推荐课程',
+          position: 'bottom',
+        })
       }
     },
     //开始转移课程
@@ -705,15 +729,7 @@ export default {
     },
     weekDay(date) {
       const newDate = new Date(date.replace(/-/g, '/'))
-      const weekday = [
-        '星期日',
-        '星期一',
-        '星期二',
-        '星期三',
-        '星期四',
-        '星期五',
-        '星期六',
-      ]
+      const weekday = ['周天', '周一', '周二', '周三', '周四', '周五', '周六']
       return weekday[newDate.getDay()]
     },
     //倒计时

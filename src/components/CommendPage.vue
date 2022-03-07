@@ -1,8 +1,9 @@
 <style scoped lang="scss">
 .page_main {
   display: flex;
-  width: 100%;
-  height: 100%;
+  width: 1880px;
+  padding: 20px;
+  overflow: hidden;
 }
 // .Recomm_left {
 //   width: 30%;

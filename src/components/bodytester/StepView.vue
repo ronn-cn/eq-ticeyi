@@ -3,11 +3,9 @@
   width: 1405px;
   height: 889px;
   margin-bottom: 20px;
-  background-color: rgb(25, 211, 18);
-  background: url('~assets/images/phase2/back2.svg') no-repeat;
-  border: 1px solid #000000;
-  box-sizing: border-box;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  // background-color: rgb(25, 211, 18);
+  // background: url('~assets/images/phase2/back2.svg') no-repeat;
+  background: url('~assets/images/phase2/home_view_b.png') no-repeat;
   border-radius: 20px;
 
   .introduce_start_before {
@@ -184,7 +182,8 @@
 .introduce_active {
   width: 1880px;
   overflow: hidden;
-  background: linear-gradient(180deg, #323647 0%, #222631 100%) !important;
+  background: #000000;
+  // background: linear-gradient(180deg, #323647 0%, #222631 100%) !important;
 }
 </style>
 
@@ -266,9 +265,9 @@
             <section
               :class="[
                 'gender_female',
-                user_sex == 0 ? 'gender_female_active' : '',
+                user_sex == 2 ? 'gender_female_active' : '',
               ]"
-              @click="commitAge(0)"
+              @click="commitAge(2)"
             >
               女
             </section>

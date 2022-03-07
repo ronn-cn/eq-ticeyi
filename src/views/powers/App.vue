@@ -70,6 +70,7 @@ p {
 </template>
 
 <script>
+import PowerMo from '../../components/power/PowerMo.vue'
 import { mapActions, mapGetters } from 'vuex'
 import Login from '@/components/Login.vue'
 import Viframe from '@/components/power/iframe.vue'
@@ -78,6 +79,7 @@ export default {
   components: {
     Login,
     Viframe,
+    PowerMo,
   },
   data() {
     return {

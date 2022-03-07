@@ -148,34 +148,31 @@ export default {
     loginState: {
       handler(newval, oldval) {
         if (newval) {
-          this.getSexAge()
+          // this.getSexAge()
         }
       },
       immediate: true,
     },
     courseState(val) {
       console.log(val)
+      if (val) {
+        //开始测试接口
+        this.$store.dispatch('clientstart', {
+          lesson_id: '445dab66e033da6f0000000000000001',
+          lesson_name: '体测仪',
+        })
+      } else {
+        //结束测试接口
+        this.$store.dispatch('clientEnd')
+      }
       this.$emit('set_showCourse', val)
     },
   },
-  created() {
-    this.getSexAge()
-  },
+  created() {},
   mounted() {},
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_lesson_id', 'set_MakeCareInfo']),
     ...mapActions(['send_askLedState', 'click_effects']),
-    async getSexAge() {
-      const rs = await api.get('/get-user-all', {
-        user_id: this.userInfo.user_id,
-      })
-      // console.log(rs)
-      if (rs.data.code == '200') {
-        let user = rs.data.data.user
-        this.$store.commit('set_user_age', user.age)
-        this.$store.commit('set_user_sex', user.sex)
-      }
-    },
     //返回
     setitemindex() {
       this.click_effects()
@@ -202,8 +199,8 @@ export default {
           document.getElementById(uid).setAttribute('class', 'view_active')
         } else {
           console.log('开始吧')
-          this.$emit('setdatastate', true)
-          // this.$router.push("/datadetection");
+          // this.$emit('setdatastate', true)
+          this.$router.push('/datadetection')
         }
       } else {
         this.courseState = true

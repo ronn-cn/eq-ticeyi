@@ -130,7 +130,8 @@
             <k-progress
               :percent="moloopval"
               :show-text="false"
-              :line-height="30"
+              :line-height="50"
+              :border="false"
               :color="['#f5af19', '#fa0a74']"
             ></k-progress>
           </div>
@@ -155,7 +156,8 @@
             <k-progress
               :percent="completePercent"
               :show-text="false"
-              :line-height="30"
+              :line-height="50"
+              :border="false"
               :color="['#f5af19', '#fa0a74']"
             ></k-progress>
           </div>

@@ -5,12 +5,8 @@
 <script>
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { PLYLoader } from 'three/examples/jsm/loaders/PLYLoader.js'
-import { PCDLoader } from 'three/examples/jsm/loaders/PCDLoader'
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-
+import { mapGetters } from 'vuex'
 export default {
   name: 'ThreePage',
   props: {
@@ -72,7 +68,7 @@ export default {
   data() {
     return {
       loading: false,
-      publicPath: process.env.BASE_URL,
+      // publicPath: process.env.BASE_URL,
       mesh: null,
       camera: null,
       scene: null,
@@ -82,6 +78,9 @@ export default {
       renderer: null,
       controls: null,
     }
+  },
+  computed: {
+    ...mapGetters(['publicPath']),
   },
   mounted() {
     this.init()
@@ -156,16 +155,21 @@ export default {
     // 加载PLY模型
     loadLoader() {
       let loader = new GLTFLoader()
-      loader.load('/glb/体测仪模型.glb', (geometry) => {
-        // console.log(geometry)
-        // this.loading = false
-        // this.isLoading = false;//关闭载入中效果
-        this.mesh = geometry.scene
-        this.mesh.scale.set(0.2, 0.12, 0.2) //设置大小比例
-        this.mesh.position.set(0, 0, 0) //设置位置
-        this.scene.add(this.mesh) // 将模型引入three、
-        // this.animate();
-      })
+      // let path = `${this.publicPath}bodytesterStatic/glb/体测仪模型.glb`
+      // const mppath = require('../../../assets/glb/体测仪模型.glb')
+      loader.load(
+        `${this.publicPath}bodytesterStatic/glb/体测仪模型.glb`,
+        (geometry) => {
+          console.log('模型数据', geometry)
+          // this.loading = false
+          // this.isLoading = false;//关闭载入中效果
+          this.mesh = geometry.scene
+          this.mesh.scale.set(0.2, 0.12, 0.2) //设置大小比例
+          this.mesh.position.set(0, 0, 0) //设置位置
+          this.scene.add(this.mesh) // 将模型引入three、
+          // this.animate();
+        }
+      )
       //如果有配准结果,加载配准结果,配准结果未ply格式;
     },
     // 创建光源
@@ -191,7 +195,7 @@ export default {
         1000
       )
       // x横轴y纵轴z前后纵深
-      this.camera.position.set(0, 10, 30)
+      this.camera.position.set(0, 15, 30)
       //相机看向哪个坐标
       this.camera.lookAt({ x: 0, y: 30, z: 0 })
       // this.camera.up.set(0, 0, 1)

@@ -8,6 +8,10 @@ const state = {
   user_rmvalue: {
     state: false,
     value: 24
+  },
+  user_data: {
+    data: { vitality: 0, sport_power: 0 },
+    total: { star_count: 0 }
   }
 };
 
@@ -57,11 +61,12 @@ const actions = {
     }
 
   },
-  async all_user ({ state, dispatch }) {
+  async all_user ({ state, commit, dispatch }) {
     const rs = await api.get('/get-user-all', {
       user_id: state.userinfo.user_id
     })
-    console.log('用户信息', rs.data.data.data)
+    console.log('用户信息', rs.data.data)
+    state.user_data = rs.data.data
     if (process.env.VUE_APP_PAGE_ID == 0) {
       let userrm = JSON.parse(rs.data.data.data.user_rm)
       if (userrm[0].value != 0) {
@@ -71,6 +76,10 @@ const actions = {
         state.user_rmvalue.state = false
         state.user_rmvalue.value = 0
       }
+    } else if (process.env.VUE_APP_PAGE_ID == 1) {
+      let user = rs.data.data.user
+      commit('set_user_age', user.age)
+      commit('set_user_sex', user.sex)
     }
 
     // state.user_rm = userrm[0].value || 0

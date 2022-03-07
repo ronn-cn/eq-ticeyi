@@ -3,6 +3,8 @@
   width: 100%;
   height: 100%;
   display: flex;
+  background: #1b254b;
+  // overflow: hidden;
 }
 .view_endpage {
   width: 100%;
@@ -277,13 +279,13 @@
           ></QRCode>
           <p style="padding-top: 0.15rem">扫码登陆同步数据</p>
         </div>
-        <section
+        <!-- <section
           class="view_left_line"
           :style="{
             backgroundImage: `url(${publicPath}bodytesterStatic/images/testing_line.png)`,
           }"
-        ></section>
-        <section class="view_left_score">
+        ></section> -->
+        <!-- <section class="view_left_score">
           <h2>本次健康评分</h2>
           <div
             class="left_score"
@@ -297,7 +299,7 @@
           <p class="left_text">
             数据已同步至云端，可通过智能健身镜或小程序在线查看
           </p>
-        </section>
+        </section> -->
       </section>
       <section id="container">
         <div

@@ -41,13 +41,14 @@
           <k-progress
             :percent="moloopval"
             :show-text="false"
-            :line-height="30"
+            :line-height="50"
+            :border="false"
             :color="['#f5af19', '#fa0a74']"
           ></k-progress>
         </div>
         <div class="progress_test_left">
           <van-circle
-            v-model="currentRate"
+            v-model="currentRate1"
             :rate="100"
             size="130"
             stroke-width="70"
@@ -66,7 +67,8 @@
           <k-progress
             :percent="completePercent"
             :show-text="false"
-            :line-height="30"
+            :line-height="50"
+            :border="false"
             :color="['#f5af19', '#fa0a74']"
           ></k-progress>
         </div>
@@ -159,6 +161,7 @@ export default {
   data() {
     return {
       fin_weight: '#C4C4C4',
+      currentRate1: 0,
       currentRate: 0,
       // userRMState: {},
       traininfo: {},
@@ -182,7 +185,7 @@ export default {
       addPercent: null,
       downPercent: null,
       restnum: 0, //休息话术
-      audioText: '下压时吸气,回落时吸气',
+      audioText: '',
       courseStatus: false, //是否已开组
     }
   },
@@ -196,6 +199,7 @@ export default {
       'moloopval',
       'powerEndData',
       'user_rmvalue',
+      'powerHieght',
     ]),
   },
   watch: {
@@ -206,9 +210,11 @@ export default {
     },
     actionValue(val, oldval) {
       this.$store.commit('set_moheight', val.height) //设置模型下压
+
       if (val.height > 5) {
         // console.log(val.height)
-        this.completePercent = 40 + val.height
+        let num = Math.floor(val.height / this.powerHieght) * 100 * 0.8
+        this.completePercent = num >= 100 ? 100 : num
       } else {
         this.completePercent = 0
       }
@@ -318,10 +324,16 @@ export default {
   },
   mounted() {
     this.loadTrain()
+    // console.log(this.powerHieght)
     // console.log(powerInfo.frames)
-    // setTimeout(() => {
-    //   this.fin_weight = '#9254de'
-    // }, 2000)
+    setTimeout(() => {
+      // this.currentRate = 100
+      // this.fin_weight = '#9254de'
+      setTimeout(() => {
+        // this.currentRate = 0
+        // this.fin_weight = '#C4C4C4'
+      }, 1000)
+    }, 1000)
   },
   //离开页面
   destroyed: function () {

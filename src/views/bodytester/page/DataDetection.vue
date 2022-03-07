@@ -16,6 +16,7 @@
   .body_view {
     width: 4.97rem;
     h2 {
+      padding-left: 50px;
       font-size: 0.36rem;
       font-weight: 500;
       color: #40f9ef;
@@ -63,6 +64,63 @@
     width: 0.32rem;
   }
 }
+
+.threemo {
+  position: fixed;
+  top: 22%;
+  left: 12%;
+  width: 4.97rem;
+  height: 5.25rem;
+  background: url('~assets/images/body_view1.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  // background-color: #40f9ef;
+}
+.testbody {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  margin: auto;
+  background-size: inherit;
+  animation: beating 6s linear infinite;
+}
+@keyframes beating {
+  0% {
+    transform: translateY(0px);
+  }
+  10% {
+    transform: translateY(80px);
+  }
+  20% {
+    transform: translateY(160px);
+  }
+  30% {
+    transform: translateY(240px);
+  }
+  40% {
+    transform: translateY(320px);
+  }
+  50% {
+    transform: translateY(400px);
+  }
+  60% {
+    transform: translateY(320px);
+  }
+  70% {
+    transform: translateY(240px);
+  }
+  80% {
+    transform: translateY(160px);
+  }
+  90% {
+    transform: translateY(80px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
 </style>
 
 <template>
@@ -79,6 +137,14 @@
           ></countTo>
           %
         </h2>
+        <div class="threemo">
+          <div
+            class="testbody"
+            :style="{
+              backgroundImage: `url(${publicPath}bodytesterStatic/images/testbody.png)`,
+            }"
+          ></div>
+        </div>
         <!-- <p>请勿松开手柄，可能会导致测试中断</p> -->
       </section>
       <section
@@ -132,9 +198,7 @@
 </template>
 
 <script>
-// import ThreeMo from './threeMo.vue'
 import countTo from '/node_modules/vue-count-to/src/vue-countTo'
-// import countTo from 'vue-count-to'
 import { mapGetters, mapMutations } from 'vuex'
 import api from '@/api/api'
 export default {
@@ -202,7 +266,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('clientstart', '445dab66e033da6f0000000000000001')
+    // this.$store.dispatch('clientstart', '445dab66e033da6f0000000000000001')
   },
   mounted() {
     this.initload()
@@ -267,6 +331,7 @@ export default {
         this.massageList[9].state = true
         this.updateProgress('100')
         setTimeout(() => {
+          this.$store.commit('set_testState', false)
           this.$router.push('/testingend')
         }, 3000)
       },
@@ -378,8 +443,9 @@ export default {
     },
     backhome() {
       this.$store.commit('clear_bodydata')
-      this.$store.dispatch('clientEnd')
-      this.$emit('setdatastate', false)
+      this.$store.dispatch('clientEnd') //结束课程
+      // this.$emit('setdatastate', false)
+      this.$router.push('/')
       // this.$emit("init_qrcode", this.Qrcode);
     },
     //进度更新

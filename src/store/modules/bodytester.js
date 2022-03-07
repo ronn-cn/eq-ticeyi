@@ -1,6 +1,6 @@
 
 const state = {
-  user_sex: 1,
+  user_sex: 2,  //用户性别 0未知 1男 2女
   user_age: 18,
   screenstate: false,
   voicestate: true,
@@ -97,7 +97,7 @@ const actions = {
   websocket_body ({ dispatch, commit }, data) {
     switch (data.cmd) {
       case "resMeasureHeight": //测量身高
-        console.log(data)
+        // console.log(data)
         commit("set_resMeasureHeight", data.data);
         break;
       case "resMeasureWeight": //测量体重

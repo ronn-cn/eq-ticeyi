@@ -29,8 +29,8 @@
     &_qrcode {
       width: 455px;
       height: 434px;
-      background: url('~assets/images/phase2/qrback.svg');
-
+      // background: url('~assets/images/phase2/qrback.svg');
+      background: url('~assets/images/phase2/home_ac.png');
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -101,7 +101,8 @@
         }
       }
       .active {
-        background: url('~assets/images/phase2/home_active.svg') no-repeat;
+        // background: url('~assets/images/phase2/home_active.svg') no-repeat;
+        background: url('~assets/images/phase2/home_b.png') no-repeat;
         background-size: cover;
         position: relative;
         .home_icon {

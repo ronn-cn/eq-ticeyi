@@ -15,8 +15,8 @@
     &_qrcode {
       width: 455px;
       height: 434px;
-      background: url('~assets/images/phase2/qrback.svg');
-
+      background: url('~assets/images/phase2/home_ac.png');
+      // background: url('~assets/images/phase2/qrback.svg');
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -95,13 +95,24 @@
         position: relative;
       }
       .active {
-        background: url('~assets/images/phase2/home_active.svg') no-repeat;
+        background: #007aff;
+        // background: url('~assets/images/phase2/home_active.svg') no-repeat;
+        background: url('~assets/images/phase2/home_b.png') no-repeat;
         background-size: cover;
         position: relative;
         .home_icon {
           color: #007aff;
           background: #ffffff;
         }
+      }
+      .active::after {
+        content: '';
+        width: 48px;
+        height: 48px;
+        background: url('~assets/images/phase2/icon1.svg') no-repeat;
+        position: absolute;
+        top: 56px;
+        right: 2px;
       }
       .user_liout {
         background: #ff3b30 !important;
@@ -114,15 +125,6 @@
           background-image: url('/common/images/home/home_icon4.png');
           background-size: 100% 100%;
         }
-      }
-      .active::after {
-        content: '';
-        width: 48px;
-        height: 48px;
-        background: url('~assets/images/phase2/icon1.svg') no-repeat;
-        position: absolute;
-        top: 56px;
-        right: 2px;
       }
     }
     &_out {
@@ -143,6 +145,42 @@
         border-radius: 0.33rem;
       }
     }
+  }
+}
+
+.user_value {
+  width: 86%;
+  padding-left: 20px;
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  &_item {
+    position: relative;
+    .up1 {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+    .up2 {
+      font-size: 24px;
+    }
+  }
+  :nth-child(2).user_value_item::after {
+    content: '';
+    position: absolute;
+    right: -44px;
+    top: 10px;
+    width: 3px;
+    height: 60px;
+    background: #fff;
+  }
+  :nth-child(2).user_value_item::before {
+    content: '';
+    position: absolute;
+    left: -44px;
+    top: 10px;
+    width: 3px;
+    height: 60px;
+    background: #fff;
   }
 }
 </style>
@@ -169,12 +207,26 @@
             </div>
             <p class="p2">{{ userInfo.user_name || '' }}</p>
           </div>
+          <div class="user_value">
+            <div class="user_value_item">
+              <p class="up1">{{ user_data.data.vitality || 0 }}</p>
+              <p class="up2">活力</p>
+            </div>
+            <div class="user_value_item">
+              <p class="up1">{{ user_data.data.sport_power || 0 }}</p>
+              <p class="up2">运动力</p>
+            </div>
+            <div class="user_value_item">
+              <p class="up1">{{ user_data.total.star_count || 0 }}</p>
+              <p class="up2">获星总数</p>
+            </div>
+          </div>
         </div>
         <ul>
           <li
             v-for="(item, index) of patternList"
             :class="{ active: itemindex == index }"
-            @click="swichindex(index), click_effects()"
+            @click="swichindex(index)"
             :key="item.id"
           >
             {{ item.title }}
@@ -184,27 +236,21 @@
               >{{ voicestate ? '已开启' : '已关闭' }}
             </span>
             <VoiceSwitch
-              @change="switchstate(voicestate), click_effects()"
+              @change="switchstate(voicestate)"
               :value="voicestate"
             ></VoiceSwitch>
           </li>
           <li class="user_liout" @click="logout" v-if="loginState">
-            <div class="home_icon">x</div>
+            <!-- <div class="home_icon">x</div> -->
             退出账号
           </li>
         </ul>
       </div>
       <home-view
         :itemindex="itemindex"
-        @setdatastate="setdatastate"
         @set_showCourse="set_showCourse"
       ></home-view>
     </div>
-
-    <DataDetection
-      v-if="dataTextState"
-      @setdatastate="setdatastate"
-    ></DataDetection>
   </div>
 </template>
 
@@ -212,15 +258,12 @@
 import VoiceSwitch from '@/components/bodytester/Switch.vue'
 import HomeView from './HomeView.vue'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import DataDetection from './DataDetection.vue'
 import QRCode from '@/components/QRCode.vue'
-// import QRCode from "qrcodejs2";
 export default {
   name: 'Home',
   components: {
     VoiceSwitch,
     HomeView,
-    DataDetection,
     QRCode,
   },
   computed: {
@@ -232,6 +275,7 @@ export default {
       'voicestate',
       'userMakeState',
       'publicPath',
+      'user_data',
     ]),
   },
   data() {
@@ -263,6 +307,10 @@ export default {
     loginState(val) {
       if (!val) {
         this.init_qrcode(this.Qrcode)
+        this.$store.commit('set_user_age', 18)
+        this.$store.commit('set_user_sex', 0)
+      } else {
+        this.all_user()
       }
     },
     dataTextState(val) {
@@ -290,7 +338,7 @@ export default {
   destroyed: function () {},
   methods: {
     ...mapMutations(['setLoginStatus', 'SEND_SOCKET']),
-    ...mapActions(['logout', 'click_effects']),
+    ...mapActions(['logout', 'all_user']),
     //调用二维码
     async init_qrcode(text) {
       this.qrstate = false
@@ -298,17 +346,16 @@ export default {
       this.qrstate = true
     },
     swichindex(index) {
+      this.itemindex = index
       if (this.userMakeState) {
         this.$store.dispatch('set_userMakeState', false)
       }
-      this.itemindex = index
-      // console.log(this.userMakeState);
     },
     //开始体测
-    setdatastate(boolean) {
-      this.dataTextState = boolean
-      this.showCourse = false
-    },
+    // setdatastate(boolean) {
+    //   this.dataTextState = boolean
+    //   this.showCourse = false
+    // },
     //声音播放
     switchstate(val) {
       console.log(val)

@@ -3,15 +3,14 @@
   width: 1405px;
   height: 889px;
   margin-bottom: 20px;
-  background-color: rgb(25, 211, 18);
-  background: url('~assets/images/phase2/back2.svg') no-repeat;
-  border: 1px solid #000000;
-  box-sizing: border-box;
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  // background-color: rgb(25, 211, 18);
+  // background: url('~assets/images/phase2/back2.svg') no-repeat;
+  background: url('~assets/images/phase2/home_view_b.png') no-repeat;
   border-radius: 20px;
+  position: relative;
   .introduce_start_before {
     .introduce_title {
-      padding-top: 1rem;
+      padding-top: 0.8rem;
       &_p1 {
         font-size: 0.36rem;
         font-family: SourceHanSansCN;
@@ -33,6 +32,10 @@
     }
     .introduce_cover {
       margin-top: 0.4rem;
+      .ip1 {
+        font-size: 0.36rem;
+        margin-top: 0.2rem;
+      }
     }
   }
   .introduce_start_after {
@@ -44,6 +47,9 @@
       font-size: 0.22rem;
       text-align: left;
       line-height: 0.42rem;
+      .notice_p {
+        padding-top: 90px;
+      }
     }
     .apparatus_test {
       .apparatus_text {
@@ -71,8 +77,11 @@
       // }
     }
     .h1 {
+      width: 100%;
+      position: absolute;
+      left: 0;
       color: #fff;
-      font-size: 0.36rem;
+      font-size: 0.3rem;
       font-family: SourceHanSansCN;
       font-weight: 400;
       margin-bottom: 0.2rem;
@@ -90,25 +99,27 @@
     }
   }
   .step_back {
+    position: absolute;
+    top: left;
+    right: 0;
     width: 0;
     height: 0;
     border-left: 100px solid transparent;
     border-top: 100px solid transparent;
     border-bottom: 100px solid rgb(231, 175, 72);
     border-right: 100px solid transparent;
-    position: fixed;
-    top: 0;
-    right: 0;
     transform: translateX(100px) translateY(-100px) rotate(45deg);
   }
-  .home_back {
-    position: fixed;
-    right: 8px;
-    top: 20px;
-    width: 60px;
-    height: 60px;
-    background: url('../../assets/images/common/home_back.png') no-repeat;
+  .step_back::after {
+    content: '';
+    position: absolute;
+    right: -32px;
+    top: 30px;
+    width: 0.44rem;
+    height: 0.44rem;
+    background: url('~assets/images/common/home_back.png') no-repeat;
     background-size: 100% 100%;
+    transform: rotate(330deg);
   }
 }
 .careradia {
@@ -126,6 +137,7 @@
 }
 .curriculum_target {
   ul {
+    padding-top: 90px;
     li {
       display: flex;
       justify-content: space-between;
@@ -160,7 +172,7 @@
 
 .target_title1 {
   font-size: 0.24rem;
-  padding-bottom: 0.3rem;
+  padding: 90px 0 0.3rem 0;
   border-bottom: 2px solid #fff;
   display: flex;
   justify-content: space-between;
@@ -171,15 +183,15 @@
 }
 
 .video_cover {
-  margin-top: 0.5rem;
-  width: 832px;
-  height: 520px;
+  // width: 832px;
+  height: 800px;
   z-index: 99;
 }
 .introduce_active {
   width: 100%;
   overflow: hidden;
-  background: linear-gradient(180deg, #323647 0%, #222631 100%) !important;
+  background: #000000;
+  // background: linear-gradient(180deg, #323647 0%, #222631 100%) !important;
 }
 </style>
 
@@ -189,6 +201,7 @@
       class="home_view_introduce"
       :class="courseState ? 'introduce_active' : ''"
     >
+      <div @click="backindex" class="step_back" v-show="courseState"></div>
       <div class="introduce_start_before" v-if="!courseState && !userMakeState">
         <!-- <div class="introduce_logo">
           <img :src="`${publicPath}common/images/login_img1.png`" />
@@ -225,9 +238,9 @@
         <div class="introduce_cover" v-if="itemindex != 2">
           <img
             :src="`${publicPath}powerStatic/images/${projecttype}.png`"
-            width="296"
-            height="328"
+            style="width: 350px"
           />
+          <p class="ip1">{{ projecttype }}</p>
         </div>
       </div>
       <make-lesson
@@ -236,12 +249,8 @@
       ></make-lesson>
       <div class="introduce_start_after" v-if="courseState && !userMakeState">
         <div class="risk_notice" v-if="viewindex === 0">
-          <div @click="backindex">
-            <div class="step_back"></div>
-            <div class="home_back"></div>
-          </div>
           <h1 class="h1">运动风险须知</h1>
-          <p>
+          <p class="notice_p">
             运动健身前避免仓促进食，应饭后至少1小时后再进行运动健身锻炼。<br />每次运动前要先做热身运动，待身体舒展后方可使用器械。
             <br />身体有残疾、体弱多病者，请在医生及专业人员的指导下使用，不可单独使用运动器械，未成年人与年龄过长者必须有人陪同锻炼，不得擅自锻炼。
             <br />在进行运动时，如出现眩晕、呕吐、胸痛等不正常症状时，请立即停止，必要时请及时就医。
@@ -250,10 +259,6 @@
           </p>
         </div>
         <div class="curriculum_target" v-if="itemindex == 0 && viewindex === 1">
-          <div @click="backindex">
-            <div class="step_back"></div>
-            <div class="home_back"></div>
-          </div>
           <h1 class="h1">课程目标</h1>
           <ul v-if="targetList.length > 0">
             <li v-for="(item, index) of targetList" :key="index">
@@ -271,10 +276,6 @@
           </ul>
         </div>
         <div class="curriculum_target" v-if="itemindex == 2 && viewindex === 1">
-          <div @click="backindex">
-            <div class="step_back"></div>
-            <div class="home_back"></div>
-          </div>
           <h1 class="h1">课程目标</h1>
           <div class="target_title1">
             <span>极限组(RM值测试)</span>
@@ -284,10 +285,6 @@
           <p class="target_title2">请调整配重至个人极限重量,开启RM值测试</p>
         </div>
         <div class="apparatus_test" v-if="isVideo1">
-          <div @click="backindex">
-            <div class="step_back"></div>
-            <div class="home_back"></div>
-          </div>
           <h1 class="h1">器械调试</h1>
           <video
             class="video_cover"
@@ -298,10 +295,6 @@
           </video>
         </div>
         <div class="action_demo" v-if="isVideo2">
-          <div @click="backindex">
-            <div class="step_back"></div>
-            <div class="home_back"></div>
-          </div>
           <h1 class="h1">动作演示</h1>
           <video
             class="video_cover"

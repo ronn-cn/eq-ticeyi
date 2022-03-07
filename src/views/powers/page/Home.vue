@@ -2,11 +2,12 @@
 @import '~assets/css/power_home.scss';
 .user_value {
   width: 86%;
-  margin: 0 auto;
+  padding-left: 20px;
   margin-top: 30px;
   display: flex;
   justify-content: space-between;
   &_item {
+    position: relative;
     .up1 {
       font-size: 36px;
       margin-bottom: 12px;
@@ -14,6 +15,24 @@
     .up2 {
       font-size: 24px;
     }
+  }
+  :nth-child(2).user_value_item::after {
+    content: '';
+    position: absolute;
+    right: -44px;
+    top: 10px;
+    width: 3px;
+    height: 60px;
+    background: #fff;
+  }
+  :nth-child(2).user_value_item::before {
+    content: '';
+    position: absolute;
+    left: -44px;
+    top: 10px;
+    width: 3px;
+    height: 60px;
+    background: #fff;
   }
 }
 </style>
@@ -34,13 +53,17 @@
             <p class="p2">{{ userInfo.user_name || '' }}</p>
           </div>
           <div class="user_value">
-            <div
-              v-for="(item, i) of userValueList"
-              :key="i"
-              class="user_value_item"
-            >
-              <p class="up1">{{ item.value }}</p>
-              <p class="up2">{{ item.text }}</p>
+            <div class="user_value_item">
+              <p class="up1">{{ user_data.data.vitality || 0 }}</p>
+              <p class="up2">活力</p>
+            </div>
+            <div class="user_value_item">
+              <p class="up1">{{ user_data.data.sport_power || 0 }}</p>
+              <p class="up2">运动力</p>
+            </div>
+            <div class="user_value_item">
+              <p class="up1">{{ user_data.total.star_count || 0 }}</p>
+              <p class="up2">获星总数</p>
             </div>
           </div>
         </div>
@@ -141,7 +164,13 @@ export default {
     })
   },
   computed: {
-    ...mapGetters(['Qrcode', 'loginState', 'userInfo', 'publicPath']),
+    ...mapGetters([
+      'Qrcode',
+      'loginState',
+      'userInfo',
+      'publicPath',
+      'user_data',
+    ]),
   },
   watch: {
     Qrcode(val) {

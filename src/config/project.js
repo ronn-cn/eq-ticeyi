@@ -1,6 +1,6 @@
 // process.env.VUE_APP_PAGE_ID == 0 ? "坐姿腹肌训练器" : process.env.VUE_APP_PAGE_ID == 1 ? "体测仪" : "跑步机"
 let projecttype;
-let lesson_id;
+let lesson_id, powerHieght;
 
 import md5 from 'js-md5';
 
@@ -10,6 +10,7 @@ if (process.env.VUE_APP_PAGE_ID == 0) {
   // let index = process.env.VUE_APP_PAGE_TYPE
   projecttype = data.type
   lesson_id = md5(data.type) || ''
+  powerHieght = powerInfo.powerHieght || 60
 
 } else if (process.env.VUE_APP_PAGE_ID == 1) {
   projecttype = '体测仪'
@@ -19,7 +20,10 @@ if (process.env.VUE_APP_PAGE_ID == 0) {
   lesson_id = '445dab66e033da6f0000000000000006'
 }
 
+// console.log('看看不行啊doge', powerHieght)
+
 export default {
   projecttype: projecttype,
-  lesson_id: lesson_id
+  lesson_id: lesson_id,
+  powerHieght: powerHieght
 }

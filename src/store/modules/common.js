@@ -15,6 +15,7 @@ const state = {
   sport_start_time: 0, //课程开始时间
   sport_end_time: 0, //课程结束时间
   projecttype: project.projecttype,   //设备类型
+  powerHieght: project.powerHieght,    //力量器械最大高度
   publicPath: process.env.NODE_ENV == "development" ? '/' : './',   //打包目录
   evenfPublic: process.env.NODE_ENV == "development" ? '/' : '../', //资源目录
   MakeCareTitle: powerInfo.name || '',  //预约课程名称
