@@ -115,13 +115,13 @@
       </ul>
     </footer>
 
-    <div @click="btn_click(0)" class="end_btn"></div>
+    <div @click="btn_click(0), click_effects()" class="end_btn"></div>
   </div>
 </template>
 
 <script>
 import { Dialog, Circle } from 'vant'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import { HandleSeatedAbTrainerData } from '@/assets/js/index'
 import RestPage from './RestPage.vue'
 import RadialProgressBar from 'vue-radial-progress'
@@ -168,6 +168,7 @@ export default {
       'evenfPublic',
       'projecttype',
       'moloopval',
+      'powerHieght',
     ]),
   },
   watch: {
@@ -196,7 +197,8 @@ export default {
       this.$store.commit('set_moheight', val.height)
       let num = val.extra_weight ? val.weight * 6 + 3 : val.weight * 6
       if (val.height > 5) {
-        this.completePercent = 20 + val.height
+        let num = (val.height / this.powerHieght) * 0.8 * 100
+        this.completePercent = num >= 100 ? 100 : num
       } else {
         this.completePercent = 0
       }
@@ -246,6 +248,7 @@ export default {
   },
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_resHeightWeight']),
+    ...mapActions(['click_effects']),
     loadAudioList() {
       this.$axios.get(`/powerStatic/js/poweraudio.json`).then((res) => {
         const info = res.data.filter(

@@ -198,6 +198,8 @@ export default {
       'user_rm',
       'userMakeState',
       'coursegroup',
+      'projecttype', //类型
+      'lesson_id',
     ]),
   },
   watch: {
@@ -295,6 +297,13 @@ export default {
       if (val) {
         // this.indexAudio('06开始课程')
         this.indexAudio('02请仔细阅读运动风险须知确认并启开')
+        this.$store.dispatch('clientstart', {
+          lesson_id: this.lesson_id,
+          lesson_name: this.projecttype,
+        })
+      } else {
+        //结束测试接口
+        this.$store.dispatch('clientEnd')
       }
     },
   },

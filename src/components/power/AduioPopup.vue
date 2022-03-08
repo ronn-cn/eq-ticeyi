@@ -44,14 +44,18 @@
       }}
     </p>
     <section class="btn_list">
-      <div class="close_btn1" @touchstart="popupbtn(0)">结束训练</div>
-      <div class="close_btn2" @touchstart="popupbtn(1)">再练一会</div>
+      <div class="close_btn1" @touchstart="popupbtn(0), click_effects()">
+        结束训练
+      </div>
+      <div class="close_btn2" @touchstart="popupbtn(1), click_effects()">
+        再练一会
+      </div>
     </section>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   props: {
     endType: {
@@ -89,6 +93,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['click_effects']),
     //弹框事件
     popupbtn(type) {
       if (type == 0) {

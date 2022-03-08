@@ -189,7 +189,7 @@
       </footer>
     </div>
 
-    <div @click="btn_click(0)" class="end_btn"></div>
+    <div @click="btn_click(0), click_effects()" class="end_btn"></div>
 
     <strength-aduio
       v-if="showPopup"
@@ -213,7 +213,7 @@ import StrengthAduio from '@/components/power/AduioPopup.vue'
 import CueTone from '../../../components/power/CueTone.vue'
 
 import RestPage from './TestRest.vue'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { HandleSeatedAbTrainerData } from '@/assets/js/index'
 import RadialProgressBar from 'vue-radial-progress'
 import KProgress from 'k-progress'
@@ -273,6 +273,7 @@ export default {
       'userInfo',
       'user_rmvalue',
       'moloopval',
+      'powerHieght',
     ]),
   },
   watch: {
@@ -281,7 +282,8 @@ export default {
 
       let num = val.extra_weight ? val.weight * 6 + 3 : val.weight * 6
       if (val.height > 5) {
-        this.completePercent = 20 + val.height
+        let num = (val.height / this.powerHieght) * 0.8 * 100
+        this.completePercent = num >= 100 ? 100 : num
       } else {
         this.completePercent = 0
       }
@@ -396,6 +398,7 @@ export default {
   },
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_resHeightWeight']),
+    ...mapActions(['click_effects']),
     limit(e) {
       setTimeout(() => {
         this.reststate = true

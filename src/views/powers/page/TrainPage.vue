@@ -119,7 +119,7 @@
       </div>
     </section>
 
-    <div @click="btn_click(0)" class="end_btn"></div>
+    <div @click="btn_click(0), click_effects()" class="end_btn"></div>
 
     <aduio-popup
       v-if="showPopup"
@@ -140,7 +140,7 @@
 
 <script>
 import { Dialog, Circle } from 'vant'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { HandleSeatedAbTrainerData } from '@/assets/js/index'
 import RestPage from './RestPage.vue'
 import KProgress from 'k-progress'
@@ -212,8 +212,7 @@ export default {
       this.$store.commit('set_moheight', val.height) //设置模型下压
 
       if (val.height > 5) {
-        // console.log(val.height)
-        let num = Math.floor(val.height / this.powerHieght) * 100 * 0.8
+        let num = (val.height / this.powerHieght) * 0.8 * 100
         this.completePercent = num >= 100 ? 100 : num
       } else {
         this.completePercent = 0
@@ -326,14 +325,6 @@ export default {
     this.loadTrain()
     // console.log(this.powerHieght)
     // console.log(powerInfo.frames)
-    setTimeout(() => {
-      // this.currentRate = 100
-      // this.fin_weight = '#9254de'
-      setTimeout(() => {
-        // this.currentRate = 0
-        // this.fin_weight = '#C4C4C4'
-      }, 1000)
-    }, 1000)
   },
   //离开页面
   destroyed: function () {
@@ -343,6 +334,7 @@ export default {
   },
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_resHeightWeight']),
+    ...mapActions(['click_effects']),
     //
     setAudioText(text) {
       this.audioText = text

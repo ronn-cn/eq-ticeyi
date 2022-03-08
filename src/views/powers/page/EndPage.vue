@@ -54,10 +54,10 @@
       </div>
 
       <div class="right_foot">
-        <div class="btn_btn1" @click="footbtn(1)">
+        <div class="btn_btn1" @click="footbtn(1), click_effects()">
           <span>返回首页({{ timenum }}s)</span>
         </div>
-        <div class="btn_btn" @click="footbtn(0)">推荐课程</div>
+        <div class="btn_btn" @click="footbtn(0), click_effects()">推荐课程</div>
       </div>
 
       <van-overlay :show="showQR" @click="showQR = false">
@@ -198,7 +198,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['logout', 'svseEndData']),
+    ...mapActions(['logout', 'svseEndData', 'click_effects']),
     async init_qrcode(text) {
       this.qrstate = false
       await this.$nextTick()

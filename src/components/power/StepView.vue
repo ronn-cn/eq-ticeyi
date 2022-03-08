@@ -184,7 +184,8 @@
 
 .video_cover {
   // width: 832px;
-  height: 800px;
+  height: 700px;
+  margin-top: 40px;
   z-index: 99;
 }
 .introduce_active {

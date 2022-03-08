@@ -168,16 +168,16 @@ p {
     </div>
 
     <div class="rest_btn">
-      <div class="btn_a" @click="suspend">
+      <div class="btn_a" @click="suspend(), click_effects()">
         {{ suspendState ? '开始' : '暂停' }}
       </div>
-      <div class="btn_b" @click="skipRest">快速开始</div>
+      <div class="btn_b" @click="skipRest(), click_effects()">快速开始</div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import RadialProgressBar from 'vue-radial-progress'
 import KProgress from 'k-progress'
 export default {
@@ -254,6 +254,7 @@ export default {
     clearInterval(this.downtimer)
   },
   methods: {
+    ...mapActions(['click_effects']),
     initDown() {
       this.downtimer = setInterval(() => {
         let a = 100 / this.totalSteps

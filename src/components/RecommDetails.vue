@@ -122,7 +122,7 @@
 
 <template>
   <div class="main_details">
-    <div class="recomm_back" @click="lotrecommend"></div>
+    <div class="recomm_back" @click="lotrecommend(), click_effects()"></div>
     <section class="main_content">
       <div class="content_title">{{ recommInfo.name || '测试' }}</div>
       <div class="content_energy">
@@ -189,7 +189,7 @@ export default {
     this.timer = null
   },
   methods: {
-    ...mapActions(['logout']),
+    ...mapActions(['logout', 'click_effects']),
     downChang() {
       clearInterval(this.timer)
       this.downnum = 30

@@ -159,39 +159,6 @@ header {
   }
 }
 .main_cover {
-  // padding: 0.2rem 0;
-  // &_nav {
-  //   display: flex;
-  //   justify-content: space-between;
-  //   align-items: center;
-  //   padding: 0.35rem;
-  //   color: #fff;
-  //   width: 100%;
-  //   border-radius: 5px;
-  //   background-color: rgba(0, 0, 0, 0.6);
-  //   box-sizing: border-box;
-  //   box-shadow: 5px 5px 15px 0px rgba(85, 85, 85, 0.35);
-  //   .nav_title {
-  //     text-align: left;
-  //     .nav_p1 {
-  //       font-size: 0.28rem;
-  //       margin-bottom: 0.1rem;
-  //     }
-  //     .nav_p2 {
-  //       font-size: 0.16rem;
-  //     }
-  //   }
-  //   .nav_btn {
-  //     width: 2rem;
-  //     height: 0.6rem;
-  //     line-height: 0.6rem;
-  //     border-radius: 12px;
-  //     background-color: #1fac4a;
-  //     box-sizing: border-box;
-  //     box-shadow: 5px 5px 20px 0px #10c98f,
-  //       inset 5px 5px 20px 0px rgba(255, 255, 255, 0.35);
-  //   }
-  // }
   &_plan {
     margin-top: 0.2rem;
     width: 100%;
@@ -205,24 +172,7 @@ header {
       box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
       border-radius: 20px;
       position: relative;
-      // .day_h3 {
-      //   padding-left: 0.35rem;
-      //   text-align: left;
-      //   color: #7f7f7f;
-      //   font-size: 0.18rem;
-      //   margin-bottom: 0.2rem;
-      //   position: relative;
-      // }
-      // .day_h3::before {
-      //   content: '';
-      //   width: 50px;
-      //   height: 56px;
-      //   position: absolute;
-      //   left: 0;
-      //   bottom: -10px;
-      //   background: url('~assets/images/common/end_dayplan.png') no-repeat;
-      //   background-size: contain;
-      // }
+
       .plan_day_item {
         margin-top: 20px;
         display: flex;
@@ -392,7 +342,7 @@ header {
 <template>
   <div class="main">
     <header>
-      <div class="end_back" @click="lotrecommend"></div>
+      <div class="end_back" @click="lotrecommend(), click_effects()"></div>
       <div class="user_avatar">
         <img :src="userInfo.user_avatar || ''" alt="" />
       </div>
@@ -440,11 +390,15 @@ header {
         >
           <h3 class="plan_h3">通过以下推荐课程继续训练</h3>
           <ul class="suggest_ul" :class="showTable ? '' : 't_ul'">
-            <li v-for="item of curriculum" :key="item.title">
+            <li
+              v-for="item of curriculum"
+              :key="item.title"
+              @click="new_details(item), click_effects()"
+            >
               <div class="train_title">
                 <p class="train_title_p1">{{ item.groupname }}</p>
                 <p class="train_title_p2">{{ item.introduce }}</p>
-                <div class="start_btn" @click="new_details(item)"></div>
+                <div class="start_btn"></div>
               </div>
             </li>
           </ul>
@@ -477,7 +431,7 @@ header {
 
 <script>
 import api from '@/api/api'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import RecommDetails from './RecommDetails'
 import { Popup, Swipe, SwipeItem, Notify } from 'vant'
 export default {
@@ -570,6 +524,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['click_effects']),
     //获取用户信息
     async getUserAll() {
       const rs = await api.get('/get-user-all', {

@@ -71,13 +71,17 @@
           <li
             v-for="(item, index) of patternList"
             :class="{ active: itemindex == index }"
-            @click="swichType(index)"
+            @click="swichType(index), click_effects()"
             :key="item.id"
           >
             <div class="home_icon">{{ item.iconText }}</div>
             {{ item.title }}
           </li>
-          <li class="user_liout" @click="logout" v-if="loginState">
+          <li
+            class="user_liout"
+            @click="logout(), click_effects()"
+            v-if="loginState"
+          >
             <div class="home_icon">x</div>
             退出账号
           </li>
@@ -190,7 +194,7 @@ export default {
   },
   methods: {
     ...mapMutations(['setLoginStatus', 'set_MakeCareInfo', 'set_lesson_id']),
-    ...mapActions(['logout', 'send_askLedState', 'all_user']),
+    ...mapActions(['logout', 'send_askLedState', 'all_user', 'click_effects']),
     //调用二维码
     init_qrcode(text) {
       let box = document.getElementById('qrdiv')
