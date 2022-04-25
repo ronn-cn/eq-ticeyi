@@ -8,7 +8,7 @@
       width: 1600px;
       position: fixed;
       bottom: 190px;
-      left: 140px;
+      left: 168px;
       ul {
         width: 100%;
         display: flex;
@@ -16,17 +16,17 @@
         margin-bottom: 0;
         li {
           color: #fff;
-          width: 33%;
+          width: 49%;
           height: 10px;
           font-size: 0.18rem;
           text-align: center;
           border-radius: 10px;
-          background-color: #7f7f7f;
+          background-color: #2a2e3c;
           position: relative;
           margin-bottom: 12px;
         }
         .view_active {
-          background-color: rgb(80, 187, 127);
+          background-color: #484848;
           color: #000;
           font-weight: 600;
           position: relative;
@@ -57,28 +57,24 @@
 <template>
   <div>
     <div class="home_view">
-      <step-view
-        ref="stepview"
-        :itemindex="itemindex"
-        :viewindex="viewindex"
-        :courseState="courseState"
-        @setitemindex="setitemindex"
-        v-if="isRouterShow"
-      ></step-view>
-      <div class="home_view_footer" v-if="itemindex == 0">
-        <div class="footer_step" v-show="courseState">
+      <step-view ref="stepview"
+                 :itemindex="itemindex"
+                 :viewindex="viewindex"
+                 :courseState="courseState"
+                 @setitemindex="setitemindex"
+                 v-if="isRouterShow"></step-view>
+      <div class="home_view_footer">
+        <div class="footer_step"
+             v-show="courseState">
           <ul>
-            <li
-              v-for="(item, index) of stepList"
-              :id="'footer_li' + index"
-              :key="item"
-            >
-              <!-- {{ item }} -->
-            </li>
+            <li v-for="(item, index) of stepList"
+                :id="'footer_li' + index"
+                :key="item"></li>
           </ul>
         </div>
         <div class="footer_start">
-          <div class="start_text1" @click="initStep(), click_effects()">
+          <div class="start_text1"
+               @click="initStep(), click_effects()">
             {{ courseState ? '确认' : '开始测试' }}
           </div>
         </div>
@@ -91,6 +87,7 @@
 import api from '@/api/api'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import StepView from '@/components/bodytester/StepView.vue'
+
 export default {
   components: {
     StepView,
@@ -105,10 +102,10 @@ export default {
   //     reload: this.reload,
   //   };
   // },
-  data() {
+  data () {
     return {
       viewindex: 0,
-      stepList: ['测试注意事项', '确认信息', '测试引导'],
+      stepList: ['测试注意事项', '确认信息'],
       courseState: false,
       isRouterShow: true,
     }
@@ -123,10 +120,10 @@ export default {
     ]),
   },
   watch: {
-    itemindex(val) {
+    itemindex (val) {
       this.reload()
     },
-    resStartLesson(val) {
+    resStartLesson (val) {
       if (JSON.stringify(val) == '{}') {
         console.log('空')
       } else {
@@ -146,14 +143,14 @@ export default {
       }
     },
     loginState: {
-      handler(newval, oldval) {
+      handler (newval, oldval) {
         if (newval) {
           // this.getSexAge()
         }
       },
       immediate: true,
     },
-    courseState(val) {
+    courseState (val) {
       console.log(val)
       if (val) {
         //开始测试接口
@@ -168,13 +165,15 @@ export default {
       this.$emit('set_showCourse', val)
     },
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () {
+
+  },
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_lesson_id', 'set_MakeCareInfo']),
     ...mapActions(['send_askLedState', 'click_effects']),
     //返回
-    setitemindex() {
+    setitemindex () {
       this.click_effects()
       if (this.viewindex == 0) {
         this.courseState = false
@@ -186,13 +185,13 @@ export default {
       }
     },
     //开始
-    initStep() {
+    initStep () {
       if (this.$refs.stepview.timer) {
         this.$refs.stepview.removetimer()
         // this.$emit('send_askLedState', 0, 0, 0)
       }
       if (this.courseState) {
-        if (this.viewindex < 2) {
+        if (this.viewindex < 1) {
           this.click_effects()
           this.viewindex++
           let uid = `footer_li${this.viewindex}`
@@ -208,7 +207,7 @@ export default {
         document.getElementById(uid).setAttribute('class', 'view_active')
       }
     },
-    async reload() {
+    async reload () {
       this.isRouterShow = false
       await this.$nextTick(() => {
         this.viewindex = 0

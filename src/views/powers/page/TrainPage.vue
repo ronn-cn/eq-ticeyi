@@ -1,5 +1,5 @@
 <style scoped lang="scss">
-@import '~assets/css/trainpage.scss';
+@import "~assets/css/trainpage.scss";
 .page_mo {
   width: 1920px;
   height: 919px;
@@ -38,48 +38,33 @@
       <div class="fixed_left">
         <h1>Al演示参考</h1>
         <div class="progress_rotate_left">
-          <k-progress
-            :percent="moloopval"
-            :show-text="false"
-            :line-height="50"
-            :border="false"
-            :color="['#f5af19', '#fa0a74']"
-          ></k-progress>
+          <k-progress :percent="moloopval"
+                      :show-text="false"
+                      :line-height="50"
+                      :border="false"
+                      :color="['#09FBD3', '#FE53BB']"></k-progress>
         </div>
         <div class="progress_test_left">
-          <van-circle
-            v-model="currentRate1"
-            :rate="100"
-            size="130"
-            stroke-width="70"
-            color="#C4C4C4"
-          />
           <p class="text_p1">{{ plannum.weight }}KG</p>
           <p class="text_p2">目标重量</p>
         </div>
       </div>
       <div class="fixed_right">
         <h1>{{ planText[this.planstate] }}</h1>
-        <transition name="jojo" appear>
-          <div class="audio_text" v-if="audioText">{{ audioText }}</div>
+        <transition name="jojo"
+                    appear>
+          <div class="audio_text"
+               v-if="audioText">{{ audioText }}</div>
         </transition>
         <div class="progress_rotate_right">
-          <k-progress
-            :percent="completePercent"
-            :show-text="false"
-            :line-height="50"
-            :border="false"
-            :color="['#f5af19', '#fa0a74']"
-          ></k-progress>
+          <k-progress :percent="completePercent"
+                      :show-text="false"
+                      :line-height="50"
+                      :border="false"
+                      :color="['#09FBD3', '#FE53BB']"></k-progress>
         </div>
-        <div class="progress_test_right">
-          <van-circle
-            v-model="currentRate"
-            :rate="100"
-            size="130"
-            stroke-width="70"
-            :color="fin_weight"
-          />
+        <div class="progress_test_right"
+             :class="showActiva">
           <p class="text_p1">{{ traininfo.Weight || 0 }}KG</p>
           <p class="text_p2">完成重量</p>
         </div>
@@ -88,66 +73,57 @@
     <!-- 底部 -->
     <footer class="page_footer">
       <ul>
-        <li v-for="(item, index) of footlist" :key="item">
-          <div
-            v-if="index == 1 && planstate !== 1"
-            class="stop_skip"
-            @click="skipstop"
-          ></div>
+        <li v-for="(item, index) of footlist"
+            :key="item">
+          <div v-if="index == 1 && planstate !== 1"
+               class="stop_skip"
+               @click="skipstop"></div>
           <p class="foot_li_p1">{{ footvalue(index) }}</p>
           <p class="foot_li_p2">{{ item }}</p>
         </li>
       </ul>
     </footer>
-
+    <!-- 休息 -->
     <section class="page_action">
-      <rest-page
-        v-if="reststate"
-        ref="restpage"
-        @endrest="reststate = false"
-        :planstate="planstate"
-        :restweight="restweight"
-        :restinfo="plannum"
-        :totalSteps="totalSteps"
-      ></rest-page>
-      <div
-        class="end_test_btn"
-        v-if="planstate == 1 && !reststate"
-        @touchstart="StartTrain()"
-      >
-        结束测试
+      <rest-page v-if="reststate"
+                 ref="restpage"
+                 @endrest="reststate = false"
+                 :planstate="planstate"
+                 :restinfo="plannum"
+                 :upGroup="upGroup"></rest-page>
+      <div class="end_test_btn"
+           v-if="endTest"
+           @touchstart="StartTrain()">
+        结束测试 &nbsp;&nbsp;{{TestTime}}
       </div>
     </section>
 
-    <div @click="btn_click(0), click_effects()" class="end_btn"></div>
+    <div @click="btn_click(0), click_effects()"
+         class="end_btn"></div>
 
-    <aduio-popup
-      v-if="showPopup"
-      :endType="endType"
-      :timevalue="timevalue"
-      @closepopup="closepopup"
-    ></aduio-popup>
-    <cue-tone
-      ref="ctone"
-      :planstate="planstate"
-      :restnum="restnum"
-      :currentNum="plannum.currentNum"
-      :recordScore="recordScore"
-      @setAudioText="setAudioText"
-    ></cue-tone>
+    <aduio-popup v-if="showPopup"
+                 :endType="endType"
+                 :timevalue="timevalue"
+                 @closepopup="closepopup"></aduio-popup>
+    <cue-tone ref="ctone"
+              :planstate="planstate"
+              :restnum="restnum"
+              :currentNum="plannum.currentNum"
+              :recordScore="recordScore"
+              @setAudioText="setAudioText"></cue-tone>
   </div>
 </template>
 
 <script>
 import { Dialog, Circle } from 'vant'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import { HandleSeatedAbTrainerData } from '@/assets/js/index'
 import RestPage from './RestPage.vue'
 import KProgress from 'k-progress'
 import train from '@/power/train/index.js'
 import Trainaudio from '@/power/common/Trainaudio.js'
 import AduioPopup from '@/components/power/AduioPopup.vue'
 import CueTone from '@/components/power/CueTone.vue'
+// import power from '@/assets/js/power.json'
 
 export default {
   components: {
@@ -158,207 +134,116 @@ export default {
     VanCircle: Circle,
   },
   mixins: [train, Trainaudio],
-  data() {
+  data () {
     return {
-      fin_weight: '#C4C4C4',
-      currentRate1: 0,
-      currentRate: 0,
-      // userRMState: {},
-      traininfo: {},
-      reststate: true, //休息状态
-      totalSteps: 30, //休息时长
-      restweight: 6, //休息重量
+      traininfo: {}, //回调的部分参数
       //次数
       plannum: {
-        totalNum: 20,
-        currentNum: 0,
-        group_totalNum: 1,
-        group_currentNum: 0,
-        pyramid: 0,
-        weight: 12,
+        times: 20, //每组总次数
+        currentNum: 17, //当前次数
+        groups: 1, //总组数
+        groups_currentNum: 0, //当前组数
+        pyramid: 0, //
+        weight: 12, //没组重量
+        rest: 30, //休息时间
       },
       weightgroup: [], //负重组
       pyramidgroup: [], //金字塔组
       auxiliarygroup: [], //辅助组
       planstate: 0, //0热身组 1极限组 2负重组 3金字塔组 4.辅助组
-      completePercent: 0,
-      addPercent: null,
-      downPercent: null,
       restnum: 0, //休息话术
       audioText: '',
-      courseStatus: false, //是否已开组
+      downTest: null,
+      TestTime: 30
     }
   },
   computed: {
     ...mapGetters([
       'loginState',
-      'actionValue',
-      'coursegroup',
-      'lesson_id',
       'publicPath',
       'moloopval',
-      'powerEndData',
       'user_rmvalue',
-      'powerHieght',
+      'powerHieght', //器械下压最大高度
+      'temporary', //选择的啥
     ]),
+    endTest () {
+      if (this.planstate == 1 && !this.reststate) {
+        return true
+      }
+      return false
+    }
   },
   watch: {
-    audioText(ntext) {
-      setTimeout(() => {
-        this.audioText = ''
-      }, 2500)
-    },
-    actionValue(val, oldval) {
-      this.$store.commit('set_moheight', val.height) //设置模型下压
-
-      if (val.height > 5) {
-        let num = (val.height / this.powerHieght) * 0.8 * 100
-        this.completePercent = num >= 100 ? 100 : num
-      } else {
-        this.completePercent = 0
-      }
-      let num = val.extra_weight ? val.weight * 6 + 3 : val.weight * 6
-
-      HandleSeatedAbTrainerData(val, num, (e) => {
-        console.log('回调', e)
-        this.$store.commit('add_detail', {
-          info: e,
-          timeMeter: this.timeMeter,
-        })
-
-        this.traininfo = e
-        let amount = (e.Height / 100) * e.Weight * 9.8
-        this.traininfo.amount = Math.floor(amount)
-        this.$store.commit('set_totalweight', this.traininfo) //计算平均得分
-
-        let percent = Math.round(e.Percent * 100)
-        this.$store.commit('set_echartData', percent) //图表
-
-        this.send_percent(percent)
-
-        if (this.reststate) this.reststate = false
-
-        switch (this.planstate) {
-          case 0:
-            this.warmup(e) //热身
-            return
-          case 1:
-            this.limit(e) //极限
-            return
-          default:
-            this.otherPlan(e) //其他
-        }
-        //结束
-      })
-    },
-    //监听课程
-    coursegroup(val, oldval) {
-      console.log('课程组', val, val['负重组'].length)
-      this.courseStatus = true //已经开启过组了
-      if (val['负重组'].length !== 0) {
-        this.weightgroup = val['负重组']
-        this.planstate = 2
-      }
-      if (val['金字塔组'].length !== 0) {
-        this.pyramidgroup = val['金字塔组']
-      }
-      if (val['辅助组'].length !== 0 && val['负重组'].length == 0) {
-        this.auxiliarygroup = val['辅助组']
-        this.planstate = 4
-      }
-    },
     //监听步骤
-    planstate(val, oldval) {
-      this.$store.commit('add_total_group')
+    planstate (val, oldval) {
       if (this.audio_1) {
         this.audio_1.pause()
       }
+      this.$store.commit('add_total_group')
       if (val == 1) {
         this.$refs.ctone.playRMAudio()
-        this.plannum['group_totalNum'] = 1
-        this.plannum['group_currentNum'] = 1
-        this.plannum.totalNum = 1
-        this.plannum.currentNum = 0
+        // this.plannum.weight = this.traininfo.Weight || 12
+        this.set_plannum(
+          ['groups', 'groups_currentNum', 'times', 'currentNum'],
+          [1, 0, 1, 0]
+        )
       }
       if (val == 2 || val == 3 || val == 4) {
-        let data = []
-        if (val == 2) {
-          data = this.weightgroup
-        } else if (val == 3) {
-          data = this.pyramidgroup
-        } else if (val == 4) {
-          data = this.auxiliarygroup
-        }
-
-        // this.plannum['group_currentNum'] = data[0]['groups'] - 1
-        // this.plannum.currentNum = data[0]['times'] - 1
-        this.plannum.currentNum = 0
-        this.plannum['group_currentNum'] = 0
-        this.plannum['group_totalNum'] = data[0]['groups']
-        this.plannum.totalNum = data[0]['times']
-
-        this.plannum.pyramid = 0
-        this.plannum.weight = data[0]['weight']
-
-        this.totalSteps = data[0].rest
+        let data =
+          val == 2
+            ? this.weightgroup
+            : val == 3
+              ? this.pyramidgroup
+              : this.auxiliarygroup
+        this.plannum = data[0]
+        this.set_plannum(
+          ['currentNum', 'groups_currentNum', 'pyramid'],
+          [0, 0, 0]
+        )
+        this.plannum.currentNum = data[0].times - 2
       }
     },
-    //监听休息
-    reststate: {
-      handler: function (e) {
-        if (!e) {
-          this.timestart()
-        } else {
-          clearInterval(this.windowtimer)
-        }
-      },
-      immediate: true, // 首次加载的时候执行函数
-      deep: true, // 深入观察,监听数组值，对象属性值的变化
-    },
+    //监听
+    endTest (val) {
+      if (val) {
+        this.downTest = setInterval(() => {
+          this.TestTime -= 1
+          if (this.TestTime == 0) {
+            clearInterval(this.downTest)
+            this.TestTime = 30
+            this.traininfo.Weight ? this.StartTrain() : this.StartTrain(12)
+          }
+        }, 1000);
+      } else {
+        clearInterval(this.downTest)
+        this.TestTime = 30
+      }
+    }
   },
-  created() {
-    // if (this.$route.query.state) {
-    //   this.userRMState = this.$route.query
-    // }
-  },
-  mounted() {
+  created () { },
+  mounted () {
     this.loadTrain()
-    // console.log(this.powerHieght)
-    // console.log(powerInfo.frames)
-  },
-  //离开页面
-  destroyed: function () {
-    this.$store.commit('set_couserTimer', {
-      type: 'end',
-    })
   },
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_resHeightWeight']),
     ...mapActions(['click_effects']),
-    //
-    setAudioText(text) {
-      this.audioText = text
-    },
     //设置参数
-    set_plannum(setkey) {
-      let ketList = setkey || []
-      for (let i in ketList) {
-        let data = setkey[i].split(',')
-        this.plannum[data[0]] = data[1]
+    set_plannum (key, value) {
+      for (let i in key) {
+        this.plannum[key[i]] = value[i]
       }
     },
     //热身组
-    warmup(e) {
-      this.plannum['currentNum'] += 1
-      if (this.plannum['currentNum'] == this.plannum.totalNum) {
+    warmup (e) {
+      this.plannum.currentNum += 1
+      if (this.plannum.currentNum == this.plannum.times) {
+        this.recordUpGroup()
         if (!this.user_rmvalue.state) {
           setTimeout(() => {
-            // this.$refs.ctone.playRest(0)
             this.planstate = 1
             this.reststate = true
-            this.plannum.weight =
-              e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6
-            // this.plannum.currentNum = 0
+            // this.plannum.weight =
+            //   e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6
           }, 1000)
         } else {
           this.StartTrain(this.user_rmvalue.user_rm)
@@ -366,110 +251,110 @@ export default {
       }
     },
     //极限组
-    limit(e) {
+    limit (e) {
       this.$refs.ctone.playRMAudio()
       setTimeout(() => {
-        this.reststate = true
-        this.totalSteps = 10 //休息时长
-        this.restweight = e.Weight
-        if (e.Weight + 6 > this.plannum.weight) {
-          this.plannum.weight =
-            e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6 //比上一组做的重量大才赋值
-          console.log(this.plannum.weight)
+        if (e.Weight < this.plannum.weight) {
+          //如果压的小了，以最大值开启训练
+          this.StartTrain(this.plannum.weight)
+        } else {
+          // let num = this.upGroup.weight
+          // this.plannum.weight = num % 6 == 0 ? num + 6 : num - 3 + 6
+          this.plannum.weight = e.Weight % 6 == 0 ? e.Weight : e.Weight - 3  //比上一组做的重量大才赋值
+          this.plannum.groups_currentNum += 1
+          this.recordUpGroup()
+
+          //this.plannum.weight =  e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6 //比上一组做的重量大才赋值
+          this.reststate = true
+          this.plannum.rest = 15 //休息时长
         }
         this.plannum.currentNum = 0
       }, 1000)
     },
     //其他联系
-    otherPlan(e) {
+    otherPlan (e) {
       this.plannum['currentNum'] += 1
-      if (this.plannum.currentNum == this.plannum.totalNum) {
-        this.plannum.currentNum = 0
-        this.plannum['group_currentNum'] += 1
+      if (this.plannum.currentNum == this.plannum.times) {
+        this.recordUpGroup() //记录上一组
+        this.plannum.currentNum = this.plannum.times - 3
+        this.plannum.groups_currentNum += 1
         setTimeout(() => {
-          this.startrest()
+          this.wuhu()
         }, 1500)
-        if (
-          this.plannum['group_currentNum'] == this.plannum['group_totalNum']
-        ) {
+        if (this.plannum.groups_currentNum == this.plannum.groups) {
           var data = []
-          if (this.planstate == 2) {
-            data = this.weightgroup
-          } else if (this.planstate == 3) {
-            data = this.pyramidgroup
-          } else if (this.planstate == 4) {
-            data = this.auxiliarygroup
-          }
+          data =
+            this.planstate == 2
+              ? this.weightgroup
+              : this.planstate == 3
+                ? this.pyramidgroup
+                : this.auxiliarygroup
           if (this.plannum.pyramid < data.length - 1) {
             this.plannum.pyramid += 1
             let i = this.plannum.pyramid
-            // console.log('进来了吗', i)
-            this.plannum.totalNum = data[i]['times']
+            this.plannum = data[i]
             this.plannum.currentNum = 0
-            this.plannum.group_totalNum = data[i].groups
-            this.plannum.group_currentNum = 0
-            this.plannum.weight = data[i]['weight']
-
-            this.totalSteps = data[i].rest
+            this.plannum.groups_currentNum = 0
           } else {
-            // console.log(this.planstate)
-            if (this.planstate == 3) {
-              if (this.auxiliarygroup.length == 0) {
-                this.$router.push({
-                  path: '/endpage',
-                  query: { timevalue: this.timevalue },
-                })
-              }
-            } else if (this.planstate == 4) {
+            // console.log('这里是压到头了', this.planstatez,)
+            if (
+              (this.planstate == 2 &&
+                this.pyramidgroup.length == 0 &&
+                this.auxiliarygroup.length == 0) ||
+              (this.planstate == 3 && this.auxiliarygroup.length == 0) ||
+              this.planstate == 4
+            ) {
               this.$router.push({
                 path: '/endpage',
                 query: { timevalue: this.timevalue },
               })
             } else {
-              this.planstate += 1
-              this.startrest()
+              this.wuhu(1)
             }
           }
         }
       }
     },
     //开始课程
-    StartTrain(value) {
+    StartTrain (value) {
+      this.recordUpGroup('!ok')
+
       let rmkg = 0
       if (value) {
         rmkg = value
       } else {
         rmkg = this.traininfo.Weight
-        console.log('这是rm', rmkg)
+        // rmkg = 30
         if (this.loginState && rmkg) {
           this.$store.dispatch('updateRM', rmkg)
         }
       }
       if (rmkg) {
-        var sendData = {
-          cmd: 'askGenerateLesson',
-          data: {
-            'rm-kg': rmkg,
-            'limit-type': '通用',
-            sex: 1,
-            weight: 50,
-          },
-        }
-        this.SEND_SOCKET(JSON.stringify(sendData))
-        setTimeout(() => {
-          this.startrest()
-          // this.$refs.ctone.playRest(1)
-        }, 500)
+        let level = 5
+        this.$axios.get(`${this.publicPath}common/js/power.json`).then((res) => {
+          res.data.forEach((item) => {
+            if (item['aim'] === this.temporary.text) {
+              for (let stage of item.stages) {
+                if (stage.level == level && stage.rm == rmkg) {
+                  this.$store.commit('set_resGenerateLesson', stage)
+                  return
+                }
+              }
+              for (let stage of item.stages) {
+                if (stage.rm !== 0) {
+                  this.$store.commit('set_resGenerateLesson', stage)
+                  return
+                }
+              }
+            }
+          })
+        })
       } else {
         Dialog({
           width: '550px',
           message: '您还没有测定RM值，请测试RM或者选择自由训练',
         })
       }
-    },
-    //休息开始
-    startrest() {
-      this.reststate = true
     },
   },
 }

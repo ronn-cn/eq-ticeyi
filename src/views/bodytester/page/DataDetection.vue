@@ -1,91 +1,94 @@
 <style scoped lang="scss">
-.header_title {
-  font-size: 0.36rem;
-  padding-top: 0.37rem;
-  z-index: 1;
-}
 .data_cover {
   width: 100%;
   height: 100%;
-  background-color: #25293c;
+  background: #2f3443;
+  // background: linear-gradient(180deg, #323647 0%, #222631 100%);
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
 }
 .detection_container {
   display: flex;
   justify-content: space-between;
-  padding: 0.4rem 1.28rem 0 1.42rem;
+  width: 86%;
+  margin: auto;
   .body_view {
-    width: 4.97rem;
-    h2 {
-      padding-left: 50px;
-      font-size: 0.36rem;
-      font-weight: 500;
-      color: #40f9ef;
+    .progress_num {
+      z-index: 1;
+      position: fixed;
+      left: 49%;
+      top: 22%;
+      // color: #18fefe;
     }
-    // p {
-    //   margin-top: 0.06rem;
-    //   font-size: 0.16rem;
-    //   font-weight: 400;
-    //   color: #ffffff;
-    //   opacity: 0.4;
-    // }
+    p {
+      color: #aaaaaa;
+      font-size: 24px;
+      position: relative;
+      bottom: 10px;
+    }
   }
   .text_message {
-    width: 4.16rem;
-    height: 5.72rem;
-    background-size: 100% 100%;
+    width: 379px;
+    height: 600px;
+    background: rgba(0, 0, 0, 0.16);
+    border-radius: 20px;
+    padding: 50px 40px 20px 40px;
+    .message_icon {
+      height: 40px;
+      background: url("~assets/images/bodytester/message_icon.svg") no-repeat;
+      background-position: top right;
+    }
     ul {
       li {
-        font-size: 0.2rem;
+        color: #18fefe;
+        font-size: 28px;
         text-align: left;
-        padding-left: 1rem;
-        margin: 0.2rem 0;
+        margin-bottom: 28px;
       }
     }
   }
 }
 
 .home_back {
-  width: 0.62rem;
-  height: 0.6rem;
-  background: rgba(103, 117, 217, 0.3);
-  border: 1px solid #89b2e7;
-  opacity: 0.5;
-  border-radius: 0.3rem;
+  width: 0;
+  height: 0;
+  border-left: 100px solid transparent;
+  border-top: 100px solid transparent;
+  border-bottom: 100px solid #ff3b30;
+  border-right: 100px solid transparent;
   position: fixed;
-  top: 0.25rem;
-  right: 0.24rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-  &_img {
-    position: relative;
-    left: -0.04rem;
-    width: 0.32rem;
-  }
+  top: 0;
+  right: 0;
+  transform: translateX(100px) translateY(-100px) rotate(45deg);
+}
+.home_back::before {
+  content: "x";
+  position: absolute;
+  left: -8px;
+  top: 30px;
+  font-size: 45px;
+  transform: rotate(314deg);
 }
 
 .threemo {
-  position: fixed;
-  top: 22%;
-  left: 12%;
-  width: 4.97rem;
+  width: 4rem;
   height: 5.25rem;
-  background: url('~assets/images/body_view1.png');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  // background-color: #40f9ef;
+  // background: #1a442a;
+  position: relative;
+  .base_image {
+    width: 528px;
+    height: 478px;
+    position: absolute;
+    bottom: 0;
+    left: 40px;
+    // background: url("/bodytesterStatic/images/test_2.svg") no-repeat;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: 0 80px;
+    z-index: 1;
+    // background: #18fefe;
+  }
 }
-.testbody {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 30%;
-  margin: auto;
-  background-size: inherit;
-  animation: beating 6s linear infinite;
-}
+
 @keyframes beating {
   0% {
     transform: translateY(0px);
@@ -121,101 +124,209 @@
     transform: translateY(0px);
   }
 }
+
+//
+header {
+  padding-top: 62px;
+  padding-bottom: 35px;
+  .header_cover {
+    width: 539px;
+    height: 146px;
+    // background: url("~assets/images/bodytester/01.png") no-repeat;
+    background: url("~assets/images/bodytester/testdate1.svg") no-repeat;
+    background-size: 100% 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+.tips {
+  .tips_item {
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    margin-bottom: 48px;
+    .tips_padding {
+      width: 395px;
+      height: 165px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      background: url("~assets/images/bodytester/01.svg") no-repeat;
+      background-size: 100% 100%;
+      .tips_icon {
+        width: 42px;
+        height: 42px;
+        margin-right: 13px;
+        // background: #1a442a;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+      }
+      .tips_text {
+        color: #18fefe;
+        text-align: left;
+        letter-spacing: 4px;
+        font-size: 24px;
+        line-height: 38px;
+      }
+    }
+  }
+}
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  .block {
+    width: 660px;
+    height: 250px;
+    padding: 60px 100px;
+    background: #fff;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    p {
+      font-size: 36px;
+      color: #000;
+    }
+    .block_bottom {
+      display: flex;
+      justify-content: space-between;
+    }
+    .block_btn1,
+    .block_btn2 {
+      font-size: 32px;
+      width: 200px;
+      height: 75px;
+      border-radius: 20px;
+    }
+    .block_btn1 {
+      color: #ff3b30;
+      border: 2px solid #ff3b30;
+    }
+  }
+}
 </style>
 
 <template>
   <div class="data_cover">
-    <h1 class="header_title">身体数据检测中</h1>
+    <header>
+      <div class="header_cover">
+        <h1 style="margin-bottom:10px">身体数据检测中</h1>
+        <p>The test of body composition</p>
+      </div>
+    </header>
     <div class="detection_container">
-      <section class="body_view">
-        <h2>
-          <countTo
-            :startVal="progress.startVal"
-            :endVal="progress.endVal"
-            :useEasing="false"
-            :duration="500"
-          ></countTo>
-          %
-        </h2>
-        <div class="threemo">
-          <div
-            class="testbody"
-            :style="{
-              backgroundImage: `url(${publicPath}bodytesterStatic/images/testbody.png)`,
-            }"
-          ></div>
+      <section class="tips">
+        <div v-for="(item, index) of tipsList"
+             :key="index"
+             class="tips_item">
+          <div class="tips_padding">
+            <div class="tips_icon"
+                 :style="{
+                backgroundImage: `url(${publicPath}bodytesterStatic/images/${item.icon}.svg)`,
+              }"></div>
+            <p class="tips_text">{{ item.text }}</p>
+          </div>
         </div>
-        <!-- <p>请勿松开手柄，可能会导致测试中断</p> -->
       </section>
-      <section
-        class="text_message"
-        :style="{
-          backgroundImage: `url(${publicPath}bodytesterStatic/images/body_view3.png)`,
-        }"
-      >
+
+      <section class="body_view">
+        <div class="progress_num">
+          <countTo :startVal="progress.startVal"
+                   :endVal="progress.endVal"
+                   :useEasing="false"
+                   :duration="500"></countTo>%
+        </div>
+        <div class="threemo">
+          <div class="base_image"
+               :style="{
+                backgroundImage: `url(${publicPath}bodytesterStatic/images/test_2.svg)`,
+              }"></div>
+        </div>
+        <p>请勿松开手柄，可能会导致测试中断</p>
+      </section>
+      <section class="text_message">
+        <div class="message_icon"></div>
         <ul class="message_ul">
-          <li
-            v-for="(item, index) of massageList"
-            :key="item.title"
-            v-show="item.state"
-          >
+          <li v-for="(item, index) of massageList"
+              :key="item.title"
+              v-show="item.state">
             {{ item.title }}
             <span v-if="index == 3">
               {{ bodyfat ? '无异常' : '测试中' }}
             </span>
             <span v-if="index == 5">
-              <countTo
-                :startVal="connected.startVal"
-                :endVal="connected.endVal"
-                :duration="3000"
-              ></countTo>
+              <countTo :startVal="connected.startVal"
+                       :endVal="connected.endVal"
+                       :duration="3000"></countTo>
               %
             </span>
             <span v-if="index == 7">
-              <countTo
-                :startVal="testingNum.startVal"
-                :endVal="testingNum.endVal"
-                :duration="3000"
-              ></countTo>
+              <countTo :startVal="testingNum.startVal"
+                       :endVal="testingNum.endVal"
+                       :duration="3000"></countTo>
               %
             </span>
           </li>
         </ul>
-        <!-- <button @click="tizhi">体脂</button> -->
-        <!-- <button @click="sendBodyData">各项数据</button> -->
       </section>
     </div>
-    <audio ref="audio_A" id="myaudio" v-if="voicestate">
-      <source :src="audiosrc" type="audio/mp3" />
+
+    <audio ref="audio_A"
+           id="myaudio"
+           v-if="voicestate">
+      <source :src="audiosrc"
+              type="audio/mp3" />
     </audio>
-    <div class="home_back" @click="backhome">
-      <img
-        :src="`${publicPath}bodytesterStatic/images/view_back.png`"
-        class="home_back_img"
-      />
-    </div>
+    <div class="home_back"
+         @click="showFrame = true"></div>
+
+    <van-overlay :show="showFrame"
+                 @click="showFrame = false">
+      <div class="wrapper"
+           @click.stop>
+        <div class="block">
+          <p>体成分测试进行种,是否退出当前测试</p>
+          <div class="block_bottom">
+            <van-button class="block_btn1"
+                        @click="backhome()">结束测试</van-button>
+            <van-button class="block_btn2"
+                        @click="showFrame = false"
+                        color="#28CD41">继续测试</van-button>
+          </div>
+        </div>
+      </div>
+    </van-overlay>
   </div>
 </template>
 
 <script>
+import { Overlay } from 'vant'
 import countTo from '/node_modules/vue-count-to/src/vue-countTo'
 import { mapGetters, mapMutations } from 'vuex'
 import api from '@/api/api'
 export default {
-  components: { countTo },
-  data() {
+  components: { countTo, VanOverlay: Overlay },
+  data () {
     return {
       massageList: [
         {
-          title: '体测仪开始测试',
+          title: '体测仪开始测试---',
           state: false,
         },
         {
-          title: '开始测量身高',
+          title: '开始测量身高，请站直',
           state: false,
         },
         {
-          title: '开始测量体重',
+          title: '开始测量体重，请站稳',
+          state: false,
+        },
+        {
+          title: '请握紧检测握把',
           state: false,
         },
         {
@@ -223,11 +334,7 @@ export default {
           state: false,
         },
         {
-          title: '进行人体连接',
-          state: false,
-        },
-        {
-          title: '连通率为',
+          title: '进行人体连接---连通率',
           state: false,
         },
         {
@@ -263,12 +370,27 @@ export default {
         endVal: 0,
       },
       audiosrc: '',
+      tipsList: [
+        {
+          icon: 'icon_1',
+          text: '请双脚踩在体脂秤上,保持身体平衡',
+        },
+        {
+          icon: 'icon_2',
+          text: '双手握住手柄,拇指一侧充分触电极部分',
+        },
+        {
+          icon: 'icon_3',
+          text: '根据提示，站直站稳，握紧握把，待检测完成',
+        },
+      ],
+      showFrame: false
     }
   },
-  created() {
-    // this.$store.dispatch('clientstart', '445dab66e033da6f0000000000000001')
+  created () {
+
   },
-  mounted() {
+  mounted () {
     this.initload()
     setTimeout(() => {
       this.audio_play()
@@ -283,7 +405,7 @@ export default {
   watch: {
     //监听身高
     RUN_HEIGHT: {
-      handler(newName, oldName) {
+      handler (newName, oldName) {
         if (newName.state) {
           this.massageList[2].state = true
           this.audiosrc = `${this.publicPath}bodytesterStatic/audio/测量体重.mp3`
@@ -309,12 +431,15 @@ export default {
     },
     //监听体重
     LOCK_WEIGHT: {
-      handler(newName, oldName) {
+      handler (newName, oldName) {
         if (newName.status) {
           this.audiosrc = `${this.publicPath}bodytesterStatic/audio/测量体质.mp3`
           this.audio_play()
           this.progress.endVal += 20
           this.massageList[3].state = true
+          setTimeout(() => {
+            this.massageList[4].state = true
+          }, 500)
           this.SEND_SOCKET('{"cmd":"askMeasureImpedance"}')
           this.updateProgress('50')
         }
@@ -322,9 +447,16 @@ export default {
       immediate: true,
       deep: true,
     },
+    impedance (val, oldval) {
+      console.log('体脂', val)
+      this.bodyfat = true
+      this.massageList[5].state = true
+      this.progress.endVal += 10
+      this.updateProgress('75')
+    },
     //监听数据
     bodydata: {
-      handler(newName, oldName) {
+      handler (newName, oldName) {
         this.progress.endVal += 20
         this.audiosrc = `${this.publicPath}bodytesterStatic/audio/生成数据.mp3`
         this.audio_play()
@@ -338,22 +470,10 @@ export default {
       // immediate: true,
       deep: true,
     },
-    impedance(val, oldval) {
-      console.log('体脂', val)
-      this.bodyfat = true
-      this.massageList[4].state = true
-      this.progress.endVal += 10
-      this.updateProgress('75')
-    },
     massageList: {
-      handler(val, oldval) {
+      handler (val, oldval) {
         for (let item in val) {
           if (!val[item].state) {
-            // if (item == "4") {
-            //   setTimeout(() => {
-            //     this.massageList[item].state = true;
-            //   }, 1500);
-            // }
             if (item == '5' || item == '7') {
               setTimeout(() => {
                 this.progress.endVal += 15 //总进度百分比
@@ -396,7 +516,7 @@ export default {
   },
   methods: {
     ...mapMutations(['SEND_SOCKET']),
-    initload() {
+    initload () {
       this.massageList[0].state = true
 
       setTimeout(() => {
@@ -406,50 +526,48 @@ export default {
         console.log('测量身高')
       }, 1000)
     },
-    sendBodyData() {
-      let SEX = this.user_sex,
+    sendBodyData () {
+      let SEX = this.user_sex == 2 ? 0 : 1,
         AGE = this.user_age,
         RUN_HEIGHT = this.RUN_HEIGHT.height,
         LOCK_WEIGHT = this.LOCK_WEIGHT.weight
       console.log(
         '{"cmd":"askMeasureBodyData","data":{"sex":' +
-          SEX +
-          ',"age":' +
-          AGE +
-          ',"height":' +
-          RUN_HEIGHT +
-          '.0,"weight":' +
-          LOCK_WEIGHT +
-          '}}'
+        SEX +
+        ',"age":' +
+        AGE +
+        ',"height":' +
+        RUN_HEIGHT +
+        '.0,"weight":' +
+        LOCK_WEIGHT +
+        '}}'
       )
       this.SEND_SOCKET(
         '{"cmd":"askMeasureBodyData","data":{"sex":' +
-          SEX +
-          ',"age":' +
-          AGE +
-          ',"height":' +
-          RUN_HEIGHT +
-          '.0,"weight":' +
-          LOCK_WEIGHT +
-          '}}'
+        SEX +
+        ',"age":' +
+        AGE +
+        ',"height":' +
+        RUN_HEIGHT +
+        '.0,"weight":' +
+        LOCK_WEIGHT +
+        '}}'
       )
     },
-    audio_play() {
+    audio_play () {
       if (this.voicestate) {
         var audio = document.getElementById('myaudio')
         audio.load()
         audio.play()
       }
     },
-    backhome() {
+    backhome () {
       this.$store.commit('clear_bodydata')
       this.$store.dispatch('clientEnd') //结束课程
-      // this.$emit('setdatastate', false)
       this.$router.push('/')
-      // this.$emit("init_qrcode", this.Qrcode);
     },
     //进度更新
-    async updateProgress(percentage) {
+    async updateProgress (percentage) {
       const rs = await api.post('/update-progressbar', {
         ouid: this.ouid,
         percentage,

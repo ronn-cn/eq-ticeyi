@@ -1,22 +1,21 @@
 <style scoped lang="scss">
-@import '~assets/css/end_page.scss';
+@import "~assets/css/end_page.scss";
 </style>
 
 <template>
   <div class="end_page">
-    <section class="end_page_right" v-if="!recommstate">
+    <section class="end_page_right"
+             v-if="!recommstate">
       <div class="rignt_head">
         <div class="rignt_head_badge">
           <div class="login_activer">
-            <img
-              :src="userInfo.user_avatar"
-              v-if="loginState"
-              class="user_img"
-            />
-            <span v-if="loginState" class="user_text1"
-              >{{ userInfo.user_name }},</span
-            >
-            <span v-else class="user_text2">未登录</span>
+            <img :src="userInfo.user_avatar"
+                 v-if="loginState"
+                 class="user_img" />
+            <span v-if="loginState"
+                  class="user_text1">{{ userInfo.user_name }},</span>
+            <span v-else
+                  class="user_text2">未登录</span>
           </div>
           <span class="plan_text">{{
             reneging == 0 ? '恭喜你完成本次训练!' : '你已结束本次训练'
@@ -24,7 +23,7 @@
         </div>
         <div class="right_user_evaluate">
           <div>
-            <p class="ep1">{{ powerEndData.combinedscore || 21 }}</p>
+            <p class="ep1">{{ powerEndData.combinedscore >= 100 ? 100:powerEndData.combinedscore|| 21 }}</p>
             <p class="ep2">课程评分</p>
           </div>
           <div class="evaluate_item">
@@ -36,48 +35,54 @@
 
       <div class="right_type">
         <ul>
-          <li v-for="item of typeList" :key="item.title">
+          <li v-for="item of typeList"
+              :key="item.title">
             <div class="type_icon">
-              <img
-                :src="`${publicPath}common/images/end/${item.url}.svg`"
-                alt=""
-              />
+              <img :src="`${publicPath}common/images/end/${item.url}.svg`" />
             </div>
             <div class="right_type_title">{{ item.title }}</div>
             <div class="right_type_value">{{ item.value }}</div>
           </li>
         </ul>
       </div>
-      <div class="right_echart">
-        <h3>训练完成度</h3>
-        <echarts class="echart_size"></echarts>
+      <div class="echart_cover">
+        <section class="echart_item">
+          <h3>训练完成度</h3>
+          <echarts class="echart_size"></echarts>
+        </section>
+        <section class="echart_item">
+          <!-- <h3>训练完成度</h3> -->
+          <!-- <echarts class="echart_size"></echarts> -->
+        </section>
       </div>
 
       <div class="right_foot">
-        <div class="btn_btn1" @click="footbtn(1), click_effects()">
+        <div class="btn_btn1"
+             @click="footbtn(1), click_effects()">
           <span>返回首页({{ timenum }}s)</span>
         </div>
-        <div class="btn_btn" @click="footbtn(0), click_effects()">推荐课程</div>
+        <div class="btn_btn"
+             @click="footbtn(0), click_effects()">推荐课程</div>
       </div>
 
-      <van-overlay :show="showQR" @click="showQR = false">
+      <van-overlay :show="showQR"
+                   @click="showQR = false">
         <div class="wrapper">
           <div class="block">
-            <QRCode
-              ref="qrcode1"
-              v-if="qrstate"
-              class="vx_qr"
-              :qrwidth="220"
-              :qrheight="220"
-              codeid="3"
-              :codeTest="Qrcode"
-            ></QRCode>
+            <QRCode ref="qrcode1"
+                    v-if="qrstate"
+                    class="vx_qr"
+                    :qrwidth="220"
+                    :qrheight="220"
+                    codeid="3"
+                    :codeTest="Qrcode"></QRCode>
             <p style="padding-top: 0.15rem">微信扫码查看推荐课程</p>
           </div>
         </div>
       </van-overlay>
     </section>
-    <section class="end_page_right" v-if="recommstate">
+    <section class="end_page_right"
+             v-if="recommstate">
       <recomm-courses :courseList="courseList" />
     </section>
   </div>
@@ -100,7 +105,7 @@ export default {
     QRCode,
     VanOverlay: Overlay,
   },
-  data() {
+  data () {
     return {
       typeList: [
         {
@@ -136,7 +141,7 @@ export default {
       showQR: false,
     }
   },
-  created() {
+  created () {
     if (this.$route.query.reneging) {
       this.reneging = this.$route.query.reneging
     }
@@ -148,13 +153,15 @@ export default {
     this.typeList[2].value = this.powerEndData.averagescore //平均负重
     this.typeList[3].value = this.powerEndData.amount //平均负重
   },
-  mounted() {
-    // console.log(this.completion)
+  mounted () {
     if (!this.loginState) {
       this.init_qrcode()
     }
     this.set_scoreimg()
-    this.setdowntimer()
+
+    if (process.env.NODE_ENV !== 'development') {
+      this.setdowntimer()
+    }
   },
   //离开页面
   destroyed: function () {
@@ -179,19 +186,18 @@ export default {
       'lesson_id',
       'publicPath',
       'powerEndData',
-      'completion',
     ]),
   },
   watch: {
     loginState: {
-      handler(val, oldval) {
+      handler (val, oldval) {
         if (!val) {
           this.init_qrcode()
         } else {
           this.recommstate = true
         }
       },
-      recommstate(val) {
+      recommstate (val) {
         clearInterval(this.downtimer)
       },
       // immediate: true,
@@ -199,13 +205,13 @@ export default {
   },
   methods: {
     ...mapActions(['logout', 'svseEndData', 'click_effects']),
-    async init_qrcode(text) {
+    async init_qrcode (text) {
       this.qrstate = false
       await this.$nextTick()
       this.qrstate = true
     },
     //评分图片
-    set_scoreimg() {
+    set_scoreimg () {
       const value = this.powerEndData.combinedscore
       if (value > 80) {
         this.endAudio('e06', 'A')
@@ -222,13 +228,13 @@ export default {
         // this.scoreimg = `${this.publicPath}common/images/end_imgD.png`
       }
     },
-    endAudio(num, evaluate) {
+    endAudio (num, evaluate) {
       this.evaluateText = evaluate
       this.audio_a = new Audio()
       this.audio_a.src = `${this.publicPath}powerStatic/audio/课程结束/${num}.mp3`
       this.audio_a.play()
     },
-    setdowntimer() {
+    setdowntimer () {
       if (this.downtimer) {
         clearInterval(this.downtimer)
         this.timenum = 60
@@ -247,7 +253,7 @@ export default {
       //}
     },
     //推荐结束
-    async footbtn(index) {
+    async footbtn (index) {
       if (index == 0) {
         if (this.loginState) {
           this.recommstate = true

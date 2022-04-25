@@ -46,7 +46,8 @@ let ProjectLists = [
     desc: "专门练习胸肌和三角肌、肩关节的稳定性、改善手臂的肌肉不平衡",
     frames: [2, 1, 3],
     model: "动画_V806.glb",
-    frames1: [119, 133, 250]
+    frames1: [119, 133, 250],
+    powerHieght: 35   //蝴蝶扩胸
   },
   {
     id: 6,
@@ -56,7 +57,7 @@ let ProjectLists = [
     frames: [2, 1, 4],
     model: "动画_V803.glb",
     frames1: [118, 130, 250],
-    powerHieght: 35   //蝴蝶扩胸器
+    powerHieght: 64   //高位蝴蝶机
   },
   {
     id: 7,
@@ -75,7 +76,8 @@ let ProjectLists = [
     desc: "专门锻炼肱三头肌，改善肌肉不平衡",
     frames: [2.5, 1, 3],
     model: "动画_V821.glb",
-    frames1: [120, 135, 250]
+    frames1: [120, 135, 250],
+    powerHieght: 75 //肱三头肌训练器
   },
   {
     id: 9,
@@ -114,7 +116,8 @@ let ProjectLists = [
     desc: "专门锻炼腿腱、预防和护理膝部关节和肌肉问题、改善肌肉弹性和双腿功能",
     frames: [2.5, 1, 3],
     model: "动画_V812.glb",
-    frames1: [119, 136, 250]
+    frames1: [119, 136, 250],
+    powerHieght: 51
   },
   {
     id: 13,
@@ -133,7 +136,8 @@ let ProjectLists = [
     desc: "专门锻炼以改善运动表现、锻炼小腿的所有肌群、可以进行个性化训练",
     frames: [2.5, 1, 3],
     model: "动画_V809.glb",
-    frames1: [118, 132, 250]
+    frames1: [118, 132, 250],
+    powerHieght: 70 //调节式蹬腿器
   },
   {
     id: 15,
@@ -172,7 +176,7 @@ let ProjectLists = [
     frames: [2.5, 1, 3],
     model: "动画_V816A.glb",
     frames1: [119, 132, 250],
-    powerHieght: 58   //坐式划船机
+    powerHieght: 58   //扭腰
   }
 ]
 

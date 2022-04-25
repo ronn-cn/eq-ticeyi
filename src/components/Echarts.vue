@@ -19,11 +19,11 @@
 import echarts from 'echarts/lib/echarts'
 import { mapGetters } from 'vuex'
 export default {
-  data() {
+  data () {
     return {}
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     this.drawLine()
     // console.log('还行', this.echartData)
   },
@@ -31,14 +31,14 @@ export default {
     ...mapGetters(['echartData']),
   },
   methods: {
-    drawLine() {
+    drawLine () {
       // console.log(document.getElementById('myChart'))
       // 基于准备好的dom，初始化echarts实例
       let Adata = []
       for (let i = 1; i < this.echartData.length + 1; i++) {
         Adata.push(i + '')
       }
-      console.log(1, Adata)
+      // console.log('echart', Adata)
 
       let myChart = this.$echarts.init(document.getElementById('myChart'))
       // 绘制图表
@@ -47,7 +47,7 @@ export default {
           left: '5%',
           right: '5%',
           bottom: '0',
-          top: '25%',
+          top: '30%',
           containLabel: true,
         },
         xAxis: {
@@ -62,23 +62,27 @@ export default {
         },
         yAxis: {
           type: 'value',
-          // splitLine: {
-          //   show: true,
-          //   lineStyle: {
-          //     color: '#243B63',
-          //     // opacity: 0.3,
-          //   },
-          // },
-          // axisLine: {
-          //   show: true,
-          //   lineStyle: {
-          //     color: '#243B63',
-          //   },
-          // },
-          // axisLabel: {
-          //   color: '#B6D1FF',
-          //   // fontWeight: "bold",
-          // },
+          //min: 0, // 刻度最小值
+          //max: 100, // 刻度最大值（需要动态获取最大值,并且能被3整除（向下取整再乘回来））
+          //splitNumber: 3, // 横线数
+          interval: 50,
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: '#243B63',
+              // opacity: 0.3,
+            },
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#243B63',
+            },
+          },
+          axisLabel: {
+            color: '#B6D1FF',
+            // fontWeight: "bold",
+          },
         },
         series: [
           {

@@ -3,54 +3,26 @@
   width: 100%;
   height: 100%;
   display: flex;
-  background: #1b254b;
-  // overflow: hidden;
+  background: linear-gradient(180deg, #323647 0%, #222631 100%);
 }
 .view_endpage {
-  width: 100%;
-  height: 100%;
-  display: flex;
+  padding: 20px;
 }
 .view_left {
-  height: 100%;
-  width: 3.57rem;
-  // background: url('~assets/images/testing_left.png') no-repeat;
-  background-color: rgb(28, 32, 47);
-  background-size: cover;
-  &_backhome {
-    display: flex;
-    align-items: center;
-    position: relative;
-    .home_icon {
-      position: absolute;
-      top: 0.18rem;
-      right: 0;
-      width: 0.3rem;
-      height: 0.3rem;
-      background: url('~assets/images/small_icon1.png') no-repeat;
-      margin: 0 20px;
-    }
-  }
-  &_line {
-    width: 100%;
-    height: 0.07rem;
-    background-size: cover;
-    margin: 0.2rem 0 0.26rem 0;
-  }
+  margin-right: 18px;
   &_score {
-    h2 {
-      text-align: left;
-      padding-left: 0.33rem;
-    }
+    width: 455px;
+    height: 433px;
+    border: 1px solid #7f7f7f;
+    border-radius: 20px;
     .left_score {
       width: 2.4rem;
       height: 2.4rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       margin: auto;
       span {
-        font-size: 0.6rem;
+        position: relative;
+        top: 120px;
+        font-size: 48px;
         font-family: DIN;
         font-weight: 500;
       }
@@ -68,378 +40,432 @@
 }
 
 #container {
-  width: 9.23rem;
   display: grid;
-  grid-template-columns: repeat(3, 33.33%);
-  grid-template-rows: repeat(5, 25%);
+  grid-template-columns: repeat(3, 455px);
+  grid-template-rows: repeat(5, 131px);
+  grid-row-gap: 20px;
+  grid-column-gap: 20px;
+  margin-top: 20px;
 }
 .item {
   color: #fff;
   font-size: 0.28rem;
   text-align: center;
-  // border: 1px solid;
-  background-color: #1d1e25;
+  border-radius: 20px;
+  background: rgba(78, 80, 90, 0.55);
 }
 .item-1 {
-  grid-column-start: 1;
-  grid-column-end: 3;
-  border-bottom: 1px solid #31353c;
-  border-right: 1px solid #31353c;
+  grid-area: 1 / 1 / 4 / 3;
 }
 .item-2 {
-  border-bottom: 1px solid #31353c;
-}
-.item-3 {
-  grid-row-start: 2;
-  grid-row-end: 4;
-  border-bottom: 1px solid #31353c;
-  border-right: 1px solid #31353c;
-}
-.item-4,
-.item-6 {
-  border-bottom: 1px solid #31353c;
-  border-right: 1px solid #31353c;
-}
-.item-5,
-.item-7 {
-  border-bottom: 1px solid #31353c;
-}
-.item-8,
-.item-9 {
-  border-right: 1px solid #31353c;
+  grid-area: 1 / 3 / 3 / 3;
 }
 
 .container_shell {
-  padding: 0.2rem;
-  height: calc(100% - 0.2rem * 2);
+  padding: 0.2rem 0.3rem;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   &_title {
     text-align: left;
-    font-size: 0.24rem;
+    font-size: 28px;
     font-family: SourceHanSansCN;
     font-weight: 400;
   }
-  &_BMI {
-    width: 1.3rem;
-    height: 0.6rem;
-    // background: url($publicPath + '/bodytesterStatic/images/testing_icon1.png');
-    margin: auto;
-    margin-bottom: 0.33rem;
-  }
-  &_value {
-    font-size: 0.42rem;
-    // padding: 0.4rem 0 0.28rem 0;
-  }
-  &_index {
+  .shell_value {
     display: flex;
-    justify-content: space-around;
-    .index_back {
-      width: 0.26rem;
-      height: 0.04rem;
-      background: #8e8e8f;
-      border-radius: 0.02rem;
-      margin: auto;
-    }
-    .index_low {
-      background-color: #ff5c8d;
-    }
-    .index_normal {
-      background-color: #1affa6;
-    }
-    .index_tallish {
-      background-color: #ffda31;
-    }
-    .index_text {
-      margin-top: 0.08rem;
-      font-size: 0.18rem;
-      font-family: SourceHanSansCN;
-      font-weight: 400;
-      color: #ffffff;
-      opacity: 0.4;
+    justify-content: space-between;
+    font-size: 24px;
+    margin-top: 15px;
+    .shell_span1 {
+      font-size: 36px;
     }
   }
 }
 
-.loginout {
-  width: 1.3rem;
-  height: 0.4rem;
-  background: rgba(103, 117, 217, 0.3);
-  border: 1px solid #89b2e7;
-  opacity: 0.5;
-  border-radius: 0.25rem;
-  font-size: 0.22rem;
-  margin: 0.1rem 0 0 0.12rem;
-  color: #fff;
+.shell_one_title {
+  text-align: left;
+  padding: 6px 0;
+  margin-bottom: 42px;
+  border-bottom: 1px solid #fff;
+}
+.shell_one {
   display: flex;
-  justify-content: center;
-  align-items: center;
 }
-.user_portrait {
-  // background-color: aqua;
-  margin: 0.45rem auto 0.38rem;
-  img {
-    width: 0.99rem;
-    height: 0.99rem;
-    border-radius: 50%;
-  }
-}
-.user_info {
-  &_name {
-    font-size: 0.24rem;
-    margin-bottom: 0.26rem;
-  }
-  &_gender {
-    font-weight: 400;
-    font-size: 0.18rem;
-    .info_gender {
-      margin-right: 0.55rem;
+.shell_one_left {
+  width: 230px;
+  font-size: 24px;
+  text-align: center;
+  .one_p2 {
+    color: #7f7f7f;
+    font-size: 36px;
+    padding: 20px 0;
+    border-bottom: 1px solid #fff;
+    span {
+      color: #fff;
+      font-size: 46px;
     }
+  }
+  .one_p3 {
+    text-align: left;
+    font-size: 18px;
+    line-height: 35px;
+    margin-top: 20px;
+  }
+}
+.shell_one_right {
+  margin-left: 15px;
+  width: 591px;
+  height: 272px;
+  border: 1px solid #696969;
+  border-radius: 20px;
+}
+.shell_two {
+  display: flex;
+}
+.shell_two_title {
+  writing-mode: tb-rl;
+}
+.shell_two_value {
+  text-align: left;
+  margin-left: 20px;
+  font-size: 24px;
+  .two_1 {
+    font-size: 48px;
+    padding: 32px 0;
+    border-bottom: 1px solid #7f7f7f;
+  }
+  .two_2 {
+    margin: 20px 0;
   }
 }
 
-.basics {
-  padding: 0.2rem;
-  &_title {
+//第二版
+.body_cover {
+  display: flex;
+}
+header {
+  position: relative;
+  display: flex;
+  .head_title1 {
+    width: 415px;
     text-align: left;
-    font-size: 0.24rem;
-    font-family: SourceHanSansCN;
-    font-weight: 400;
-    margin-bottom: 0.44rem;
+    font-size: 48px;
+    padding: 30px 0 40px 40px;
+    margin-right: 18px;
+    border-bottom: 1px solid #aaa;
   }
-  &_info {
-    &_height,
-    &_weight {
-      font-size: 0.42rem;
-      .small_font {
-        color: #8e8e8f;
-        font-size: 0.16rem;
+  .head_title2 {
+    width: 1360px;
+    text-align: left;
+    font-size: 48px;
+    padding: 30px 0 40px 40px;
+    border-bottom: 1px solid #aaa;
+  }
+  .user_frame {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    display: flex;
+    .user_portrait {
+      img {
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
       }
     }
-    &_height {
-      margin-right: 0.83rem;
+    .user_info {
+      margin-left: 20px;
+      display: flex;
+      align-items: center;
+      &_name {
+        font-size: 0.24rem;
+      }
+      // &_gender {
+      //   font-weight: 400;
+      //   font-size: 0.18rem;
+      //   .info_gender {
+      //     margin-right: 0.55rem;
+      //   }
+      // }
     }
   }
 }
-.not_logged {
-  height: 2.8rem;
+
+.basics_info {
+  width: 415px;
+  height: 92px;
+  margin: 20px 0;
+  padding: 20px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  background: rgba(78, 80, 90, 0.5);
+  border: 1px solid #7f7f7f;
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
+  border-radius: 20px;
+}
+.icon_end1 {
+  width: 40px;
+  height: 40px;
+  margin-right: 40px;
+  // background: #28cd41;
+  // background: url("~assets/");
+}
+.basics_text {
+  text-align: left;
+}
+.basics_line {
+  // height: 1px;
+  margin: 6px 0;
+  width: 225px;
+  border: 1px dashed #7f7f7f;
+}
+
+.footer {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  .footer_btn1 {
+    width: 455px;
+    height: 131px;
+    border-radius: 20px;
+    background: #007aff;
+  }
+  .footer_btn2 {
+    width: 1405px;
+    height: 131px;
+    border-radius: 20px;
+    background: #28cd41;
+  }
 }
 </style>
 
 <template>
   <div class="view_main">
-    <div class="view_endpage" v-if="endPageStatus">
-      <section
-        class="view_left"
-        :style="{
-          backgroundImage: `url(${publicPath}bodytesterStatic/images/testing_left.png)`,
-        }"
-      >
-        <div class="view_left_backhome">
-          <div class="home_icon" @click="logout" v-if="loginState"></div>
-
-          <div class="loginout" @click="$router.push('/')">返回首页</div>
-          <div
-            class="loginout"
-            @click="endPageStatus = false"
-            v-if="loginState"
-          >
-            推荐课程
-          </div>
-        </div>
-        <div v-show="loginState">
+    <div class="view_endpage"
+         v-if="endPageStatus">
+      <header>
+        <h1 class="head_title1">基础数据</h1>
+        <h1 class="head_title2">身体参数</h1>
+        <div v-show="loginState"
+             class="user_frame">
           <div class="user_portrait">
-            <img :src="userInfo.user_avatar || ''" alt="" />
+            <img :src="userInfo.user_avatar || ''" />
           </div>
           <div class="user_info">
             <p class="user_info_name">{{ userInfo.user_name || '' }}</p>
-            <div class="user_info_gender">
-              <span class="info_gender"
-                >性别: {{ user_sex == 1 ? '男' : '女' }}</span
-              >
+            <!-- <div class="user_info_gender">
+              <span class="info_gender">性别: {{ user_sex == 1 ? '男' : '女' }}</span>
               <span>年龄: {{ user_age }}</span>
-            </div>
+            </div> -->
           </div>
         </div>
-        <div class="not_logged" v-show="!loginState">
-          <!-- <div id="qrdiv"></div> -->
-          <QRCode
-            ref="qrcode1"
-            v-if="qrstate"
-            class="vx_qr"
-            :qrwidth="157"
-            :qrheight="157"
-            codeid="3"
-            :codeTest="Qrcode"
-          ></QRCode>
-          <p style="padding-top: 0.15rem">扫码登陆同步数据</p>
-        </div>
-        <!-- <section
-          class="view_left_line"
-          :style="{
-            backgroundImage: `url(${publicPath}bodytesterStatic/images/testing_line.png)`,
-          }"
-        ></section> -->
-        <!-- <section class="view_left_score">
-          <h2>本次健康评分</h2>
-          <div
-            class="left_score"
-            :style="{
-              background: `url(${publicPath}bodytesterStatic/images/testing_score.png) no-repeat`,
-              backgroundSize: 'cover',
-            }"
-          >
-            <span>{{ usergrade }}</span>
-          </div>
-          <p class="left_text">
-            数据已同步至云端，可通过智能健身镜或小程序在线查看
-          </p>
-        </section> -->
-      </section>
-      <section id="container">
-        <div
-          :class="['item', `item-${index + 1}`]"
-          v-for="(item, index) of healthyList"
-          :key="item.title"
-        >
-          <div class="basics" v-if="index + 1 == 1">
-            <div class="basics_title">{{ item.title }}</div>
+      </header>
+      <div class="body_cover">
+        <section class="view_left">
+          <div class="basics">
             <div class="basics_info">
-              <span class="basics_info_height"
-                >{{ RUN_HEIGHT.height }}<span class="small_font">身高(cm)</span>
-              </span>
-              <span class="basics_info_weight"
-                >{{ LOCK_WEIGHT.weight
-                }}<span class="small_font">体重(kg)</span></span
-              >
+              <div class="icon_end1"></div>
+              <div class="basics_text">
+                <p>身高(cm)</p>
+                <div class="basics_line"></div>
+                <span>{{ RUN_HEIGHT.height }}(cm)</span>
+              </div>
+            </div>
+            <div class="basics_info">
+              <div class="icon_end1"></div>
+              <div class="basics_text">
+                <p>BMI(20.0~23.5)</p>
+                <div class="basics_line"></div>
+                <span>{{ user_bmi || 16.3 }}(kg/m^2)</span>
+              </div>
             </div>
           </div>
-          <div class="container_shell" v-if="index + 1 !== 1">
-            <div class="container_shell_title">{{ item.title }}</div>
-            <div class="container_shell_value">
-              <div
-                class="container_shell_BMI"
-                v-if="index + 1 == 3"
-                :style="{
-                  background: `url(${publicPath}bodytesterStatic/images/testing_icon1.png) no-repeat`,
-                  backgroundSize: 'cover',
-                }"
-              ></div>
-              <span>{{ item.value }}</span>
+
+          <section class="view_left_score">
+            <div class="left_score"
+                 :style="{
+                background: `url(${publicPath}bodytesterStatic/images/end_back1.svg) no-repeat`,
+                backgroundSize: 'cover',
+              }">
+              <span>{{ usergrade }}</span>
             </div>
-            <div class="container_shell_index">
-              <section
-                class="shell_index"
-                v-for="i of indexList"
-                :key="i.title"
-              >
-                <div
-                  :class="[
-                    'index_back',
-                    i.index == allindex(item.healthyindex) ? i.index : '',
-                  ]"
-                ></div>
-                <p class="index_text">{{ i.title }}</p>
-              </section>
+
+            <p class="left_text">{{ loginState ? "数据已同步至云端" : "登录同步到云端" }}</p>
+          </section>
+        </section>
+
+        <section id="container">
+          <div :class="['item', `item-${index + 1}`]"
+               v-for="(item, index) of healthyList"
+               :key="item.title">
+            <div class="container_shell"
+                 v-if="index == 0">
+              <h1 class="shell_one_title">体重及体脂率</h1>
+              <div class="shell_one">
+                <section class="shell_one_left">
+                  <p class="one_p1">当前体重 / 目标体重</p>
+                  <p class="one_p2">
+                    <span>{{ LOCK_WEIGHT.weight || 50 }}kg</span> / {{ 65 }}kg
+                  </p>
+                  <p class="one_p3">
+                    您可以通过每周3-5次的体能耐力训练及有氧运动来达到减脂的目的
+                  </p>
+                </section>
+                <section class="shell_one_right">
+                  <endEchart />
+                </section>
+              </div>
+            </div>
+            <div class="container_shell"
+                 v-else-if="index == 1">
+              <div class="shell_two">
+                <h1 class="shell_two_title">体脂率</h1>
+                <div class="shell_two_value">
+                  <div class="two_1">{{ 14.8 }}%</div>
+                  <p class="two_2">标准:11.0~20.0</p>
+                  <p class="two_3">正常</p>
+                </div>
+              </div>
+            </div>
+            <div class="container_shell"
+                 v-else>
+              <div class="container_shell_title">{{ item.title }}(<span>{{ titlemin(item.field,1) }}</span>-<span>{{ titlemin(item.field,2)}}</span> )</div>
+              <div class="shell_value">
+                <span class="shell_span1">{{ item.value || 1}} <span>({{item.company}})</span> </span>
+                <span v-html="allindex(item.healthyindex)"></span>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
+      <!-- 底部 -->
+      <div class="footer">
+        <button class="footer_btn1"
+                @click="$router.push('/')">返回首页</button>
+        <button class="footer_btn2"
+                @click="foot_btn()">
+          推荐课程
+        </button>
+      </div>
+      <EndOverlay v-if="showQR"
+                  @showover="showQR = false" />
     </div>
-    <RecommendPage
-      v-if="!endPageStatus"
-      @setpagestatus="setpagestatus"
-    ></RecommendPage>
+    <RecommendPage v-if="!endPageStatus"
+                   @setpagestatus="endPageStatus = true">
+    </RecommendPage>
   </div>
 </template>
 
 <script>
+import endEchart from "@/components/bodytester/endEchart.vue"
+import EndOverlay from "@/components/common/EndOverlay.vue"
 import RecommendPage from '@/components/CommendPage.vue'
 import api from '@/api/api'
 import { mapGetters, mapActions } from 'vuex'
-// import QRCode from "qrcodejs2";
-import QRCode from '@/components/QRCode.vue'
 export default {
   components: {
-    QRCode,
+    endEchart,
     RecommendPage,
+    EndOverlay
   },
-  data() {
+  data () {
     return {
       healthyList: [
         {
-          title: '基础数据',
+          title: '体重及体脂率',
           value: 2,
-          healthyindex: 0,
+          healthyindex: 0,  //0偏低  1正常 2偏高 
+          company: "1",
+          field: ""
         },
         {
           title: '脂肪率(%)',
-          value: 2,
+          value: 14.8,
           healthyindex: 1,
-        },
-        {
-          title: 'BMI(kg/m^2)',
-          value: 2,
-          healthyindex: 2,
-        },
-        {
-          title: '水分比率(%)',
-          value: 2,
-          healthyindex: 0,
+          company: "1",
+          field: "fat-percentage"
         },
         {
           title: '基础代谢量',
-          value: 2,
+          value: 1471.0,
           healthyindex: 0,
+          company: "Kcal",
+          field: "basal-metabolism"
         },
         {
-          title: '肌肉量(kg)',
-          value: 2,
+          title: '水分比率',
+          value: 43.0,
+          healthyindex: 0,
+          company: "%",
+          field: "water-percentage"
+        },
+        {
+          title: '肌肉量',
+          value: 53.7,
           healthyindex: 1,
+          company: "%",
+          field: "muscle-percentage"
         },
         {
-          title: '骨骼量(kg)',
-          value: 2,
+          title: '骨骼量',
+          value: 2.9,
           healthyindex: 0,
+          company: "kg",
+          field: "skeleton-percentage"
         },
         {
-          title: '蛋白质率(%)',
-          value: 2,
+          title: '蛋白质率',
+          value: 53.7,
           healthyindex: 2,
+          company: "%",
+          field: "protein-percentage"
         },
         {
-          title: '细胞外水分率(%)',
-          value: 2,
+          title: '细胞外水分率',
+          value: 53.7,
           healthyindex: 0,
+          company: "%",
+          field: "extracellular-moisture-percentage"
         },
         {
           title: '内脏等级',
           value: 8,
           healthyindex: 0,
+          company: "等级",
+          field: "visceral-fatGrade"
         },
       ],
-      indexList: [
-        {
-          index: 'index_low',
-          title: '偏低',
-        },
-        {
-          index: 'index_normal',
-          title: '正常',
-        },
-        {
-          index: 'index_tallish',
-          title: '偏高',
-        },
+      manmax: [
+        { min: 0, max: 0, field: "1" },
+        { min: 11, max: 25, field: "fat-percentage" }, //脂肪率
+        { min: 1300, max: 2000, field: "basal-metabolism" }, //基础代谢量
+        //{ min: 18.5, max: 24 }, //BMI
+        { min: 52, max: 57, field: "water-percentage" }, //水分比例
+        { min: 0, max: 0, field: "muscle-percentage" }, //肌肉量
+        { min: 2.4, max: 3.1, field: "skeleton-percentage" }, //骨骼量
+        { min: 16, max: 20, field: "protein-percentage" }, //蛋白质率
+        { min: 15, max: 21, field: "extracellular-moisture-percentage" }, //细胞外水分率
+        { min: 1, max: 9, field: "visceral-fatGrade" }, //内脏等级
       ],
-      qrstate: true,
+      girtmax: [
+        { min: 0, max: 0, field: "1" },
+        { min: 20, max: 36, field: "fat-percentage" }, //脂肪率
+        { min: 1100, max: 1800, field: "basal-metabolism" }, //基础代谢量
+        //{ min: 18.5, max: 24 }, //BMI
+        { min: 48, max: 53, field: "water-percentage" }, //水分比例
+        { min: 0, max: 0, field: "muscle-percentage" }, //肌肉量
+        { min: 1.7, max: 2.4, field: "skeleton-percentage" }, //骨骼量
+        { min: 16, max: 20, field: "protein-percentage" }, //蛋白质率
+        { min: 15, max: 21, field: "extracellular-moisture-percentage" }, //细胞外水分率
+        { min: 1, max: 9, field: "visceral-fatGrade" }, //内脏等级
+      ],
+      user_bmi: 20,
       endPageStatus: true,
-      usergrade: 0,
+      usergrade: 70,
+      showQR: false
     }
   },
   computed: {
@@ -448,29 +474,30 @@ export default {
       'Qrcode',
       'userInfo',
       'bodydata',
-      'LOCK_WEIGHT',
-      'RUN_HEIGHT',
+      'LOCK_WEIGHT',  //体重
+      'RUN_HEIGHT',   //身高
       'user_sex',
       'user_age',
       'ouid',
       'publicPath',
-    ]),
+    ])
   },
   watch: {
-    loginState(val, oldval) {
-      if (!val) {
-        this.init_qrcode(this.Qrcode)
+    loginState (val, oldval) {
+      if (val) {
+        this.endPageStatus = false
       }
     },
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     if (JSON.stringify(this.bodydata) !== {}) {
+      // console.log(this.bodydata)
       this.initbodydata()
     }
-    if (!this.loginState) {
-      this.init_qrcode(this.Qrcode)
-    }
+    // for (let i of this.manmax) {
+    //   console.log(i)
+    // }
   },
   //离开页面
   destroyed: function () {
@@ -480,42 +507,34 @@ export default {
   },
   methods: {
     ...mapActions(['logout']),
-    initbodydata() {
-      console.log('来了吗')
-      const arr = [
-        'fat-percentage', //脂肪
-        'body-age', //身体年龄
-        'water-percentage', //水分
-        'basal-metabolism', //基础代谢
-        'muscle-percentage', //肌肉
-        'skeleton-percentage', //骨量
-        'protein-percentage', //蛋白质率
-        'extracellular-moisture-percentage', //细胞外水分率
-        'visceral-fatGrade', //内脏脂肪等级
-      ]
-      this.healthyList.forEach((item, i) => {
-        if (i !== 0 || i !== 2) {
-          this.healthyList[i].value = this.bodydata[`${arr[i - 1]}`]
+    titlemin (key, type) {
+      // let data = type == 1 ? this.manmax : this.girtmax
+      let maxdata = this.user_sex == 1 ? this.manmax : this.girtmax
+      // console.log(maxdata)
+      for (let i of maxdata) {
+        if (i.field == key) {
+          return type == 1 ? i.min : i.max
         }
-        if (i == 2) {
-          let m2 = this.RUN_HEIGHT.height / 100
-          this.healthyList[i].value = Math.round(
-            this.LOCK_WEIGHT.weight / Math.pow(m2, 2)
-          )
+      }
+    },
+    initbodydata () {
+      //   'body-age' 身体年龄  'fat-percentage'脂肪 'water-percentage' 水分  'basal-metabolism' 基础代谢  'muscle-percentage' 肌肉
+      //   'skeleton-percentage' 骨量 'protein-percentage' 蛋白质率 'extracellular-moisture-percentage' 细胞外水分率 'visceral-fatGrade' 内脏脂肪等级
+      for (let i in this.healthyList) {
+        if (i !== 0) {
+          let field = this.healthyList[i].field
+          this.healthyList[i].value = this.bodydata[field]
         }
-        // console.log(i, this.healthyList[i].value)
         this.set_bodylevel(i, this.healthyList[i].value)
-      })
+      }
+      let m2 = this.RUN_HEIGHT.height / 100
+      this.user_bmi = Math.round(this.LOCK_WEIGHT.weight / Math.pow(m2, 2))
     },
-    //设置页面状态
-    setpagestatus() {
-      this.endPageStatus = true
-    },
-    async loadaddside() {
+
+    async loadaddside () {
       const data = this.bodydata
       // console.log(data)
-      const bmi = this.healthyList[2].healthyindex
-      this.usergrade = bmi == 0 ? 70 : bmi == 1 ? 90 : 70
+      // this.usergrade = this.usergrade == 0 ? 70 : this.usergrade == 1 ? 90 : 70
       var msg = {
         device_ouid: this.ouid, //设备ID
         user_ouid: this.userInfo['user_id'] || '', //用户ID
@@ -524,7 +543,7 @@ export default {
         sex: Number(this.user_sex), //用户性别
         height: this.RUN_HEIGHT.height, //用户身高
         weight: this.LOCK_WEIGHT.weight, //用户体重
-        bmi, //用户bmi
+        bmi: this.user_bmi, //用户bmi
         fat: data['fat-percentage'], //用户脂肪率
         bmr: data['basal-metabolism'], //用户基础代谢量
         water: data['water-percentage'], //用户水分率
@@ -534,52 +553,25 @@ export default {
         body_age: data['body-age'], //用户身体年龄
         ewf: data['extracellular-moisture-percentage'], //用户细胞外水分率
         protein: data['protein-percentage'], //用户蛋白质
-        grade: bmi == 0 ? 70 : bmi == 1 ? 90 : 70, //  用户健康评分
+        grade: this.usergrade, //  用户健康评分
       }
       console.log('msg', msg)
 
       const rs = await api.post('/add-side', msg)
       console.log(rs)
     },
-    //二维码
-    async init_qrcode(text) {
-      this.qrstate = false
-      await this.$nextTick()
-      this.qrstate = true
-    },
-    set_bodylevel(i, value) {
-      // console.log(i, value)
-      const manmax = [
-        { min: 0, max: 0 },
-        { min: 11, max: 25 }, //脂肪率
-        { min: 18.5, max: 24 }, //BMI
-        { min: 52, max: 57 }, //水分比例
-        { min: 1300, max: 2000 }, //基础代谢量
-        { min: 0, max: 0 }, //肌肉量
-        { min: 2.4, max: 3.1 }, //骨骼量
-        { min: 16, max: 20 }, //蛋白质率
-        { min: 15, max: 21 }, //细胞外水分率
-        { min: 1, max: 9 }, //内脏等级
-      ]
-      const girtmax = [
-        { min: 0, max: 0 },
-        { min: 20, max: 36 }, //脂肪率
-        { min: 18.5, max: 24 }, //BMI
-        { min: 48, max: 53 }, //水分比例
-        { min: 1100, max: 1800 }, //基础代谢量
-        { min: 0, max: 0 }, //肌肉量
-        { min: 1.7, max: 2.4 }, //骨骼量
-        { min: 16, max: 20 }, //蛋白质率
-        { min: 15, max: 21 }, //细胞外水分率
-        { min: 1, max: 9 }, //内脏等级
-      ]
 
-      let maxdata = []
-      if (this.user_sex == 1) {
-        maxdata = manmax
-      } else {
-        maxdata = girtmax
-      }
+    //筛选数值
+    set_bodylevel (i, value) {
+      // console.log(i, value)
+      let maxdata = this.user_sex == 1 ? this.manmax : this.girtmax
+
+      // if (this.user_sex == 1) {
+      //   maxdata = this.manmax
+      // } else {
+      //   maxdata = this.girtmax
+      // }
+
       if (value < maxdata[i].min) {
         this.healthyList[i].healthyindex = 0
       } else if (value > maxdata[i].max) {
@@ -588,16 +580,25 @@ export default {
         this.healthyList[i].healthyindex = 1
       }
     },
-    allindex(i) {
+    allindex (i) {
       switch (i) {
         case 0:
-          return 'index_low'
+          return `<span style="color:#ff5c8d" >偏低</span>`
         case 1:
-          return 'index_normal'
+          return `<span style="color:#1affa6" >正常</span>`
         case 2:
-          return 'index_tallish'
+          return `<span style="color:#ffda31" >偏高</span>`
       }
     },
+    foot_btn () {
+      if (this.loginState) {
+        this.endPageStatus = false
+        // clearInterval(this.downtimer)
+      } else {
+        console.log('1')
+        this.showQR = true
+      }
+    }
   },
 }
 </script>

@@ -131,7 +131,7 @@ const actions = {
     state.userMakeState = boolean
     if (state.StandbyState) {
       state.StandbyState = false
-      dispatch('send_askLedState', { r: 0, g: 0, b: 0 })
+      // dispatch('send_askLedState', { r: 0, g: 0, b: 0 })
     }
   },
   //用户转移退出 || 退出
@@ -139,17 +139,12 @@ const actions = {
     console.log('用户转移退出', data)
     dispatch('logout')
     router.push({ path: '/' })
-    dispatch('send_askLedState', { r: 0, g: 0, b: 0 })
-    // this.$router.push('/trainpage')
-    // window.location.replace("/")
   },
   //点击音频
   click_effects ({ state, dispatch }) {
     if (!state.Audio_effects) {
       state.Audio_effects = new Audio()
-      // state.Audio_effects.src = require(`${state.evenfPublic}../../assets/audio/click.mp3`)
       state.Audio_effects.src = `${state.publicPath}powerStatic/audio/首页/click.mp3`
-
     }
     state.Audio_effects.play()
   },

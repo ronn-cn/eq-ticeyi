@@ -23,19 +23,20 @@ export default {
     },
     codeid: {
       type: String,
+      default: "1"
     },
   },
-  data() {
+  data () {
     return {
       qrcode: null,
     };
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     this.init_qrcode();
   },
   methods: {
-    async init_qrcode() {
+    async init_qrcode () {
       //这里是调用的方法
       const qrid = await document.getElementById("vx_qrcode" + this.codeid);
       if (qrid) {

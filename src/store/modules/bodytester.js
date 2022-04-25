@@ -1,7 +1,7 @@
 
 const state = {
   user_sex: 2,  //用户性别 0未知 1男 2女
-  user_age: 18,
+  user_age: 25,
   screenstate: false,
   voicestate: true,
   RUN_HEIGHT: {

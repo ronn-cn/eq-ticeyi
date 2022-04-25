@@ -26,7 +26,7 @@
     var actionSplitFarme = [118, 133, 251]
     // 设置动作分割时长
     var actionSplitTime = [2.5, 1, 3]
-    // 设置刷新率
+    // 设置刷新率1
     var FPS = 50;
 
     // 场景
@@ -47,13 +47,14 @@
       camera.position.set(25, 25, 35);
       //相机看向哪个坐标
       camera.lookAt({ x: 0, y: 30, z: 0 });
-
+      //----------------------------------------------------------------------------
       // 渲染器
       const renderer = new THREE.WebGLRenderer();
       renderer.setClearColor(bgColor);
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.body.appendChild(renderer.domElement);
 
+      //---------------------------------------------------------------------------
       const controls = new THREE.OrbitControls(camera, renderer.domElement);
       controls.target = new THREE.Vector3(-2, 13, 0);
 
@@ -63,6 +64,8 @@
       controls.rotateSpeed = 0.05
 
       controls.screenSpacePanning = true;
+
+      //----------------------------------------------------------------------------
 
       let loader = new THREE.GLTFLoader();
       loader.load(modelPath, function (gltf) {
@@ -104,10 +107,11 @@
       // 动画
       const animate = function () {
         requestAnimationFrame(animate);
-
         controls.update();
         var delta = clock.getDelta();
         timeS = timeS + delta;
+        // console.log(delta)
+        // console.log(timeS)
         if (mixer) {
           // 肌肉显示贴图
 
@@ -122,6 +126,7 @@
 
 
         if (timeS > renderT) {
+          // console.log(timeS, renderT)
           renderer.render(scene, camera);
           timeS = 0;
         }
@@ -134,6 +139,7 @@
 
     // 控制动画时间
     function ControlAnimationTime (h) {
+
       parent.getFromIframe(h) //2.传递参数
       if (AnimationAction) {
         if (h == 0) {

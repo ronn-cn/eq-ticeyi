@@ -1,0 +1,1 @@
+window.commonPublic = "./bodytesterStatic/glb/体测仪模型.glb"

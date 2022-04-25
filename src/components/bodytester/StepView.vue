@@ -3,19 +3,10 @@
   width: 1405px;
   height: 889px;
   margin-bottom: 20px;
-  // background-color: rgb(25, 211, 18);
-  // background: url('~assets/images/phase2/back2.svg') no-repeat;
-  background: url('~assets/images/phase2/home_view_b.png') no-repeat;
+  background: url("~assets/images/phase2/home_view_b.png") no-repeat;
   border-radius: 20px;
 
   .introduce_start_before {
-    .introduce_make {
-      color: #40f9ef;
-      font-size: 0.2rem;
-      position: absolute;
-      right: 0.2rem;
-      top: 0.2rem;
-    }
     .introduce_title {
       padding-top: 1rem;
       &_p1 {
@@ -30,10 +21,10 @@
         font-family: SourceHanSansCN;
         font-weight: 400;
         color: #ffffff;
-        font-size: 0.24rem;
+        font-size: 36px;
         line-height: 0.32rem;
         text-align: left;
-        padding: 0 0.3rem;
+        padding: 0 1.5rem;
       }
     }
     .introduce_cover {
@@ -41,109 +32,81 @@
     }
   }
   .introduce_start_after {
-    padding: 0.53rem 0 0.59rem 0;
     color: #fff;
+    .h1_title {
+      font-size: 48px;
+      text-align: center;
+      padding: 70px 0 120px 0;
+    }
     .risk_notice {
       font-size: 0.22rem;
       text-align: left;
       line-height: 0.42rem;
+      .careful_ul {
+        li {
+          font-size: 36px;
+          text-align: center;
+        }
+      }
     }
     .apparatus_test {
-      .apparatus_text {
-        font-size: 0.2rem;
-        font-family: SourceHanSansCN;
-        font-weight: 400;
-        text-align: left;
-        margin-top: 0.37rem;
-        line-height: 0.4rem;
+      .h1_title {
+        font-size: 48px;
+        padding-bottom: 60px;
       }
-      .gender {
-        display: flex;
-        justify-content: center;
-        .gender_male,
-        .gender_female {
-          width: 1.6rem;
-          height: 0.7rem;
-          line-height: 0.7rem;
-          background: rgba(100, 150, 238, 0.15);
-          // opacity: 0.5;
-          border-radius: 0.08rem;
+      .choice_sex {
+        h2 {
+          margin-bottom: 60px;
         }
-        .gender_male {
-          margin-right: 0.44rem;
-        }
-        .gender_male_active {
-          background: rgba(100, 150, 238, 0.3);
-          border: 2px solid #3476fe;
-          border-radius: 0.08rem;
-        }
-        .gender_female_active {
-          background: rgba(100, 150, 238, 0.3);
-          border: 2px solid #ff61f6;
-          border-radius: 0.08rem;
-        }
-      }
-      .h1_age {
-        margin: 0.4rem 0;
-        font-size: 0.38rem;
-      }
-    }
-    .action_demo {
-      ul {
-        margin-top: 1rem;
-        text-align: center;
-        // padding-left: 1rem;
-        counter-reset: section;
-        display: flex;
-        justify-content: space-around;
-        li {
-          padding-bottom: 0.14rem;
-          font-size: 0.2rem;
-          width: 2.55rem;
-          .title_images {
-            width: 2.55rem;
-            height: 1.67rem;
-            margin-bottom: 0.42rem;
-            // background-color: #89b2e7;
-            img {
-              width: 100%;
-              height: 100%;
-            }
+        .gender {
+          display: flex;
+          justify-content: space-around;
+          width: 50%;
+          margin: 50px auto 70px;
+          .gender_male {
+            width: 299px;
+            height: 110px;
+            line-height: 110px;
+            border-radius: 20px;
+            border: 2px solid #fff;
+          }
+          .gender_male_active {
+            color: #000000;
+            background: #fff;
           }
         }
       }
-    }
-    .h1 {
-      font-size: 0.36rem;
-      font-family: SourceHanSansCN;
-      font-weight: 400;
-      margin-bottom: 0.37rem;
-      text-align: center;
-    }
-    .step_back {
-      width: 0.62rem;
-      height: 0.6rem;
-      background: rgba(103, 117, 217, 0.3);
-      border: 1px solid #89b2e7;
-      opacity: 0.5;
-      border-radius: 0.3rem;
-      position: absolute;
-      top: 0.25rem;
-      right: 0.24rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      &_img {
-        position: relative;
-        left: -0.04rem;
-        width: 0.32rem;
+      .choice_age {
+        width: 80%;
+        margin: auto;
+        h2 {
+          margin-bottom: 40px;
+        }
       }
     }
-    .apparatus_picture {
-      width: 5.28rem;
-      height: 3.51rem;
-      margin: 0 auto;
-      // background: chartreuse;
+
+    .step_back {
+      position: absolute;
+      top: left;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-left: 100px solid transparent;
+      border-top: 100px solid transparent;
+      border-bottom: 100px solid rgb(231, 175, 72);
+      border-right: 100px solid transparent;
+      transform: translateX(100px) translateY(-100px) rotate(45deg);
+    }
+    .step_back::after {
+      content: "";
+      position: absolute;
+      right: -32px;
+      top: 30px;
+      width: 0.44rem;
+      height: 0.44rem;
+      background: url("~assets/images/common/home_back.png") no-repeat;
+      background-size: 100% 100%;
+      transform: rotate(330deg);
     }
   }
 }
@@ -153,26 +116,7 @@
   color: #fff;
   margin-top: 0.4rem;
 }
-.introduce_logo {
-  position: fixed;
-  top: 0.1rem;
-  right: 1.24rem;
-  img {
-    width: 0.7rem;
-  }
-}
-.careful_ul {
-  padding-left: 0.6rem;
-  li {
-    list-style-type: disc;
-    padding: 0.1rem 0;
-  }
-}
-.careful_title {
-  margin-top: 1.1rem;
-  color: #40f9ef;
-  font-size: 0.2rem;
-}
+
 .vx_qr {
   width: 340px;
   height: 340px;
@@ -185,114 +129,119 @@
   background: #000000;
   // background: linear-gradient(180deg, #323647 0%, #222631 100%) !important;
 }
+
+//@at-root
+#rulerText3 {
+  margin: 0 auto;
+  margin-left: 16px;
+  font-size: 0.3rem;
+  text-align: center;
+  background: none;
+  border: none;
+  z-index: 100;
+  color: rgb(255, 255, 255);
+}
+.text-input {
+  background: none;
+  border: none;
+  color: #fff;
+}
+.ruler-wrap {
+  width: 100%;
+  height: 200px;
+  margin-top: 20px;
+}
 </style>
 
 <template>
   <div>
-    <div
-      class="home_view_introduce"
-      :class="courseState ? 'introduce_active' : ''"
-    >
-      <div class="introduce_start_before" v-if="!courseState">
-        <!-- <div class="introduce_logo">
-          <img :src="`${publicPath}common/images/login_img1.png`" />
-        </div> -->
-        <!-- <div class="introduce_make">
-          {{ userMakeState ? '设备已预约' : '设备可使用' }}
-        </div> -->
+    <div class="home_view_introduce"
+         :class="courseState ? 'introduce_active' : ''">
 
-        <div class="introduce_title" v-if="itemindex == 0 && !userMakeState">
-          <p class="introduce_title_p1">体脂秤自助体测</p>
+      <div class="introduce_start_before"
+           v-if="!courseState">
+        <div class="introduce_title"
+             v-if="itemindex == 0 && !userMakeState">
+          <p class="introduce_title_p1">智能全维度体质检测</p>
           <p class="introduce_title_p2">
-            科学的了解自己的身体情况，智能检测10项全身指标分析，并根据个人身体状态提供科学运动指导方案
+            基于生物电阻抗测量原理的全方位测量，通过分析人体成分、人体机能等身体数据，全面评估个人身体健康状况。
           </p>
           <div class="introduce_cover">
-            <img
-              :src="`${publicPath}bodytesterStatic/images/ticeyi.png`"
-              width="296"
-              height="328"
-            />
+            <img :src="`${publicPath}bodytesterStatic/images/ticeyi1.svg`"
+                 width="404"
+                 height="436" />
           </div>
         </div>
-        <div class="introduce_title" v-if="itemindex == 1 && !userMakeState">
-          <p class="introduce_title_p2" style="text-align: center">
+        <div class="introduce_title"
+             v-if="itemindex == 1 && !userMakeState">
+          <p class="introduce_title_p2"
+             style="text-align: center">
             微信扫码进入个人中心<br />查看个人体测历史数据
           </p>
-          <QRCode
-            class="vx_qr"
-            :qrwidth="340"
-            :qrheight="340"
-            codeid="2"
-            :codeTest="Qrcode"
-          ></QRCode>
+          <QRCode class="vx_qr"
+                  :qrwidth="340"
+                  :qrheight="340"
+                  codeid="2"
+                  :codeTest="Qrcode"></QRCode>
         </div>
         <MakeLesson v-if="userMakeState" />
       </div>
 
-      <div class="introduce_start_after" v-if="courseState && itemindex == 0">
-        <div class="risk_notice" v-if="viewindex === 0">
-          <div class="step_back" @click="backindex">
-            <img
-              :src="`${publicPath}bodytesterStatic/images/view_back.png`"
-              class="step_back_img"
-            />
-          </div>
-          <h1 class="h1">测试注意事项</h1>
+      <div class="introduce_start_after"
+           v-if="courseState">
+        <div class="step_back"
+             @click="backindex">
+        </div>
+        <div class="risk_notice"
+             v-if="viewindex === 0">
+          <h1 class="h1_title">测试注意事项</h1>
           <ul class="careful_ul">
-            <li v-for="item of carefulList" :key="item">
+            <li v-for="item of carefulList"
+                :key="item">
               {{ item }}
             </li>
           </ul>
         </div>
-        <div class="apparatus_test" v-if="viewindex === 1">
-          <div class="step_back" @click="backindex">
-            <img
-              :src="`${publicPath}bodytesterStatic/images/view_back.png`"
-              class="step_back_img"
-            />
-          </div>
-          <h1 class="h1">性别</h1>
-          <div class="gender">
-            <section
-              :class="[
+        <div class="apparatus_test"
+             v-show="viewindex === 1">
+          <h1 class="h1_title">完善个人信息</h1>
+          <div class="choice_sex">
+            <h2>点击选择你的性别</h2>
+            <div class="gender">
+              <section :class="[
                 'gender_male',
                 user_sex == 1 ? 'gender_male_active' : '',
               ]"
-              @click="commitAge(1)"
-            >
-              <div>男</div>
-            </section>
-            <section
-              :class="[
-                'gender_female',
-                user_sex == 2 ? 'gender_female_active' : '',
+                       @click="commitAge(1)">
+                <div>男</div>
+              </section>
+              <section :class="[
+                'gender_male',
+                user_sex == 2 ? 'gender_male_active' : '',
               ]"
-              @click="commitAge(2)"
-            >
-              女
-            </section>
+                       @click="commitAge(2)">
+                女
+              </section>
+            </div>
           </div>
-          <h1 class="h1_age">年龄</h1>
-          <date-picker></date-picker>
-        </div>
-
-        <div class="action_demo" v-if="viewindex === 2">
-          <div class="step_back" @click="backindex">
-            <img
-              :src="`${publicPath}bodytesterStatic/images/view_back.png`"
-              class="step_back_img"
-            />
-          </div>
-          <ul class="action_demo_ul">
-            <li v-for="(item, index) of actionImg" :key="item.title">
-              <div class="title_images">
-                <img :src="publicPath + item.url" alt="" />
+          <div class="choice_age">
+            <h2>选择你的年龄</h2>
+            <input id="rulerText3"
+                   class="text-input"
+                   type="text"
+                   readonly=""
+                   v-model="user_age" />
+            <section id="roll">
+              <!-- 刻度尺容器(必要的) -->
+              <div class="ruler-wrap"
+                   id="ruler">
+                <canvas style="transform: scale(0.7),width:2000px;height:120px; transform-origin: left top;">
+                </canvas>
+                <img style="margin: 18px 0 0 18px;width: 33px;"
+                     src="~assets/images/common/Polygon.png"
+                     alt="">
               </div>
-              <p>{{ index + 1 }}.{{ item.title }}</p>
-            </li>
-          </ul>
-          <div class="careful_title">
-            注：如需重新测试，请先离开体脂秤再上去
+            </section>
           </div>
         </div>
       </div>
@@ -303,14 +252,13 @@
 <script>
 import RadialProgressBar from 'vue-radial-progress'
 import { mapGetters } from 'vuex'
-import DatePicker from './DatePicker.vue'
 import QRCode from '../QRCode.vue'
 import MakeLesson from '@/components/common/MakeLesson.vue'
+import { inbt } from "@/assets/js/kedu";
 export default {
   components: {
     RadialProgressBar,
     MakeLesson,
-    DatePicker,
     QRCode,
   },
   props: {
@@ -324,7 +272,16 @@ export default {
       type: Boolean,
     },
   },
-  data() {
+  watch: {
+
+    viewindex (val) {
+      console.log(val)
+      if (val == 1) {
+        this.methd()
+      }
+    }
+  },
+  data () {
     return {
       carefulList: [
         '运动后不宜立即测量，力量训练和剧烈运动都会造成体成分的暂时性变化',
@@ -333,28 +290,14 @@ export default {
         '女性月经或怀孕期间不宜进行测量',
         '体内佩戴心脏起搏器或支架等电子医疗器着及体内带有金属接物,请勿使用',
       ],
-      actionImg: [
-        {
-          url: 'bodytesterStatic/images/test_guide3.png',
-          title: '请双脚踩在体脂秤上，保持身体平衡',
-        },
-        {
-          url: 'bodytesterStatic/images/test_guide1.png',
-          title: '双手握住手柄，拇指一侧充分接触电极部分',
-        },
-        {
-          url: 'bodytesterStatic/images/test_guide2.png',
-          title: '点击确认，保持静止10-20秒，待检测完成',
-        },
-      ],
+      inputval: 25
     }
   },
-  watch: {},
-
   computed: {
     ...mapGetters([
       'loginState',
       'user_sex',
+      'user_age',
       'userMakeState',
       'caretitle',
       'caredesc',
@@ -362,19 +305,36 @@ export default {
       'publicPath',
     ]),
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
-    commitAge(sex) {
+    commitAge (sex) {
       this.$store.commit('set_user_sex', sex)
     },
-    backindex() {
+    backindex () {
       this.$emit('setitemindex')
     },
-    removetimer() {
-      console.log('得得得')
+    removetimer () {
       clearInterval(this.timer)
       this.timer = null
+    },
+    methd: function () {
+      var obj = {
+        el: "ruler", //容器id
+        height: 50, //刻度尺高度
+        maxScale: 80, //最大刻度
+        startValue: 0, //刻度开始的初始值
+        region: [0, 80], //选择刻度的区间范围
+        background: "#303445", //刻度尺背景色
+        color: "#fff", //刻度线和字体的颜色
+        markColor: "#3786db", //中心刻度标记颜色
+        isConstant: true, //是否不断地获取值
+        success: (res) => {
+          // this.inputval = res;
+          this.$store.commit('set_user_age', res)
+        },
+      };
+      inbt(obj);
     },
   },
 }

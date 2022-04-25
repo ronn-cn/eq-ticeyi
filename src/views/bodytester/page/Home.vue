@@ -16,8 +16,7 @@
     &_qrcode {
       width: 455px;
       height: 434px;
-      background: url('~assets/images/phase2/home_ac.png');
-      // background: url('~assets/images/phase2/qrback.svg');
+      background: url("~assets/images/phase2/home_ac.png");
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -82,35 +81,50 @@
     }
     ul {
       li {
-        width: 365px;
+        width: 315px;
         height: 132px;
-        font-size: 0.26rem;
-        padding: 0 20px 0 70px;
+        font-size: 36px;
+        padding: 0 20px 0 120px;
         display: flex;
-        // justify-content: center;
         align-items: center;
         margin: 20px 0;
         background: linear-gradient(180deg, #323647 0%, #222631 100%);
         box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
         border-radius: 20px;
         position: relative;
+        .round_text {
+          position: absolute;
+          left: 52px;
+          width: 40px;
+          height: 40px;
+          border: 2px solid#fff;
+          border-radius: 50%;
+          font-size: 26px;
+          line-height: 40px;
+        }
+        .switch {
+          position: relative;
+          left: 85px;
+        }
       }
       .active {
-        background: #007aff;
-        // background: url('~assets/images/phase2/home_active.svg') no-repeat;
-        background: url('~assets/images/phase2/home_b.png') no-repeat;
+        background: url("~assets/images/phase2/home_c.png") no-repeat;
         background-size: cover;
         position: relative;
         .home_icon {
           color: #007aff;
           background: #ffffff;
         }
+        .round_text {
+          color: #007aff;
+          background: #fff;
+        }
       }
       .active::after {
-        content: '';
+        content: "";
         width: 48px;
         height: 48px;
-        background: url('~assets/images/phase2/icon1.svg') no-repeat;
+        background: url("~assets/images/phase2/icon1.svg") no-repeat;
         position: absolute;
         top: 56px;
         right: 2px;
@@ -123,7 +137,7 @@
           height: 40px;
           margin-right: 10px;
           box-sizing: border-box;
-          background-image: url('/common/images/home/home_icon4.png');
+          background-image: url("/common/images/home/home_icon4.png");
           background-size: 100% 100%;
         }
       }
@@ -166,7 +180,7 @@
     }
   }
   :nth-child(2).user_value_item::after {
-    content: '';
+    content: "";
     position: absolute;
     right: -44px;
     top: 10px;
@@ -175,7 +189,7 @@
     background: #fff;
   }
   :nth-child(2).user_value_item::before {
-    content: '';
+    content: "";
     position: absolute;
     left: -44px;
     top: 10px;
@@ -187,24 +201,27 @@
 </style>
 <template>
   <div class="main">
-    <div class="home" v-if="!dataTextState">
-      <div class="home_nav" v-show="!showCourse">
-        <div class="home_nav_qrcode" v-if="!loginState">
-          <QRCode
-            ref="qrcode1"
-            v-if="qrstate"
-            class="vx_qr"
-            :qrwidth="200"
-            :qrheight="200"
-            codeid="1"
-            :codeTest="Qrcode"
-          ></QRCode>
+    <div class="home"
+         v-if="!dataTextState">
+      <div class="home_nav"
+           v-show="!showCourse">
+        <div class="home_nav_qrcode"
+             v-if="!loginState">
+          <QRCode ref="qrcode1"
+                  v-if="qrstate"
+                  class="vx_qr"
+                  :qrwidth="200"
+                  :qrheight="200"
+                  codeid="1"
+                  :codeTest="Qrcode"></QRCode>
           <p class="p1">微信扫码登陆</p>
         </div>
-        <div class="home_nav_qrcode" v-if="loginState">
+        <div class="home_nav_qrcode"
+             v-if="loginState">
           <div class="qrcode_avatar">
             <div class="avatar_img">
-              <img :src="userInfo.user_avatar || ''" alt="" />
+              <img :src="userInfo.user_avatar || ''"
+                   alt="" />
             </div>
             <p class="p2">{{ userInfo.user_name || '' }}</p>
           </div>
@@ -224,33 +241,31 @@
           </div>
         </div>
         <ul>
-          <li
-            v-for="(item, index) of patternList"
-            :class="{ active: itemindex == index }"
-            @click="swichindex(index)"
-            :key="item.id"
-          >
-            {{ item.title }}
+          <li v-for="(item, index) of patternList"
+              :class="{ active: itemindex == index }"
+              @click="swichindex(index)"
+              :key="item.id">
+            <span class="round_text">{{index == 0 ? "T":"H"}}</span>
+            <span>{{ item.title }}</span>
           </li>
           <li>
-            语音播报<span style="margin-right: 0.1rem"
-              >{{ voicestate ? '已开启' : '已关闭' }}
+            <span class="round_text">H</span>
+            语音播报<span style="margin-right: 0.1rem">
             </span>
-            <VoiceSwitch
-              @change="switchstate(voicestate)"
-              :value="voicestate"
-            ></VoiceSwitch>
+            <VoiceSwitch @change="switchstate(voicestate)"
+                         class="switch"
+                         :value="voicestate"></VoiceSwitch>
           </li>
-          <li class="user_liout" @click="logout" v-if="loginState">
-            <!-- <div class="home_icon">x</div> -->
-            退出账号
+          <li class="user_liout"
+              @click="logout"
+              v-if="loginState">
+            <span class="round_text">X</span>
+            <span>退出账号</span>
           </li>
         </ul>
       </div>
-      <home-view
-        :itemindex="itemindex"
-        @set_showCourse="set_showCourse"
-      ></home-view>
+      <home-view :itemindex="itemindex"
+                 @set_showCourse="set_showCourse"></home-view>
     </div>
   </div>
 </template>
@@ -279,17 +294,17 @@ export default {
       'user_data',
     ]),
   },
-  data() {
+  data () {
     return {
       itemindex: 0,
       patternList: [
         {
           id: 1,
-          title: '自助体测',
+          title: '体成分测试',
         },
         {
           id: 2,
-          title: '查看历史数据',
+          title: '体测记录',
         },
       ],
       caretitle: '',
@@ -298,14 +313,13 @@ export default {
       qrcode: null,
       qrstate: true,
       showCourse: false, //左侧是否显示
-      //_beforeUnload_time: "",
     }
   },
   watch: {
-    Qrcode(val) {
+    Qrcode (val) {
       this.init_qrcode(val)
     },
-    loginState(val) {
+    loginState (val) {
       if (!val) {
         this.init_qrcode(this.Qrcode)
         this.$store.commit('set_user_age', 18)
@@ -314,17 +328,17 @@ export default {
         this.all_user()
       }
     },
-    dataTextState(val) {
+    dataTextState (val) {
       this.$store.commit('set_testState', val)
       if (!val) {
         this.init_qrcode(this.Qrcode)
       }
     },
   },
-  created() {
+  created () {
     this.switchstate(false)
   },
-  mounted() {
+  mounted () {
     if (!this.loginState) {
       const userinfo = window.localStorage.getItem('userInfo')
       if (userinfo) {
@@ -336,33 +350,28 @@ export default {
       }
     }
   },
-  destroyed: function () {},
+  destroyed: function () { },
   methods: {
     ...mapMutations(['setLoginStatus', 'SEND_SOCKET']),
     ...mapActions(['logout', 'all_user']),
     //调用二维码
-    async init_qrcode(text) {
+    async init_qrcode (text) {
       this.qrstate = false
       await this.$nextTick()
       this.qrstate = true
     },
-    swichindex(index) {
+    swichindex (index) {
       this.itemindex = index
       if (this.userMakeState) {
         this.$store.dispatch('set_userMakeState', false)
       }
     },
-    //开始体测
-    // setdatastate(boolean) {
-    //   this.dataTextState = boolean
-    //   this.showCourse = false
-    // },
     //声音播放
-    switchstate(val) {
+    switchstate (val) {
       console.log(val)
       this.$store.commit('set_voicestate', !val)
     },
-    set_showCourse(val) {
+    set_showCourse (val) {
       this.showCourse = val
     },
   },

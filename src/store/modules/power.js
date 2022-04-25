@@ -16,10 +16,15 @@ const state = {
     averagescore: 0,  //平均负重
     amount: 0, //训练量
   },
-  echartData: []
+  echartData: [],
+  temporary: {}  //临时用户的组数
 }
 
 const mutations = {
+  set_temporary (state, data) {
+    console.log('课程目标', data)
+    state.temporary = data
+  },
   add_detail (state, payload) {
     let info = payload.info
     let timeMeter = Math.round(payload.timeMeter)
@@ -45,7 +50,6 @@ const mutations = {
     state.weight_rm = data
   },
   set_totalweight (state, data) {
-    // Count: 1 Duration: 1826 Height: 42 Percent: 0.5599135044420577 Weight: 6
     if (data) {
       state.powerEndData.totalweight += data.Weight  //总重量
       state.powerEndData.averagenum += 1             //总次数
@@ -56,7 +60,6 @@ const mutations = {
       if (data.Weight > state.weight_max) {
         state.weight_max = data.Weight
       }
-      // console.log(state.totalweight, state.averagenum, state.averagescore, state.combinedscore)
     }
   },
   //这是图标的数据
@@ -83,9 +86,7 @@ const mutations = {
   },
 }
 const getters = {
-  completion (state) {
-    return '别急'
-  },
+  temporary: state => state.temporary,
   echartData: state => state.echartData
 }
 
@@ -103,7 +104,7 @@ const actions = {
   //结束上传数据
   svseEndData ({ state, getters, dispatch }, data) {
     let sport_detail = {
-      group: state.total_group,   //总组数
+      group: state.total_group || 0,   //总组数
       times: state.powerEndData.averagenum,   //总次数
       weight_total: state.powerEndData.totalweight,//总负重
       weight_avg: state.powerEndData.averagescore,//平均负重

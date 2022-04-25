@@ -3,36 +3,12 @@
   height: 100%;
   background-color: #5a4f5f;
 }
-// .page_header {
-//   .page_header_line {
-//     width: 100%;
-//     height: 0.13rem;
-//   }
-//   h1 {
-//     padding: 0.2rem 0;
-//     color: #ffffff;
-//     font-size: 0.38rem;
-//   }
-// }
+
+
 .page_action {
   display: flex;
-  // &_item {
-  //   width: 3.92rem;
-  //   margin-left: 1.73rem;
-  //   H2 {
-  //     font-size: 24px;
-  //     font-family: SourceHanSansCN;
-  //     font-weight: 400;
-  //     color: #ffffff;
-  //     line-height: 40px;
-  //     opacity: 0.5;
-  //   }
-  //   .cover_container {
-  //     width: 100%;
-  //     height: 4.5rem;
-  //   }
-  // }
 }
+
 .page_footer {
   position: absolute;
   bottom: 0;
@@ -41,29 +17,40 @@
   width: 100%;
   background: #7d89e2;
   color: #ffffff;
+
   ul {
     width: 100%;
     height: 100%;
     display: flex;
+
     li {
       width: 20%;
       height: 100%;
-      background: #37303a;
+      background: #4e505a;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       position: relative;
+
       .foot_li_p1 {
         font-size: 0.34rem;
       }
+
       .foot_li_p2 {
         font-size: 0.18rem;
         margin-top: 0.16rem;
       }
     }
+
   }
 }
+
+.page_footer ul li:not(:last-child) {
+  border-right: 2px solid #797979;
+}
+
+
 .end_btn {
   border-left: 100px solid transparent;
   border-top: 100px solid transparent;
@@ -74,11 +61,12 @@
   right: 0;
   transform: translateX(100px) translateY(-100px) rotate(45deg);
 }
+
 .end_btn::after {
   content: '';
   position: absolute;
-  right: -24px;
-  top: 46px;
+  right: -26px;
+  top: 48px;
   width: 40px;
   height: 40px;
   background: url('~assets/images/common/home_icon4.png') no-repeat;
@@ -90,7 +78,8 @@
   height: 0.13rem !important;
   border-radius: 0 !important;
 }
-::v-deep .el-progress-bar__inner  {
+
+::v-deep .el-progress-bar__inner {
   border-radius: 0 !important;
 }
 
@@ -101,45 +90,42 @@
     transform: rotate(-90deg);
     position: absolute;
     bottom: 430px;
-    left: -215px;
+    left: -196px;
   }
+
   .progress_test_left {
     position: absolute;
     bottom: 2%;
-    left: 6px;
+    left: 24px;
     z-index: 9;
   }
+
   .progress_rotate_right {
     width: 580px;
     transform: rotate(-90deg);
     position: absolute;
     bottom: 430px;
-    right: -225px;
+    right: -205px;
   }
+
   .progress_test_right {
     position: absolute;
     bottom: 2%;
-    right: 6px;
+    right: 24px;
     z-index: 9;
   }
+
   .text_p1 {
-    position: absolute;
-    top: 34px;
-    left: 18px;
     font-size: 36px;
   }
+
   .text_p2 {
-    position: absolute;
-    top: 76px;
-    left: 24px;
+    margin-top: 4px;
     font-size: 20px;
+    color: #aaaaaa;
   }
 }
-.fixed_left {
-  // position: fixed;
-  // left: 0;
-  // top: 28vh;
-}
+
 .end_test_btn {
   width: 296px;
   height: 84px;
@@ -153,12 +139,15 @@
   justify-content: center;
   align-items: center;
 }
+
 ::v-deep #progress_left .ant-progress-circle-trail {
   stroke: #cfd7da !important;
 }
+
 ::v-deep .ant-progress-circle-trail {
   stroke: #f03985 !important;
 }
+
 .stop_skip {
   width: 0.4rem;
   height: 0.4rem;
@@ -167,6 +156,7 @@
   top: 0.14rem;
   background: url('~assets/images/common/skip.png');
 }
+
 .stop_skip::after {
   content: '';
   width: 0.3rem;
@@ -176,6 +166,7 @@
   top: 0;
   background: url('~assets/images/common/skip.png');
 }
+
 .audio_text {
   width: 600px;
   position: absolute;
@@ -183,11 +174,12 @@
   bottom: 60px;
   z-index: 999;
 }
+
 .audio_text::after {
   content: '';
   position: absolute;
   top: -2px;
-  left: 0;
+  left: -30px;
   width: 42px;
   height: 42px;
   background: url('~assets/images/phase2/tranin_icon1.svg') no-repeat;
@@ -202,7 +194,67 @@
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }
+}
+
+//新的改动
+.progress_test_left,
+.progress_test_right {
+  width: 124px;
+  height: 124px;
+  border-radius: 20px;
+  border: 3px solid #aaaaaa;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.complete_activa {
+  // animation: complete 4s linear;
+  border-color: #28cd41;
+}
+
+.unfinished_activa {
+  // animation: unfinished 4s linear;
+  border-color: #d31b86;
+}
+
+@keyframes complete {
+  0% {
+    border-color: #aaaaaa;
+  }
+
+  70% {
+    border-color: #28cd41;
+  }
+
+  100% {
+    border-color: #aaaaaa;
+  }
+}
+
+@keyframes unfinished {
+  0% {
+    border-color: #aaaaaa;
+  }
+
+  70% {
+    border-color: #d31b86;
+  }
+
+  100% {
+    border-color: #aaaaaa;
+  }
+}
+
+::v-deep .k-progress-outer-bg {
+  border-radius: 10px !important;
+}
+
+::v-deep .k-progress-outer-line {
+  border-radius: 10px !important;
 }

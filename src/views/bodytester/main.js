@@ -6,6 +6,9 @@ import App from "./App.vue";
 import router from "../../router";
 import store from "../../store";
 import axios from 'axios';
+import 'vant/lib/button/style'
+import { Button } from 'vant';
+Vue.use(Button);
 
 
 Vue.config.productionTip = false;

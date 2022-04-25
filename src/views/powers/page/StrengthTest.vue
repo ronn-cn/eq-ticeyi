@@ -1,5 +1,5 @@
 <style scoped lang="scss">
-@import '~assets/css/trainpage.scss';
+@import "~assets/css/trainpage.scss";
 .test_page {
   width: 100%;
   height: 100%;
@@ -19,34 +19,35 @@
   .test_p3 {
     font-size: 0.7rem;
   }
+  .test_p4 {
+    margin-top: 250px;
+    font-size: 72px;
+  }
   .test_page_btn {
     padding: 0.1rem;
-    height: 16%;
     position: absolute;
     bottom: 0;
-    // background-color: cyan;
     display: flex;
     .test_btn1 {
-      padding: 20px;
-      width: 4rem;
-      margin-right: 0.2rem;
-      border-radius: 5px;
-      background-color: #017aff;
-      box-sizing: border-box;
-      box-shadow: 5px 5px 20px 0px #017aff;
+      width: 455px;
+      height: 131px;
+      background: #007aff;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
+        inset 15px 15px 10px rgba(255, 255, 255, 0.09);
+      border-radius: 20px;
+
+      margin-right: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
       font-size: 0.3rem;
     }
     .test_btn2 {
-      padding: 20px;
-      width: 8.3rem;
-      border-radius: 5px;
-      background-color: #1fac4a;
-      box-sizing: border-box;
-      box-shadow: 5px 5px 20px 0px #10c98f,
-        inset 5px 5px 20px 0px rgba(255, 255, 255, 0.35);
+      width: 1405px;
+      height: 131px;
+      background: #28cd41;
+      box-shadow: inset 15px 15px 10px rgba(255, 255, 255, 0.09);
+      border-radius: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -84,42 +85,49 @@
     }
   }
 }
-// .end_test_btn {
-//   position: fixed;
-//   left: 68vw;
-//   bottom: 18vh;
-// }
 </style>
 
 <template>
   <div class="page">
-    <section class="test_page" v-if="testShow">
-      <div class="test_back" @click="backHome"></div>
+    <!-- 重新测试页面 -->
+    <section class="test_page"
+             v-if="testShow">
+      <div class="test_back"
+           @click="backHome"></div>
       <p class="test_p1">当前器械1RM测定值</p>
-      <p class="test_p2">当前器械能举起的最大重量为</p>
-      <p class="test_p3">{{ traininfo.Weight || 0 }}KG</p>
+      <div v-if="traininfo.Weight">
+        <p class="test_p2">当前器械能举起的最大重量为</p>
+        <p class="test_p3">{{ maxRm || 0 }}KG</p>
+      </div>
+      <div v-else>
+        <p class="test_p4">未完成测试,暂无记录</p>
+      </div>
       <div class="test_page_btn">
-        <div class="test_btn1" @click="testBtn(0)">重新测试</div>
-        <div class="test_btn2" @click="testBtn(1)">继续训练</div>
+        <div class="test_btn1"
+             @click="testBtn(0)">重新测试</div>
+        <div class="test_btn2"
+             @click="testBtn(1)"
+             v-if="traininfo.Weight">继续训练</div>
+        <div class="test_btn2"
+             @click="testBtn(2)"
+             v-else>自由训练</div>
       </div>
     </section>
 
     <div v-if="!testShow">
       <section class="page_action">
-        <rest-page
-          v-if="reststate"
-          ref="restpage"
-          @endrest="reststate = false"
-          :planstate="planstate"
-          :restinfo="plannum"
-          :totalSteps="totalSteps"
-        ></rest-page>
-        <div
-          class="end_test_btn"
-          v-if="planstate == 0 && !reststate"
-          @touchstart="savatest"
-        >
-          结束测试
+        <rest-page v-if="reststate"
+                   ref="restpage"
+                   @endrest="reststate = false"
+                   :planstate="planstate"
+                   :restinfo="plannum"
+                   :pagetype="1"
+                   :firstdown="firstdown"
+                   :upGroup="upGroup"></rest-page>
+        <div class="end_test_btn"
+             v-if="endTest"
+             @touchstart="testShow = true">
+          结束测试&nbsp;{{TestTime}}
         </div>
       </section>
 
@@ -127,61 +135,46 @@
         <div class="fixed_left">
           <h1>Al演示参考</h1>
           <div class="progress_rotate_left">
-            <k-progress
-              :percent="moloopval"
-              :show-text="false"
-              :line-height="50"
-              :border="false"
-              :color="['#f5af19', '#fa0a74']"
-            ></k-progress>
+            <k-progress :percent="moloopval"
+                        :show-text="false"
+                        :line-height="50"
+                        :border="false"
+                        :color="['#f5af19', '#fa0a74']"></k-progress>
           </div>
           <div class="progress_test_left">
-            <van-circle
-              v-model="currentRate"
-              :rate="100"
-              size="130"
-              stroke-width="70"
-              color="#C4C4C4"
-            />
             <p class="text_p1">{{ plannum.weight }}KG</p>
             <p class="text_p2">目标重量</p>
           </div>
         </div>
         <div class="fixed_right">
           <h1>{{ planText2[this.planstate] }}</h1>
-          <transition name="jojo" appear>
-            <div class="audio_text" v-if="audioText">{{ audioText }}</div>
+          <transition name="jojo"
+                      appear>
+            <div class="audio_text"
+                 v-if="audioText">{{ audioText }}</div>
           </transition>
           <div class="progress_rotate_right">
-            <k-progress
-              :percent="completePercent"
-              :show-text="false"
-              :line-height="50"
-              :border="false"
-              :color="['#f5af19', '#fa0a74']"
-            ></k-progress>
+            <k-progress :percent="completePercent"
+                        :show-text="false"
+                        :line-height="50"
+                        :border="false"
+                        :color="['#f5af19', '#fa0a74']"></k-progress>
           </div>
-          <div class="progress_test_right">
-            <van-circle
-              v-model="currentRate"
-              :rate="100"
-              size="130"
-              stroke-width="70"
-              :color="fin_weight"
-            />
+          <div class="progress_test_right"
+               :class="showActiva">
             <p class="text_p1">{{ traininfo.Weight || 0 }}KG</p>
             <p class="text_p2">完成重量</p>
           </div>
         </div>
       </div>
+      <!-- 底部 -->
       <footer class="page_footer">
         <ul>
-          <li v-for="(item, index) of footlist" :key="item">
-            <div
-              class="stop_skip"
-              v-if="index == 1 && planstate !== 0"
-              @click="skipstop"
-            ></div>
+          <li v-for="(item, index) of footlist"
+              :key="item">
+            <div class="stop_skip"
+                 v-if="index == 1 && planstate !== 0"
+                 @click="skipstop"></div>
             <p class="foot_li_p1">{{ footvalue(index) }}</p>
             <p class="foot_li_p2">{{ item }}</p>
           </li>
@@ -189,21 +182,18 @@
       </footer>
     </div>
 
-    <div @click="btn_click(0), click_effects()" class="end_btn"></div>
+    <div @click="btn_click(0), click_effects()"
+         class="end_btn"></div>
 
-    <strength-aduio
-      v-if="showPopup"
-      :endType="endType"
-      @closepopup="closepopup"
-    ></strength-aduio>
+    <strength-aduio v-if="showPopup"
+                    :endType="endType"
+                    @closepopup="closepopup"></strength-aduio>
 
-    <CueTone
-      :planstate="planstate"
-      :currentNum="plannum.currentNum"
-      :pagetype="2"
-      :recordScore="recordScore"
-      @setAudioText="setAudioText"
-    ></CueTone>
+    <CueTone :planstate="planstate"
+             :currentNum="plannum.currentNum"
+             :pagetype="2"
+             :recordScore="recordScore"
+             @setAudioText="setAudioText"></CueTone>
   </div>
 </template>
 
@@ -211,231 +201,165 @@
 import { Dialog, Circle } from 'vant'
 import StrengthAduio from '@/components/power/AduioPopup.vue'
 import CueTone from '../../../components/power/CueTone.vue'
-
 import RestPage from './TestRest.vue'
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import { HandleSeatedAbTrainerData } from '@/assets/js/index'
-import RadialProgressBar from 'vue-radial-progress'
 import KProgress from 'k-progress'
 import train from '@/power/train/index.js'
 import Trainaudio from '@/power/common/Trainaudio.js'
 export default {
   components: {
     RestPage,
-    RadialProgressBar,
     KProgress,
     StrengthAduio,
     CueTone,
     VanCircle: Circle,
   },
   mixins: [train, Trainaudio],
-  data() {
+  data () {
     return {
-      fin_weight: '#C4C4C4',
-      currentRate: 0,
       traininfo: {},
-      reststate: true, //休息状态
-      totalSteps: 30, //休息时长
-      //restweight: 6, //休息重量
+      maxRm: 0,
+      //totalSteps: 30, //休息时长
       startstate: false,
-      restinfo: {
-        group: 1,
-        weight: 12,
-        num: 1,
-      },
       //次数
       plannum: {
-        totalNum: 0,
+        times: 1,
         currentNum: 0,
-        group_totalNum: 0,
-        group_currentNum: 0,
+        groups: 1,
+        groups_currentNum: 0,
         pyramid: 0,
         weight: 12,
+        rest: 30,
       },
       //组数
       weightgroup: [], //负重组
       pyramidgroup: [], //金字塔组
       auxiliarygroup: [], //辅助组
       planstate: 0, //极限组 1热身组 2负重组 3金字塔组 4.辅助组
-      targetPercent: 20,
-      completePercent: 0,
-      addPercent: null,
-      downPercent: null,
       testShow: false,
       userRM: 0,
+      firstdown: false,
+      downTest: null,
+      TestTime: 30
     }
   },
   computed: {
     ...mapGetters([
-      'actionValue',
-      'coursegroup',
       'loginState',
+      'publicPath',
       'userInfo',
       'user_rmvalue',
       'moloopval',
       'powerHieght',
+      'temporary'
     ]),
+    endTest () {
+      if (this.planstate == 0 && !this.reststate) {
+        return true
+      }
+      return false
+    }
   },
   watch: {
-    actionValue(val, oldval) {
-      this.$store.commit('set_moheight', val.height)
-
-      let num = val.extra_weight ? val.weight * 6 + 3 : val.weight * 6
-      if (val.height > 5) {
-        let num = (val.height / this.powerHieght) * 0.8 * 100
-        this.completePercent = num >= 100 ? 100 : num
-      } else {
-        this.completePercent = 0
-      }
-
-      HandleSeatedAbTrainerData(val, num, (e) => {
-        // console.log('回调', e)
-        this.$store.commit('add_detail', {
-          info: e,
-          timeMeter: this.timeMeter,
-        })
-
-        this.traininfo = e
-        let amount = (e.Height / 100) * e.Weight * 9.8
-        this.traininfo.amount = Math.floor(amount)
-        this.$store.commit('set_totalweight', this.traininfo) //计算平均得分
-
-        let percent = Math.round(e.Percent * 100)
-        this.$store.commit('set_echartData', percent) //图标
-
-        this.send_percent(percent)
-
-        if (this.reststate) this.reststate = false
-
-        switch (this.planstate) {
-          case 0:
-            this.limit(e)
-            return
-          case 1:
-            this.warmup(e)
-            return
-          default:
-            this.otherPlan(e)
-        }
-        //热身组和其他
-
-        //结束
-      })
-    },
-    //监听课程
-    coursegroup(val, oldval) {
-      console.log('课程组', val)
-      if (val['负重组'].length !== 0) {
-        this.weightgroup = val['负重组']
-        this.planstate = 2
-      }
-      if (val['金字塔组'].length !== 0) {
-        this.pyramidgroup = val['金字塔组']
-      }
-      if (val['辅助组'].length !== 0 && val['负重组'].length == 0) {
-        this.auxiliarygroup = val['辅助组']
-        this.planstate = 4
-      }
-    },
     //监听步骤
-    planstate(val, oldval) {
+    planstate (val, oldval) {
       this.$store.commit('add_total_group')
 
       if (val == 1) {
-        this.plannum['group_totalNum'] = 1
-        this.plannum['group_currentNum'] = 0
-        this.plannum.totalNum = 20
+        this.plannum.groups = 1
+        this.plannum.groups_currentNum = 0
+        this.plannum.times = 20
         this.plannum.currentNum = 0
         this.plannum.weight = 12
       }
       if (val == 2 || val == 3 || val == 4) {
-        let data = []
-        if (val == 2) {
-          data = this.weightgroup
-        } else if (val == 3) {
-          data = this.pyramidgroup
-        } else if (val == 4) {
-          data = this.auxiliarygroup
-        }
-
-        this.plannum['group_totalNum'] = data[0]['groups']
-        this.plannum['group_currentNum'] = 0
-        this.plannum.totalNum = data[0]['times']
+        let data = val == 2 ? this.weightgroup : val == 3 ? this.pyramidgroup : this.auxiliarygroup
+        this.plannum = data[0]
         this.plannum.currentNum = 0
+        this.plannum.groups_currentNum = 0
         this.plannum.pyramid = 0
-        this.plannum.weight = data[0]['weight']
-
-        this.totalSteps = data[0].rest
       }
     },
-    //监听休息
-    reststate: {
-      handler: function (e) {
-        if (!e) {
-          this.timestart()
-        } else {
-          clearInterval(this.windowtimer)
-        }
-      },
-      immediate: true, // 首次加载的时候执行函数
-      deep: true, // 深入观察,监听数组值，对象属性值的变化
-    },
+    //监听
+    endTest (val) {
+      if (val) {
+        this.downTest = setInterval(() => {
+          this.TestTime -= 1
+          if (this.TestTime == 0) {
+            clearInterval(this.downTest)
+            this.TestTime = 30
+            this.maxRm == 0 ? this.testShow = true : this.StartTrain()
+            // this.traininfo.Weight ? this.StartTrain() : this.StartTrain()
+          }
+        }, 1000);
+      } else {
+        clearInterval(this.downTest)
+        this.TestTime = 30
+      }
+    }
   },
-  created() {
+  created () {
     if (this.$route.query.state) {
       this.userRM = this.$route.query.value
       this.planstate = 1
     }
   },
-  mounted() {
+  mounted () {
     this.loadTrain() //初始化开始课程
-  },
-  //离开页面
-  destroyed: function () {
-    this.$store.commit('set_couserTimer', {
-      type: 'end',
-    })
+    console.log('很奇怪啊', this.temporary)
   },
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_resHeightWeight']),
     ...mapActions(['click_effects']),
-    limit(e) {
+    //返回首页
+    async backHome () {
+      if (this.loginState) {
+        this.$store.dispatch('updateRM', this.traininfo.Weight || 0)
+      }
+      this.$router.push('/')
+    },
+    //极限
+    warmup (e) {
+      this.recordUpGroup('no')
+      this.plannum.currentNum = 1
       setTimeout(() => {
-        this.reststate = true
-        this.totalSteps = 20 //休息时长
-        this.plannum.weight = e.Weight
-        // this.plannum.group_currentNum += 1
-        if (e.Weight + 6 > this.plannum.weight) {
-          this.plannum.weight =
-            e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6 //比上一组做的重量大才赋值
-          console.log(this.plannum.weight)
+        if (e.Weight < this.plannum.weight) {
+          this.testShow = true
+        } else {
+          // let num = this.upGroup.weight
+          // this.plannum.weight = num % 6 == 0 ? num + 6 : num - 3 + 6
+          this.plannum.weight = e.Weight % 6 == 0 ? e.Weight : e.Weight - 3  //比上一组做的重量大才赋值
+          this.plannum.groups_currentNum += 1
+          this.maxRm = e.Weight
+          this.recordUpGroup()
+          //this.plannum.weight = e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6 //比上一组做的重量大才赋值
+          this.reststate = true
+          this.plannum.rest = 15 //休息时长
+
         }
-        // this.restinfo.num = 1
-        this.plannum.group_currentNum += 1
+        this.plannum.currentNum = 0
       }, 1000)
     },
-    warmup(e) {
+    //热身
+    limit (e) {
       this.plannum['currentNum'] += 1
-      if (this.plannum.currentNum == this.plannum.totalNum) {
-        this.plannum.group_currentNum = 1
+      if (this.plannum.currentNum == this.plannum.times) {
+        this.plannum.groups_currentNum = 1
         setTimeout(() => {
-          // this.planstate = 2
-          // this.reststate = true
           this.StartTrain()
         }, 1000)
       }
     },
-    otherPlan(e) {
+    //其他
+    otherPlan (e) {
       this.plannum['currentNum'] += 1
-      if (this.plannum['currentNum'] == this.plannum['totalNum']) {
+      if (this.plannum['currentNum'] == this.plannum.times) {
         this.plannum['currentNum'] = 0
-        this.plannum['group_currentNum'] += 1
+        this.plannum['groups_currentNum'] += 1
         setTimeout(() => {
-          this.startrest()
+          this.wuhu()
         }, 1500)
-        if (
-          this.plannum['group_currentNum'] == this.plannum['group_totalNum']
-        ) {
+        if (this.plannum['groups_currentNum'] == this.plannum['groups']) {
           var data = []
           if (this.planstate == 2) {
             data = this.weightgroup
@@ -446,14 +370,10 @@ export default {
           }
           if (this.plannum.pyramid < data.length - 1) {
             this.plannum.pyramid += 1
-
             let i = this.plannum.pyramid
-            this.plannum.totalNum = data[i]['times']
+            this.plannum = data[i]
             this.plannum.currentNum = 0
-            this.plannum.group_totalNum = data[i].groups
-            this.plannum.group_currentNum = 0
-            this.plannum.weight = data[i]['weight']
-            this.totalSteps = data[i].rest
+            this.plannum.groups_currentNum = 0
           } else {
             // console.log(this.planstate)
             if (this.planstate == 3) {
@@ -464,92 +384,69 @@ export default {
               this.$router.push('/endpage')
             } else {
               this.planstate += 1
-              this.startrest()
+              this.wuhu()
             }
           }
         }
       }
     },
-    //最大组次
-    groupmax() {
-      switch (this.planstate) {
-        case 1:
-          return {
-            mix: this.plannum.group_currentNum,
-            max: this.plannum.group_totalNum,
-          }
-      }
-    },
-    async backHome() {
-      if (this.loginState) {
-        this.$store.dispatch('updateRM', this.traininfo.Weight || 0)
-      }
-      this.$router.push('/')
-    },
     //开始课程
-    StartTrain() {
+    StartTrain () {
       let rmkg = 0
       if (this.userRM !== 0) {
         rmkg = this.user_rmvalue.user_rm
       } else {
-        rmkg = this.traininfo.Weight
+        rmkg = this.maxRm
+        // rmkg = 30
       }
       this.$store.commit('set_weight_rm', rmkg)
 
-      var sendData = {
-        cmd: 'askGenerateLesson',
-        data: {
-          'rm-kg': rmkg || 12,
-          'limit-type': '通用',
-          sex: 1,
-          weight: 50,
-        },
+      if (rmkg) {
+        let level = 5
+        this.$axios.get(`${this.publicPath}common/js/power.json`).then((res) => {
+          console.log('别问，进来了', this.temporary.text)
+          res.data.forEach((item) => {
+            if (item['aim'] === this.temporary.text) {
+              for (let stage of item.stages) {
+                if (stage.level == level && stage.rm == rmkg) {
+                  this.$store.commit('set_resGenerateLesson', stage)
+                  return
+                }
+              }
+              //如果没有对应的课程则找一节有最低rm值的课程
+              for (let stage of item.stages) {
+                if (stage.rm !== 0) {
+                  this.$store.commit('set_resGenerateLesson', stage)
+                  return
+                }
+              }
+            }
+          })
+        })
+
       }
-      this.SEND_SOCKET(JSON.stringify(sendData))
-      setTimeout(() => {
-        this.startrest()
-      }, 500)
     },
-    testBtn(index) {
+    testBtn (index) {
       if (index == 0) {
-        this.testShow = false
-        this.plannum.group_currentNum = 0
+        this.plannum.groups_currentNum = 0
+        this.plannum.weight = 12
         this.traininfo = {}
         this.reststate = true
+        this.firstdown = false
+        this.testShow = false
       } else if (index == 1) {
         if (this.loginState) {
           this.$store.dispatch('updateRM', this.traininfo.Weight || 0)
         }
         this.testShow = false
         this.planstate = 1
+        this.reststate = true
+        this.recordUpGroup('no')
+      } else if (index == 2) {
+        this.$router.push('/freeplan')
       }
     },
-    //休息开始
-    startrest() {
-      this.reststate = true
-    },
-    //跳过
-    skipstop() {
-      if (this.planstate == 4) {
-        this.$router.push({
-          path: '/endpage',
-          query: { reneging: 1, timevalue: this.timevalue },
-        })
-      } else {
-        if (this.planstate == 1) {
-          this.StartTrain()
-        } else {
-          this.planstate += 1
-          this.reststate = false
-          this.$nextTick(() => {
-            this.reststate = true
-          })
-        }
-      }
-    },
-    savatest() {
-      this.testShow = true
-    },
+
   },
 }
 </script>

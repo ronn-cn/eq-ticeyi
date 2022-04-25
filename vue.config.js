@@ -46,9 +46,20 @@ module.exports = {
     open: true,
     port: 8080,
     proxy: null,
+    https: false,
     overlay: {
       warning: false,
       errors: false,
+    },
+    proxy: {
+      '/api': {
+        target: 'https://www.evinf.cn', //API服务器的地址
+        ws: true,  //代理websockets
+        changeOrigin: true, // 虚拟的站点需要更管origin
+        pathRewrite: {   //重写路径 比如'/api/aaa/ccc'重写为'/aaa/ccc'
+          '^/api': ''
+        }
+      }
     },
   },
   productionSourceMap: false, //去除打包后js的map文件

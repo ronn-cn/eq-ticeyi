@@ -36,7 +36,7 @@ const actions = {
   },
   // 退出登录
   logout ({ state, commit, dispatch, getters }) {
-    console.log('退出来了吗')
+    dispatch('send_askLedState', { r: 0, g: 0, b: 0 })
     if (state.loginState) {
       state.userinfo = {}
       state.loginState = false
@@ -46,7 +46,6 @@ const actions = {
     if (getters.userMakeState) {
       dispatch('set_userMakeState', false)
     }
-
   },
   //用户退出接口
   async clientExit ({ rootState }) {

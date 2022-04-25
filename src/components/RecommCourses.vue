@@ -123,7 +123,7 @@ header {
           border-radius: 50%;
           border: 2px solid #fff;
           background-color: #fff;
-          background-image: url('~assets/images/phase2/end_icon3.svg');
+          background-image: url("~assets/images/phase2/end_icon3.svg");
           background-repeat: no-repeat;
           background-size: 16px 12px;
           background-position: center;
@@ -147,10 +147,10 @@ header {
     z-index: 999;
   }
   .end_back::after {
-    content: '';
+    content: "";
     width: 25px;
     height: 25px;
-    background: url('~assets/images/common/home_icon4.png') no-repeat;
+    background: url("~assets/images/common/home_icon4.png") no-repeat;
     background-size: cover;
     position: absolute;
     left: -6px;
@@ -223,13 +223,13 @@ header {
         position: relative;
       }
       .plan_h3::after {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
         width: 44px;
         height: 40px;
-        background: url('~assets/images/phase2/end_icon2.svg') no-repeat;
+        background: url("~assets/images/phase2/end_icon2.svg") no-repeat;
         background-size: 100% 100%;
       }
       ul {
@@ -268,7 +268,7 @@ header {
               right: 20px;
               width: 0.38rem;
               height: 0.38rem;
-              background: url('~assets/images/phase2/end_icon1.svg') no-repeat;
+              background: url("~assets/images/phase2/end_icon1.svg") no-repeat;
               background-size: 100% 100%;
               // background-color: #ffffff;
             }
@@ -280,27 +280,27 @@ header {
 }
 
 .suggest_ul li:nth-child(1) {
-  background: url('~assets/images/common/1001.jpg') no-repeat;
+  background: url("~assets/images/common/1001.jpg") no-repeat;
   background-size: 100% 100%;
 }
 .suggest_ul li:nth-child(2) {
-  background: url('~assets/images/common/1002.jpg') no-repeat;
+  background: url("~assets/images/common/1002.jpg") no-repeat;
   background-size: 100% 100%;
 }
 .suggest_ul li:nth-child(3) {
-  background: url('~assets/images/common/1003.jpg') no-repeat;
+  background: url("~assets/images/common/1003.jpg") no-repeat;
   background-size: 100% 100%;
 }
 .suggest_ul li:nth-child(4) {
-  background: url('~assets/images/common/1004.jpg') no-repeat;
+  background: url("~assets/images/common/1004.jpg") no-repeat;
   background-size: 100% 100%;
 }
 .suggest_ul li:nth-child(5) {
-  background: url('~assets/images/common/1005.jpg') no-repeat;
+  background: url("~assets/images/common/1005.jpg") no-repeat;
   background-size: 100% 100%;
 }
 .suggest_ul li:nth-child(6) {
-  background: url('~assets/images/common/1006.jpg') no-repeat;
+  background: url("~assets/images/common/1006.jpg") no-repeat;
   background-size: 100% 100%;
 }
 
@@ -337,14 +337,22 @@ header {
     width: 33% !important;
   }
 }
+
+// .van-notify {
+//   --van-notify-padding:5px;
+//   --van-notify-font-size: 32px;
+//   --van-notify-line-height:60px;
+// }
 </style>
 
 <template>
   <div class="main">
     <header>
-      <div class="end_back" @click="lotrecommend(), click_effects()"></div>
+      <div class="end_back"
+           @click="lotrecommend(), click_effects()"></div>
       <div class="user_avatar">
-        <img :src="userInfo.user_avatar || ''" alt="" />
+        <img :src="userInfo.user_avatar || ''"
+             alt="" />
       </div>
       <div class="user_info">
         <p class="info_p1">
@@ -352,7 +360,8 @@ header {
         </p>
         <p class="info_p2">为所有，尽所能</p>
         <ul class="user_date">
-          <li v-for="(item, index) of dateArr" :key="index">
+          <li v-for="(item, index) of dateArr"
+              :key="index">
             <span class="date_day1">{{ weekDay(item.date) }}</span>
             <!-- <span class="date_day2">{{ moment_date(item.date) }}</span> -->
             <div :class="item.value == 0 ? 'date_dot1' : 'date_dot2'"></div>
@@ -384,17 +393,14 @@ header {
       </div> -->
 
       <div class="main_cover_plan">
-        <section
-          class="suggest_plan"
-          :style="showTable ? 'width:70%' : 'width:100%'"
-        >
+        <section class="suggest_plan"
+                 :style="showTable ? 'width:70%' : 'width:100%'">
           <h3 class="plan_h3">通过以下推荐课程继续训练</h3>
-          <ul class="suggest_ul" :class="showTable ? '' : 't_ul'">
-            <li
-              v-for="item of curriculum"
-              :key="item.title"
-              @click="new_details(item), click_effects()"
-            >
+          <ul class="suggest_ul"
+              :class="showTable ? '' : 't_ul'">
+            <li v-for="item of curriculum"
+                :key="item.title"
+                @click="new_details(item), click_effects()">
               <div class="train_title">
                 <p class="train_title_p1">{{ item.groupname }}</p>
                 <p class="train_title_p2">{{ item.introduce }}</p>
@@ -403,11 +409,13 @@ header {
             </li>
           </ul>
         </section>
-        <section class="plan_day" v-show="showTable">
+        <section class="plan_day"
+                 v-show="showTable">
           <h3 class="day_h3">
             {{ showTable ? '今日训练计划' : '今日推荐课程' }}
           </h3>
-          <div class="plan_day_item" v-if="showTable">
+          <div class="plan_day_item"
+               v-if="showTable">
             <div class="item_left">
               <p>{{ plantitle(this.todayInfo.sport_guider) }}训练</p>
               <p class="item_left_p2">{{ this.todayInfo.date }}</p>
@@ -416,12 +424,14 @@ header {
               {{ this.todayInfo.value == 0 ? '未完成' : '已完成' }}
             </div>
           </div>
-          <div class="plan_day_btn" @click="selectLesson">继续我的计划</div>
+          <div class="plan_day_btn"
+               @click="selectLesson">继续我的计划</div>
         </section>
       </div>
     </section>
 
-    <van-popup v-model="popupshow" :close-on-click-overlay="false">
+    <van-popup v-model="popupshow"
+               :close-on-click-overlay="false">
       <div class="fixed_start">
         <RecommDetails />
       </div>
@@ -443,7 +453,7 @@ export default {
     VanSwipeItem: SwipeItem,
     Notify,
   },
-  data() {
+  data () {
     return {
       popupshow: false,
       timernum: 30,
@@ -468,14 +478,14 @@ export default {
       todayInfo: {},
     }
   },
-  created() {
+  created () {
     // if (process.env.NODE_ENV === 'production') {
     //   this.loadDown()
     // }
     // this.loadcourseList()
   },
   watch: {
-    recommendState(val) {
+    recommendState (val) {
       this.popupshow = true
       if (val) {
         // this.loadDown()
@@ -487,7 +497,7 @@ export default {
       }
     },
   },
-  mounted() {
+  mounted () {
     this.$axios.get(`${this.publicPath}common/js/groups.json`).then((res) => {
       this.curriculum = res.data
     })
@@ -495,7 +505,7 @@ export default {
 
     // console.log(this.recommendState)
   },
-  destroyed() {
+  destroyed () {
     clearInterval(this.downtimer)
     this.$store.commit('set_recommendid', '')
   },
@@ -507,7 +517,7 @@ export default {
       'publicPath',
       'projecttype',
     ]),
-    showTable() {
+    showTable () {
       if (this.tablueData) {
         if (this.tablueData.length > 0) {
           for (let day in this.tablueData) {
@@ -526,7 +536,7 @@ export default {
   methods: {
     ...mapActions(['click_effects']),
     //获取用户信息
-    async getUserAll() {
+    async getUserAll () {
       const rs = await api.get('/get-user-all', {
         user_id: this.userInfo.user_id,
       })
@@ -554,7 +564,7 @@ export default {
       }
     },
     //没课程直接拿来训练
-    async selectLesson(data) {
+    async selectLesson (data) {
       const rs = await api.post('/new-lesson-select', {
         user_id: this.userInfo.user_id,
         user_plan: this.planInfo,
@@ -565,7 +575,7 @@ export default {
       }
     },
     //开始课程
-    async new_details(info) {
+    async new_details (info) {
       const groupname = [info.groupname]
       const user_id = this.userInfo.user_id
 
@@ -608,7 +618,7 @@ export default {
       }
     },
     //开始转移课程
-    async details(data) {
+    async details (data) {
       const rs = await api.post('/transfer-user', {
         user_id: this.userInfo.user_id,
         lesson_id: data.md5,
@@ -626,7 +636,7 @@ export default {
       }
     },
     //周一到周七
-    filterWeekName(status) {
+    filterWeekName (status) {
       this.currentdate = this.$moment(new Date())
         .add('year', 0)
         .format('YYYY-MM-DD')
@@ -673,22 +683,22 @@ export default {
       // console.log(this.dateArr)
     },
     //退出课程
-    async lotrecommend() {
+    async lotrecommend () {
       this.$router.push('/')
     },
     //获取日期
-    moment_date(date) {
+    moment_date (date) {
       var newdate = this.$moment(`${date}`)
       var dow = newdate.date()
       return dow
     },
-    weekDay(date) {
+    weekDay (date) {
       const newDate = new Date(date.replace(/-/g, '/'))
       const weekday = ['周天', '周一', '周二', '周三', '周四', '周五', '周六']
       return weekday[newDate.getDay()]
     },
     //倒计时
-    loadDown() {
+    loadDown () {
       this.downtimer = setInterval(() => {
         let num = (this.timernum -= 1)
         if (num !== 0) {
@@ -699,7 +709,7 @@ export default {
         }
       }, 1000)
     },
-    plantitle(title) {
+    plantitle (title) {
       switch (title) {
         case 'endurance':
           return '耐力'

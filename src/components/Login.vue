@@ -87,7 +87,7 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      title: 'SPROT智能健身房',
+      title: 'SPORT智能健身房',
       date: '',
       timer: '',
       work: '',

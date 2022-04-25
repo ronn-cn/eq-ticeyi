@@ -1,5 +1,6 @@
 import { mapGetters } from "vuex"
-import Format from '@/assets/js/Format'
+import currency from './currency.js'
+
 export default {
   data () {
     return {
@@ -14,7 +15,6 @@ export default {
       ],
       timeMeter: 0,
       timevalue: null, //时间
-      windowtimer: null,  //时间计时器
       showPopup: false, //弹框
       endType: null,    //弹框音频
       recordScore: {
@@ -22,17 +22,30 @@ export default {
         score: '',
       },
       audioText: '',
+      showborder: null,
+      upGroup: {}
     }
   },
+  mixins: [currency],
   computed: {
-    ...mapGetters(['projecttype', 'lesson_id', 'powerEndData', 'user_rmvalue'])
+    ...mapGetters(['projecttype', 'lesson_id', 'powerEndData', 'user_rmvalue']),
+    showActiva () {
+      if (this.showborder == null) {
+        return
+      }
+      if (this.showborder) {
+        return 'complete_activa'
+      } else {
+        return 'unfinished_activa'
+      }
+    },
   },
   watch: {
-    audioText (ntext) {
-      setTimeout(() => {
-        this.audioText = ''
-      }, 2500)
-    },
+    // audioText (ntext) {
+    //   setTimeout(() => {
+    //     this.audioText = ''
+    //   }, 2500)
+    // },
   },
   methods: {
     //开始初始化
@@ -76,51 +89,89 @@ export default {
       }
       console.log(this.recordScore, 12)
     },
-    //时间计时
-    timestart () {
-      this.windowtimer = setInterval(() => {
-        this.timeMeter += 0.1
-        this.timevalue = Format.FormatTime(this.timeMeter.toFixed())
-      }, 100)
-    },
     //跳过
     skipstop () {
-      // console.log(this.user_rmvalue.state)
+      this.recordUpGroup('!ok')
       if (this.planstate == 0) {
         if (this.user_rmvalue.state) {
           this.StartTrain(this.user_rmvalue.value)
-          // if (!this.courseStatus) {
-          //   this.StartTrain(this.userRMState.user_rm)
-          // } else {
-          //   this.wuhu()
-          // }          
         } else {
-          this.wuhu()
+          this.wuhu(1)
         }
-      } else if (this.planstate == 3) {
-        if (this.auxiliarygroup.length > 0) {
-          this.wuhu()
-        } else {
-          this.$router.push({
-            path: '/endpage',
-            query: { reneging: 1, timevalue: this.timevalue },
-          })
-        }
-      } else if (this.planstate == 4) {
-        this.$router.push({
-          path: '/endpage',
-          query: { reneging: 1, timevalue: this.timevalue },
-        })
+      } else if (this.planstate == 1) {
+        console.log('啊这')
+        this.recordUpGroup('no', '热身组')
+        this.StartTrain()
       } else {
-        this.wuhu()
+        var data = []
+        data = this.planstate == 2 ? this.weightgroup : this.planstate == 3 ? this.pyramidgroup : this.auxiliarygroup
+
+        this.plannum.groups_currentNum += 1
+        this.plannum.currentNum = 0
+
+        if (this.plannum.groups_currentNum == this.plannum.groups) {
+
+          if (data.length > 0) {
+            if (this.plannum.pyramid < data.length - 1) {
+              this.plannum.pyramid += 1
+              let i = this.plannum.pyramid
+              this.plannum = data[i]
+              this.plannum.currentNum = 0
+              this.plannum.groups_currentNum = 0
+              this.wuhu()
+            } else {
+              if (this.planstate == 2 && this.pyramidgroup.length == 0 && this.auxiliarygroup.length == 0
+                || this.planstate == 3 && this.auxiliarygroup.length == 0
+                || this.planstate == 4) {
+                this.$router.push({
+                  path: '/endpage',
+                  query: { timevalue: this.timevalue },
+                })
+              } else {
+                this.wuhu(1)
+              }
+            }
+          }
+        } else {
+          this.wuhu()
+        }
       }
     },
-    wuhu () {
-      this.planstate += 1
-      this.reststate = false
-      this.$nextTick(() => {
-        this.reststate = true
-      })
+    wuhu (index) {
+      if (this.plannum.rest !== 0) {
+        this.reststate = false
+        this.$nextTick(() => {
+          this.reststate = true
+        })
+      }
+      if (index == 1) {
+        this.planstate += 1
+      }
+    },
+    //记录上一次
+    recordUpGroup (isok, title) {
+      this.upGroup = JSON.parse(JSON.stringify(this.plannum))
+      this.upGroup.grouptitle = title || this.grouptitle()
+      if (isok) {
+        this.upGroup.isok = false
+        return
+      }
+      this.upGroup.isok = true
+    },
+    //记录上一组名称
+    grouptitle () {
+      switch (this.planstate) {
+        case 0:
+          return this.routeName !== '/trainpage' ? '极限组' : "热身组"
+        case 1:
+          return this.routeName !== '/trainpage' ? '极限组' : '极限组'
+        case 2:
+          return '负重组'
+        case 3:
+          return '金字塔组'
+        case 4:
+          return '辅助组'
+      }
     },
     //底部value值
     footvalue (item) {
@@ -128,11 +179,13 @@ export default {
         case 0:
           return this.timevalue || '00.00'
         case 1:
-          return (
-            this.plannum.group_currentNum + ' / ' + this.plannum.group_totalNum
-          )
+          if (this.planstate == 1 && this.routeName == "/trainpage" || this.planstate == 0 && this.routeName == "/strengthtest") {
+            return "0 / 1"
+          } else {
+            return this.plannum.groups_currentNum + ' / ' + this.plannum.groups
+          }
         case 2:
-          return this.plannum.currentNum + ' / ' + this.plannum.totalNum
+          return this.plannum.currentNum + ' / ' + this.plannum.times
         case 3:
           let num = this.traininfo.Percent
           if (num) {
@@ -151,7 +204,6 @@ export default {
       } else {
         this.endType = 2
       }
-
       // this.plannum.currentNum += 1
       // this.recordScore = {
       //   data: new Date().getTime(),
@@ -166,5 +218,6 @@ export default {
     setAudioText (text) {
       this.audioText = text
     },
+
   }
 }

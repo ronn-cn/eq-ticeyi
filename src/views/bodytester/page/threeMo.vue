@@ -1,71 +1,74 @@
 <!--THREEJS组件-->
 <template>
-  <div id="d3Container" v-loading="loading" ref="mainContent"></div>
+  <div id="d3Container"
+       ref="mainContent">
+  </div>
 </template>
 <script>
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { mapGetters } from 'vuex'
+// import tcymo from "../../../assets/glb/体测仪模型.glb"
 export default {
   name: 'ThreePage',
   props: {
     /*模型资源地址*/
     ossPath: {
       type: String,
-      default() {
+      default () {
         return ''
       },
     },
     /*文件类型*/
     suffix: {
       type: String,
-      default() {
+      default () {
         return 'gltf'
       },
     },
     AutoFresh: {
       type: Boolean,
-      default() {
+      default () {
         return true
       },
     },
     /*是否开启自动旋转*/
     autoAnimate: {
       type: Boolean,
-      default() {
+      default () {
         return true
       },
     },
     /*当前模型的颜色*/
     currentColor: {
       type: String,
-      default() {
+      default () {
         return ''
       },
     },
     /*配准后的颜色*/
     matchedColor: {
       type: String,
-      default() {
+      default () {
         return ''
       },
     },
     /*配准后的地址*/
     matchedOssPatch: {
       type: String,
-      default() {
+      default () {
         return ''
       },
     },
     showMatchWatch: {
       type: Boolean,
-      default() {
+      default () {
         return false
       },
     },
   },
-  data() {
+  data () {
     return {
       loading: false,
       // publicPath: process.env.BASE_URL,
@@ -82,18 +85,18 @@ export default {
   computed: {
     ...mapGetters(['publicPath']),
   },
-  mounted() {
+  mounted () {
     this.init()
   },
   watch: {
     //监听地址变化时需要更新地址,防止多次点击同一个渲染多次;
-    ossPath(val, oldVal) {
+    ossPath (val, oldVal) {
       if (val != oldVal) {
         this.init()
       }
     },
     //监测是否更新整个场景
-    AutoFresh(val, oldVal) {
+    AutoFresh (val, oldVal) {
       if (val) {
         this.init()
       } else {
@@ -102,11 +105,11 @@ export default {
       }
     },
     //监测是否展示配准,更新场景,该属性的变化只负责更新场景，具体业务交给按钮的最终展现结果，按钮勾中就展示配准，没有勾中就不展示配准，属性没变就是原来的状态。
-    showMatchWatch(val, oldVal) {
+    showMatchWatch (val, oldVal) {
       this.init()
     },
     //由于上传标签时,CAD会绕过。
-    currentColor(val, oldVal) {
+    currentColor (val, oldVal) {
       if (val != oldVal) {
         this.init()
       }
@@ -114,11 +117,11 @@ export default {
   },
   //组件被销毁时,干掉所有3D资源；
   methods: {
-    destroyed() {
+    destroyed () {
       this.clear()
     },
     // 初始化
-    init() {
+    init () {
       /*利用vue单项数据流的特性做最后的守卫,在最底层监听是否需要展示配准图,只影响该组件的内部数据而不影响外部的matchedOssPatch*/
       if (!this.showMatchWatch) {
         this.matchedOssPatch = ''
@@ -132,7 +135,7 @@ export default {
       this.render() // 渲染
     },
     //清除当前所有场景
-    clear() {
+    clear () {
       this.mesh = null
       this.camera = null
       this.scene = null
@@ -142,7 +145,7 @@ export default {
       console.log('我要清除啦')
     },
     // 创建场景
-    createScene() {
+    createScene () {
       // this.loading = true
       this.scene = new THREE.Scene()
       // var grid = new THREE.GridHelper(24, 24, 0xff0000, 0x444444)
@@ -153,14 +156,21 @@ export default {
     },
 
     // 加载PLY模型
-    loadLoader() {
+    async loadLoader () {
       let loader = new GLTFLoader()
       // let path = `${this.publicPath}bodytesterStatic/glb/体测仪模型.glb`
-      // const mppath = require('../../../assets/glb/体测仪模型.glb')
-      loader.load(
-        `${this.publicPath}bodytesterStatic/glb/体测仪模型.glb`,
+      // let url = '../../../assets/glb/体测仪模型.glb'
+      // console.log('111222', window.commonPublic)
+      // let url = `${this.publicPath}bodytesterStatic/glb/体测仪模型.glb`
+      // let url = 'http://test.shenqingtao.com/bodytesterStatic/glb/体测仪模型.glb'
+      let url = 'https://www.evinf.cn/body_model.glb'
+      // let url = window.commonPublic
+      // console.log(url)
+      await loader.load(
+        url,
         (geometry) => {
           console.log('模型数据', geometry)
+          this.$emit("loadtitle", url)
           // this.loading = false
           // this.isLoading = false;//关闭载入中效果
           this.mesh = geometry.scene
@@ -173,7 +183,7 @@ export default {
       //如果有配准结果,加载配准结果,配准结果未ply格式;
     },
     // 创建光源
-    createLight() {
+    createLight () {
       // 环境光
       let pointColor = '#ffffff'
       const ambientLight = new THREE.AmbientLight(0xffffff) // 创建环境光
@@ -186,7 +196,7 @@ export default {
     },
 
     // 创建相机
-    createCamera() {
+    createCamera () {
       // 摄像机
       this.camera = new THREE.PerspectiveCamera(
         50,
@@ -202,7 +212,7 @@ export default {
       this.scene.add(this.camera)
     },
     // 创建渲染器
-    createRender() {
+    createRender () {
       const element = this.$refs.mainContent
       this.renderer = new THREE.WebGLRenderer({
         antialias: true,
@@ -212,17 +222,17 @@ export default {
       this.renderer.setSize(element.clientWidth, element.clientHeight) // 设置渲染区域尺寸
       this.renderer.shadowMap.enabled = true // 显示阴影
       this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
-      this.renderer.setClearColor(new THREE.Color(0x25293c)) // 设置背景颜色
+      this.renderer.setClearColor(new THREE.Color(0x2f3443)) // 设置背景颜色
       element.innerHTML = ''
       element.appendChild(this.renderer.domElement)
     },
-    render() {
+    render () {
       this.animationId = requestAnimationFrame(this.render) //旋转动画;
       this.renderer.render(this.scene, this.camera)
       this.controls.update()
     },
     // 创建控件对象
-    createControls() {
+    createControls () {
       this.controls = new OrbitControls(this.camera, this.renderer.domElement)
 
       this.controls.target = new THREE.Vector3(0, 10, 0)
@@ -232,7 +242,7 @@ export default {
       this.controls.rotateSpeed = 0.5
       this.controls.screenSpacePanning = true
     },
-    onWindowResize() {
+    onWindowResize () {
       this.camera.aspect = this.aspect
       this.camera.updateProjectionMatrix()
     },

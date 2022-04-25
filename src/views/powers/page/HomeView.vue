@@ -48,6 +48,7 @@
       color: #fff;
       justify-content: space-between;
       .quick_start {
+        color: #fff !important;
         width: 455px;
         height: 131px;
         font-size: 36px;
@@ -57,16 +58,15 @@
         align-items: center;
         justify-content: center;
         border-radius: 20px;
+        border: none;
         background-color: #017aff;
       }
       .start_text1,
       .start_text2 {
+        font-size: 0.26rem;
         width: 100%;
         height: 131px;
         background: #28cd41;
-        // background: url('~assets/images/common/start.png') no-repeat;
-        // background-size: 0.4rem 0.5rem;
-        // background-position: 42%;
         color: #ffffff;
         display: flex;
         align-items: center;
@@ -76,6 +76,19 @@
       .start_text2 {
         width: 1405px;
         background-position: 38%;
+      }
+      .start_icon {
+        position: relative;
+      }
+      .start_icon::after {
+        content: "";
+        width: 36px;
+        height: 40px;
+        background: url("~assets/images/common/shouzhi.svg") no-repeat;
+        background-size: 100% 100%;
+        position: absolute;
+        left: -50px;
+        top: 0;
       }
     }
   }
@@ -100,65 +113,59 @@
 
 <template>
   <div>
-    <div class="home_view" :style="courseState ? 'width:1880px' : ''">
-      <step-view
-        ref="stepview"
-        :itemindex="itemindex"
-        :viewindex="viewindex"
-        :courseState="courseState"
-        :targetList="targetList"
-        @setitemindex="setitemindex"
-      ></step-view>
+    <div class="home_view"
+         :style="courseState ? 'width:1880px' : ''">
+      <step-view ref="stepview"
+                 :itemindex="itemindex"
+                 :viewindex="viewindex"
+                 :courseState="courseState"
+                 :targetList="targetList"
+                 @setitemindex="setitemindex"></step-view>
 
       <div class="home_view_footer">
-        <div class="footer_step" v-show="courseState">
+        <div class="footer_step"
+             v-show="courseState">
           <ul ref="step_ul">
-            <li
-              v-for="(item, index) of stepList"
-              :id="'footer_li' + index"
-              :ref="`step_li${index}`"
-              :key="item"
-              :style="{ width: operatewidth + '%' }"
-            ></li>
+            <li v-for="(item, index) of stepList"
+                :id="'footer_li' + index"
+                :ref="`step_li${index}`"
+                :key="item"
+                :style="{ width: operatewidth + '%' }"></li>
           </ul>
         </div>
         <div class="footer_start">
-          <div
-            class="quick_start"
-            @click="quickchang(), click_effects()"
-            v-if="viewindex !== 0 && viewindex < stepList.length - 1"
-          >
+          <van-button class="quick_start"
+                      @click="quickchang(), click_effects()"
+                      v-if="viewindex !== 0 && viewindex < stepList.length - 1">
             快速开始
-          </div>
-          <div
-            class="quick_start2"
-            @click="click_effects(), again_test()"
-            v-if="
+          </van-button>
+          <div class="quick_start2"
+               @click="click_effects(), again_test()"
+               v-if="
               itemindex == 2 &&
               viewindex == 1 &&
               loginState &&
               user_rmvalue.state
-            "
-          >
+            ">
             重新测试
           </div>
-          <div
-            :class="[
+          <van-button :class="[
               viewindex !== 0 && viewindex < stepList.length - 1
                 ? 'start_text2'
                 : 'start_text1',
               itemindex == 2 && viewindex == 1 && loginState ? 'U_test' : '',
             ]"
-            @click="initStep"
-          >
-            {{
+                      @click="initStep">
+            <span class="start_icon">
+              {{
               courseState
                 ? starttext()
                 : itemindex == 2
                 ? '开启测试'
                 : '开启课程'
             }}
-          </div>
+            </span>
+          </van-button>
         </div>
       </div>
     </div>
@@ -177,7 +184,7 @@ export default {
   components: {
     StepView,
   },
-  data() {
+  data () {
     return {
       viewindex: 0,
       stepList: ['运动风险须知', '课程目标', '器械调试', '动作演示'],
@@ -197,43 +204,41 @@ export default {
       'user_rmvalue',
       'user_rm',
       'userMakeState',
-      'coursegroup',
+      //'coursegroup',
       'projecttype', //类型
       'lesson_id',
     ]),
   },
   watch: {
-    loginState(nval) {
+    loginState (nval) {
       if (!nval) {
         this.targetList = []
       }
     },
-    coursegroup(nval) {
-      // console.log(nval)
-      this.targetList = []
-      const planArr = ['负重组', '金字塔组', '辅助组']
-      for (let i in planArr) {
-        let data = nval[`${planArr[i]}`]
-        if (data.length > 0) {
-          data.forEach((item) => {
-            this.targetList.push({
-              zname: planArr[i],
-              weight: item.weight,
-              numname: item.times,
-              totalnum: item.groups,
-            })
-          })
-        }
-      }
-      this.targetList.unshift({
-        zname: '热身组',
-        weight: 12,
-        numname: 20,
-        totalnum: 1,
-      })
-      // console.log(this.targetList)
-    },
-    userMakeState(val) {
+    // coursegroup(nval) {
+    //   this.targetList = []
+    //   const planArr = ['负重组', '金字塔组', '辅助组']
+    //   for (let i in planArr) {
+    //     let data = nval[`${planArr[i]}`]
+    //     if (data.length > 0) {
+    //       data.forEach((item) => {
+    //         this.targetList.push({
+    //           zname: planArr[i],
+    //           weight: item.weight,
+    //           numname: item.times,
+    //           totalnum: item.groups,
+    //         })
+    //       })
+    //     }
+    //   }
+    //   this.targetList.unshift({
+    //     zname: '热身组',
+    //     weight: 12,
+    //     numname: 20,
+    //     totalnum: 1,
+    //   })
+    // },
+    userMakeState (val) {
       if (val) {
         for (let i = 0; i < this.stepList.length; i++) {
           let step = 'step_li' + i
@@ -242,7 +247,7 @@ export default {
         this.courseState = false
       }
     },
-    itemindex(val) {
+    itemindex (val) {
       this.viewindex = 0
       if (this.userMakeState) {
         this.$store.dispatch('set_userMakeState', false) //取消预约
@@ -273,7 +278,7 @@ export default {
       }
     },
     //预约
-    resStartLesson(val) {
+    resStartLesson (val) {
       if (JSON.stringify(val) == '{}') {
         console.log('空')
       } else {
@@ -281,9 +286,9 @@ export default {
         let color = val.color.split(',')
         let arr = color.map(Number)
         this.send_askLedState({
-          r: arr[0],
-          g: arr[1],
-          b: arr[2],
+          r: arr[0] || 0,
+          g: arr[1] || 0,
+          b: arr[2] || 0,
         })
         this.$store.dispatch('set_userMakeState', true) //设置用户预约
         const lesson_id = val.lesson.md5
@@ -291,7 +296,7 @@ export default {
         this.set_MakeCareInfo({ name: val.lesson.name, desc: val.lesson.desc }) //设置提示文字
       }
     },
-    courseState(val) {
+    courseState (val) {
       // console.log('这是', val)
       this.$emit('set_startStep', val) //传递开始
       if (val) {
@@ -307,13 +312,13 @@ export default {
       }
     },
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
     ...mapMutations(['set_lesson_id', 'set_MakeCareInfo']),
     ...mapActions(['send_askLedState', 'click_effects']),
     //快速开始
-    quickchang() {
+    quickchang () {
       setTimeout(() => {
         if (this.itemindex == 2) {
           this.$router.push('/strengthtest')
@@ -324,7 +329,7 @@ export default {
         }
       }, 500)
     },
-    indexAudio(index) {
+    indexAudio (index) {
       if (!this.audio_a) {
         this.audio_a = new Audio()
       }
@@ -332,7 +337,7 @@ export default {
       this.audio_a.play()
     },
     //返回
-    setitemindex() {
+    setitemindex () {
       if (this.viewindex == 0) {
         this.courseState = false
         document.getElementById(`footer_li0`).setAttribute('class', '')
@@ -343,8 +348,13 @@ export default {
       }
     },
     //开始课程
-    initStep() {
+    initStep () {
       // console.log(this.user_rmvalue)
+      if (this.userMakeState) {
+        this.$store.dispatch('set_userMakeState', false) //设置用户预约
+        this.$store.dispatch('send_askLedState', { r: 0, g: 0, b: 0 })
+      }
+
       if (this.timer) {
         clearInterval(this.timer)
         this.timer = null
@@ -402,10 +412,10 @@ export default {
         document.getElementById(uid).setAttribute('class', 'view_active')
       }
     },
-    again_test() {
+    again_test () {
       this.$router.push('/strengthtest')
     },
-    starttext() {
+    starttext () {
       let textArr = []
       if (this.itemindex == 0) {
         textArr = ['已确认', '下一步', '下一步', '开始训练']
