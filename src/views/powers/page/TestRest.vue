@@ -155,9 +155,9 @@
       <section class="bearing_text">
         <p>建议器械负重</p>
         <p class="bearing_p2">
-          {{ planstate == 0 ?restinfo.weight + 6 : restinfo.weight }}&nbsp;KG
+          {{ planstate == 0 && firstdown ?restinfo.weight + 6 : restinfo.weight }}&nbsp;KG
           <span :class="restinfo.weight > upGroup.weight ? 'Increase' : 'Increase1'"
-                v-if="planstate !== 0 && restinfo.weight !== upGroup.weight && firststate">{{ Percent(restinfo.weight, upGroup.weight) }}%</span>
+                v-if="planstate !== 0 && restinfo.weight !== upGroup.weight && firstdown">{{ Percent(restinfo.weight, upGroup.weight) }}%</span>
         </p>
       </section>
       <section>
@@ -262,10 +262,10 @@ export default {
     restinfo: {
       type: Object,
     },
-    firststate: {
-      type: Boolean,
-      default: false,
-    },
+    // firststate: {
+    //   type: Boolean,
+    //   default: false,
+    // },
     upGroup: {
       type: Object,
     },
