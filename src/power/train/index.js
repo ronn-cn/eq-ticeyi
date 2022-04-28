@@ -126,7 +126,7 @@ export default {
                 || this.planstate == 4) {
                 this.$router.push({
                   path: '/endpage',
-                  query: { timevalue: this.timevalue },
+                  query: { timevalue: this.timevalue, timeMeter: Math.ceil(this.timeMeter) },
                 })
               } else {
                 this.wuhu(1)
@@ -216,16 +216,6 @@ export default {
       } else {
         this.endType = 2
       }
-      // this.plannum.currentNum += 1
-      // this.recordScore = {
-      //   data: new Date().getTime(),
-      //   score: 'B',
-      // }
-      // this.$store.commit('set_resHeightWeight', {
-      //   extra_weight: true,
-      //   height: 13,
-      //   weight: 2,
-      // })
     },
     setAudioText (text) {
       this.audioText = text

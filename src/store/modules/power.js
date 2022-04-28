@@ -1,3 +1,4 @@
+import { number } from "echarts/lib/export";
 import api from "../../api/api";
 console.log(powerInfo.type, 22)
 const state = {
@@ -125,10 +126,10 @@ const actions = {
       sport_start_time: getters.sport_start_time,  //运动开始时间
       sport_end_time: getters.sport_end_time,     //运动结束时间
       sport_detail: JSON.stringify(sport_detail),
-      sport_duration: data.sport_duration,  //时长
+      sport_duration: Number(data.sport_duration),  //时长
       sport_complete: data.sport_complete //是否完成
     }
-    // console.log(masg)
+    console.log(masg)
     dispatch('addSportDetail', masg)
   },
   //

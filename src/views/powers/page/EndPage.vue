@@ -142,14 +142,18 @@ export default {
       evaluateText: 'B',
       audio_a: null,
       showQR: false,
+      timeMeter: 0
     }
   },
   created () {
     if (this.$route.query.reneging) {
       this.reneging = this.$route.query.reneging
     }
-    if (this.$route.query.timevalue) {
+    if (this.$route.query.timevalue) {  //格式话的时间
       this.typeList[0].value = this.$route.query.timevalue
+    }
+    if (this.$route.query.timeMeter) {  //数字格式的时间
+      this.timeMeter = this.$route.query.timeMeter
     }
     //this.combinedscore = this.powerEndData.combinedscore //综合评分
     this.typeList[1].value = this.powerEndData.totalweight //总负重
@@ -209,8 +213,8 @@ export default {
     //提交数据
     send_data () {
       let info = {}
-      info.sport_duration = this.typeList[0].value
-      info.sport_complete = this.reneging
+      info.sport_duration = this.timeMeter  //运动时长
+      info.sport_complete = this.reneging   //是否完成
       this.svseEndData(info) //结束提交
     },
     async init_qrcode (text) {

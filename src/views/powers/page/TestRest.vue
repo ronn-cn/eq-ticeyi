@@ -155,7 +155,7 @@
       <section class="bearing_text">
         <p>建议器械负重</p>
         <p class="bearing_p2">
-          {{ restinfo.weight }}&nbsp;KG
+          {{ planstate == 0 ?restinfo.weight + 6 : restinfo.weight }}&nbsp;KG
           <span :class="restinfo.weight > upGroup.weight ? 'Increase' : 'Increase1'"
                 v-if="planstate !== 0 && restinfo.weight !== upGroup.weight && firststate">{{ Percent(restinfo.weight, upGroup.weight) }}%</span>
         </p>

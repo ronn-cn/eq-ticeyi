@@ -64,6 +64,7 @@ export default {
       type: [Number, String],
     },
     timevalue: String,
+    timeMeter: Number
   },
   watch: {},
   data () {
@@ -101,7 +102,7 @@ export default {
       if (type == 0) {
         this.$router.push({
           path: '/endpage',
-          query: { reneging: 0, timevalue: this.timevalue },
+          query: { reneging: 0, timevalue: this.timevalue, timeMeter: this.timeMeter },
         })
       } else {
         this.$emit('closepopup')

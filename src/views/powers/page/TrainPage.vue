@@ -113,6 +113,7 @@
     <aduio-popup v-if="showPopup"
                  :endType="endType"
                  :timevalue="timevalue"
+                 :timeMeter="Math.ceil(timeMeter)"
                  @closepopup="closepopup"></aduio-popup>
     <cue-tone ref="ctone"
               :planstate="planstate"
@@ -312,7 +313,7 @@ export default {
             ) {
               this.$router.push({
                 path: '/endpage',
-                query: { timevalue: this.timevalue },
+                query: { timevalue: this.timevalue, timeMeter: Math.ceil(this.timeMeter) },
               })
             } else {
               this.wuhu(1)

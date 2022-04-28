@@ -147,7 +147,7 @@
                         :show-text="false"
                         :line-height="50"
                         :border="false"
-                        :color="['#f5af19', '#fa0a74']"></k-progress>
+                        :color="['#09FBD3', '#FE53BB']"></k-progress>
           </div> -->
           <div class="progress_test_left">
             <p class="text_p1">{{ plannum.weight }}KG</p>
@@ -169,7 +169,7 @@
                         :show-text="false"
                         :line-height="50"
                         :border="false"
-                        :color="['#f5af19', '#fa0a74']"></k-progress>
+                        :color="['#09FBD3', '#FE53BB']"></k-progress>
           </div>
           <div class="progress_test_right"
                :class="showActiva">
@@ -199,6 +199,7 @@
     <strength-aduio v-if="showPopup"
                     :endType="endType"
                     :timevalue="timevalue"
+                    :timeMeter="Math.ceil(timeMeter)"
                     @closepopup="closepopup"></strength-aduio>
 
     <CueTone :planstate="planstate"
@@ -389,10 +390,16 @@ export default {
             // console.log(this.planstate)
             if (this.planstate == 3) {
               if (this.auxiliarygroup.length == 0) {
-                this.$router.push('/endpage')
+                this.$router.push({
+                  path: '/endpage',
+                  query: { timevalue: this.timevalue, timeMeter: Math.ceil(this.timeMeter) }
+                })
               }
             } else if (this.planstate == 4) {
-              this.$router.push('/endpage')
+              this.$router.push({
+                path: '/endpage',
+                query: { timevalue: this.timevalue, timeMeter: Math.ceil(this.timeMeter) }
+              })
             } else {
               this.planstate += 1
               this.wuhu()

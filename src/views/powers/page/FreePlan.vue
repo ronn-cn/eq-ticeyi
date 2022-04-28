@@ -157,9 +157,8 @@ export default {
     btn_click (index) {
       this.$router.push({
         path: '/endpage',
-        query: { timevalue: this.timevalue },
+        query: { timevalue: this.timevalue, timeMeter: Math.ceil(this.timeMeter) },
       })
-
     },
   },
 }
