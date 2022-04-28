@@ -28,7 +28,7 @@ export default {
   },
   mixins: [currency],
   computed: {
-    ...mapGetters(['projecttype', 'lesson_id', 'powerEndData', 'user_rmvalue']),
+    ...mapGetters(['projecttype', 'lesson_id', 'powerEndData']),
     showActiva () {
       if (this.showborder == null) {
         return
@@ -99,7 +99,8 @@ export default {
           this.wuhu(1)
         }
       } else if (this.planstate == 1) {
-        console.log('啊这')
+        // console.log('啊这')
+        this.firstdown = true
         this.recordUpGroup('no', '热身组')
         this.StartTrain()
       } else {
@@ -180,12 +181,23 @@ export default {
           return this.timevalue || '00.00'
         case 1:
           if (this.planstate == 1 && this.routeName == "/trainpage" || this.planstate == 0 && this.routeName == "/strengthtest") {
-            return "0 / 1"
+            if (this.plannum.currentNum == 0) {
+              return "0 / 1"
+            } else {
+              return "1 / 1"
+            }
           } else {
-            return this.plannum.groups_currentNum + ' / ' + this.plannum.groups
+            let pege1 = this.plannum.groups_currentNum + ' / ' + this.plannum.groups
+            let page2 = "-- / --"
+            if (this.plannum.currentNum != 0) {
+              pege1 = this.plannum.groups_currentNum + 1 + ' / ' + this.plannum.groups
+            }
+            return this.routeName == '/freeplan' ? page2 : pege1
           }
         case 2:
-          return this.plannum.currentNum + ' / ' + this.plannum.times
+          let page1 = this.plannum.currentNum + ' / ' + this.plannum.times
+          let page2 = this.plannum.currentNum + ' / --'
+          return this.routeName == '/freeplan' ? page2 : page1
         case 3:
           let num = this.traininfo.Percent
           if (num) {

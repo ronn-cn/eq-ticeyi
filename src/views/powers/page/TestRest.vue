@@ -26,7 +26,7 @@
 .rest_progress_line {
   width: 100%;
   height: 10px;
-  background: #aaa;
+  background: #ffffff59;
 }
 .rest_text {
   font-size: 28px;
@@ -157,10 +157,10 @@
         <p class="bearing_p2">
           {{ restinfo.weight }}&nbsp;KG
           <span :class="restinfo.weight > upGroup.weight ? 'Increase' : 'Increase1'"
-                v-if="planstate !== 0 && restinfo.weight !== upGroup.weight">{{ Percent(restinfo.weight, upGroup.weight) }}%</span>
+                v-if="planstate !== 0 && restinfo.weight !== upGroup.weight && firststate">{{ Percent(restinfo.weight, upGroup.weight) }}%</span>
         </p>
       </section>
-      <section v-if="planstate !== 0">
+      <section>
         <radial-progress-bar :diameter="barinfo.diameter"
                              :stopColor="barinfo.stopColor"
                              :startColor="barinfo.startColor"
@@ -174,7 +174,7 @@
           <p style="font-size: 40px; margin-bottom: 5px">
             {{ Math.floor(completedSteps) }}s
             <br />
-            <span style="font-size: 24px">组件休息</span>
+            <span style="font-size: 24px">组间休息</span>
           </p>
           <!-- <p style="margin-top: 6px">后继续测试</p> -->
         </radial-progress-bar>
@@ -201,7 +201,7 @@
         </div>
       </section>
       <section class="plan_group_item"
-               v-if="firstdown || planstate!== 0">
+               v-if="firstdown">
         <div :class="upGroup.isok ? 'group_current_icon1' : 'group_current_icon2'"></div>
         <div class="group_text">
           <h2>上一组</h2>
@@ -229,7 +229,7 @@
     <div class="rest_btn">
       <div class="btn_a"
            @click="suspend(), click_effects()">
-        {{ suspendState ? '开始' : '暂停' }}
+        {{ suspendState ? '恢复训练' : '暂停' }}
       </div>
       <div class="btn_b"
            @click="skipRest(), click_effects()">

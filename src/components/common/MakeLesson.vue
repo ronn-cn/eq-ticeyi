@@ -15,12 +15,12 @@
     color: #ffffff;
     font-size: 0.24rem;
     line-height: 0.32rem;
-    text-align: left;
+    text-align: center;
     padding: 0 0.3rem;
   }
 }
 .careradia {
-  margin-top: 0.5rem;
+  margin-top: 0.8rem;
   display: flex;
   justify-content: center;
   color: #fff;
@@ -38,15 +38,13 @@
       </p>
     </div>
     <div class="careradia">
-      <RadialProgressBar
-        :diameter="barinfo.diameter"
-        :stopColor="barinfo.stopColor"
-        :startColor="barinfo.startColor"
-        :strokeWidth="barinfo.strokeWidth"
-        :innerStrokeWidth="barinfo.innerStrokeWidth"
-        :completed-steps="completedSteps"
-        :total-steps="totalSteps"
-      >
+      <RadialProgressBar :diameter="barinfo.diameter"
+                         :stopColor="barinfo.stopColor"
+                         :startColor="barinfo.startColor"
+                         :strokeWidth="barinfo.strokeWidth"
+                         :innerStrokeWidth="barinfo.innerStrokeWidth"
+                         :completed-steps="completedSteps"
+                         :total-steps="totalSteps">
         <p style="font-size: 0.84rem; margin-bottom: 0.05rem">
           {{ completedSteps }}
         </p>
@@ -62,7 +60,7 @@ export default {
   components: {
     RadialProgressBar,
   },
-  data() {
+  data () {
     return {
       barinfo: {
         diameter: 280,
@@ -84,8 +82,8 @@ export default {
       'publicPath',
     ]),
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     this.loaddown()
   },
   destroyed: function () {
@@ -96,7 +94,7 @@ export default {
   },
   methods: {
     ...mapActions(['set_userMakeState']),
-    loaddown() {
+    loaddown () {
       this.timer = setInterval(() => {
         if (this.completedSteps == 0) {
           clearInterval(this.timer)

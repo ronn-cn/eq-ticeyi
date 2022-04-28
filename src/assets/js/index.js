@@ -1,3 +1,4 @@
+// console.log(powerInfo.powerHieght, '是这个吗')
 // 添加 评分，点数据，卡路里消耗
 var Run_Data = {
   Count: 0,
@@ -12,7 +13,7 @@ var Run_Data = {
 
 var frames = [1, 1, 2]    //设置向心离心时间比例
 
-const dead = 10;        // 死区范围
+const dead = (powerInfo.powerHieght * 0.15) >= 10 ? 10 : powerInfo.powerHieght * 0.15;        // 死区范围
 let start_time = 0;     // 开始时间
 let pts = null;
 let pt0, pt1, pt2, pt3;    // 点

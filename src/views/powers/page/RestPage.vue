@@ -26,7 +26,7 @@
 .rest_progress_line {
   width: 100%;
   height: 10px;
-  background: #aaa;
+  background: #ffffff59;
 }
 .rest_text {
   font-size: 28px;
@@ -160,7 +160,7 @@
                 v-if="planstate !== 0 && restinfo.weight !== upGroup.weight">{{ Percent(restinfo.weight, upGroup.weight) }}%</span>
         </p>
       </section>
-      <section v-if="planstate !== 0">
+      <section>
         <radial-progress-bar :diameter="barinfo.diameter"
                              :stopColor="barinfo.stopColor"
                              :startColor="barinfo.startColor"
@@ -174,7 +174,7 @@
           <p style="font-size: 40px; margin-bottom: 5px">
             {{ Math.floor(completedSteps) }}s
             <br />
-            <span style="font-size: 24px">组件休息</span>
+            <span style="font-size: 24px">组间休息</span>
           </p>
           <!-- <p style="margin-top: 6px">后继续测试</p> -->
         </radial-progress-bar>

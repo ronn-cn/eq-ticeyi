@@ -1,5 +1,5 @@
 <style scoped lang="scss">
-@import '~assets/css/power_home.scss';
+@import "~assets/css/power_home.scss";
 .user_value {
   width: 86%;
   padding-left: 20px;
@@ -17,7 +17,7 @@
     }
   }
   :nth-child(2).user_value_item::after {
-    content: '';
+    content: "";
     position: absolute;
     right: -44px;
     top: 10px;
@@ -26,7 +26,7 @@
     background: #fff;
   }
   :nth-child(2).user_value_item::before {
-    content: '';
+    content: "";
     position: absolute;
     left: -44px;
     top: 10px;
@@ -39,16 +39,22 @@
 
 <template>
   <div id="main_cover">
-    <div class="home" v-if="!trainstatic">
-      <div class="home_nav" v-show="!showCover">
-        <div class="home_nav_qrcode" v-show="!loginState">
-          <div class="qr_img" id="qrdiv"></div>
+    <div class="home"
+         v-if="!trainstatic">
+      <div class="home_nav"
+           v-show="!showCover">
+        <div class="home_nav_qrcode"
+             v-show="!loginState">
+          <div class="qr_img"
+               id="qrdiv"></div>
           <!-- <p class="p1">微信扫码登陆</p> -->
         </div>
-        <div class="home_nav_qrcode" v-if="loginState">
+        <div class="home_nav_qrcode"
+             v-if="loginState">
           <div class="qrcode_avatar">
             <div class="avatar_img">
-              <img :src="userInfo.user_avatar || ''" alt="" />
+              <img :src="userInfo.user_avatar || ''"
+                   alt="" />
             </div>
             <p class="p2">{{ userInfo.user_name || '' }}</p>
           </div>
@@ -68,32 +74,24 @@
           </div>
         </div>
         <ul>
-          <li
-            v-for="(item, index) of patternList"
-            :class="{ active: itemindex == index }"
-            @click="swichType(index), click_effects()"
-            :key="item.id"
-          >
+          <li v-for="(item, index) of patternList"
+              :class="{ active: itemindex == index }"
+              @click="swichType(index), click_effects()"
+              :key="item.id">
             <div class="home_icon">{{ item.iconText }}</div>
             {{ item.title }}
           </li>
-          <li
-            class="user_liout"
-            @click="logout(), click_effects()"
-            v-if="loginState"
-          >
+          <li class="user_liout"
+              @click="logout(), click_effects()"
+              v-if="loginState">
             <div class="home_icon">x</div>
             退出账号
           </li>
         </ul>
       </div>
-      <home-view
-        :itemindex="itemindex"
-        @set_startStep="set_startStep"
-      ></home-view>
+      <home-view :itemindex="itemindex"
+                 @set_startStep="set_startStep"></home-view>
     </div>
-
-    <!-- <TrainPage v-show="trainstatic" /> -->
   </div>
 </template>
 
@@ -107,8 +105,9 @@ export default {
   name: 'Home',
   components: { HomeView, TrainPage },
   mixins: [homeAudio],
-  data() {
+  data () {
     return {
+      show: false,
       showCover: false,
       itemindex: 0,
       patternList: [
@@ -146,8 +145,8 @@ export default {
       trainstatic: false,
     }
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     if (!this.loginState) {
       const userinfo = window.localStorage.getItem('userInfo')
       if (userinfo) {
@@ -177,10 +176,10 @@ export default {
     ]),
   },
   watch: {
-    Qrcode(val) {
+    Qrcode (val) {
       this.init_qrcode(val)
     },
-    loginState(val) {
+    loginState (val) {
       this.itemindex = null
       this.$nextTick(() => {
         this.itemindex = 0
@@ -196,7 +195,7 @@ export default {
     ...mapMutations(['setLoginStatus', 'set_MakeCareInfo', 'set_lesson_id']),
     ...mapActions(['logout', 'send_askLedState', 'all_user', 'click_effects']),
     //调用二维码
-    init_qrcode(text) {
+    init_qrcode (text) {
       let box = document.getElementById('qrdiv')
       var contentHeight = window.getComputedStyle(box).height
       let ipx = contentHeight.indexOf('px')
@@ -216,7 +215,7 @@ export default {
         }
       }
     },
-    swichType(index) {
+    swichType (index) {
       this.itemindex = index
       if (this.itemindex == 0) {
         this.indexAudio('04标准模式')
@@ -226,7 +225,7 @@ export default {
         this.indexAudio('09力量测试')
       }
     },
-    set_startStep(val) {
+    set_startStep (val) {
       // console.log('接受', val)
       this.showCover = val
     },

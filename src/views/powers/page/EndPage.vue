@@ -23,7 +23,7 @@
         </div>
         <div class="right_user_evaluate">
           <div>
-            <p class="ep1">{{ powerEndData.combinedscore >= 100 ? 100:powerEndData.combinedscore|| 21 }}</p>
+            <p class="ep1">{{ powerEndData.combinedscore >= 100 ? 100:powerEndData.combinedscore|| 0 }}</p>
             <p class="ep2">课程评分</p>
           </div>
           <div class="evaluate_item">
@@ -48,10 +48,13 @@
       <div class="echart_cover">
         <section class="echart_item">
           <h3>训练完成度</h3>
+          <div class="echart_icon">
+            <img :src="`${publicPath}common/images/end/end_icon6.svg`" />
+          </div>
           <echarts class="echart_size"></echarts>
         </section>
         <section class="echart_item">
-          <!-- <h3>训练完成度</h3> -->
+          <p class="echaert_p2">暂无记录</p>
           <!-- <echarts class="echart_size"></echarts> -->
         </section>
       </div>
@@ -114,12 +117,12 @@ export default {
           value: '00:00',
         },
         {
-          title: '总负重',
+          title: '总负重(kg)',
           url: 'endpage_icon2',
           value: '1',
         },
         {
-          title: '平均负重',
+          title: '平均负重(kg)',
           url: 'endpage_icon3',
           value: '1',
         },
@@ -235,6 +238,7 @@ export default {
       this.audio_a.play()
     },
     setdowntimer () {
+
       if (this.downtimer) {
         clearInterval(this.downtimer)
         this.timenum = 60

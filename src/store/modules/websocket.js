@@ -21,17 +21,18 @@ const mutations = {
     let timestamp = new Date().getTime()
     let newdate = timestamp - data
     if (newdate >= 1000 * 60 * 5) {
-      console.log('时间到了', newdate)
+      // console.log('时间到了', newdate)
       state.TouchTime = newdate
     }
   },
   //课程预约
   set_resStartLesson (state, data) {
+    console.log('这里是课程预约', data)
     state.resStartLesson = data
   },
   //发送
   SEND_SOCKET (state, cmd) {
-    console.log(cmd)
+    // console.log(cmd)
     if (state.socket) {
       state.socket.send(cmd)
     }

@@ -6,7 +6,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  background-color: #797979;
+  background: linear-gradient(180deg, #323647 0%, #222631 100%);
+  // background-color: #797979;
   z-index: 999;
   .test_p1 {
     font-size: 0.36rem;
@@ -66,8 +67,8 @@
     position: relative;
     h1 {
       color: #aaaaaa;
-      position: absolute;
-      left: 444px;
+      font-size: 32px;
+      position: relative;
       top: 80px;
       z-index: 9;
     }
@@ -77,11 +78,18 @@
     height: 100%;
     background: #303445;
     position: relative;
-    h1 {
-      position: absolute;
-      left: 444px;
-      top: 80px;
+    .fixed_title {
+      position: relative;
+      top: 70px;
       z-index: 9;
+      .fixed_h1 {
+        font-size: 48px;
+      }
+      .fixed_h11 {
+        color: #aaaaaa;
+        font-size: 32px;
+        margin-top: 20px;
+      }
     }
   }
 }
@@ -127,13 +135,13 @@
         <div class="end_test_btn"
              v-if="endTest"
              @touchstart="testShow = true">
-          结束测试&nbsp;{{TestTime}}
+          结束测试&nbsp;{{TestTime}}s
         </div>
       </section>
 
       <div class="page_mo">
         <div class="fixed_left">
-          <h1>Al演示参考</h1>
+          <h1>演示参考</h1>
           <div class="progress_rotate_left">
             <k-progress :percent="moloopval"
                         :show-text="false"
@@ -147,7 +155,10 @@
           </div>
         </div>
         <div class="fixed_right">
-          <h1>{{ planText2[this.planstate] }}</h1>
+          <div class="fixed_title">
+            <h1 class="fixed_h1">{{ planText2[this.planstate] }}</h1>
+            <h1 class="fixed_h11">{{ userInfo.user_name || "" }}</h1>
+          </div>
           <transition name="jojo"
                       appear>
             <div class="audio_text"
@@ -306,7 +317,6 @@ export default {
   },
   mounted () {
     this.loadTrain() //初始化开始课程
-    console.log('很奇怪啊', this.temporary)
   },
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_resHeightWeight']),
@@ -394,19 +404,19 @@ export default {
     StartTrain () {
       let rmkg = 0
       if (this.userRM !== 0) {
-        rmkg = this.user_rmvalue.user_rm
+        rmkg = this.user_rmvalue.user_rm % 6 == 0 ? this.user_rmvalue.user_rm : this.user_rmvalue.user_rm - 3
       } else {
-        rmkg = this.maxRm
+        rmkg = this.maxRm % 6 == 0 ? this.maxRm : this.maxRm - 3
         // rmkg = 30
       }
       this.$store.commit('set_weight_rm', rmkg)
 
-      if (rmkg) {
+      if (rmkg != 0) {
         let level = 5
         this.$axios.get(`${this.publicPath}common/js/power.json`).then((res) => {
-          console.log('别问，进来了', this.temporary.text)
+          // console.log('别问，进来了')
           res.data.forEach((item) => {
-            if (item['aim'] === this.temporary.text) {
+            if (item['aim'] === "肌耐力") {
               for (let stage of item.stages) {
                 if (stage.level == level && stage.rm == rmkg) {
                   this.$store.commit('set_resGenerateLesson', stage)
@@ -415,15 +425,16 @@ export default {
               }
               //如果没有对应的课程则找一节有最低rm值的课程
               for (let stage of item.stages) {
-                if (stage.rm !== 0) {
-                  this.$store.commit('set_resGenerateLesson', stage)
-                  return
+                if (stage.rm !== 0 && stage.level == level) {
+                  if (stage['负重组'].length || stage['金字塔组'].length || stage['辅助组'].length) {
+                    this.$store.commit('set_resGenerateLesson', stage)
+                    return
+                  }
                 }
               }
             }
           })
         })
-
       }
     },
     testBtn (index) {

@@ -68,13 +68,27 @@ const actions = {
     state.user_data = rs.data.data
     if (process.env.VUE_APP_PAGE_ID == 0) {
       let userrm = JSON.parse(rs.data.data.data.user_rm)
-      if (userrm[0].value != 0) {
-        state.user_rmvalue.state = true
-        state.user_rmvalue.value = userrm[0].value
-      } else {
-        state.user_rmvalue.state = false
-        state.user_rmvalue.value = 0
+
+      let title = powerInfo.type + "RM值"
+      console.log(userrm, title)
+
+      for (let item of userrm) {
+        if (item.part == title) {
+          if (item.value != 0) {
+            state.user_rmvalue.state = true
+            state.user_rmvalue.value = item.value
+            return
+          }
+        }
       }
+      state.user_rmvalue.state = false
+      state.user_rmvalue.value = 0
+
+      // if (userrm[0].value != 0) {
+      // } else {
+      //   state.user_rmvalue.state = false
+      //   state.user_rmvalue.value = 0
+      // }
     } else if (process.env.VUE_APP_PAGE_ID == 1) {
       let user = rs.data.data.user
       commit('set_user_age', user.age)

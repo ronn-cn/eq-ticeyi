@@ -338,11 +338,23 @@ header {
   }
 }
 
-// .van-notify {
-//   --van-notify-padding:5px;
-//   --van-notify-font-size: 32px;
-//   --van-notify-line-height:60px;
-// }
+.vant_notify_zhenla {
+  width: 100%;
+  height: 80px;
+  line-height: 80px;
+  background: #ff976a;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2022;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>
 
 <template>
@@ -429,6 +441,12 @@ header {
         </section>
       </div>
     </section>
+    <transition v-if="showNotify"
+                name="fade">
+      <div class="vant_notify_zhenla">
+        {{notifyTitle}}
+      </div>
+    </transition>
 
     <van-popup v-model="popupshow"
                :close-on-click-overlay="false">
@@ -451,7 +469,7 @@ export default {
     VanPopup: Popup,
     VanSwipe: Swipe,
     VanSwipeItem: SwipeItem,
-    Notify,
+    // Notify,
   },
   data () {
     return {
@@ -460,6 +478,7 @@ export default {
       downtimer: null,
       courseList: [],
       showNotify: false,
+      notifyTitle: '暂无空闲设备',
       curriculum: [],
       lessondata: [],
       dateArr: [],
@@ -568,6 +587,7 @@ export default {
       const rs = await api.post('/new-lesson-select', {
         user_id: this.userInfo.user_id,
         user_plan: this.planInfo,
+        client_type: powerInfo.type
       })
       console.log(rs)
       if (rs.data.code == '200') {
@@ -610,15 +630,23 @@ export default {
           this.details(rs.data.data)
         }
       } else {
-        this.$notify({
-          type: 'warning',
-          message: '暂无推荐课程',
-          position: 'bottom',
-        })
+        if (!this.showNotify) {
+          this.showNotify = true
+          this.notifyTitle = "暂无推荐课程"
+          setTimeout(() => {
+            this.showNotify = false
+          }, 3000)
+        }
+        // this.$notify({
+        //   type: 'warning',
+        //   message: '暂无推荐课程',
+        //   position: 'bottom',
+        // })
       }
     },
     //开始转移课程
     async details (data) {
+      // console.log(data, '这是转移啊')
       const rs = await api.post('/transfer-user', {
         user_id: this.userInfo.user_id,
         lesson_id: data.md5,
@@ -632,7 +660,14 @@ export default {
         })
         this.$store.commit('set_client_id', rs.data.data.client_id)
       } else {
-        this.$notify({ type: 'warning', message: '暂无空闲设备' })
+        // this.$notify({ type: 'warning', message: '暂无空闲设备', duration: 0 })
+        if (!this.showNotify) {
+          this.showNotify = true
+          this.notifyTitle = "暂无推荐课程"
+          setTimeout(() => {
+            this.showNotify = false
+          }, 3000)
+        }
       }
     },
     //周一到周七

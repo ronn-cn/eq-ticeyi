@@ -6,21 +6,20 @@ import App from "./App.vue";
 import router from "@/router";
 import store from "@/store";
 import axios from 'axios';
-import { Button } from 'vant';
 
+import { Button } from 'vant';
 import 'vant/lib/button/style'
+Vue.use(Button);
 
 // import Vant from 'vant';
 // import 'vant/lib/index.css';
-Vue.use(Button);
+
 
 Vue.config.productionTip = false;
-
 Vue.prototype.$echarts = echarts
 Vue.prototype.$axios = axios
 Vue.prototype.$moment = moment;
 
-// console.log(process.env);
 
 new Vue({
   router,

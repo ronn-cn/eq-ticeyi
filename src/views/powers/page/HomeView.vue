@@ -72,6 +72,7 @@
         align-items: center;
         justify-content: center;
         border-radius: 20px;
+        border: none;
       }
       .start_text2 {
         width: 1405px;
@@ -94,8 +95,10 @@
   }
 }
 .U_test {
-  width: 1405px !important;
-  // background-position: 36% !important;
+  width: 930px !important;
+}
+.U_test1 {
+  width: 1400px !important;
 }
 .quick_start2 {
   width: 455px;
@@ -143,7 +146,7 @@
                @click="click_effects(), again_test()"
                v-if="
               itemindex == 2 &&
-              viewindex == 1 &&
+              viewindex == 0 &&
               loginState &&
               user_rmvalue.state
             ">
@@ -153,7 +156,7 @@
               viewindex !== 0 && viewindex < stepList.length - 1
                 ? 'start_text2'
                 : 'start_text1',
-              itemindex == 2 && viewindex == 1 && loginState ? 'U_test' : '',
+              itemindex == 2 && viewindex == 0 && loginState ? courseState ? 'U_test1':'U_test' : '',
             ]"
                       @click="initStep">
             <span class="start_icon">
@@ -161,7 +164,7 @@
               courseState
                 ? starttext()
                 : itemindex == 2
-                ? '开启测试'
+                ? loginState && user_rmvalue.state ?'继续训练':'开启测试'
                 : '开启课程'
             }}
             </span>
@@ -215,29 +218,6 @@ export default {
         this.targetList = []
       }
     },
-    // coursegroup(nval) {
-    //   this.targetList = []
-    //   const planArr = ['负重组', '金字塔组', '辅助组']
-    //   for (let i in planArr) {
-    //     let data = nval[`${planArr[i]}`]
-    //     if (data.length > 0) {
-    //       data.forEach((item) => {
-    //         this.targetList.push({
-    //           zname: planArr[i],
-    //           weight: item.weight,
-    //           numname: item.times,
-    //           totalnum: item.groups,
-    //         })
-    //       })
-    //     }
-    //   }
-    //   this.targetList.unshift({
-    //     zname: '热身组',
-    //     weight: 12,
-    //     numname: 20,
-    //     totalnum: 1,
-    //   })
-    // },
     userMakeState (val) {
       if (val) {
         for (let i = 0; i < this.stepList.length; i++) {
@@ -272,8 +252,8 @@ export default {
           this.stepList = ['运动风险须知', '课程目标']
           this.operatewidth = '49'
         } else {
-          this.stepList = ['运动风险须知', '课程目标', '器械调试', '动作演示']
-          this.operatewidth = '24'
+          this.stepList = ['运动风险须知', '器械调试', '动作演示']
+          this.operatewidth = '33'
         }
       }
     },
@@ -349,7 +329,6 @@ export default {
     },
     //开始课程
     initStep () {
-      // console.log(this.user_rmvalue)
       if (this.userMakeState) {
         this.$store.dispatch('set_userMakeState', false) //设置用户预约
         this.$store.dispatch('send_askLedState', { r: 0, g: 0, b: 0 })
@@ -366,7 +345,6 @@ export default {
           this.itemindex == 0 &&
           this.user_rmvalue.state
         ) {
-          console.log(123)
           this.$store.dispatch('send_RM', this.user_rmvalue.value)
         }
         const arr = [
@@ -383,7 +361,7 @@ export default {
           },
           {
             route: '/strengthtest',
-            num: this.user_rmvalue.state ? 1 : 3,
+            num: this.user_rmvalue.state ? 1 : 2,
             query: this.user_rmvalue.state
               ? { user_rm: this.user_rmvalue.value, state: true }
               : {},
@@ -397,7 +375,6 @@ export default {
           let uid = `footer_li${this.viewindex}`
           document.getElementById(uid).setAttribute('class', 'view_active')
         } else {
-          // this.indexAudio('07开始训练')
           this.click_effects()
           setTimeout(() => {
             this.$router.push({
@@ -425,7 +402,7 @@ export default {
         if (this.user_rmvalue.state) {
           textArr = ['已确认', '开始训练']
         } else {
-          textArr = ['已确认', '下一步', '下一步', '开始测试']
+          textArr = ['已确认', '下一步', '开始测试']
         }
       }
       return textArr[this.viewindex]

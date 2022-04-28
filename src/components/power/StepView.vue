@@ -3,8 +3,7 @@
   width: 1405px;
   height: 889px;
   margin-bottom: 20px;
-  // background-color: rgb(25, 211, 18);
-  // background: url('~assets/images/phase2/back2.svg') no-repeat;
+
   background: url("~assets/images/phase2/home_view_b.png") no-repeat;
   border-radius: 20px;
   position: relative;
@@ -26,7 +25,6 @@
         color: #ffffff;
         font-size: 0.24rem;
         line-height: 0.32rem;
-
         padding: 0 0.3rem;
       }
     }
@@ -122,6 +120,12 @@
 }
 
 .curriculum_target {
+  .target_title {
+    width: 50%;
+    margin: auto;
+    line-height: 54px;
+    margin-bottom: 92px;
+  }
   ul {
     padding-top: 90px;
     li {
@@ -174,16 +178,15 @@
 }
 
 .target {
-  width: 80%;
-  padding: 0 200px;
-  margin-top: 90px;
+  width: 66%;
+  margin: auto;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   .target_item {
     margin-bottom: 90px;
-    width: 455px;
-    height: 132px;
+    width: 451px;
+    height: 128px;
     line-height: 132px;
     border: 2px solid #ffffff;
     filter: drop-shadow(0px 15px 30px rgba(0, 0, 0, 0.09));
@@ -259,11 +262,10 @@
         </div>
         <div class="curriculum_target"
              v-if="
-            (itemindex == 0 && viewindex === 1) ||
-            (itemindex == 2 && viewindex === 1)
+            (itemindex == 0 && viewindex === 1) 
           ">
           <h1 class="h1">课程目标</h1>
-          <div>
+          <div class="target_title">
             根据肌肉发展素质选择不同的训练途径已达到训练目的,提升个人最大RM值及训练强度可解锁更多课程目标
           </div>
           <div class="target">
@@ -271,7 +273,7 @@
                  :key="index"
                  :class="{ objactive: index == objindex }"
                  class="target_item"
-                 @click="choiceCourse(item, index)">
+                 @click="choiceCourse(item, index),click_effects()">
               {{ item }}
             </div>
           </div>
@@ -295,7 +297,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import RadialProgressBar from 'vue-radial-progress'
 import MakeLesson from '../common/MakeLesson.vue'
 import power from '@/assets/js/power.json'
@@ -337,7 +339,7 @@ export default {
       if (
         (this.itemindex == 0 && this.viewindex == '2') ||
         (this.itemindex == 1 && this.viewindex == '1') ||
-        (this.itemindex == 2 && this.viewindex == '2')
+        (this.itemindex == 2 && this.viewindex == '1')
       ) {
         return true
       }
@@ -347,7 +349,7 @@ export default {
       if (
         (this.itemindex == 0 && this.viewindex == '3') ||
         (this.itemindex == 1 && this.viewindex == '2') ||
-        (this.itemindex == 2 && this.viewindex == '3')
+        (this.itemindex == 2 && this.viewindex == '2')
       ) {
         return true
       }
@@ -429,6 +431,7 @@ export default {
   created () { },
   mounted () { },
   methods: {
+    ...mapActions(['click_effects']),
     //重新播放视频
     playMedia () {
       this.mediaState = false

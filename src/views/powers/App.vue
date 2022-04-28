@@ -1,5 +1,6 @@
 <style lang="scss">
 @import url("~assets/css/reset.css");
+@import url("~assets/css/resetVui.scss");
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -17,7 +18,7 @@ body {
 
 .iframe_conver1 {
   position: fixed;
-  top: 9%;
+  top: 12%;
   left: 7%;
   width: 4.5rem;
   height: 5rem;
@@ -25,7 +26,7 @@ body {
 }
 .iframe_conver2 {
   position: fixed;
-  top: 9%;
+  top: 12%;
   right: 7%;
   width: 4.5rem;
   height: 5rem;
@@ -34,9 +35,11 @@ body {
 p {
   margin-bottom: 0;
 }
-::v-deep .van-button--default {
-  color: #fff !important;
-  border: 0;
+
+::v-deep .van-notify {
+  // padding: 20px;
+  height: 80px !important;
+  font-size: 26px;
 }
 </style>
 

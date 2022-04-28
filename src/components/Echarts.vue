@@ -76,7 +76,7 @@ export default {
           axisLine: {
             show: true,
             lineStyle: {
-              color: '#243B63',
+              color: '#2c303a',
             },
           },
           axisLabel: {
@@ -93,10 +93,10 @@ export default {
               normal: {
                 //颜色渐变
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  { offset: 0.25, color: '#8BDEFF' },
-                  { offset: 0.5, color: '#A68FE8' },
-                  { offset: 0.75, color: '#FF7BAC' },
-                  { offset: 1, color: '#FF9D78' },
+                  { offset: 0., color: '#f7f7f721' },
+                  // { offset: 0.5, color: '#A68FE8' },
+                  // { offset: 0.75, color: '#FF7BAC' },
+                  { offset: 1, color: '#ffffff21' },
                 ]),
                 barBorderRadius: [5, 5, 0, 0],
               },

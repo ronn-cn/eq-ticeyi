@@ -24,8 +24,7 @@
     background: #303445;
     position: relative;
     h1 {
-      position: absolute;
-      left: 444px;
+      position: relative;
       top: 80px;
       z-index: 9;
     }
@@ -37,7 +36,7 @@
   <div class="page">
     <div class="page_mo">
       <div class="fixed_left">
-        <h1>Al演示参考</h1>
+        <h1>演示参考</h1>
         <div class="progress_rotate_left">
           <k-progress :percent="moloopval"
                       :show-text="false"
@@ -51,6 +50,7 @@
         </div> -->
       </div>
       <div class="fixed_right">
+        <h1>{{userInfo.user_name || ""}}</h1>
         <transition name="jojo"
                     appear>
           <div class="audio_text"
@@ -89,7 +89,6 @@
 <script>
 import { Dialog, Circle } from 'vant'
 import { mapGetters, mapMutations, mapActions } from 'vuex'
-import { HandleSeatedAbTrainerData } from '@/assets/js/index'
 import RestPage from './RestPage.vue'
 import RadialProgressBar from 'vue-radial-progress'
 import KProgress from 'k-progress'
@@ -138,9 +137,6 @@ export default {
       'powerHieght',
     ]),
   },
-  watch: {
-
-  },
   created () { },
   mounted () {
     this.loadTrain()
@@ -148,7 +144,6 @@ export default {
     this.loadAudioList()
   },
   methods: {
-    ...mapMutations(['SEND_SOCKET', 'set_resHeightWeight']),
     ...mapActions(['click_effects']),
     loadAudioList () {
       this.$axios.get(`/powerStatic/js/poweraudio.json`).then((res) => {
@@ -157,25 +152,6 @@ export default {
         )
         this.audioList = info[0].audioKVs
       })
-    },
-    //底部value值
-    footvalue (item) {
-      switch (item) {
-        case 0:
-          return this.timevalue || '00.00'
-        case 1:
-          return '-- / -- '
-        case 2:
-          return this.plannum.currentNum + ' / --'
-        case 3:
-          let num = this.traininfo.Percent
-          if (num) {
-            return Math.round(num * 100)
-          }
-          return 0
-        case 4:
-          return this.traininfo.amount || 0
-      }
     },
     //按钮事件
     btn_click (index) {

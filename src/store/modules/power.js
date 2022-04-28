@@ -1,4 +1,5 @@
 import api from "../../api/api";
+console.log(powerInfo.type, 22)
 const state = {
   actionValue: {},
   coursegroup: {},
@@ -32,7 +33,7 @@ const mutations = {
       ...info,
       time: timeMeter
     })
-    console.log(state.powerDetail)
+    // console.log(state.powerDetail)
   },
   add_total_group (state) {
     state.total_group += 1
@@ -55,7 +56,9 @@ const mutations = {
       state.powerEndData.averagenum += 1             //总次数
       state.total_Percent = state.total_Percent += Math.ceil(data.Percent * 100)  //总分
       state.powerEndData.averagescore = Math.ceil(state.powerEndData.totalweight / state.powerEndData.averagenum)  //平均负重
+
       state.powerEndData.combinedscore = Math.ceil(state.total_Percent / state.powerEndData.averagenum) //综合得分
+
       state.powerEndData.amount += data.amount
       if (data.Weight > state.weight_max) {
         state.weight_max = data.Weight
@@ -114,11 +117,11 @@ const actions = {
     }
     const masg = {
       device_ouid: getters.ouid, //设备id
-      device_type: '坐姿腹肌训练器', //设备类型
+      device_type: powerInfo.type, //设备类型
       user_ouid: getters.userInfo.user_id || '',   //用户id
       lesson_id: '445dab66e033da6f0000000000000003',   //课程id
       lesson_type: '力量塑形', //课程类型
-      lesson_name: '力量器械-坐姿腹肌训练器', //课程名称,同上
+      lesson_name: `力量器械-${powerInfo.type}`, //课程名称,同上
       sport_start_time: getters.sport_start_time,  //运动开始时间
       sport_end_time: getters.sport_end_time,     //运动结束时间
       sport_detail: JSON.stringify(sport_detail)

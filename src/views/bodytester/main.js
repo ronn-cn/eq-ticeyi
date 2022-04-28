@@ -12,9 +12,6 @@ Vue.use(Button);
 
 
 Vue.config.productionTip = false;
-
-
-
 Vue.prototype.$echarts = echarts
 Vue.prototype.$axios = axios
 Vue.prototype.$moment = moment;

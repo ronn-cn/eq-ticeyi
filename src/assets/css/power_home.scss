@@ -33,8 +33,10 @@
     &_qrcode {
       width: 455px;
       height: 434px;
+      border-radius: 20px;
       // background: url('~assets/images/phase2/qrback.svg');
-      background: url('~assets/images/phase2/home_ac.png');
+      background-color: #000;
+      background: url('~assets/images/phase2/home_qrback.svg');
       display: flex;
       flex-direction: column;
       justify-content: center;

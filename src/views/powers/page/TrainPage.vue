@@ -11,8 +11,8 @@
     position: relative;
     h1 {
       color: #aaaaaa;
-      position: absolute;
-      left: 444px;
+      font-size: 32px;
+      position: relative;
       top: 80px;
       z-index: 9;
     }
@@ -22,11 +22,17 @@
     height: 100%;
     background: #303445;
     position: relative;
-    h1 {
-      position: absolute;
-      left: 444px;
-      top: 80px;
+    .fixed_title {
+      position: relative;
+      top: 70px;
       z-index: 9;
+      .fixed_h1 {
+        font-size: 48px;
+      }
+      .fixed_h11 {
+        color: #aaaaaa;
+        margin-top: 20px;
+      }
     }
   }
 }
@@ -36,7 +42,7 @@
   <div class="page">
     <div class="page_mo">
       <div class="fixed_left">
-        <h1>Al演示参考</h1>
+        <h1>演示参考</h1>
         <div class="progress_rotate_left">
           <k-progress :percent="moloopval"
                       :show-text="false"
@@ -50,7 +56,10 @@
         </div>
       </div>
       <div class="fixed_right">
-        <h1>{{ planText[this.planstate] }}</h1>
+        <div class="fixed_title">
+          <h1 class="fixed_h1">{{ planText[this.planstate] }}</h1>
+          <h1 class="fixed_h11">{{ userInfo.user_name || "" }}</h1>
+        </div>
         <transition name="jojo"
                     appear>
           <div class="audio_text"
@@ -94,7 +103,7 @@
       <div class="end_test_btn"
            v-if="endTest"
            @touchstart="StartTrain()">
-        结束测试 &nbsp;&nbsp;{{TestTime}}
+        结束测试&nbsp;{{TestTime}}s
       </div>
     </section>
 
@@ -140,7 +149,7 @@ export default {
       //次数
       plannum: {
         times: 20, //每组总次数
-        currentNum: 17, //当前次数
+        currentNum: 0, //当前次数
         groups: 1, //总组数
         groups_currentNum: 0, //当前组数
         pyramid: 0, //
@@ -159,10 +168,10 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'loginState',
+      //'loginState',
       'publicPath',
       'moloopval',
-      'user_rmvalue',
+      //'user_rmvalue',
       'powerHieght', //器械下压最大高度
       'temporary', //选择的啥
     ]),
@@ -189,18 +198,13 @@ export default {
         )
       }
       if (val == 2 || val == 3 || val == 4) {
-        let data =
-          val == 2
-            ? this.weightgroup
-            : val == 3
-              ? this.pyramidgroup
-              : this.auxiliarygroup
+        let data = val == 2 ? this.weightgroup : val == 3 ? this.pyramidgroup : this.auxiliarygroup
         this.plannum = data[0]
         this.set_plannum(
           ['currentNum', 'groups_currentNum', 'pyramid'],
           [0, 0, 0]
         )
-        this.plannum.currentNum = data[0].times - 2
+        // this.plannum.currentNum = data[0].times - 2  //测试用
       }
     },
     //监听
@@ -237,13 +241,12 @@ export default {
     warmup (e) {
       this.plannum.currentNum += 1
       if (this.plannum.currentNum == this.plannum.times) {
-        this.recordUpGroup()
+        this.isInComplete() //判断是否全部完成
         if (!this.user_rmvalue.state) {
           setTimeout(() => {
             this.planstate = 1
             this.reststate = true
-            // this.plannum.weight =
-            //   e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6
+            // this.plannum.weight = e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6
           }, 1000)
         } else {
           this.StartTrain(this.user_rmvalue.user_rm)
@@ -253,7 +256,11 @@ export default {
     //极限组
     limit (e) {
       this.$refs.ctone.playRMAudio()
+      this.plannum.currentNum += 1
+      // this.plannum.groups_currentNum = 0
+      // this.plannum.currentNum = 0
       setTimeout(() => {
+        this.plannum.currentNum = 0
         if (e.Weight < this.plannum.weight) {
           //如果压的小了，以最大值开启训练
           this.StartTrain(this.plannum.weight)
@@ -263,20 +270,19 @@ export default {
           this.plannum.weight = e.Weight % 6 == 0 ? e.Weight : e.Weight - 3  //比上一组做的重量大才赋值
           this.plannum.groups_currentNum += 1
           this.recordUpGroup()
-
           //this.plannum.weight =  e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6 //比上一组做的重量大才赋值
           this.reststate = true
           this.plannum.rest = 15 //休息时长
         }
-        this.plannum.currentNum = 0
       }, 1000)
     },
     //其他联系
     otherPlan (e) {
       this.plannum['currentNum'] += 1
       if (this.plannum.currentNum == this.plannum.times) {
-        this.recordUpGroup() //记录上一组
-        this.plannum.currentNum = this.plannum.times - 3
+        this.isInComplete() //判断是否全部完成
+        // this.plannum.currentNum = this.plannum.times - 3
+        this.plannum.currentNum = 0
         this.plannum.groups_currentNum += 1
         setTimeout(() => {
           this.wuhu()
@@ -321,17 +327,18 @@ export default {
 
       let rmkg = 0
       if (value) {
-        rmkg = value
+        rmkg = value % 6 == 0 ? value : value - 3
       } else {
-        rmkg = this.traininfo.Weight
+        rmkg = this.traininfo.Weight % 6 == 0 ? this.traininfo.Weight : this.traininfo.Weight - 3
         // rmkg = 30
         if (this.loginState && rmkg) {
           this.$store.dispatch('updateRM', rmkg)
         }
       }
-      if (rmkg) {
+      if (rmkg != 0) {
         let level = 5
         this.$axios.get(`${this.publicPath}common/js/power.json`).then((res) => {
+          // console.log('都打印一下吧', rmkg, this.temporary.text)
           res.data.forEach((item) => {
             if (item['aim'] === this.temporary.text) {
               for (let stage of item.stages) {
@@ -341,9 +348,12 @@ export default {
                 }
               }
               for (let stage of item.stages) {
-                if (stage.rm !== 0) {
-                  this.$store.commit('set_resGenerateLesson', stage)
-                  return
+                if (stage.rm !== 0 && stage.level == level) {
+                  if (stage['负重组'].length || stage['金字塔组'].length || stage['辅助组'].length) {
+                    // console.log('给课了吗', stage, 'rrr')
+                    this.$store.commit('set_resGenerateLesson', stage)
+                    return
+                  }
                 }
               }
             }

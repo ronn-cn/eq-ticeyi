@@ -47,7 +47,7 @@ let ProjectLists = [
     frames: [2, 1, 3],
     model: "动画_V806.glb",
     frames1: [119, 133, 250],
-    powerHieght: 35   //蝴蝶扩胸
+    powerHieght: 35   //蝴蝶扩胸器
   },
   {
     id: 6,
@@ -57,7 +57,7 @@ let ProjectLists = [
     frames: [2, 1, 4],
     model: "动画_V803.glb",
     frames1: [118, 130, 250],
-    powerHieght: 64   //高位蝴蝶机
+    powerHieght: 35   //蝴蝶扩胸器
   },
   {
     id: 7,
@@ -77,7 +77,7 @@ let ProjectLists = [
     frames: [2.5, 1, 3],
     model: "动画_V821.glb",
     frames1: [120, 135, 250],
-    powerHieght: 75 //肱三头肌训练器
+    powerHieght: 40   //三头肌训练器
   },
   {
     id: 9,
@@ -87,7 +87,7 @@ let ProjectLists = [
     frames: [2.5, 1, 3],
     model: "动画_V818.glb",
     frames1: [119, 140, 250],
-    powerHieght: 45   //三头肌训练器
+    powerHieght: 40   //三头肌训练器
   },
   {
     id: 10,
@@ -117,7 +117,7 @@ let ProjectLists = [
     frames: [2.5, 1, 3],
     model: "动画_V812.glb",
     frames1: [119, 136, 250],
-    powerHieght: 51
+    powerHieght: 60     // 默认60
   },
   {
     id: 13,
@@ -137,7 +137,7 @@ let ProjectLists = [
     frames: [2.5, 1, 3],
     model: "动画_V809.glb",
     frames1: [118, 132, 250],
-    powerHieght: 70 //调节式蹬腿器
+    powerHieght: 60     // 默认60
   },
   {
     id: 15,
@@ -156,7 +156,8 @@ let ProjectLists = [
     desc: "训练臂部肌肉、躯干肌和背阔肌；肩关节的稳定性；改善手臂的肌肉不平衡",
     frames: [2.5, 1, 3],
     model: "动画_V810.glb",
-    frames1: [119, 132, 250]
+    frames1: [119, 132, 250],
+    powerHieght: 60     // 默认60
   },
   {
     id: 17,
@@ -176,7 +177,7 @@ let ProjectLists = [
     frames: [2.5, 1, 3],
     model: "动画_V816A.glb",
     frames1: [119, 132, 250],
-    powerHieght: 58   //扭腰
+    powerHieght: 58   //坐式划船机
   }
 ]
 
@@ -187,7 +188,7 @@ if (iibloo) {
   let iindex = 15 - 1
   powerInfo = ProjectLists[iindex]
 } else {
-  let iitype = "坐姿腹肌训练器"
+  let iitype = "坐姿背肌训练器"
   for (let i in ProjectLists) {
     if (ProjectLists[i].type == iitype) {
       powerInfo = ProjectLists[i]

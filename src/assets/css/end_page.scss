@@ -4,6 +4,7 @@
   position: relative;
   z-index: 1;
   display: flex;
+
   &_right {
     color: #fff;
     width: 1880px;
@@ -11,6 +12,7 @@
     overflow: hidden;
     background: #1b254b;
     position: relative;
+
     .rignt_head {
       width: 1600px;
       height: 171px;
@@ -21,32 +23,39 @@
       display: flex;
       align-items: center;
       position: relative;
+
       &_badge {
         width: 75%;
         height: 0.84rem;
         display: flex;
         align-items: center;
+
         .plan_text {
           font-size: 0.22rem;
           letter-spacing: 0.04rem;
         }
       }
+
       &_grade {
         position: absolute;
         top: -0.5rem;
         right: 2.4rem;
+
         img {
           width: 1.3rem;
           height: 1.5rem;
         }
       }
     }
+
     .right_type {
       margin: 20px 0;
+
       ul {
         width: 100%;
         display: flex;
         justify-content: space-between;
+
         li {
           width: 456px;
           height: 284px;
@@ -68,15 +77,18 @@
             height: 80px;
             background: rgba(78, 80, 90, 0.55);
             border-radius: 20px 0px;
+
             img {
               width: 50px;
               height: 50px;
               margin-top: 15px;
             }
           }
+
           .right_type_title {
             font-size: 36px;
           }
+
           .right_type_value {
             font-size: 64px;
             margin-top: 40px;
@@ -84,11 +96,13 @@
         }
       }
     }
+
     .echart_cover {
       width: 100%;
       height: 283px;
       display: flex;
       justify-content: space-between;
+
       .echart_item {
         width: 49.5%;
         height: 100%;
@@ -96,7 +110,45 @@
         box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
         border-radius: 20px;
         position: relative;
+
+        h3 {
+          position: absolute;
+          left: 0;
+          top: 20px;
+          right: 0;
+          margin: auto;
+          font-size: 36px;
+        }
+
+        .echart_icon {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 80px;
+          height: 80px;
+          background: rgba(78, 80, 90, 0.55);
+          border-radius: 20px 0px;
+
+          img {
+            width: 50px;
+            height: 50px;
+            margin-top: 15px;
+          }
+        }
+
+        .echaert_p2 {
+          position: absolute;
+          // top: 0;
+          // left: 0;
+          // bottom: 0;
+          // right: 0;
+          // margin: auto;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
       }
+
       // .echart_item:nth-child(1) ::after {
       //   content: '';
       //   position: absolute;
@@ -107,13 +159,6 @@
       //   background: rgb(78, 80, 90);
       //   border-radius: 20px 0px;
       // }
-
-      h3 {
-        position: absolute;
-        left: 45%;
-        top: 20px;
-        font-size: 36px;
-      }
       .echart_size {
         width: 100%;
         height: 100%;
@@ -123,12 +168,15 @@
 
   .right_user_evaluate {
     display: flex;
+
     .evaluate_item {
       margin-left: 150px;
     }
+
     .ep1 {
       font-size: 96px;
     }
+
     .ep2 {
       font-size: 36px;
       margin-top: 30px;
@@ -141,6 +189,7 @@
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
+
     .btn_btn {
       width: 1405px;
       height: 131px;
@@ -152,6 +201,7 @@
       box-shadow: inset 15px 15px 10px rgba(255, 255, 255, 0.09);
       border-radius: 20px;
     }
+
     .btn_btn1,
     .btn_btn2 {
       width: 455px;
@@ -164,6 +214,7 @@
         inset 15px 15px 10px rgba(255, 255, 255, 0.09);
       border-radius: 20px;
       position: relative;
+
       .btn_end1 {
         position: absolute;
         left: 0;
@@ -171,6 +222,7 @@
         height: 100%;
         background-color: rgba(214, 199, 199, 0.753);
       }
+
       .btn_end2 {
         position: absolute;
         left: 0;
@@ -179,33 +231,40 @@
         background-color: rgba(167, 167, 167, 0.753);
       }
     }
+
     .btn_btn2 {
       width: 70%;
       margin-left: 5%;
     }
   }
 }
+
 @keyframes backTo {
   from {
     width: 0;
   }
+
   to {
     width: 100%;
   }
 }
+
 @keyframes backTo2 {
   from {
     width: 0;
   }
+
   to {
     width: 100%;
   }
 }
+
 .wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
+
   .block {
     color: #000;
     width: 650px;
@@ -217,6 +276,7 @@
     flex-direction: column;
   }
 }
+
 .login_activer {
   display: flex;
   justify-content: center;
@@ -226,8 +286,10 @@
 
   .user_text1 {
     margin-left: 15px;
-    font-size: 0.18rem;
+    font-size: 0.22rem;
+    letter-spacing: 0.04rem;
   }
+
   .user_text2 {
     width: 139px;
     height: 139px;
@@ -235,13 +297,13 @@
     border: 3px solid #aaaaaa;
     box-sizing: border-box;
     box-shadow: 0px 10px 20px rgba(170, 170, 170, 0.25);
-
     border-radius: 50%;
     font-size: 24px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
+
   .user_img {
     width: 0.6rem;
     height: 0.6rem;

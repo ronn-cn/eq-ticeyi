@@ -15,7 +15,7 @@
   // background-size: cover;
 }
 .recomm_back::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -28,13 +28,13 @@
   transform: translateX(-104px) translateY(-104px) rotate(45deg);
 }
 .recomm_back::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 4px;
   left: 4px;
   width: 60px;
   height: 60px;
-  background: url('~assets/images/common/home_back.png') no-repeat;
+  background: url("~assets/images/common/home_back.png") no-repeat;
   background-size: cover;
   z-index: 99;
 }
@@ -122,7 +122,8 @@
 
 <template>
   <div class="main_details">
-    <div class="recomm_back" @click="lotrecommend(), click_effects()"></div>
+    <div class="recomm_back"
+         @click="lotrecommend(), click_effects()"></div>
     <section class="main_content">
       <div class="content_title">{{ recommInfo.name || '测试' }}</div>
       <div class="content_energy">
@@ -132,16 +133,18 @@
       </div>
       <p class="content_p">{{ recommInfo.desc }}</p>
       <div class="content_cover">
-        <img :src="imgurl" alt="" />
+        <img :src="imgurl"
+             alt="" />
       </div>
-      <div class="content_progress"></div>
+      <div class="content_progress"
+           :style="getBackcolor"></div>
       <div class="content_tips">
-        请您前往有氧区<span style="color: #0eebf0">'{{ recommMsg.name }}'</span
-        >开启健身课程
+        请您前往有氧区<span :style="getcolor">'{{ recommMsg.name }}'</span>开启健身课程
       </div>
     </section>
     <section class="footer">
-      <div class="footer_btn" @click="GoTo">立即前往{{ downnum }}s</div>
+      <div class="footer_btn"
+           @click="GoTo">立即前往{{ downnum }}s</div>
     </section>
   </div>
 </template>
@@ -151,7 +154,7 @@ import { mapGetters, mapActions } from 'vuex'
 import api from '../api/api'
 export default {
   props: {},
-  data() {
+  data () {
     return {
       recommInfo: {},
       recommMsg: {},
@@ -162,8 +165,9 @@ export default {
   },
   watch: {
     recommendid: {
-      handler(val) {
+      handler (val) {
         if (Object.keys(val).length !== 0) {
+          console.log(val)
           this.recommInfo = val.data
           this.recommMsg = val.msg
           this.loaddetails(val.data.equipmenttype)
@@ -181,16 +185,22 @@ export default {
       'publicPath',
       'projecttype',
     ]),
+    getcolor () {
+      return `color:rgb(${this.recommMsg.color})`
+    },
+    getBackcolor () {
+      return `background-color:rgb(${this.recommMsg.color})`
+    }
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   destroyed: function () {
     clearInterval(this.timer)
     this.timer = null
   },
   methods: {
     ...mapActions(['logout', 'click_effects']),
-    downChang() {
+    downChang () {
       clearInterval(this.timer)
       this.downnum = 30
       this.timer = setInterval(() => {
@@ -203,7 +213,7 @@ export default {
       }, 1000)
     },
     //取消用户转移
-    async lotrecommend() {
+    async lotrecommend () {
       clearInterval(this.timer)
       this.timer = null
       this.downnum = 30
@@ -214,7 +224,7 @@ export default {
       console.log('用户转移取消', rs)
     },
     //加载
-    async loaddetails(val) {
+    async loaddetails (val) {
       if (val.includes('健身指导镜')) {
         this.imgurl = `${this.publicPath}common/images/jianshenjing.png`
       } else if (val.includes('跑步机')) {
@@ -222,10 +232,10 @@ export default {
       } else if (val.includes('体测仪')) {
         this.imgurl = require('../assets/images/ticeyi.png')
       } else {
-        this.imgurl = `${this.publicPath}powerStatic/images/${this.projecttype}.png`
+        this.imgurl = `${this.publicPath}powerStatic/images/${val[0]}.png`
       }
     },
-    GoTo() {
+    GoTo () {
       clearInterval(this.timer)
       this.logout()
       this.$router.push('/')

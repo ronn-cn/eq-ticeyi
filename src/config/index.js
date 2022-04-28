@@ -23,5 +23,5 @@ module.exports = {
   config: config,
   // api_url: 'http://172.16.8.21:8808',
   api_url: 'http://172.16.7.100:8808',    //请求本地地址
-  teststatus: false //默认请求那个 true为本地
+  teststatus: false //默认请求那个 true为本地,没事别改用不着
 }
