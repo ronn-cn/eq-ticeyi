@@ -127,7 +127,7 @@ const actions = {
       sport_end_time: getters.sport_end_time,     //运动结束时间
       sport_detail: JSON.stringify(sport_detail),
       sport_duration: Number(data.sport_duration),  //时长
-      sport_complete: data.sport_complete //是否完成
+      sport_complete: Number(data.sport_complete) //是否完成
     }
     console.log(masg)
     dispatch('addSportDetail', masg)
