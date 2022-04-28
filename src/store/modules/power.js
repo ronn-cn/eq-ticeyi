@@ -124,10 +124,10 @@ const actions = {
       lesson_name: `力量器械-${powerInfo.type}`, //课程名称,同上
       sport_start_time: getters.sport_start_time,  //运动开始时间
       sport_end_time: getters.sport_end_time,     //运动结束时间
-      sport_detail: JSON.stringify(sport_detail)
+      sport_detail: JSON.stringify(sport_detail),
+      sport_length: data.sport_length
     }
-    console.log(masg)
-
+    // console.log(masg)
     dispatch('addSportDetail', masg)
   },
   //

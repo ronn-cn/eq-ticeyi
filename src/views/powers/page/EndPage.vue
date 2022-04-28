@@ -157,9 +157,7 @@ export default {
     this.typeList[3].value = this.powerEndData.amount //平均负重
   },
   mounted () {
-    if (!this.loginState) {
-      this.init_qrcode()
-    }
+    this.loginState ? this.send_data() : this.init_qrcode()
     this.set_scoreimg()
 
     if (process.env.NODE_ENV !== 'development') {
@@ -171,7 +169,6 @@ export default {
     if (this.audio_a) {
       this.audio_a.pause()
     }
-    this.svseEndData() //结束提交
     clearInterval(this.downtimer)
     this.$store.commit('set_recommendid', '') //离开设置课程为空
     this.$store.dispatch('clientEnd')
@@ -197,6 +194,7 @@ export default {
         if (!val) {
           this.init_qrcode()
         } else {
+          this.send_data()  //提交数据
           this.recommstate = true
         }
       },
@@ -208,6 +206,12 @@ export default {
   },
   methods: {
     ...mapActions(['logout', 'svseEndData', 'click_effects']),
+    //提交数据
+    send_data () {
+      let info = {}
+      info.sport_length = this.typeList[0].value
+      this.svseEndData(info) //结束提交
+    },
     async init_qrcode (text) {
       this.qrstate = false
       await this.$nextTick()
@@ -266,6 +270,7 @@ export default {
           this.showQR = true
         }
       } else {
+        this.send_data()
         clearInterval(this.downtimer)
         this.$router.push('/')
       }

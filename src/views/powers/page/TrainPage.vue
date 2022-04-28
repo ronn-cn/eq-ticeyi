@@ -43,13 +43,13 @@
     <div class="page_mo">
       <div class="fixed_left">
         <h1>演示参考</h1>
-        <div class="progress_rotate_left">
+        <!-- <div class="progress_rotate_left">
           <k-progress :percent="moloopval"
                       :show-text="false"
                       :line-height="50"
                       :border="false"
                       :color="['#09FBD3', '#FE53BB']"></k-progress>
-        </div>
+        </div> -->
         <div class="progress_test_left">
           <p class="text_p1">{{ plannum.weight }}KG</p>
           <p class="text_p2">目标重量</p>

@@ -94,10 +94,10 @@
     }
   }
 }
-.U_test {
+.U_test1 {
   width: 930px !important;
 }
-.U_test1 {
+.U_test2 {
   width: 1400px !important;
 }
 .quick_start2 {
@@ -155,8 +155,7 @@
           <van-button :class="[
               viewindex !== 0 && viewindex < stepList.length - 1
                 ? 'start_text2'
-                : 'start_text1',
-              itemindex == 2 && viewindex == 0 && loginState ? courseState ? 'U_test1':'U_test' : '',
+                : 'start_text1',testClass
             ]"
                       @click="initStep">
             <span class="start_icon">
@@ -211,6 +210,17 @@ export default {
       'projecttype', //类型
       'lesson_id',
     ]),
+    testClass () {
+      if (this.itemindex == 2 && this.viewindex == 0 && this.loginState) {
+        if (this.user_rmvalue.state) {
+          if (this.courseState) {
+            return 'U_test2'
+          } else {
+            return 'U_test1'
+          }
+        }
+      }
+    }
   },
   watch: {
     loginState (nval) {
