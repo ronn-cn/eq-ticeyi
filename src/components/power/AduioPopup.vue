@@ -44,10 +44,12 @@
       }}
     </p>
     <section class="btn_list">
-      <div class="close_btn1" @touchstart="popupbtn(0), click_effects()">
+      <div class="close_btn1"
+           @touchstart="popupbtn(0), click_effects()">
         结束训练
       </div>
-      <div class="close_btn2" @touchstart="popupbtn(1), click_effects()">
+      <div class="close_btn2"
+           @touchstart="popupbtn(1), click_effects()">
         再练一会
       </div>
     </section>
@@ -64,7 +66,7 @@ export default {
     timevalue: String,
   },
   watch: {},
-  data() {
+  data () {
     return {
       popuo_audio: null,
     }
@@ -72,8 +74,8 @@ export default {
   computed: {
     ...mapGetters(['publicPath', 'projecttype']),
   },
-  created() {},
-  mounted() {
+  created () { },
+  mounted () {
     if (this.endType == 1) {
       this.popuo_audio = new Audio()
       this.popuo_audio.src = `${this.publicPath}powerStatic/audio/课程结束/e02.mp3`
@@ -85,7 +87,7 @@ export default {
     }
   },
   //离开页面
-  unmounted() {},
+  unmounted () { },
   destroyed: function () {
     if (this.popuo_audio) {
       this.popuo_audio.pause()
@@ -95,11 +97,11 @@ export default {
   methods: {
     ...mapActions(['click_effects']),
     //弹框事件
-    popupbtn(type) {
+    popupbtn (type) {
       if (type == 0) {
         this.$router.push({
           path: '/endpage',
-          query: { reneging: 1, timevalue: this.timevalue },
+          query: { reneging: 0, timevalue: this.timevalue },
         })
       } else {
         this.$emit('closepopup')

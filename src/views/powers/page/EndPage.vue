@@ -18,7 +18,7 @@
                   class="user_text2">未登录</span>
           </div>
           <span class="plan_text">{{
-            reneging == 0 ? '恭喜你完成本次训练!' : '你已结束本次训练'
+            reneging == 1 ? '恭喜你完成本次训练!' : '你已结束本次训练'
           }}</span>
         </div>
         <div class="right_user_evaluate">
@@ -132,7 +132,7 @@ export default {
           value: '1',
         },
       ],
-      reneging: 0,
+      reneging: 1,
       recommstate: false,
       qrstate: false,
       courseList: [],
@@ -209,7 +209,8 @@ export default {
     //提交数据
     send_data () {
       let info = {}
-      info.sport_length = this.typeList[0].value
+      info.sport_duration = this.typeList[0].value
+      info.sport_complete = this.reneging
       this.svseEndData(info) //结束提交
     },
     async init_qrcode (text) {
