@@ -74,6 +74,10 @@
           </div>
         </div>
         <ul>
+          <!-- <li @click="itemindex = 4" :class="{ active: itemindex == 4 }">
+            <div class="home_icon"></div>
+            训练计划
+          </li> -->
           <li v-for="(item, index) of patternList"
               :class="{ active: itemindex == index }"
               @click="swichType(index), click_effects()"

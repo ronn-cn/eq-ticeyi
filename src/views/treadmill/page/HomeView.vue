@@ -125,18 +125,18 @@
 <template>
   <div>
     <div class="home_view">
-      <div class="home_view_introduce" v-if="!courseState">
+      <div class="home_view_introduce"
+           v-if="!courseState">
         <!-- <div class="introduce_make">
           {{ userMakeState ? "设备已预约" : "设备可使用" }}
         </div> -->
         <make-lesson v-if="userMakeState"></make-lesson>
-        <theme-run
-          v-if="itemindex == 0 && !userMakeState"
-          @courseDetails="courseDetails"
-        ></theme-run>
+        <theme-run v-if="itemindex == 0 && !userMakeState"
+                   @courseDetails="courseDetails"></theme-run>
         <pattern-run v-if="itemindex == 1 && !userMakeState" />
 
-        <div class="introduce_title" v-if="itemindex == 2 && !userMakeState">
+        <div class="introduce_title"
+             v-if="itemindex == 2 && !userMakeState">
           <section class="run_risk">
             <h2>运动风险须知</h2>
             <ul class="risk_ul">
@@ -151,13 +151,13 @@
               <li>
                 进入训练，意味着因参加任何训练课程而引起的一切风险、损害及责任等，由您自行承担。运动风险与免责声明
               </li>
-            </ul>
+            </ul>settings.json
             <p>运动前请仔细阅读该须知，确认无误后方可进行课程训练</p>
           </section>
         </div>
         <div class="introduce_title" v-if="itemindex == 3 && !userMakeState">
           <div class="cardiopulmonary_test">
-            <h2 class="card_test_h2">心肺能力测试</h2>
+            <h2 class="card_test_h2">心肺能力测试1</h2>
             <p class="card_test_p1">暂无记录</p>
             <div class="card_test_value">
               <span>--</span>
@@ -170,23 +170,21 @@
           </div>
         </div>
       </div>
-      <div class="home_view_footer" v-if="itemindex !== 0">
-        <div class="footer_start" @click="startRun(0)">
-          <div
-            class="start_text1"
-            :style="{
+      <div class="home_view_footer"
+           v-if="itemindex !== 0">
+        <div class="footer_start"
+             @click="startRun(0)">
+          <div class="start_text1"
+               :style="{
               backgroundImage: `url(${publicPath}TreadmillStatic/images/start_back.png)`,
-            }"
-          >
+            }">
             {{ indextitle(itemindex) }}
           </div>
         </div>
       </div>
-      <course-profiles
-        :detailsInfo="detailsInfo"
-        v-if="showstate"
-        @set_display="set_display"
-      />
+      <course-profiles :detailsInfo="detailsInfo"
+                       v-if="showstate"
+                       @set_display="set_display" />
     </div>
   </div>
 </template>
@@ -211,7 +209,7 @@ export default {
     MakeLesson,
     // RotationChart
   },
-  data() {
+  data () {
     return {
       viewindex: 0,
       courseState: false,
@@ -230,10 +228,10 @@ export default {
     ]),
   },
   watch: {
-    resSetStart(newval) {
+    resSetStart (newval) {
       this.startRun(1)
     },
-    resStartLesson(val) {
+    resStartLesson (val) {
       if (JSON.stringify(val) == '{}') {
         console.log('空')
       } else {
@@ -256,12 +254,12 @@ export default {
       }
     },
   },
-  created() {},
-  mounted() {},
+  created () { },
+  mounted () { },
   methods: {
     ...mapMutations(['set_lesson_id', 'set_MakeCareInfo']),
     ...mapActions(['send_askLedState']),
-    indextitle(text) {
+    indextitle (text) {
       switch (text) {
         case 1:
           return '开始跑步'
@@ -271,16 +269,16 @@ export default {
           return '开始测试'
       }
     },
-    set_display() {
+    set_display () {
       this.showstate = false
     },
     //详情
-    courseDetails(data) {
+    courseDetails (data) {
       this.showstate = true
       this.detailsInfo = data
     },
     //开始了
-    startRun(status) {
+    startRun (status) {
       //0默认 1跳过倒计时
       this.$router.push({
         path: '/trainrun',

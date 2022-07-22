@@ -20,6 +20,7 @@ const state = {
   evenfPublic: process.env.NODE_ENV == "development" ? '/' : '../', //资源目录
   MakeCareTitle: powerInfo.name || '',  //预约课程名称
   MakeCareDesc: powerInfo.desc || '',    //预约课程简介
+  MakelampColor:'',   //预约灯的颜色
   client_id: '',       //推荐课程id
   lesson_id: project.lesson_id, //课程id
   Audio_effects: null
@@ -52,6 +53,7 @@ const mutations = {
   set_MakeCareInfo (state, data) {
     state.MakeCareTitle = data.name
     state.MakeCareDesc = data.desc
+    state.MakelampColor = data.color
   },
   set_recommendid (state, data) {
     if (Object.keys(data).length == 0) {

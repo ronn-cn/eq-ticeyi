@@ -11,18 +11,19 @@ export default {
   recommendState: state => state.common.recommendState,  //推荐状态
   sport_start_time: state => state.common.sport_start_time,  //开始时间
   sport_end_time: state => state.common.sport_end_time,  //结束时间
-  MakeCareTitle: state => state.common.MakeCareTitle,  //预约名称
-  MakeCareDesc: state => state.common.MakeCareDesc,  //预约简介
   client_id: state => state.common.client_id,  //
   powerHieght: state => state.common.powerHieght, //力量器械的高度 
   projecttype: state => state.common.projecttype, //设备类型 
   lesson_id: state => state.common.lesson_id,      //lesson_id
+  
+  MakeCareTitle: state => state.common.MakeCareTitle,  //预约名称
+  MakeCareDesc: state => state.common.MakeCareDesc,  //预约简介
+  MakelampColor: state => state.common.MakelampColor,  //预约灯的颜色
 
 
   //用户
   loginState: state => state.user.loginState, //登陆状态 
   userInfo: state => state.user.userinfo, //用户信息
-  user_rm: state => state.user.user_rm, //用户rm值
   user_rmvalue: state => state.user.user_rmvalue, //用户rm值 
   user_data: state => state.user.user_data, //用户rm值 
 
@@ -48,6 +49,8 @@ export default {
   actionValue: state => state.power.actionValue,  //动作数据
   coursegroup: state => state.power.coursegroup,  //课程组
   powerEndData: state => state.power.powerEndData,  //课程组
+  isShortcut: state => state.power.isShortcut,  //是否能通过下压到休息
+  weight_rm: state => state.power.weight_rm,  //是否能通过下压到休息
 
   // totalweight: state => state.power.totalweight, //总负重 
   // averagescore: state => state.power.averagescore, //平均分 

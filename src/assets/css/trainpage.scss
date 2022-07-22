@@ -98,6 +98,9 @@
     bottom: 2%;
     left: 24px;
     z-index: 9;
+    background: rgba(255, 255, 255, 0.38);
+    border: 3px solid rgba(255, 255, 255, 0.54);
+    border-radius: 20px;
   }
 
   .progress_rotate_right {
@@ -106,6 +109,24 @@
     position: absolute;
     bottom: 430px;
     right: -205px;
+
+    .rotate_p1 {
+      position: absolute;
+      top: 13px;
+      right: 66px;
+      font-size: 24px;
+      z-index: 2;
+      transform: rotate(90deg);
+    }
+
+    .rotate_p2 {
+      position: absolute;
+      top: 13px;
+      left: 2px;
+      font-size: 24px;
+      z-index: 2;
+      transform: rotate(90deg);
+    }
   }
 
   .progress_test_right {
@@ -127,13 +148,13 @@
 }
 
 .end_test_btn {
-  width: 296px;
-  height: 84px;
+  width: 614px;
+  height: 130px;
   background-color: #ff3b30;
   position: fixed;
-  left: 18vw;
-  bottom: 18vh;
-  border-radius: 15px;
+  left: 10vw;
+  bottom: 16vh;
+  border-radius: 20px;
   display: flex;
   z-index: 9;
   justify-content: center;
@@ -214,13 +235,19 @@
 }
 
 .complete_activa {
-  // animation: complete 4s linear;
-  border-color: #28cd41;
+  background-color: #28cd41;
+
+  .text_p2 {
+    color: #ffffff;
+  }
 }
 
 .unfinished_activa {
-  // animation: unfinished 4s linear;
-  border-color: #d31b86;
+  background-color: #d31b86;
+
+  .text_p2 {
+    color: #ffffff;
+  }
 }
 
 @keyframes complete {

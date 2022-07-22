@@ -1,9 +1,27 @@
-import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { HandleSeatedAbTrainerData } from '@/assets/js/index'
-import Format from '@/assets/js/Format'
 export default {
   data () {
     return {
+      planText: ['极限组 (1RM测试)', '热身组', '负重组', '金字塔组', '辅助组'],
+      planText2: ['极限组 (1RM测试)', '热身组', '负重组', '金字塔组', '辅助组'],
+      footlist: [
+        '训练时间',
+        '当前组数/阶段组数',
+        '当前次数/组内次数',
+        '单次动作评分',
+        '训练量',
+      ],
+      timeMeter: 0,
+      timevalue: null, //时间
+      showPopup: false, //弹框
+      endType: null,    //弹框音频
+      recordScore: {
+        data: '',
+        score: '',
+      },
+      audioText: '',
+      showborder: null,
+      upGroup: {},
       completePercent: 0,
       reststate: true, //休息状态
       windowtimer: null,  //时间计时器
@@ -11,12 +29,29 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['actionValue', 'coursegroup', 'loginState', 'user_rmvalue', 'userInfo']),
     routeName () {
       return this.$route.path
     },
     getLimt () {
-      if (this.routeName == 'trainpage' && this.plannum == 1 || this.routeName == 'strengthtest' && this.plannum == 0) {
+      if (this.routeName == 'trainpage' && this.plannum == 0) {
+        return true
+      }
+      return false
+    },
+    //下压完成重量显示的样式
+    showActiva () {
+      if (this.showborder == null) {
+        return
+      }
+      if (this.showborder) {
+        return 'complete_activa'
+      } else {
+        return 'unfinished_activa'
+      }
+    },
+    //显示结束按钮
+    endTest () {
+      if (this.planstate == 0 && !this.reststate) {
         return true
       }
       return false
@@ -25,6 +60,11 @@ export default {
   watch: {
     //下压
     actionValue (val, oldval) {
+      //判断休息时间过了吗，过了才能继续下压
+      if (!this.isShortcut) {
+        return
+      }
+
       this.$store.commit('set_moheight', val.height)
       let powernum = (powerInfo.powerHieght * 0.15) >= 10 ? 10 : powerInfo.powerHieght * 0.15
       if (val.height > powernum) {
@@ -51,7 +91,7 @@ export default {
       //下压操作
       HandleSeatedAbTrainerData(val, num, (e) => {
         //力量测试判断是否是第一次下压
-        if (this.routeName !== '/trainpage' && !this.firstdown) {
+        if (this.routeName !== '/freeplan' && !this.firstdown) {
           this.firstdown = true
         }
         //添加每一组信息
@@ -65,6 +105,10 @@ export default {
           if (e.Weight > this.user_rmvalue.value) {
             this.$store.dispatch('updateRM', e.Weight)
           }
+        }
+        //设置最大rm值
+        if (e.Weight > this.weight_rm) {
+          this.$store.commit('set_weight_rm', e.Weight)
         }
 
         this.traininfo = e
@@ -95,12 +139,10 @@ export default {
         } else {
           switch (this.planstate) {
             case 0:
-              // this.routeName == '/trainpage' ? this.warmup(e) : this.limit(e)
-              this.warmup(e)
+              this.limit(e)
               return
             case 1:
-              // this.routeName == '/trainpage' ? this.limit(e) : this.warmup(e)
-              this.limit(e)
+              this.warmup(e)
               return
             default:
               this.otherPlan(e)
@@ -125,9 +167,9 @@ export default {
     //监听休息
     reststate: {
       handler: function (e) {
-        console.log('sha', e)
         if (!e) {
           this.timestart()
+          this.countState = true
         } else {
           clearInterval(this.windowtimer)
         }
@@ -136,34 +178,5 @@ export default {
       deep: true, // 深入观察,监听数组值，对象属性值的变化
     },
   },
-  //离开页面
-  destroyed: function () {
-    //设置课程结束时间
-    this.$store.commit('set_couserTimer', {
-      type: 'end',
-    })
-    this.$store.commit('set_resGenerateLesson', {}) //清空课程信息
 
-  },
-  methods: {
-    ...mapMutations(['set_couserTimer', 'set_resGenerateLesson']),
-    //时间计时
-    timestart () {
-      this.windowtimer = setInterval(() => {
-        this.timeMeter += 0.1
-        this.timevalue = Format.FormatTime(this.timeMeter.toFixed())
-      }, 100)
-    },
-    //来个方法看看是否全部完成了
-    isInComplete () {
-      if (this.inCompleteNum == 0) {
-        // console.log('这里是全部完成了')
-        this.recordUpGroup()
-      } else {
-        // console.log('这里是未完成')
-        this.recordUpGroup('未完成')
-      }
-      this.inCompleteNum = 0
-    }
-  }
 }

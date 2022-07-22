@@ -126,11 +126,7 @@ export default {
     ]),
     isMo () {
       let path = this.$route.path
-      if (
-        path == '/strengthtest' ||
-        path == '/freeplan' ||
-        path == '/trainpage'
-      ) {
+      if (path == '/freeplan' || path == '/trainpage') {
         return true
       }
       return false

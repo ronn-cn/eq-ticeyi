@@ -95,14 +95,14 @@
   display: flex;
   justify-content: space-between;
   .btn_a {
-    width: 48%;
+    width: 210px;
     height: 131px;
     line-height: 131px;
     border: 1px solid #fff;
     border-radius: 20px;
   }
   .btn_b {
-    width: 48%;
+    width: 596px;
     height: 131px;
     background: #28cd41;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
@@ -155,9 +155,9 @@
       <section class="bearing_text">
         <p>建议器械负重</p>
         <p class="bearing_p2">
-          {{ planstate == 1 && upGroup.grouptitle != '热身组' ? restinfo.weight + 6 : restinfo.weight}}&nbsp;KG
+          {{ planstate == 0 && firstdown ?restinfo.weight + 6 : restinfo.weight }}&nbsp;KG
           <span :class="restinfo.weight > upGroup.weight ? 'Increase' : 'Increase1'"
-                v-if="planstate !== 0 && restinfo.weight !== upGroup.weight">{{ Percent(restinfo.weight, upGroup.weight) }}%</span>
+                v-if="planstate !== 0 && restinfo.weight !== upGroup.weight && firstdown">{{ Percent(restinfo.weight, upGroup.weight) }}%</span>
         </p>
       </section>
       <section>
@@ -176,7 +176,6 @@
             <br />
             <span style="font-size: 24px">组间休息</span>
           </p>
-          <!-- <p style="margin-top: 6px">后继续测试</p> -->
         </radial-progress-bar>
       </section>
     </div>
@@ -187,14 +186,13 @@
         <div class="group_text">
           <h2>下一组</h2>
           <div>
-            <span> {{ plantitle(planstate, 2) }} |
-              <span v-if="planstate !== 1">第{{ restinfo.groups_currentNum + 1}}组</span>
+            <span> {{ plantitle(planstate) }} |
+              <span v-if="planstate == 0 && firstdown">第{{  restinfo.groups_currentNum + 1 }}组</span>
               <span v-else>第{{ restinfo.groups_currentNum + 1}}组</span>
-              <!-- <span v-else>第{{ limitNum()}}组</span> -->
             </span>
             &nbsp;
             <span>
-              <span v-if="planstate == 1">{{ upGroup.grouptitle =="热身组"?12: restinfo.weight + 6}}KG</span>
+              <span v-if="planstate == 0">{{ firstdown ? restinfo.weight + 6 : 12}}KG</span>
               <span v-else>{{ restinfo.weight }}KG</span>
               /{{ restinfo.times }}次
             </span>
@@ -202,19 +200,21 @@
         </div>
       </section>
       <section class="plan_group_item"
-               v-if="planstate !== 0">
+               v-if="firstdown">
         <div :class="upGroup.isok ? 'group_current_icon1' : 'group_current_icon2'"></div>
         <div class="group_text">
           <h2>上一组</h2>
           <div>
             <span>{{ upGroup.grouptitle }} |
               <!-- 如果是极限组的话 -->
-              <span v-if="planstate == 1">第{{ upGroup.grouptitle == "极限组" ? upGroup.groups_currentNum : upGroup.groups_currentNum + 1 }}组</span>
+              <span v-if="planstate == 0">第{{ upGroup.grouptitle == "极限组" ? upGroup.groups_currentNum : upGroup.groups_currentNum + 1 }}组</span>
               <!-- 不是极限组 -->
               <span v-else>第{{ upGroup.groups_currentNum + 1  }}组</span>
+              <!-- <span>第{{ upGroup.groups_currentNum }}组</span> -->
             </span>
             &nbsp;
-            <span> {{ planstate !== 1 && upGroup.grouptitle =="极限组"? upGroup.weight + 6: upGroup.weight }}KG/{{ upGroup.times }}次</span>
+            <span> {{ planstate !== 0 && upGroup.grouptitle =="极限组"? upGroup.weight + 6: upGroup.weight }}KG/{{ upGroup.times }}次</span>
+            <!-- <span> {{  upGroup.weight  }}KG/{{ upGroup.times }}次</span> -->
             <div class="isCtext"
                  :style="upGroup.isok ? 'color:#28CD41' : 'color:#FF3B30'">
               {{ upGroup.isok ? '已完成' : '未完成' }}
@@ -226,14 +226,21 @@
       <!-- 当前组 -->
     </div>
 
-    <div class="rest_btn">
+    <div class="rest_btn"
+         :style="!firstdown?'margin-top:250px':''">
       <div class="btn_a"
+           v-if="!suspendState"
            @click="suspend(), click_effects()">
-        {{ suspendState ? '恢复训练' : '暂停' }}
+        延时 20s
+      </div>
+      <div v-else
+           class="btn_a"
+           style="color: rgba(255, 255, 255, 0.54) ">
+        已延时
       </div>
       <div class="btn_b"
            @click="skipRest(), click_effects()">
-        <p>快速开始</p>
+        <p>{{ !firstdown  ?'已完成器械调重':'跳过休息，快速开始'}}</p>
         <p class="btn_p2">操作器械即开启训练</p>
       </div>
     </div>
@@ -259,16 +266,15 @@ export default {
     restinfo: {
       type: Object,
     },
-    firststate: {
-      type: Boolean,
-      default: false,
-    },
     upGroup: {
       type: Object,
     },
+    firstdown: {
+      type: Boolean
+    },
   },
   computed: {
-    ...mapGetters(['publicPath', 'projecttype']),
+    ...mapGetters(['publicPath', 'projecttype', 'isShortcut']),
     GetPercent (num, total) {
       /// <param name="num">当前数</param>
       /// <param name="total">总数</param>
@@ -303,18 +309,28 @@ export default {
   created () {
     if (process.env.NODE_ENV !== 'development') {
       this.initDown()
+    } else {
+      //this.initDown()
     }
+    this.$store.commit('set_isShortcut', false)
   },
   watch: {
-    suspendState (val) {
-      // console.log(val)
-      if (val) {
-        clearInterval(this.downtimer)
-        this.downtimer = null
-      } else {
-        this.initDown()
+    completedSteps (value) {
+      if (value <= this.restinfo.rest - 15) {
+        if (!this.isShortcut) {
+          this.$store.commit('set_isShortcut', true)
+        }
       }
-    },
+    }
+    // suspendState (val) {
+    //   console.log(val)
+    //   if (val) {
+    //     clearInterval(this.downtimer)
+    //     this.downtimer = null
+    //   } else {
+    //     this.initDown()
+    //   }
+    // },
   },
   mounted () { },
   destroyed () {
@@ -334,8 +350,6 @@ export default {
       if (num == oldnum) {
         return 0
       }
-      let num1 = num / 6
-      let num2 = oldnum / 6
       if (num > oldnum) {
 
         return 100 - Math.floor((oldnum / num) * 100)
@@ -346,7 +360,6 @@ export default {
     },
     initDown () {
       this.downtimer = setInterval(() => {
-
         let a = 100 / this.restinfo.rest
         if (this.completedSteps > 1) {
           this.completedSteps -= 0.1
@@ -360,17 +373,18 @@ export default {
     },
     suspend () {
       this.suspendState = !this.suspendState
+      this.completedSteps += 20
     },
     skipRest () {
       clearInterval(this.downtimer)
       this.$emit('endrest')
     },
-    plantitle (index, type) {
+    plantitle (index) {
       switch (index) {
         case 0:
-          return this.pagetype == 0 ? '热身组' : "极限组"
+          return "极限组"
         case 1:
-          return type == 1 ? '热身组' : '极限组'
+          return "热身组"
         case 2:
           return '负重组'
         case 3:

@@ -142,13 +142,6 @@
       <div class="page_mo">
         <div class="fixed_left">
           <h1>演示参考</h1>
-          <!-- <div class="progress_rotate_left">
-            <k-progress :percent="moloopval"
-                        :show-text="false"
-                        :line-height="50"
-                        :border="false"
-                        :color="['#09FBD3', '#FE53BB']"></k-progress>
-          </div> -->
           <div class="progress_test_left">
             <p class="text_p1">{{ plannum.weight }}KG</p>
             <p class="text_p2">目标重量</p>
@@ -334,23 +327,21 @@ export default {
     warmup (e) {
       this.recordUpGroup('no')
       this.plannum.currentNum = 1
+
       setTimeout(() => {
         if (e.Weight < this.plannum.weight) {
           this.testShow = true
         } else {
-          // let num = this.upGroup.weight
-          // this.plannum.weight = num % 6 == 0 ? num + 6 : num - 3 + 6
           this.plannum.weight = e.Weight % 6 == 0 ? e.Weight : e.Weight - 3  //比上一组做的重量大才赋值
           this.plannum.groups_currentNum += 1
           this.maxRm = e.Weight
           this.recordUpGroup()
-          //this.plannum.weight = e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6 //比上一组做的重量大才赋值
           this.reststate = true
           this.plannum.rest = 15 //休息时长
-
         }
         this.plannum.currentNum = 0
       }, 1000)
+
     },
     //热身
     limit (e) {
@@ -387,7 +378,6 @@ export default {
             this.plannum.currentNum = 0
             this.plannum.groups_currentNum = 0
           } else {
-            // console.log(this.planstate)
             if (this.planstate == 3) {
               if (this.auxiliarygroup.length == 0) {
                 this.$router.push({
@@ -417,7 +407,6 @@ export default {
         rmkg = this.maxRm % 6 == 0 ? this.maxRm : this.maxRm - 3
         // rmkg = 30
       }
-      this.$store.commit('set_weight_rm', rmkg)
 
       if (rmkg != 0) {
         let level = 5

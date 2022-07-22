@@ -188,7 +188,7 @@ if (iibloo) {
   let iindex = 15 - 1
   powerInfo = ProjectLists[iindex]
 } else {
-  let iitype = "坐姿背肌训练器"
+  let iitype = "双轴肩部推举器"
   for (let i in ProjectLists) {
     if (ProjectLists[i].type == iitype) {
       powerInfo = ProjectLists[i]

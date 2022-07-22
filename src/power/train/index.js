@@ -1,51 +1,19 @@
-import { mapGetters } from "vuex"
 import currency from './currency.js'
-
+import trainMthods from './trainMthods.js'
 export default {
-  data () {
-    return {
-      planText: ['热身组', '极限组 (1RM测试)', '负重组', '金字塔组', '辅助组'],
-      planText2: ['极限组 (1RM测试)', '热身组', '负重组', '金字塔组', '辅助组'],
-      footlist: [
-        '训练时间',
-        '当前组数/总组数',
-        '当前次数/总次数',
-        '单次动作评分',
-        '训练量',
-      ],
-      timeMeter: 0,
-      timevalue: null, //时间
-      showPopup: false, //弹框
-      endType: null,    //弹框音频
-      recordScore: {
-        data: '',
-        score: '',
-      },
-      audioText: '',
-      showborder: null,
-      upGroup: {}
-    }
+  mixins: [currency, trainMthods],
+  created () { },
+  mounted () {
+    this.loadTrain()
   },
-  mixins: [currency],
-  computed: {
-    ...mapGetters(['projecttype', 'lesson_id', 'powerEndData']),
-    showActiva () {
-      if (this.showborder == null) {
-        return
-      }
-      if (this.showborder) {
-        return 'complete_activa'
-      } else {
-        return 'unfinished_activa'
-      }
-    },
-  },
-  watch: {
-    // audioText (ntext) {
-    //   setTimeout(() => {
-    //     this.audioText = ''
-    //   }, 2500)
-    // },
+  //离开页面
+  destroyed: function () {
+    //设置课程结束时间
+    this.$store.commit('set_couserTimer', {
+      type: 'end',
+    })
+    this.$store.commit('set_resGenerateLesson', {}) //清空课程信息
+
   },
   methods: {
     //开始初始化
@@ -99,7 +67,6 @@ export default {
           this.wuhu(1)
         }
       } else if (this.planstate == 1) {
-        // console.log('啊这')
         this.firstdown = true
         this.recordUpGroup('no', '热身组')
         this.StartTrain()
@@ -153,19 +120,15 @@ export default {
     recordUpGroup (isok, title) {
       this.upGroup = JSON.parse(JSON.stringify(this.plannum))
       this.upGroup.grouptitle = title || this.grouptitle()
-      if (isok) {
-        this.upGroup.isok = false
-        return
-      }
-      this.upGroup.isok = true
+      this.upGroup.isok = isok ? false : true
     },
     //记录上一组名称
     grouptitle () {
       switch (this.planstate) {
         case 0:
-          return this.routeName !== '/trainpage' ? '极限组' : "热身组"
+          return "极限组"
         case 1:
-          return this.routeName !== '/trainpage' ? '极限组' : '极限组'
+          return "热身组"
         case 2:
           return '负重组'
         case 3:
@@ -180,11 +143,11 @@ export default {
         case 0:
           return this.timevalue || '00.00'
         case 1:
-          if (this.planstate == 1 && this.routeName == "/trainpage" || this.planstate == 0 && this.routeName == "/strengthtest") {
+          if (this.planstate == 0 && this.routeName == "/trainpage") {
             if (this.plannum.currentNum == 0) {
-              return "0 / 1"
+              return "00 / 01"
             } else {
-              return "1 / 1"
+              return "01 / 01"
             }
           } else {
             let pege1 = this.plannum.groups_currentNum + ' / ' + this.plannum.groups
@@ -195,8 +158,10 @@ export default {
             return this.routeName == '/freeplan' ? page2 : pege1
           }
         case 2:
-          let page1 = this.plannum.currentNum + ' / ' + this.plannum.times
-          let page2 = this.plannum.currentNum + ' / --'
+          let currentNum = this.plannum.currentNum < 10 ? '0' + this.plannum.currentNum : this.plannum.currentNum
+          let times = this.plannum.times < 10 ? '0' + this.plannum.times : this.plannum.times
+          let page1 = currentNum + ' / ' + times
+          let page2 = currentNum + ' / --'
           return this.routeName == '/freeplan' ? page2 : page1
         case 3:
           let num = this.traininfo.Percent
@@ -209,13 +174,30 @@ export default {
       }
     },
     //按钮事件
-    btn_click (index) {
-      this.showPopup = true
-      if (this.planstate > 2) {
-        this.endType = 1
-      } else {
-        this.endType = 2
+    btn_click (value) {
+      let index = value || null;
+      if (this.planstate == 0) {
+        index = 3
+      } else if (this.planstate < 2 && this.planstate != 0) {
+        index = 2
+      } else if (this.planstate > 2) {
+        index = 1
       }
+
+
+      const TitleList = [
+        { overTitle: '当前重量与课程目标重量不一致，是否暂停课程，调整负重', overConfirmText: '是，去调整', overCancelText: '否，继续训练' },
+        { overTitle: '顽强的毅力可以克服任何障碍，你的训练课程已过半，是否退出当前训练', overConfirmText: '坚持到底', overCancelText: '结束训练' },
+        { overTitle: '你的训练时间过短，是否退出当前训练', overConfirmText: '再练一会', overCancelText: '结束训练' },
+        { overTitle: '正在测试你当前器械的极限重量，不要放弃，期待你超越自己的极限', overConfirmText: '继续训练', overCancelText: '结束训练' },
+      ]
+
+      this.overTitle = TitleList[index].overTitle
+      this.overConfirmText = TitleList[index].overConfirmText
+      this.overCancelText = TitleList[index].overCancelText
+      this.overIndex = index
+
+      this.showPopup = true
     },
     setAudioText (text) {
       this.audioText = text

@@ -126,6 +126,16 @@
     line-height: 54px;
     margin-bottom: 92px;
   }
+  .target_text {
+    position: fixed;
+    right: 0;
+    top: 24%;
+    width: 454px;
+    height: 106px;
+    background: url("~assets/images/1.1/home_icon1.svg") no-repeat;
+    background-size: 100% 100%;
+    // background-color: #ffffff;
+  }
   ul {
     padding-top: 90px;
     li {
@@ -154,19 +164,6 @@
   }
 }
 
-.target_title1 {
-  font-size: 0.24rem;
-  padding: 90px 0 0.3rem 0;
-  border-bottom: 2px solid #fff;
-  display: flex;
-  justify-content: space-between;
-}
-
-.target_title2 {
-  font-size: 0.24rem;
-  margin-top: 1.2rem;
-}
-
 .video_cover {
   height: 700px;
   z-index: 9;
@@ -187,15 +184,132 @@
     margin-bottom: 90px;
     width: 451px;
     height: 128px;
-    line-height: 132px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: 2px solid #ffffff;
     filter: drop-shadow(0px 15px 30px rgba(0, 0, 0, 0.09));
     border-radius: 20px;
+    position: relative;
+
+    &_topicon {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+      position: absolute;
+      top: 10px;
+      right: 12px;
+    }
+    &_topicon::after {
+      content: "荐";
+      font-size: 14px;
+      position: relative;
+      top: -7px;
+      left: -1px;
+    }
   }
+}
+
+.target_item_icon1 {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  margin-right: 20px;
 }
 .objactive {
   color: #000000;
   background: #fff;
+  .target_item_icon1 {
+    border: 3px solid #000000;
+  }
+  .target_item_topicon {
+    border: 2px solid #000;
+  }
+}
+.target_item_unlock {
+  border: 2px solid rgba(255, 255, 255, 0.38) !important;
+  color: #ffffff61;
+  .target_item_icon2 {
+    display: inline-block;
+    width: 25px;
+    height: 32px;
+    background: url("~assets/images/1.1/unlock.svg") no-repeat;
+    position: relative;
+    top: 4px;
+    // background-size: 100% 100%;
+  }
+}
+
+//弹框
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.block {
+  width: 690px;
+  height: 118px;
+  border-radius: 20px;
+  color: #000;
+  background-color: #fff;
+  padding: 50px 100px;
+  line-height: 54px;
+  position: relative;
+  .close_p1::after {
+    content: "";
+    width: 45px;
+    height: 42px;
+    position: absolute;
+    top: 88px;
+    left: 40px;
+    background: url("~assets/images/1.1/warning.svg") no-repeat;
+  }
+}
+//新增哦
+.tranplan_cover {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin: auto;
+  &_left {
+    width: 728px;
+    height: 580px;
+    // background: #ff9500;
+    background: url("~assets/images/1.1/home_back.svg") no-repeat;
+    background-size: 100% 100%;
+    ul {
+      width: 80%;
+      margin: 0 auto;
+      margin-top: 85px;
+      li {
+        font-size: 24px;
+        padding: 30px 0;
+        text-align: left;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.28);
+        position: relative;
+      }
+      li::after {
+        content: "";
+        width: 25px;
+        height: 25px;
+        background: #fff;
+        position: absolute;
+        left: -45px;
+        top: 30px;
+      }
+    }
+  }
+  &_right {
+    width: 418px;
+    height: 580px;
+    background: url("~assets/images/1.1/home_back2.svg") no-repeat;
+    background-size: 100% 100%;
+  }
 }
 </style>
 
@@ -208,7 +322,7 @@
            v-show="courseState"></div>
 
       <div class="introduce_start_before"
-           v-if="!courseState && !userMakeState">
+           v-if="!courseState">
         <div class="introduce_title"
              v-if="itemindex == 0 || itemindex == 1">
           <p class="introduce_title_p1">
@@ -223,7 +337,7 @@
           </p>
         </div>
         <div class="introduce_title"
-             v-else>
+             v-else-if="itemindex == 2">
           <div class="measure">
             <p class="measure_p1">当前器械1RM测定值</p>
             <p class="measure_p2">
@@ -236,48 +350,67 @@
             </p>
           </div>
         </div>
+        <div class="introduce_title"
+             v-else-if="itemindex == 4">
+          <p class="introduce_title_p1"
+             style="margin-bottom:0">
+            个性全身增肌计划-基础版
+          </p>
+          <p class="introduce_title_p2"
+             style="font-size:30px;padding:22px 0">
+            针对增肌的系统训练计划，全身增肌+局部线条雕刻，让你穿衣显瘦，脱衣有肉
+          </p>
+          <div class="tranplan_cover">
+            <div class="tranplan_cover_left">
+              <ul>
+                <li>训练打卡10天（1/10）</li>
+                <li>完成大腿训练3次 或 大腿能力值+5</li>
+                <li>完成腹部训练3次（2/3）或 腹部能力值+10 （1/10）</li>
+                <li>完成热身放松课程10次（5/10）</li>
+                <li>完成热身放松课程10次（5/10）</li>
+              </ul>
+            </div>
+            <div class="tranplan_cover_right">
+
+            </div>
+          </div>
+        </div>
         <div class="introduce_cover"
-             v-if="itemindex != 2">
+             v-if="itemindex != 2 && itemindex != 4">
           <img :src="`${publicPath}powerStatic/images/${projecttype}.png`"
                style="width: 350px" />
           <p class="ip1">{{ projecttype }}</p>
         </div>
       </div>
 
-      <make-lesson v-if="userMakeState"
-                   style="height: 6.37rem; width: 100%"></make-lesson>
+      <make-lesson v-if="userMakeState"></make-lesson>
 
       <div class="introduce_start_after"
-           v-if="courseState && !userMakeState">
-        <div class="risk_notice"
-             v-if="viewindex === 0">
-          <h1 class="h1">运动风险须知</h1>
-          <p class="notice_p">
-            运动健身前避免仓促进食，应饭后至少1小时后再进行运动健身锻炼。<br />每次运动前要先做热身运动，待身体舒展后方可使用器械。
-            <br />身体有残疾、体弱多病者，请在医生及专业人员的指导下使用，不可单独使用运动器械，未成年人与年龄过长者必须有人陪同锻炼，不得擅自锻炼。
-            <br />在进行运动时，如出现眩晕、呕吐、胸痛等不正常症状时，请立即停止，必要时请及时就医。
-            <br />进入训练，意味着因参加任何训练课程而引起的一切风险、损害及责任等，由您自行承担。
-            <br />运动风险与免责声明，
-          </p>
-        </div>
+           v-if="courseState">
         <div class="curriculum_target"
-             v-if="
-            (itemindex == 0 && viewindex === 1) 
-          ">
+             v-if="stepNum == 1 || stepNum == 2">
           <h1 class="h1">课程目标</h1>
           <div class="target_title">
             根据肌肉发展素质选择不同的训练途径已达到训练目的,提升个人最大RM值及训练强度可解锁更多课程目标
           </div>
+          <div class="target_text">
+            请选择本次训练目标
+          </div>
           <div class="target">
             <div v-for="(item, index) of objectives"
                  :key="index"
-                 :class="{ objactive: index == objindex }"
-                 class="target_item"
+                 :class="['target_item',index == objindex ? 'objactive':'',!item.unlock?'target_item_unlock':'']"
                  @click="choiceCourse(item, index),click_effects()">
-              {{ item }}
+              <span class="target_item_topicon"
+                    v-if="item.istrue"></span>
+              <div>
+                <span :class="item.unlock?'target_item_icon1':'target_item_icon2'"></span>
+                {{ item.title }}
+              </div>
             </div>
           </div>
         </div>
+
         <div class="apparatus_test"
              v-if="isVideo1 || isVideo2">
           <h1 class="h1">{{ isVideo1 ? '器械调试' : '动作演示' }}</h1>
@@ -293,6 +426,16 @@
         </div>
       </div>
     </div>
+    <van-overlay :show="tipsshow">
+      <div class="wrapper"
+           @click="setTips">
+        <div class="block">
+          <p class="close_p1">
+            当前训练目标暂不可用，提升个人最大RM值及训练强度可解锁更多训练目标
+          </p>
+        </div>
+      </div>
+    </van-overlay>
   </div>
 </template>
 
@@ -300,6 +443,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import RadialProgressBar from 'vue-radial-progress'
 import MakeLesson from '../common/MakeLesson.vue'
+import { Overlay } from 'vant'
 import power from '@/assets/js/power.json'
 export default {
   props: {
@@ -307,6 +451,9 @@ export default {
       type: [Number, String],
     },
     viewindex: {
+      type: [Number, String],
+    },
+    stepNum: {
       type: [Number, String],
     },
     courseState: {
@@ -320,40 +467,27 @@ export default {
   components: {
     RadialProgressBar,
     MakeLesson,
+    VanOverlay: Overlay,
   },
   computed: {
     ...mapGetters([
       'userMakeState',
       'loginState',
       'publicPath',
-      'MakeCareTitle',
+      'MakeCareTitle', 
       'MakeCareDesc',
       'user_rmvalue',
       'projecttype', //类型
       'evenfPublic',
     ]),
     get_viewindex () {
-      return this.viewindex
+      return this.stepNum
     },
     isVideo1 () {
-      if (
-        (this.itemindex == 0 && this.viewindex == '2') ||
-        (this.itemindex == 1 && this.viewindex == '1') ||
-        (this.itemindex == 2 && this.viewindex == '1')
-      ) {
-        return true
-      }
-      return false
+      return this.stepNum == 3 ? true : false
     },
     isVideo2 () {
-      if (
-        (this.itemindex == 0 && this.viewindex == '3') ||
-        (this.itemindex == 1 && this.viewindex == '2') ||
-        (this.itemindex == 2 && this.viewindex == '2')
-      ) {
-        return true
-      }
-      return false
+      return this.stepNum == 4 ? true : false
     },
     istemporary () {
       if (this.itemindex == 0 && this.viewindex == '1' || this.itemindex == 2 && this.viewindex == '1') {
@@ -382,53 +516,71 @@ export default {
     },
     istemporary (val) {
       if (val) {
-        this.choiceCourse('肌耐力', 0)
+        this.choiceCourse(this.objectives[0].title, 0)
       }
     },
+    tipsshow (value) {
+      if (value) {
+        this.TipsCond = setTimeout(() => {
+          this.tipsshow = false
+        }, 3000)
+      }
+    },
+    user_rmvalue: {
+      handler: function (info) {
+        if (info.state) {
+          this.objectives[2].unlock = false
+          this.objectives[3].unlock = false
+          let rmkg = info.value
+          let level = 5
+          this.$axios.get(`${this.publicPath}common/js/power.json`).then((res) => {
+            // console.log(res)
+            res.data.forEach((item) => {
+              if (item['aim'] === "增强肌力") {
+                for (let stage of item.stages) {
+                  if (stage.level == level && stage.rm == rmkg) {
+                    // console.log('有增强肌力')
+                    this.objectives[2].unlock = true
+                  }
+                }
+              }
+              if (item['aim'] === "提升爆发力") {
+                for (let stage of item.stages) {
+                  if (stage.level == level && stage.rm == rmkg) {
+                    // console.log('有提升爆发力')
+                    this.objectives[3].unlock = true
+                  }
+                }
+              }
+            })
+          })
+        } else {
+          this.objectives[2].unlock = true
+          this.objectives[3].unlock = true
+        }
+      },
+      immediate: true, // 首次加载的时候执行函数
+      deep: true, // 深入观察,监听数组值，对象属性值的变化
+    },
+
   },
   data () {
     return {
-      target: [
-        {
-          zname: '热身组',
-          weight: '12',
-          numname: '20',
-          totalnum: '1组',
-        },
-        {
-          zname: '极限组(RM值测试)',
-          weight: '12',
-          numname: 'Max KG/',
-          totalnum: '1次/Max KG',
-        },
-        {
-          zname: '金字塔组',
-          weight: '3~20',
-          numname: '5',
-          totalnum: '各1组',
-        },
-        {
-          zname: '负重组',
-          weight: '4~12',
-          numname: '6~12',
-          totalnum: '3~8组',
-        },
-        {
-          zname: '辅助组',
-          weight: '4~12',
-          numname: '15',
-          totalnum: '2组',
-        },
-      ],
-      objectives: ['肌耐力', '肌肥大', '增强肌力', '提升爆发力'],
+      objectives: [
+        { title: "肌耐力", istrue: false, unlock: true },
+        { title: "肌肥大", istrue: false, unlock: true },
+        { title: "增强肌力", istrue: false, unlock: true },
+        { title: "提升爆发力", istrue: false, unlock: true }],
       videourl: '',
       video1: '',
       video2: '',
-      objindex: 0,
-      mediaState: false
+      objindex: null,
+      mediaState: false,
+      tipsshow: false,
+      TipsCond: null
     }
   },
-  created () { },
+  created () {},
   mounted () { },
   methods: {
     ...mapActions(['click_effects']),
@@ -439,26 +591,39 @@ export default {
         this.$refs.myvideo1.play()
       }, 500);
     },
+    //返回上一级
     backindex () {
+      if (this.stepNum == 2) {
+        this.objindex = null
+      }
       this.$emit('setitemindex')
     },
-    choiceCourse (text, index) {
-      this.objindex = index
-      let rm = 0
-      let level = 5
-      power.forEach((item) => {
-        if (item['aim'] === text) {
-          for (let stage of item.stages) {
-            if (stage.level == level && stage.rm == rm) {
-              // console.log(stage)
-              this.$store.commit('set_temporary', {
-                groups: stage['热身组'],
-                text: text,
-              })
+    setTips () {
+      clearTimeout(this.TipsCond)
+      this.tipsshow = false
+    },
+    choiceCourse (info, index) {
+      if (!info.unlock) {
+        this.tipsshow = true
+      } else {
+        this.objindex = index
+        let rm = 0
+        let level = 5
+        this.$emit('set_stepNum')
+        power.forEach((item) => {
+          if (item['aim'] === info.title) {
+            for (let stage of item.stages) {
+              if (stage.level == level && stage.rm == rm) {
+                this.$store.commit('set_temporary', {
+                  groups: stage['热身组'],
+                  text: info.title,
+                })
+              }
             }
           }
-        }
-      })
+        })
+      }
+
     },
   },
 }

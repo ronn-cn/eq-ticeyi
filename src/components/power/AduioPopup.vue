@@ -1,75 +1,115 @@
 <style scoped lang="scss">
 .popup_close {
-  position: fixed;
-  left: 26vw;
-  top: 25vh;
+  position: relative;
   z-index: 999;
-  width: 42vw;
-  height: 26vh;
-  padding: 0.4rem 0.2rem;
-  border-radius: 15px;
+  // position: fixed;
+  // left: 26vw;
+  // top: 25vh;
+  // z-index: 999;
+  // width: 42vw;
+  // height: 26vh;
+  // padding: 0.4rem 0.2rem;
+  // border-radius: 15px;
+  // background-color: #fff;
+}
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.block {
+  width: 890px;
+  // height: 390px;
+  border-radius: 20px;
   background-color: #fff;
   .close_p1 {
     color: #000;
-    font-size: 42px;
-    margin: 0.4rem 0 0.5rem 0;
+    font-size: 36px;
+    line-height: 54px;
+    width: 80%;
+    margin: 0.5rem auto;
   }
   .btn_list {
-    padding: 0 10%;
+    border-top: 1px solid #555555;
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
   }
-  .close_btn1,
-  .close_btn2 {
-    color: #000;
+  .close_btn1 {
+    color: #ff3b30;
     display: inline-block;
-    margin: 0 10px;
-    padding: 20px 0.3rem;
-    border-radius: 4px;
-    border: 1px solid #000;
+    width: 343px;
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #555555;
   }
   .close_btn2 {
-    background-color: #000;
+    display: inline-block;
     color: #fff;
-    // padding: 20px 10px;
+    background: rgba(40, 205, 65, 0.87);
+    width: 547px;
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>
 
 <template>
   <div class="popup_close">
-    <p class="close_p1">
-      {{
-        endType == 2 ? '您的训练时间过短,是否退出当前训练' : '是否退出当前训练'
-      }}
-    </p>
-    <section class="btn_list">
-      <div class="close_btn1"
-           @touchstart="popupbtn(0), click_effects()">
-        结束训练
+    <van-overlay :show="show"
+                 @click="show = false">
+      <div class="wrapper"
+           @click.stop>
+        <div class="block">
+          <p class="close_p1">
+            {{overTitle}}
+          </p>
+          <section class="btn_list">
+            <div class="close_btn1"
+                 @touchstart="popupbtn(0), click_effects()">
+              {{overCancelText}}
+            </div>
+            <div class="close_btn2"
+                 @touchstart="popupbtn(1), click_effects()">
+              {{overConfirmText}}
+            </div>
+          </section>
+        </div>
       </div>
-      <div class="close_btn2"
-           @touchstart="popupbtn(1), click_effects()">
-        再练一会
-      </div>
-    </section>
+    </van-overlay>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { Overlay } from 'vant'
 export default {
   props: {
     endType: {
       type: [Number, String],
     },
+    overTitle: String,
+    overConfirmText: String,
+    overCancelText: String,
+    overIndex: {
+      type: [Number, String],
+    },
     timevalue: String,
     timeMeter: Number
+  },
+  components: {
+    VanOverlay: Overlay,
   },
   watch: {},
   data () {
     return {
       popuo_audio: null,
+      show: true
     }
   },
   computed: {

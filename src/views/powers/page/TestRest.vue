@@ -187,7 +187,7 @@
         <div class="group_text">
           <h2>下一组</h2>
           <div>
-            <span>{{ plantitle(planstate, 1) }} |
+            <span>{{ plantitle(planstate) }} |
               <span v-if="planstate == 0 && firstdown">第{{  restinfo.groups_currentNum + 1 }}组</span>
               <span v-else>第{{ restinfo.groups_currentNum + 1}}组</span>
             </span>
@@ -366,9 +366,9 @@ export default {
     plantitle (index, type) {
       switch (index) {
         case 0:
-          return this.pagetype == 0 ? '热身组' : "极限组"
+          return "极限组"
         case 1:
-          return type == 1 ? '热身组' : '极限组'
+          return "热身组"
         case 2:
           return '负重组'
         case 3:

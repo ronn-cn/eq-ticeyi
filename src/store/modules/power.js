@@ -19,10 +19,14 @@ const state = {
     amount: 0, //训练量
   },
   echartData: [],
-  temporary: {}  //临时用户的组数
+  temporary: {},  //临时用户的组数
+  isShortcut: false
 }
 
 const mutations = {
+  set_isShortcut (state, bool) {
+    state.isShortcut = bool
+  },
   set_temporary (state, data) {
     console.log('课程目标', data)
     state.temporary = data
@@ -78,6 +82,7 @@ const mutations = {
     state.powerEndData.averagescore = 0
     state.powerEndData.amount = 0
     state.echartData = []
+    state.weight_rm = 0
   },
   //动作数据
   set_resHeightWeight (state, data) {

@@ -16,6 +16,12 @@
       top: 80px;
       z-index: 9;
     }
+    .count {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 9;
+    }
   }
   .fixed_right {
     width: 50%;
@@ -43,18 +49,16 @@
     <div class="page_mo">
       <div class="fixed_left">
         <h1>演示参考</h1>
-        <!-- <div class="progress_rotate_left">
-          <k-progress :percent="moloopval"
-                      :show-text="false"
-                      :line-height="50"
-                      :border="false"
-                      :color="['#09FBD3', '#FE53BB']"></k-progress>
-        </div> -->
         <div class="progress_test_left">
           <p class="text_p1">{{ plannum.weight }}KG</p>
           <p class="text_p2">目标重量</p>
         </div>
+        <div class="count"
+             v-if="!reststate && countState">
+          <TrantCount @set_count="set_count" />
+        </div>
       </div>
+
       <div class="fixed_right">
         <div class="fixed_title">
           <h1 class="fixed_h1">{{ planText[this.planstate] }}</h1>
@@ -66,11 +70,15 @@
                v-if="audioText">{{ audioText }}</div>
         </transition>
         <div class="progress_rotate_right">
+          <p class="rotate_p1">EC</p>
           <k-progress :percent="completePercent"
                       :show-text="false"
                       :line-height="50"
                       :border="false"
-                      :color="['#09FBD3', '#FE53BB']"></k-progress>
+                      bg-color="#4E505A"
+                      :color="['#09FBD3', '#FE53BB']">
+          </k-progress>
+          <p class="rotate_p2">CC</p>
         </div>
         <div class="progress_test_right"
              :class="showActiva">
@@ -84,7 +92,7 @@
       <ul>
         <li v-for="(item, index) of footlist"
             :key="item">
-          <div v-if="index == 1 && planstate !== 1"
+          <div v-if="index == 1 && planstate !== 0"
                class="stop_skip"
                @click="skipstop"></div>
           <p class="foot_li_p1">{{ footvalue(index) }}</p>
@@ -94,46 +102,53 @@
     </footer>
     <!-- 休息 -->
     <section class="page_action">
+
       <rest-page v-if="reststate"
                  ref="restpage"
                  @endrest="reststate = false"
                  :planstate="planstate"
                  :restinfo="plannum"
-                 :upGroup="upGroup"></rest-page>
+                 :firstdown="firstdown"
+                 :upGroup="upGroup">
+      </rest-page>
       <div class="end_test_btn"
            v-if="endTest"
-           @touchstart="StartTrain()">
-        结束测试&nbsp;{{TestTime}}s
+           @touchstart="endLiem()">
+        结束测试，继续训练
       </div>
     </section>
 
-    <div @click="btn_click(0), click_effects()"
+    <div @click="btn_click(), click_effects()"
          class="end_btn"></div>
 
     <aduio-popup v-if="showPopup"
-                 :endType="endType"
+                 :overTitle="overTitle"
+                 :overConfirmText="overConfirmText"
+                 :overCancelText="overCancelText"
+                 :overIndex="overIndex"
                  :timevalue="timevalue"
                  :timeMeter="Math.ceil(timeMeter)"
-                 @closepopup="closepopup"></aduio-popup>
+                 @closepopup="closepopup" />
+
     <cue-tone ref="ctone"
               :planstate="planstate"
               :restnum="restnum"
               :currentNum="plannum.currentNum"
               :recordScore="recordScore"
-              @setAudioText="setAudioText"></cue-tone>
+              @setAudioText="setAudioText">
+    </cue-tone>
   </div>
 </template>
-
+ 
 <script>
 import { Dialog, Circle } from 'vant'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
 import RestPage from './RestPage.vue'
 import KProgress from 'k-progress'
+import TrantCount from "@/components/power/TrantCount.vue"
 import train from '@/power/train/index.js'
 import Trainaudio from '@/power/common/Trainaudio.js'
 import AduioPopup from '@/components/power/AduioPopup.vue'
 import CueTone from '@/components/power/CueTone.vue'
-// import power from '@/assets/js/power.json'
 
 export default {
   components: {
@@ -142,6 +157,7 @@ export default {
     KProgress,
     AduioPopup,
     VanCircle: Circle,
+    TrantCount
   },
   mixins: [train, Trainaudio],
   data () {
@@ -149,7 +165,7 @@ export default {
       traininfo: {}, //回调的部分参数
       //次数
       plannum: {
-        times: 20, //每组总次数
+        times: 1, //每组总次数
         currentNum: 0, //当前次数
         groups: 1, //总组数
         groups_currentNum: 0, //当前组数
@@ -164,25 +180,31 @@ export default {
       restnum: 0, //休息话术
       audioText: '',
       downTest: null,
-      TestTime: 30
+      TestTime: 30,
+      //弹框相关
+      firstdown: false,
+      overTitle: '',
+      overConfirmText: '',
+      overCancelText: '',
+      overIndex: null,
+      barinfo: {
+        diameter: 192,
+        stopColor: 'rgb(116,96,196)',
+        startColor: 'rgb(116,96,196)',
+        innerStrokeColor: 'rgb(39,38,56)',
+        strokeWidth: 15,
+        innerStrokeWidth: 15,
+        strokeLinecap: 'line',
+      },
+      //计数
+      countState: false,
+      currentCount: 0,
+      groupCount: 0,
+      //
+      userRM: 0
     }
   },
-  computed: {
-    ...mapGetters([
-      //'loginState',
-      'publicPath',
-      'moloopval',
-      //'user_rmvalue',
-      'powerHieght', //器械下压最大高度
-      'temporary', //选择的啥
-    ]),
-    endTest () {
-      if (this.planstate == 1 && !this.reststate) {
-        return true
-      }
-      return false
-    }
-  },
+  computed: {},
   watch: {
     //监听步骤
     planstate (val, oldval) {
@@ -191,14 +213,12 @@ export default {
       }
       this.$store.commit('add_total_group')
       if (val == 1) {
-        this.$refs.ctone.playRMAudio()
-        // this.plannum.weight = this.traininfo.Weight || 12
-        this.set_plannum(
-          ['groups', 'groups_currentNum', 'times', 'currentNum'],
-          [1, 0, 1, 0]
-        )
-      }
-      if (val == 2 || val == 3 || val == 4) {
+        this.plannum.groups = 1
+        this.plannum.groups_currentNum = 0
+        this.plannum.times = 20
+        this.plannum.currentNum = 0
+        this.plannum.weight = 12
+      } else if (val == 2 || val == 3 || val == 4) {
         let data = val == 2 ? this.weightgroup : val == 3 ? this.pyramidgroup : this.auxiliarygroup
         this.plannum = data[0]
         this.set_plannum(
@@ -206,32 +226,50 @@ export default {
           [0, 0, 0]
         )
         // this.plannum.currentNum = data[0].times - 2  //测试用
+      } else {
+        this.$router.push({
+          path: '/endpage',
+          query: { timevalue: this.timevalue, timeMeter: Math.ceil(this.timeMeter) },
+        })
       }
     },
-    //监听
-    endTest (val) {
-      if (val) {
-        this.downTest = setInterval(() => {
-          this.TestTime -= 1
-          if (this.TestTime == 0) {
-            clearInterval(this.downTest)
-            this.TestTime = 30
-            this.traininfo.Weight ? this.StartTrain() : this.StartTrain(12)
-          }
-        }, 1000);
-      } else {
-        clearInterval(this.downTest)
-        this.TestTime = 30
+  },
+  created () {
+    if (this.loginState && this.loginState) {
+      if (this.user_rmvalue.state) {
+        this.planstate = 1
       }
     }
   },
-  created () { },
-  mounted () {
-    this.loadTrain()
-  },
   methods: {
-    ...mapMutations(['SEND_SOCKET', 'set_resHeightWeight']),
-    ...mapActions(['click_effects']),
+    set_count () {
+      if (this.planstate == 0) {
+
+      } else {
+        if (this.currentCount == 3) {
+          if (this.planstate == 1) {
+            this.skipstop()
+            this.groupCount = 0
+            this.currentCount = 0
+          } else {
+            this.groupCount += 1
+            if (this.groupCount == 2) {
+              this.wuhu(1)
+            } else {
+              this.currentCount = 0 //当前次数清零
+              this.skipstop() //跳过下一组
+            }
+          }
+        } else {
+          this.currentCount += 1
+          this.plannum.currentNum += 1
+          this.countState = false
+          this.$nextTick(() => {
+            this.countState = true
+          })
+        }
+      }
+    },
     //设置参数
     set_plannum (key, value) {
       for (let i in key) {
@@ -243,46 +281,47 @@ export default {
       this.plannum.currentNum += 1
       if (this.plannum.currentNum == this.plannum.times) {
         this.isInComplete() //判断是否全部完成
-        if (!this.user_rmvalue.state) {
-          setTimeout(() => {
-            this.planstate = 1
-            this.reststate = true
-            // this.plannum.weight = e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6
-          }, 1000)
-        } else {
-          this.StartTrain(this.user_rmvalue.user_rm)
-        }
+        this.plannum.groups_currentNum = 1
+        setTimeout(() => {
+          this.StartTrain()
+        }, 1000)
       }
     },
     //极限组
     limit (e) {
       this.$refs.ctone.playRMAudio()
       this.plannum.currentNum += 1
-      // this.plannum.groups_currentNum = 0
-      // this.plannum.currentNum = 0
       setTimeout(() => {
         this.plannum.currentNum = 0
         if (e.Weight < this.plannum.weight) {
           //如果压的小了，以最大值开启训练
-          this.StartTrain(this.plannum.weight)
+          //this.StartTrain(this.plannum.weight)
+          this.planstate = 1
         } else {
-          // let num = this.upGroup.weight
-          // this.plannum.weight = num % 6 == 0 ? num + 6 : num - 3 + 6
           this.plannum.weight = e.Weight % 6 == 0 ? e.Weight : e.Weight - 3  //比上一组做的重量大才赋值
           this.plannum.groups_currentNum += 1
           this.recordUpGroup()
-          //this.plannum.weight =  e.Weight % 6 == 0 ? e.Weight + 6 : e.Weight - 3 + 6 //比上一组做的重量大才赋值
           this.reststate = true
-          this.plannum.rest = 15 //休息时长
+          this.plannum.rest = 30 //休息时长
         }
       }, 1000)
+    },
+    endLiem () {
+      if (this.weight_rm) {
+        this.planstate = 1;
+        this.plannum.rest = 60
+        setTimeout(() => {
+          this.reststate = true
+        }, 500);
+      }else{
+        console.log('确认一下')
+      }
     },
     //其他联系
     otherPlan (e) {
       this.plannum['currentNum'] += 1
       if (this.plannum.currentNum == this.plannum.times) {
         this.isInComplete() //判断是否全部完成
-        // this.plannum.currentNum = this.plannum.times - 3
         this.plannum.currentNum = 0
         this.plannum.groups_currentNum += 1
         setTimeout(() => {
@@ -323,20 +362,17 @@ export default {
       }
     },
     //开始课程
-    StartTrain (value) {
+    StartTrain () {
       this.recordUpGroup('!ok')
-
       let rmkg = 0
-      if (value) {
-        rmkg = value % 6 == 0 ? value : value - 3
+
+      if (this.user_rmvalue.state && this.loginState) {
+        rmkg = this.user_rmvalue.value % 6 == 0 ? this.user_rmvalue.value : this.user_rmvalue.value - 3
       } else {
-        rmkg = this.traininfo.Weight % 6 == 0 ? this.traininfo.Weight : this.traininfo.Weight - 3
-        // rmkg = 30
-        if (this.loginState && rmkg) {
-          this.$store.dispatch('updateRM', rmkg)
-        }
+        rmkg = this.weight_rm % 6 == 0 ? this.weight_rm : this.weight_rm - 3
       }
-      if (rmkg != 0) {
+      console.log('呃呃呃', rmkg)
+      if (rmkg) {
         let level = 5
         this.$axios.get(`${this.publicPath}common/js/power.json`).then((res) => {
           // console.log('都打印一下吧', rmkg, this.temporary.text)
@@ -351,7 +387,6 @@ export default {
               for (let stage of item.stages) {
                 if (stage.rm !== 0 && stage.level == level) {
                   if (stage['负重组'].length || stage['金字塔组'].length || stage['辅助组'].length) {
-                    // console.log('给课了吗', stage, 'rrr')
                     this.$store.commit('set_resGenerateLesson', stage)
                     return
                   }
