@@ -3,13 +3,14 @@
   width: 100%;
   height: 100%;
   position: relative;
+  border-radius: 20px;
 }
 .recomm_back {
   width: 0.3rem;
   height: 0.3rem;
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
   // background-color: #3476fe;
   // background: url(../../public/common/images/small_icon0.png) no-repeat;
   // background-size: cover;
@@ -21,17 +22,17 @@
   left: 0;
   width: 0;
   height: 0;
-  border-left: 100px solid red;
-  border-top: 100px solid green;
-  border-bottom: 100px solid rgb(231, 175, 72);
-  border-right: 100px solid #f5a623;
-  transform: translateX(-104px) translateY(-104px) rotate(45deg);
+  // border-left: 100px solid red;
+  // border-top: 100px solid green;
+  // border-bottom: 100px solid rgb(231, 175, 72);
+  border: 100px solid #f5a623;
+  transform: translateX(-53px) translateY(-103px) rotate(45deg);
 }
 .recomm_back::before {
   content: "";
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 10px;
+  left: -20px;
   width: 60px;
   height: 60px;
   background: url("~assets/images/common/home_back.png") no-repeat;
@@ -58,13 +59,13 @@
   }
   .content_energy {
     font-size: 0.14rem;
-    font-weight: bold;
     padding: 0.2rem 0;
+    color: #7F7F7F;
   }
   .content_p {
     font-size: 0.14rem;
-    font-weight: bold;
     width: 85%;
+    color: #7F7F7F;
     text-align: center;
     line-height: 0.2rem;
     display: -webkit-box;
@@ -91,69 +92,65 @@
     height: 0.06rem;
     background-color: aquamarine;
     margin: 0.2rem 0;
+    border-radius: 0.03rem;
   }
   .content_tips {
-    font-size: 0.15rem;
+    font-size: 0.13rem;
     line-height: 0.2rem;
     padding: 0 0.2rem;
   }
 }
 .footer {
-  position: absolute;
-  left: 0;
   bottom: 0;
-  width: 100%;
+  width: 90%;
+  margin:60px auto;
   height: 0.8rem;
-  border-top: 1px solid #000;
+  border-top: 1px solid #aaa;
   display: flex;
   justify-content: center;
   align-items: center;
   .footer_btn {
     color: #fff;
     font-size: 0.16rem;
-    width: 1.97rem;
+    width: 2.3rem;
     height: 0.41rem;
     line-height: 0.41rem;
     border-radius: 0.28rem;
-    background-color: #3476fe;
+    background-color: #28cd41;
   }
 }
 </style>
 
 <template>
   <div class="main_details">
-    <div class="recomm_back"
-         @click="lotrecommend(), click_effects()"></div>
+    <div class="recomm_back" @click="cancelTransfer(), click_effects()"></div>
     <section class="main_content">
-      <div class="content_title">{{ recommInfo.name || '测试' }}</div>
+      <div class="content_title">{{ tranfserData.lesson_name || '转移的课程标题' }}</div>
       <div class="content_energy">
-        <span>l{{ recommInfo.factor || 0 }}</span> |
-        <span>{{ Math.ceil(recommInfo.time / 60 || 0) }}分钟</span> |
-        <span>{{ recommInfo.calorie || 0 }}千卡</span> |
+        <span>L{{ tranfserData.lesson_factor/10 || 1 }}</span> |
+        <span>{{ Math.ceil(tranfserData.lesson_time / 60 || 1) }}分钟</span> |
+        <span>{{ tranfserData.lesson_energy || 180 }}kWatts</span> |
+        <!-- 图标 -->
       </div>
-      <p class="content_p">{{ recommInfo.desc }}</p>
+      <p class="content_p">{{ tranfserData.lesson_desc }}</p>
       <div class="content_cover">
-        <img :src="imgurl"
-             alt="" />
+        <img :src="getImageUrl" alt="器械图片" />
       </div>
-      <div class="content_progress"
-           :style="getBackcolor"></div>
+      <div class="content_progress" :style="getBackcolor"></div>
       <div class="content_tips">
-        请您前往有氧区<span :style="getcolor">'{{ recommMsg.name }}'</span>开启健身课程
+        请您前往“<span :style="getcolor"> {{ tranfserData.name }} </span>”开启健身课程
       </div>
     </section>
     <section class="footer">
-      <div class="footer_btn"
-           @click="GoTo">立即前往{{ downnum }}s</div>
+      <div class="footer_btn" @click="goNow">立即前往 ({{ downnum }})s</div>
     </section>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import api from '../api/api'
 export default {
-  props: {},
+  props: ['receipt','tranfserData'],
   data () {
     return {
       recommInfo: {},
@@ -161,22 +158,11 @@ export default {
       imgurl: '',
       downnum: 30,
       timer: null,
+
+
     }
   },
-  watch: {
-    recommendid: {
-      handler (val) {
-        if (Object.keys(val).length !== 0) {
-          console.log(val)
-          this.recommInfo = val.data
-          this.recommMsg = val.msg
-          this.loaddetails(val.data.equipmenttype)
-          this.downChang()
-        }
-      },
-      immediate: true,
-    },
-  },
+  watch: { },
   computed: {
     ...mapGetters([
       'recommendid',
@@ -186,20 +172,47 @@ export default {
       'projecttype',
     ]),
     getcolor () {
-      return `color:rgb(${this.recommMsg.color})`
+      return `color:rgb(${this.tranfserData.color})`
     },
     getBackcolor () {
-      return `background-color:rgb(${this.recommMsg.color})`
+      return `background-color:rgb(${this.tranfserData.color})`
+    },
+    getImageUrl() {
+      var val = this.tranfserData.client_type;
+      if (val.includes('健身指导镜')) {
+        return `${this.publicPath}common/images/jianshenjing.png`
+      } else if (val.includes('跑步机')) {
+        return require('../assets/images/paobuji.png')
+      } else if (val.includes('体测仪')) {
+        return require('../assets/images/ticeyi.png')
+      } else {
+        return `${this.publicPath}powerStatic/images/${val[0]}.png`
+      }
     }
   },
-  created () { },
-  mounted () { },
+  created () { 
+    console.log("created:",this.tranfserData);
+    this.downChang();
+  },
+  mounted () {
+    console.log("mounted:",this.tranfserData);
+  },
   destroyed: function () {
     clearInterval(this.timer)
     this.timer = null
   },
   methods: {
     ...mapActions(['logout', 'click_effects']),
+
+    // 取消转移方法 
+    cancelTransfer() {
+      this.receipt('cancelTransfer');
+    },
+    // 立即前往方法
+    goNow(){
+      this.receipt('goNow');
+      // clearInterval(this.timer)
+    },
     downChang () {
       clearInterval(this.timer)
       this.downnum = 30
@@ -211,34 +224,6 @@ export default {
           this.downnum -= 1
         }
       }, 1000)
-    },
-    //取消用户转移
-    async lotrecommend () {
-      clearInterval(this.timer)
-      this.timer = null
-      this.downnum = 30
-      this.$store.commit('set_recommendid', {})
-      const rs = await api.post('/cancel-transfer', {
-        client_id: this.client_id,
-      })
-      console.log('用户转移取消', rs)
-    },
-    //加载
-    async loaddetails (val) {
-      if (val.includes('健身指导镜')) {
-        this.imgurl = `${this.publicPath}common/images/jianshenjing.png`
-      } else if (val.includes('跑步机')) {
-        this.imgurl = require('../assets/images/paobuji.png')
-      } else if (val.includes('体测仪')) {
-        this.imgurl = require('../assets/images/ticeyi.png')
-      } else {
-        this.imgurl = `${this.publicPath}powerStatic/images/${val[0]}.png`
-      }
-    },
-    GoTo () {
-      clearInterval(this.timer)
-      this.logout()
-      this.$router.push('/')
     },
   },
 }

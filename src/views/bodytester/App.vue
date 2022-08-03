@@ -31,14 +31,11 @@ body {
 <template>
   <div id="app">
     <router-view></router-view>
-    <div class="threeMo"
-         :style="isMo ? '' : 'z-index: -1'">
-      <!-- <h1 class="three_h1">{{threeTitle}}</h1> -->
+    <!-- <div class="threeMo" :style="isMo ? '' : 'z-index: -1'">
       <iframe :src="`${publicPath}bodytesterStatic/glb/index.html`"
               class="iframe"
               frameborder="0"></iframe>
-      <!-- <ThreeMo @loadtitle="loadtitle" /> -->
-    </div>
+    </div> -->
     <Login v-if="StandbyState"></Login>
   </div>
 </template>
@@ -99,11 +96,10 @@ export default {
     document.getElementsByTagName('html')[0].style.fontSize = rem + 'px'
 
     this.init_socket()
+    
   },
   methods: {
     ...mapActions(['init_socket', 'logout']),
-  },
-  methods: {
     loadtitle (url) {
       this.threeTitle = url
     }

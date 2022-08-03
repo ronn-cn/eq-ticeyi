@@ -1,8 +1,6 @@
 <!--THREEJS组件-->
 <template>
-  <div id="d3Container"
-       ref="mainContent">
-  </div>
+  <div id="d3Container" ref="mainContent"> </div>
 </template>
 <script>
 import * as THREE from 'three'
@@ -198,12 +196,7 @@ export default {
     // 创建相机
     createCamera () {
       // 摄像机
-      this.camera = new THREE.PerspectiveCamera(
-        50,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-      )
+      this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000)
       // x横轴y纵轴z前后纵深
       this.camera.position.set(0, 15, 30)
       //相机看向哪个坐标
@@ -227,19 +220,21 @@ export default {
       element.appendChild(this.renderer.domElement)
     },
     render () {
+      this.controls.update()
       this.animationId = requestAnimationFrame(this.render) //旋转动画;
       this.renderer.render(this.scene, this.camera)
-      this.controls.update()
     },
     // 创建控件对象
     createControls () {
       this.controls = new OrbitControls(this.camera, this.renderer.domElement)
 
-      this.controls.target = new THREE.Vector3(0, 10, 0)
-      this.controls.enablePan = false
-      this.controls.enableZoom = false
-      // controls.enableRotate = false;
-      this.controls.rotateSpeed = 0.5
+      this.controls.target = new THREE.Vector3(0, 0, 0)
+      // this.controls.enablePan = false
+      // this.controls.enableZoom = false
+      // this.controls.enableRotate = false;
+      // this.controls.rotateSpeed = 0.5
+      this.controls.autoRotate = true;
+      this.controls.autoRotateSpeed = 5;
       this.controls.screenSpacePanning = true
     },
     onWindowResize () {

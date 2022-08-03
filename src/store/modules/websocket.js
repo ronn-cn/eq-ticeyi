@@ -107,7 +107,7 @@ const actions = {
         window.localStorage.setItem('userInfo', JSON.stringify(data.data));
         const userinfo = window.localStorage.getItem('userInfo');
         // let user = JSON.parse(userinfo)
-        // console.log(user)
+        // console.log("查看登录的用户数据：", user)
         commit('setLoginStatus', userinfo)
         dispatch('clientlogin')
         break;

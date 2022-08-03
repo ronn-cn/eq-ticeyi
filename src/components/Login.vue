@@ -94,7 +94,8 @@ export default {
       logintime: null,
     }
   },
-  created() {},
+  created() {
+  },
   mounted() {
     this.formatdate()
   },

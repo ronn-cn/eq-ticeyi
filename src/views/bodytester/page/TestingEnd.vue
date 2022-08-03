@@ -4,6 +4,7 @@
   height: 100%;
   display: flex;
   background: linear-gradient(180deg, #323647 0%, #222631 100%);
+  font-family: 'SourceHanSansSC';
 }
 .view_endpage {
   padding: 20px;
@@ -104,7 +105,7 @@
     border-bottom: 1px solid #fff;
     span {
       color: #fff;
-      font-size: 46px;
+      font-size: 36px;
     }
   }
   .one_p3 {
@@ -214,10 +215,16 @@ header {
 }
 .basics_text {
   text-align: left;
+  p{
+    font-size: 24px;
+  }
+  span {
+    font-size: 36px;
+  }
 }
 .basics_line {
   // height: 1px;
-  margin: 6px 0;
+  margin: 8px 0;
   width: 225px;
   border: 1px dashed #7f7f7f;
 }
@@ -271,7 +278,7 @@ header {
               <div class="basics_text">
                 <p>身高(cm)</p>
                 <div class="basics_line"></div>
-                <span>{{ RUN_HEIGHT.height }}(cm)</span>
+                <span>{{ RUN_HEIGHT.height || 180 }}<i style="font-size:24px;">(cm)</i></span>
               </div>
             </div>
             <div class="basics_info">
@@ -279,7 +286,7 @@ header {
               <div class="basics_text">
                 <p>BMI(20.0~23.5)</p>
                 <div class="basics_line"></div>
-                <span>{{ user_bmi || 16.3 }}(kg/m^2)</span>
+                <span>{{ user_bmi || 16.3 }}<i style="font-size:24px;">(kg/m^2)</i></span>
               </div>
             </div>
           </div>
@@ -308,33 +315,33 @@ header {
                 <section class="shell_one_left">
                   <p class="one_p1">当前体重 / 目标体重</p>
                   <p class="one_p2">
-                    <span>{{ LOCK_WEIGHT.weight || 50 }}kg</span> / {{ 65 }}kg
+                    <span>{{ LOCK_WEIGHT.weight || '50.0' }}<i style="font-size:24px;">kg</i></span> / {{ 65 }}<i style="font-size:24px;">kg</i>
                   </p>
                   <p class="one_p3">
                     您可以通过每周3-5次的体能耐力训练及有氧运动来达到减脂的目的
                   </p>
                 </section>
                 <section class="shell_one_right">
-                  <endEchart />
+                  <endEchart :Weight="LOCK_WEIGHT.weight || 0" :Fat="bodydata['fat-percentage'] || 0" />
                 </section>
               </div>
             </div>
             <div class="container_shell"
                  v-else-if="index == 1">
               <div class="shell_two">
-                <h1 class="shell_two_title">体脂率</h1>
+                <h1 class="shell_two_title">体 脂 率</h1>
                 <div class="shell_two_value">
-                  <div class="two_1">{{ 14.8 }}%</div>
+                  <div class="two_1">{{ item.value || 14.8 }}<i style="font-size:24px;">(%)</i></div>
                   <p class="two_2">标准:11.0~20.0</p>
-                  <p class="two_3">正常</p>
+                  <p class="two_3" v-html="allindex(item.healthyindex)"></p>
                 </div>
               </div>
             </div>
             <div class="container_shell"
                  v-else>
-              <div class="container_shell_title">{{ item.title }}(<span>{{ titlemin(item.field,1) }}</span>-<span>{{ titlemin(item.field,2)}}</span> )</div>
+              <div class="container_shell_title">{{ item.title }}（<span>{{ titlemin(item.field,1) }}</span>-<span>{{ titlemin(item.field,2)}}</span>）</div>
               <div class="shell_value">
-                <span class="shell_span1">{{ item.value || 1}} <span>({{item.company}})</span> </span>
+                <span class="shell_span1">{{ item.value || 1}} <span style="font-size:24px;">({{item.unit}})</span> </span>
                 <span v-html="allindex(item.healthyindex)"></span>
               </div>
             </div>
@@ -343,19 +350,14 @@ header {
       </div>
       <!-- 底部 -->
       <div class="footer">
-        <button class="footer_btn1"
-                @click="$router.push('/')">返回首页</button>
-        <button class="footer_btn2"
-                @click="foot_btn()">
-          推荐课程
-        </button>
+        <button class="footer_btn1" @click="$router.push('/')">返回首页</button>
+        <button class="footer_btn2" @click="foot_btn()">推荐课程</button>
       </div>
-      <EndOverlay v-if="showQR"
-                  @showover="showQR = false" />
+      <!-- 登录二维码 -->
+      <EndOverlay v-if="showQR" @showover="showQR = false" />
     </div>
-    <RecommendPage v-if="!endPageStatus"
-                   @setpagestatus="endPageStatus = true">
-    </RecommendPage>
+    <!-- 公共的推荐页面 -->
+    <RecommendPage v-if="!endPageStatus" @setpagestatus="endPageStatus = true"></RecommendPage>
   </div>
 </template>
 
@@ -378,89 +380,89 @@ export default {
           title: '体重及体脂率',
           value: 2,
           healthyindex: 0,  //0偏低  1正常 2偏高 
-          company: "1",
+          unit: "1",
           field: ""
         },
         {
-          title: '脂肪率(%)',
+          title: '体脂率(%)',
           value: 14.8,
           healthyindex: 1,
-          company: "1",
+          unit: "1",
           field: "fat-percentage"
         },
         {
           title: '基础代谢量',
           value: 1471.0,
           healthyindex: 0,
-          company: "Kcal",
+          unit: "Kcal",
           field: "basal-metabolism"
         },
         {
           title: '水分比率',
           value: 43.0,
           healthyindex: 0,
-          company: "%",
+          unit: "%",
           field: "water-percentage"
         },
         {
           title: '肌肉量',
           value: 53.7,
           healthyindex: 1,
-          company: "%",
+          unit: "%",
           field: "muscle-percentage"
         },
         {
           title: '骨骼量',
           value: 2.9,
           healthyindex: 0,
-          company: "kg",
+          unit: "kg",
           field: "skeleton-percentage"
         },
         {
           title: '蛋白质率',
           value: 53.7,
           healthyindex: 2,
-          company: "%",
+          unit: "%",
           field: "protein-percentage"
         },
         {
           title: '细胞外水分率',
           value: 53.7,
           healthyindex: 0,
-          company: "%",
+          unit: "%",
           field: "extracellular-moisture-percentage"
         },
         {
           title: '内脏等级',
           value: 8,
           healthyindex: 0,
-          company: "等级",
+          unit: "等级",
           field: "visceral-fatGrade"
         },
       ],
       manmax: [
         { min: 0, max: 0, field: "1" },
-        { min: 11, max: 25, field: "fat-percentage" }, //脂肪率
-        { min: 1300, max: 2000, field: "basal-metabolism" }, //基础代谢量
-        //{ min: 18.5, max: 24 }, //BMI
-        { min: 52, max: 57, field: "water-percentage" }, //水分比例
-        { min: 0, max: 0, field: "muscle-percentage" }, //肌肉量
-        { min: 2.4, max: 3.1, field: "skeleton-percentage" }, //骨骼量
-        { min: 16, max: 20, field: "protein-percentage" }, //蛋白质率
-        { min: 15, max: 21, field: "extracellular-moisture-percentage" }, //细胞外水分率
-        { min: 1, max: 9, field: "visceral-fatGrade" }, //内脏等级
+        { min: 11, max: 20, field: "fat-percentage" },                    // 脂肪率
+        { min: 1000, max: 1400, field: "basal-metabolism" },              // 基础代谢量
+        //{ min: 18.5, max: 24 },                                         // BMI
+        { min: 45, max: 65, field: "water-percentage" },                  // 水分比例
+        { min: 55.0, max: 65.0, field: "muscle-percentage" },             // 肌肉量
+        { min: 2.3, max: 3.0, field: "skeleton-percentage" },             // 骨骼量
+        { min: 45, max: 65, field: "protein-percentage" },                // 蛋白质率
+        { min: 45, max: 65, field: "extracellular-moisture-percentage" }, // 细胞外水分率
+        { min: 6, max: 10, field: "visceral-fatGrade" },                  // 内脏等级
       ],
       girtmax: [
         { min: 0, max: 0, field: "1" },
-        { min: 20, max: 36, field: "fat-percentage" }, //脂肪率
-        { min: 1100, max: 1800, field: "basal-metabolism" }, //基础代谢量
-        //{ min: 18.5, max: 24 }, //BMI
-        { min: 48, max: 53, field: "water-percentage" }, //水分比例
-        { min: 0, max: 0, field: "muscle-percentage" }, //肌肉量
-        { min: 1.7, max: 2.4, field: "skeleton-percentage" }, //骨骼量
-        { min: 16, max: 20, field: "protein-percentage" }, //蛋白质率
-        { min: 15, max: 21, field: "extracellular-moisture-percentage" }, //细胞外水分率
-        { min: 1, max: 9, field: "visceral-fatGrade" }, //内脏等级
+        { min: 11, max: 20, field: "fat-percentage" },                    // 脂肪率
+        { min: 1000, max: 1400, field: "basal-metabolism" },              // 基础代谢量
+        //{ min: 18.5, max: 24 },                                         // BMI
+        { min: 45, max: 65, field: "water-percentage" },                  // 水分比例
+        { min: 55.0, max: 65.0, field: "muscle-percentage" },             // 肌肉量
+        { min: 2.3, max: 3.0, field: "skeleton-percentage" },             // 骨骼量
+        { min: 45, max: 65, field: "protein-percentage" },                // 蛋白质率
+        { min: 45, max: 65, field: "extracellular-moisture-percentage" }, // 细胞外水分率
+        { min: 6, max: 10, field: "visceral-fatGrade" },                  // 内脏等级
       ],
       user_bmi: 20,
       endPageStatus: true,
@@ -480,6 +482,7 @@ export default {
       'user_age',
       'ouid',
       'publicPath',
+      'user_side_log'
     ])
   },
   watch: {
@@ -492,17 +495,19 @@ export default {
   created () { },
   mounted () {
     if (JSON.stringify(this.bodydata) !== {}) {
-      // console.log(this.bodydata)
       this.initbodydata()
     }
-    // for (let i of this.manmax) {
-    //   console.log(i)
-    // }
+
+    // 判断是否有用户，如果有用户则提交
+    console.log("进入体测数据结算页面时的登录状态：", this.loginState);
+    if (this.loginState){
+      this.loadaddside();
+    }
   },
   //离开页面
   destroyed: function () {
     this.$store.commit('clear_bodydata')
-    this.loadaddside()
+    // this.loadaddside()
     this.$store.dispatch('clientEnd')
   },
   methods: {
@@ -528,16 +533,19 @@ export default {
         this.set_bodylevel(i, this.healthyList[i].value)
       }
       let m2 = this.RUN_HEIGHT.height / 100
-      this.user_bmi = Math.round(this.LOCK_WEIGHT.weight / Math.pow(m2, 2))
+      this.user_bmi = Math.round(this.LOCK_WEIGHT.weight / Math.pow(m2, 2)*10)/10
+      if (this.user_bmi > 0){
+        let v = (1-Math.abs((1-(this.user_bmi/23))))*100
+        this.usergrade = Math.trunc(v)
+      }
     },
 
     async loadaddside () {
       const data = this.bodydata
       // console.log(data)
-      // this.usergrade = this.usergrade == 0 ? 70 : this.usergrade == 1 ? 90 : 70
       var msg = {
         device_ouid: this.ouid, //设备ID
-        user_ouid: this.userInfo['user_id'] || '', //用户ID
+        user_id: this.userInfo['user_id'] || 0, //用户ID
         start_time: new Date().getTime(), //体测时间
         age: Number(this.user_age), //用户年龄
         sex: Number(this.user_sex), //用户性别
@@ -558,7 +566,7 @@ export default {
       console.log('msg', msg)
 
       const rs = await api.post('/add-side', msg)
-      console.log(rs)
+      console.log("提交用户体测数据返回数据：", rs)
     },
 
     //筛选数值
@@ -595,7 +603,6 @@ export default {
         this.endPageStatus = false
         // clearInterval(this.downtimer)
       } else {
-        console.log('1')
         this.showQR = true
       }
     }

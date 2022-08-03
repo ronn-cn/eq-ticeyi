@@ -137,7 +137,7 @@ export default {
   methods: {
     // ...mapActions([]),
     async getUserAll() {
-      const rs = await api.get('/get-user-all', {
+      const rs = await api.post('/get-user-all', {
         user_id: this.userInfo.user_id,
       })
       console.log(rs)

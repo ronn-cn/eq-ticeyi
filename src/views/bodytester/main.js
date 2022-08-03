@@ -8,14 +8,15 @@ import store from "../../store";
 import axios from 'axios';
 import 'vant/lib/button/style'
 import { Button } from 'vant';
-Vue.use(Button);
 
+import '../../assets/fonts/fonts.css'
+
+Vue.use(Button);
 
 Vue.config.productionTip = false;
 Vue.prototype.$echarts = echarts
 Vue.prototype.$axios = axios
 Vue.prototype.$moment = moment;
-
 
 // console.log(process.env);
 

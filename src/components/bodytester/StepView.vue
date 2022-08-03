@@ -167,8 +167,7 @@
             基于生物电阻抗测量原理的全方位测量，通过分析人体成分、人体机能等身体数据，全面评估个人身体健康状况。
           </p>
           <div class="introduce_cover">
-            <img :src="`${publicPath}bodytesterStatic/images/ticeyi1.svg`"
-                 width="404"
+            <img :src="`${publicPath}bodytesterStatic/images/ticeyi.png`"
                  height="436" />
           </div>
         </div>
@@ -323,8 +322,8 @@ export default {
         el: "ruler", //容器id
         height: 50, //刻度尺高度
         maxScale: 80, //最大刻度
-        startValue: 0, //刻度开始的初始值
-        region: [0, 80], //选择刻度的区间范围
+        startValue: this.user_age || 0, //刻度开始的初始值
+        region: [8, 80], //选择刻度的区间范围
         background: "#303445", //刻度尺背景色
         color: "#fff", //刻度线和字体的颜色
         markColor: "#3786db", //中心刻度标记颜色

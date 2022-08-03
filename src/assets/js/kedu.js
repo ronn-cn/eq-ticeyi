@@ -20,13 +20,13 @@ var ruler = {
   initPlugin: function (params) {
     // console.log('``````12345')
     // params = item
-    //console.log(params)
+    console.log(params)
     var initParams = {
       el: "ruler",
       height: 60,
       maxScale: 80,
-      startValue: 25,
-      region: [0, 80],
+      startValue: params.startValue,
+      region: params.region,
       background: "",
       color: "#fff",
       markColor: "#3786db",

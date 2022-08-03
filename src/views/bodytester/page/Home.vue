@@ -227,15 +227,15 @@
           </div>
           <div class="user_value">
             <div class="user_value_item">
-              <p class="up1">{{ user_data.data.vitality || 0 }}</p>
+              <p class="up1">{{ user_data.vitality_v || 0 }}</p>
               <p class="up2">活力</p>
             </div>
             <div class="user_value_item">
-              <p class="up1">{{ user_data.data.sport_power || 0 }}</p>
+              <p class="up1">{{ user_data.athletic_ability_v || 0 }}</p>
               <p class="up2">运动力</p>
             </div>
             <div class="user_value_item">
-              <p class="up1">{{ user_data.total.star_count || 0 }}</p>
+              <p class="up1">{{ user_data.star_count || 0 }}</p>
               <p class="up2">获星总数</p>
             </div>
           </div>
@@ -319,15 +319,16 @@ export default {
     Qrcode (val) {
       this.init_qrcode(val)
     },
-    loginState (val) {
-      if (!val) {
-        this.init_qrcode(this.Qrcode)
-        this.$store.commit('set_user_age', 18)
-        this.$store.commit('set_user_sex', 0)
-      } else {
-        this.all_user()
-      }
-    },
+    // loginState (val) {
+    //   if (!val) {
+    //     this.init_qrcode(this.Qrcode)
+    //     this.$store.commit('set_user_age', 18)
+    //     this.$store.commit('set_user_sex', 0)
+    //   } else {
+    //     console.log("执行get-user-all")
+    //     this.all_user()
+    //   }
+    // },
     dataTextState (val) {
       this.$store.commit('set_testState', val)
       if (!val) {

@@ -26,6 +26,7 @@ export default {
   userInfo: state => state.user.userinfo, //用户信息
   user_rmvalue: state => state.user.user_rmvalue, //用户rm值 
   user_data: state => state.user.user_data, //用户rm值 
+  user_side_log: state => state.user.user_side_log, // 用户体测数据日志
 
   //websocket
   websocketUrl: state => state.websocket.websocketUrl,  //websocket地址

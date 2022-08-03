@@ -1,6 +1,6 @@
 import { number } from "echarts/lib/export";
 import api from "../../api/api";
-console.log(powerInfo.type, 22)
+// console.log(powerInfo.type, 22)
 const state = {
   actionValue: {},
   coursegroup: {},

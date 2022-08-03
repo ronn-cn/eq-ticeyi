@@ -3,73 +3,16 @@
   width: 100%;
   height: 100%;
   position: relative;
-  // background: #1b254b;
+    font-family: 'SourceHanSansSC-Light';
+  // background: #28cd41;
 }
-.courses_containr {
-  h4 {
-    color: #7f7f7f;
-    font-size: 0.18rem;
-    padding: 0.25rem 0;
-  }
-  .courses_item {
-    ul {
-      height: 4rem;
-      overflow-y: auto;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      li {
-        width: 2.8rem;
-        height: 1.8rem;
-        margin-bottom: 0.25rem;
-        position: relative;
 
-        .item_text {
-          padding-left: 10%;
-          text-align: left;
-          .p1 {
-            width: 95%;
-            overflow: hidden;
-            white-space: nowrap;
-            font-size: 0.2rem;
-            padding: 0.4rem 0 0.2rem 0;
-          }
-          .p2 {
-            font-size: 0.16rem;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            cursor: pointer;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            line-height: 0.2rem;
-            font-size: 0.14rem;
-            padding-right: 0.12rem;
-          }
-        }
-        .item_btn {
-          width: 1rem;
-          height: 0.3rem;
-          color: #000;
-          font-size: 0.16rem;
-          background-color: #fff;
-          border-radius: 0.1rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: absolute;
-          right: 0.14rem;
-          bottom: 0.14rem;
-        }
-      }
-    }
-  }
-}
 header {
   height: 283px;
   background: linear-gradient(180deg, #323647 0%, #222631 100%);
   box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
   border-radius: 20px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   position: relative;
@@ -88,7 +31,7 @@ header {
     text-align: left;
     .info_p1 {
       // color: #aaaaaa;
-      font-size: 0.12rem;
+      font-size: 0.16rem;
     }
     .info_p2 {
       font-size: 36px;
@@ -115,7 +58,6 @@ header {
           height: 32px;
           border-radius: 50%;
           border: 2px solid #fff;
-          background-color: #555555;
         }
         .date_dot2 {
           width: 32px;
@@ -127,6 +69,13 @@ header {
           background-repeat: no-repeat;
           background-size: 16px 12px;
           background-position: center;
+        }
+        .date_dot3 {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          border: 2px solid #fff;
+          background-color: #555555;
         }
       }
     }
@@ -164,55 +113,10 @@ header {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    .plan_day {
-      width: calc(455px - 68px);
-      height: calc(737px - 68px);
-      padding: 34px;
-      background: linear-gradient(180deg, #323647 0%, #222631 100%);
-      box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
-      border-radius: 20px;
-      position: relative;
-
-      .plan_day_item {
-        margin-top: 20px;
-        display: flex;
-        justify-content: space-between;
-        .item_left {
-          text-align: left;
-          font-size: 0.16rem;
-          .item_left_p2 {
-            margin-top: 0.1rem;
-            font-size: 0.12rem;
-          }
-        }
-        .item_right {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 0.12rem;
-          padding: 0 0.14rem;
-          border: 1px solid #fff;
-          border-radius: 10px;
-        }
-      }
-      .plan_day_btn {
-        font-size: 36px;
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 131px;
-        line-height: 131px;
-        background: #28cd41;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
-          inset 15px 15px 10px rgba(255, 255, 255, 0.09);
-        border-radius: 20px;
-      }
-    }
     .suggest_plan {
       width: 1407px;
       height: 677px;
-      padding: 0.2rem;
+      padding: 0.1rem;
       background: linear-gradient(180deg, #323647 0%, #222631 100%);
       box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.09);
       border-radius: 20px;
@@ -221,6 +125,7 @@ header {
         font-size: 36px;
         padding-left: 0.55rem;
         position: relative;
+        margin: 25px 0;
       }
       .plan_h3::after {
         content: "";
@@ -232,16 +137,20 @@ header {
         background: url("~assets/images/phase2/end_icon2.svg") no-repeat;
         background-size: 100% 100%;
       }
-      ul {
+      .suggest_ul {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
+        margin-top: 50px;
         li {
-          width: 432px;
-          height: 283px;
-          margin-top: 25px;
+          width: 322px;
+          height: 232px;
+          margin: 20px 10px;
           border-radius: 20px;
           position: relative;
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: center center;
           .train_title {
             position: absolute;
             bottom: 0;
@@ -251,6 +160,7 @@ header {
             background: rgba(35, 33, 33, 0.74);
             padding: 20px;
             text-align: left;
+            border-radius: 0 0 20px 20px;
             .train_title_p1 {
               font-size: 24px;
             }
@@ -278,34 +188,6 @@ header {
     }
   }
 }
-
-.suggest_ul li:nth-child(1) {
-  background: url("~assets/images/common/1001.jpg") no-repeat;
-  background-size: 100% 100%;
-}
-.suggest_ul li:nth-child(2) {
-  background: url("~assets/images/common/1002.jpg") no-repeat;
-  background-size: 100% 100%;
-}
-.suggest_ul li:nth-child(3) {
-  background: url("~assets/images/common/1003.jpg") no-repeat;
-  background-size: 100% 100%;
-}
-.suggest_ul li:nth-child(4) {
-  background: url("~assets/images/common/1004.jpg") no-repeat;
-  background-size: 100% 100%;
-}
-.suggest_ul li:nth-child(5) {
-  background: url("~assets/images/common/1005.jpg") no-repeat;
-  background-size: 100% 100%;
-}
-.suggest_ul li:nth-child(6) {
-  background: url("~assets/images/common/1006.jpg") no-repeat;
-  background-size: 100% 100%;
-}
-
-.user_date {
-}
 .fixed_start {
   color: #000;
   width: 3.8rem;
@@ -332,12 +214,6 @@ header {
   }
 }
 
-.t_ul {
-  li {
-    width: 33% !important;
-  }
-}
-
 .vant_notify_zhenla {
   width: 100%;
   height: 80px;
@@ -348,120 +224,268 @@ header {
   left: 0;
   z-index: 2022;
 }
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
+
+.plan_section{
+  margin-left:0.15rem;
+  border-radius: 20px;
+  background-color: #323647;
+  position: relative;
+
+  .section0{
+    // position: relative;
+    // height: 40px;
+    img {
+      position: absolute;
+      left: 20px;
+      top: 28px;
+    }
+    h2 {
+      position: absolute;
+      left: 80px;
+      top: 34px;
+    }
+  }
+
+  .section1{
+      margin-top: 100px;
+      position: relative;
+      .plan_info{
+        width: 90%;
+        margin: 0 auto;
+        padding: 10px 0;
+        height: 120px;
+        border-bottom: 1px solid #eee;
+        .title1{
+          display: inline-block;
+          width: 100%;
+          text-align: left;
+          padding: 10px 0;
+          font-size: 26px;
+        }
+        .title2{
+          display: inline-block;
+          width: 100%;
+          text-align: left;
+          padding: 10px 0;
+          font-size: 22px;
+        }
+      }
+      .plan_progress{
+        position: absolute;
+        top:5px;
+        right: 20px;
+        width: 100px;
+        height: 100px;
+        .plan_progress_v{
+          width: 100px;
+          height: 100px;
+          line-height: 100px;
+          text-align: center;
+          font-size: 26px;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+      }
+  }
+
+  .plan_record{
+    .record_item{
+      text-align: left;
+      padding:20px;
+      .lesson_class{
+        font-size: 30px;
+        padding: 10px 5px;
+      }
+      .lesson_name{
+        font-size: 24px;
+        padding: 10px 0;
+        float: left;
+      }
+      .lesson_time{
+        font-size: 22px;
+        padding: 10px 0;
+        float: right;
+      }
+      .circle{
+        display: block;
+        width: 20px;
+        height: 20px;
+        margin-top: 5px;
+        float: right;
+        border: 2px solid #fff;
+        border-radius: 25px;
+      }
+    }
+  }
+
+  .section2{
+    width: 100%;
+    height: 100%;
+    .plan_text{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 0.8em;
+      padding: 1em;
+      box-sizing: border-box;
+    }
+  }
+  // 按钮
+  .plan_four{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 95px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
 }
 </style>
 
 <template>
   <div class="main">
     <header>
-      <div class="end_back"
-           @click="lotrecommend(), click_effects()"></div>
+      <div class="end_back" @click="lotrecommend(), click_effects()"></div>
       <div class="user_avatar">
-        <img :src="userInfo.user_avatar || ''"
-             alt="" />
+        <img :src="userInfo.user_avatar || ''" alt="用户头像" />
       </div>
       <div class="user_info">
         <p class="info_p1">
-          欢迎回来,{{ userInfo.user_name || 'wxid-jdop31' }}
+          欢迎回来，{{ userInfo.user_name || "wxid-jdop31" }}
         </p>
-        <p class="info_p2">为所有，尽所能</p>
+        <p class="info_p2">
+          坚持就是胜利，本周你已运动 {{ weeklength }} 天
+        </p>
         <ul class="user_date">
-          <li v-for="(item, index) of dateArr"
-              :key="index">
-            <span class="date_day1">{{ weekDay(item.date) }}</span>
-            <!-- <span class="date_day2">{{ moment_date(item.date) }}</span> -->
-            <div :class="item.value == 0 ? 'date_dot1' : 'date_dot2'"></div>
+          <li v-for="(item, index) of weekdata" :key="index">
+            <span class="date_day1">{{ item.title }}</span>
+            <div v-if="index < weektoday" :class="item.tag ? 'date_dot2' : 'date_dot1'"></div>
+            <div v-else class="date_dot3"></div>
           </li>
         </ul>
       </div>
       <div class="user_ability">
         <div class="user_ability_item">
-          <p class="ability_p1">{{ userData.data.vitality || 0 }}</p>
+          <p class="ability_p1">{{ vitality_v || 0 }}</p>
           <p class="ability_p2">活力</p>
         </div>
         <div class="user_ability_item">
-          <p class="ability_p1">
-            {{ userData.data.sport_power || 0 }}
-          </p>
+          <p class="ability_p1">{{ athletic_ability_v || 0 }}</p>
           <p class="ability_p2">运动能力</p>
         </div>
       </div>
     </header>
     <section class="main_cover">
-      <!-- <div class="main_cover_nav" v-if="showTable">
-        <div class="nav_title">
-          <p class="nav_p1">你的训练计划: {{ planInfo.name || '' }}</p>
-          <p class="nav_p2">{{ planInfo.desc || '' }}</p>
-        </div>
-        <div class="nav_btn" @click="selectLesson" v-if="showTable">
-          <span>继续我的计划</span>
-        </div>
-      </div> -->
-
       <div class="main_cover_plan">
-        <section class="suggest_plan"
-                 :style="showTable ? 'width:70%' : 'width:100%'">
+        <section class="suggest_plan" style="width: 75%">
           <h3 class="plan_h3">通过以下推荐课程继续训练</h3>
-          <ul class="suggest_ul"
-              :class="showTable ? '' : 't_ul'">
-            <li v-for="item of curriculum"
-                :key="item.title"
-                @click="new_details(item), click_effects()">
+          <ul class="suggest_ul">
+            <li 
+            v-for="item of curriculum" :key="item.title"
+            :style="{'background-image': `url(${require('@/assets/images/RecommCourses/'+item.images)})`}"
+            @click="new_details(item), click_effects()">
               <div class="train_title">
-                <p class="train_title_p1">{{ item.groupname }}</p>
-                <p class="train_title_p2">{{ item.introduce }}</p>
+                <p class="train_title_p1">{{ item.title }}</p>
+                <p class="train_title_p2">{{ item.profiles }}</p>
                 <div class="start_btn"></div>
               </div>
             </li>
           </ul>
         </section>
-        <section class="plan_day"
-                 v-show="showTable">
-          <h3 class="day_h3">
-            {{ showTable ? '今日训练计划' : '今日推荐课程' }}
-          </h3>
-          <div class="plan_day_item"
-               v-if="showTable">
-            <div class="item_left">
-              <p>{{ plantitle(this.todayInfo.sport_guider) }}训练</p>
-              <p class="item_left_p2">{{ this.todayInfo.date }}</p>
+
+        <section class="plan_section" style="width: 25%">
+          <!-- 第一段 -->
+          <section class="section0">
+            <img src="../assets/images/RecommCourses/jh.png" alt="" />
+            <h2>{{ hasPlan ? "阶段计划完成进度" : "暂无训练计划" }}</h2>
+          </section>
+
+          <!-- 第二段I -->
+          <section v-if="hasPlan">
+            <section class="section1">
+              <div class="plan_info">
+                <span class="title1">{{ planTitle }}</span>
+                <span class="title2">{{ stageTitle }}</span>
+              </div>
+              <div class="plan_progress">
+                <!-- <el-progress type="circle"  width="50" :percentage="75" color="white"/> -->
+                <!-- <VanCircle class="v_circle" stroke-width="80" layer-color="#cccccc" color="#ffffff" rate="300" /> -->
+                <VanCircle 
+                v-model="currentRate" 
+                :rate="currentRate" :speed="10"
+                stroke-width="120" 
+                layer-color="#82858e" 
+                color="#ffffff" 
+                size="100" />
+                <div class="plan_progress_v">{{currentRate}}<i style="font-size:16px">%</i></div>
+              </div>
+              <!-- <el-progress class="plan_progress" type="circle" color="white" :percentage="75" ></el-progress> -->
+            </section>
+            <section class="plan_record">
+              <ul>
+                <!-- <li v-for="(item, index) in showclass" :key="index" style="font-size: 18px" ref="child">
+                  <div class="lesson_name">
+                    ·{{ item.lesson_name }}
+                  </div>
+                  <div class="sport_length">
+                    {{ item.sport_length }}
+                  </div>
+                </li> -->
+                <li class="record_item">
+                  <div class="lesson_class">课程分类</div>
+                  <div class="lesson_name">·课程名称</div>
+                  <div class="lesson_time">17:25</div>
+                  <div style="clear: both;"></div>
+                </li>
+                
+                <li class="record_item">
+                  <div class="lesson_class">待完成</div>
+                  <div class="lesson_name">·--</div>
+                  <div class="circle"></div>
+                  <div style="clear: both;"></div>
+                </li>
+              </ul>
+            </section>
+            <div class="plan_four"  style="background-color: #28cd41;" @click="continueMyPlan">
+              <span>继续我的计划</span>
             </div>
-            <div class="item_right">
-              {{ this.todayInfo.value == 0 ? '未完成' : '已完成' }}
+          </section>
+          <!-- 第二段II -->
+          <section class="section2" v-else>
+            <div class="plan_text">可前往智能健身指导镜处，选择并开启适合你的计划吧</div>
+            <div class="plan_four" style="background-color: #aaaaaa;">
+              <span>暂无计划</span>
             </div>
-          </div>
-          <div class="plan_day_btn"
-               @click="selectLesson">继续我的计划</div>
+          </section>
         </section>
       </div>
     </section>
-    <transition v-if="showNotify"
-                name="fade">
+    <transition v-if="showNotify" name="fade">
       <div class="vant_notify_zhenla">
-        {{notifyTitle}}
+        {{ notifyTitle }}
       </div>
     </transition>
 
-    <van-popup v-model="popupshow"
-               :close-on-click-overlay="false">
+    <van-popup v-model="popupshow" :close-on-click-overlay="false" style="border-radius:20px;overflow: hidden;">
       <div class="fixed_start">
-        <RecommDetails />
+        <RecommDetails :receipt="getChildInfo" :tranfserData="tranfserData" />
       </div>
     </van-popup>
   </div>
 </template>
 
 <script>
-import api from '@/api/api'
-import { mapGetters, mapActions } from 'vuex'
-import RecommDetails from './RecommDetails'
-import { Popup, Swipe, SwipeItem, Notify } from 'vant'
+import api from "@/api/api";
+import { mapGetters, mapActions } from "vuex";
+import RecommDetails from "./RecommDetails";
+import { Popup, Swipe, SwipeItem, Circle  } from "vant";
 export default {
   props: {},
   components: {
@@ -469,323 +493,196 @@ export default {
     VanPopup: Popup,
     VanSwipe: Swipe,
     VanSwipeItem: SwipeItem,
-    // Notify,
+    VanCircle: Circle,
   },
-  data () {
+  computed: {
+    ...mapGetters([
+      "recommendState",
+      "userInfo",
+      "client_id",
+      "publicPath",
+      "projecttype",
+      'ouid'
+    ]),
+  },
+  data() {
     return {
       popupshow: false,
-      timernum: 30,
-      downtimer: null,
-      courseList: [],
       showNotify: false,
-      notifyTitle: '暂无空闲设备',
-      curriculum: [],
-      lessondata: [],
-      dateArr: [],
-      tablueData: [],
-      planInfo: {},
-      currentdate: '',
-      userData: {
-        data: {
-          sport_power: 0,
-          vitality: 0,
-        },
-        total: {
-          star_count: 0,
-        },
-      },
-      todayInfo: {},
-    }
+      // 新的参数
+      weekdata: [],
+      weektoday: 0,
+      weeklength: 0,
+      vitality_v: 0,          // 活力值
+      athletic_ability_v: 0,  // 运动力的值
+      hasPlan: false,         // 是否有计划
+      planTitle: "计划标题",   // 计划标题
+      stageTitle: "阶段标题",  // 阶段标题
+      tranfserData: undefined, // 转移数据
+      currentRate: 0,        // 当前阶段进度
+      todayLesson: [],        // 进入课程
+    };
   },
-  created () {
-    // if (process.env.NODE_ENV === 'production') {
-    //   this.loadDown()
-    // }
-    // this.loadcourseList()
+  created() {
+
   },
   watch: {
-    recommendState (val) {
-      this.popupshow = true
+    recommendState(val) {
+      this.popupshow = true;
       if (val) {
         // this.loadDown()
-        this.popupshow = true
+        this.popupshow = true;
       } else {
-        this.popupshow = false
+        this.popupshow = false;
         // clearInterval(this.downtimer)
         // this.timernum = 30
       }
     },
   },
-  mounted () {
+  mounted() {
     this.$axios.get(`${this.publicPath}common/js/groups.json`).then((res) => {
-      this.curriculum = res.data
-    })
-    this.getUserAll()
+      this.curriculum = res.data;
+    });
+    this.getUserAll();
+    this.getLessonLog();
 
     // console.log(this.recommendState)
   },
-  destroyed () {
-    clearInterval(this.downtimer)
-    this.$store.commit('set_recommendid', '')
+  destroyed() {
+    clearInterval(this.downtimer);
+    this.$store.commit("set_recommendid", "");
   },
-  computed: {
-    ...mapGetters([
-      'recommendState',
-      'userInfo',
-      'client_id',
-      'publicPath',
-      'projecttype',
-    ]),
-    showTable () {
-      if (this.tablueData) {
-        if (this.tablueData.length > 0) {
-          for (let day in this.tablueData) {
-            if (
-              this.tablueData[day].date == this.currentdate &&
-              this.tablueData[day].value !== 1
-            ) {
-              return true
+  methods: {
+    ...mapActions(['logout',"click_effects"]),
+
+    async getChildInfo(data){
+      console.log("子组件回执数据:",data);
+      if(data == 'cancelTransfer'){
+        this.popupshow = false;
+        // 然后调用取消转移的接口
+        const rs = await api.post("/cancel-transfer", {
+          "client_id": this.tranfserData.client_id,
+        });
+        console.log("取消转移返回值: ",rs)
+      } else if(data == 'goNow'){
+        // 立即前往
+        this.popupshow = false;
+        this.logout()
+        this.$router.push('/')
+      }
+    },
+    async getLessonLog() { // 现在还没有调用
+      const rs = await api.post("/get-lesson-log", {
+        "user_id": this.userInfo.user_id,
+      });
+      console.log("获取课程日志：",rs)
+      let weekday = ["周一", "周二", "周三", "周四", "周五", "周六","周日"];
+      for (var i = 0; i < 7; i++){
+        var child = {
+          "title": weekday[i],
+          "tag": 0,
+        }
+        this.weekdata.push(child);
+      }
+      console.log("每周数据：",this.weekdata);
+      if (rs.data.data.weekend){
+        for (const item of rs.data.data.weekend) {
+          this.weekdata[item-1].tag = 1
+        }
+        this.weeklength = rs.data.data.weekend.length;
+      }
+      this.weektoday = new Date().getDay()
+
+      // 获取今天的课程记录
+    },
+    //获取用户信息
+    async getUserAll() {
+      const rs = await api.post("/get-user-all", {
+        "user_id": this.userInfo.user_id,
+      });
+      console.log("用户信息", rs);
+      if (rs.data.code == "200") {
+        let userAll = rs.data.data;
+        this.vitality_v = userAll.vitality_v; // 设置活力
+        this.athletic_ability_v = userAll.athletic_ability_v; // 设置运动力
+
+        if (userAll.plan != ""){
+          this.hasPlan = true // 设置有计划标记
+          this.planTitle = userAll.plan_describe.plan_name;
+          this.stageTitle = userAll.plan_describe.stage_name;
+        }
+
+        if (userAll.plan_describe.condition){
+          // this.currentRate = 0;
+          let l = userAll.plan_describe.condition.length;
+          let r = 100 / l;
+          for(let i = 0; i < l; i++){
+            if (userAll.plan_describe.condition[i].tag){
+              this.currentRate += r;
             }
           }
         }
       }
-      return false
     },
-  },
-  methods: {
-    ...mapActions(['click_effects']),
-    //获取用户信息
-    async getUserAll () {
-      const rs = await api.get('/get-user-all', {
-        user_id: this.userInfo.user_id,
-      })
-      console.log('用户信息', rs)
-      if (rs.data.code == '200') {
-        this.userData = rs.data.data
-        this.tablueData = rs.data.data.time_table
-        if (this.tablueData) {
-          this.filterWeekName(true)
-        } else {
-          this.filterWeekName(false)
-        }
-
-        let user_plan_id = rs.data.data.data.user_plan_id
-
-        this.$axios
-          .get(`${this.publicPath}common/js/plans.json`)
-          .then((res) => {
-            res.data.forEach((item) => {
-              if (item.id == user_plan_id) {
-                this.planInfo = item
-              }
-            })
-          })
-      }
-    },
-    //没课程直接拿来训练
-    async selectLesson (data) {
-      const rs = await api.post('/new-lesson-select', {
-        user_id: this.userInfo.user_id,
-        user_plan: this.planInfo,
-        client_type: powerInfo.type
-      })
-      console.log(rs)
-      if (rs.data.code == '200') {
-        this.details(rs.data.data)
-      }
-    },
-    //开始课程
-    async new_details (info) {
-      const groupname = [info.groupname]
-      const user_id = this.userInfo.user_id
-
-      const rs = await api.post('/new-lesson-select', {
-        user_id,
-        groupname,
-      })
-      console.log('调用选课', rs)
-      if (rs.data.code == '200') {
-        const arr = [
-          {
-            name: this.projecttype,
-            path: '/trainpage',
-          },
-          {
-            name: '体测仪',
-            path: '/datadetection',
-          },
-          {
-            name: '跑步机',
-            path: '/trainrun',
-            query: { type: 2, status: 0 },
-          },
-        ]
-        let id = process.env.VUE_APP_PAGE_ID
-        if (rs.data.data.equipmenttype.includes(arr[id].name)) {
-          this.$router.push({
-            path: arr[id].path,
-            query: arr[id].query || {},
-          })
-        } else {
-          this.details(rs.data.data)
-        }
+    // 继续我的计划函数
+    async continueMyPlan() {
+      const rs = await api.post("/lesson-select", {
+        "client_id": this.ouid,
+        "user_id": this.userInfo.user_id,
+      });
+      console.log("继续我的计划：",rs);
+      
+      if (rs.data.data){ // 判断转移课程返回的数据不为空
+        this.tranfserData = rs.data.data;
+        this.popupshow = true;
       } else {
         if (!this.showNotify) {
-          this.showNotify = true
-          this.notifyTitle = "暂无推荐课程"
+          this.showNotify = true;
+          this.notifyTitle = "暂无推荐课程";
           setTimeout(() => {
-            this.showNotify = false
-          }, 3000)
+            this.showNotify = false;
+          }, 3000);
         }
-        // this.$notify({
-        //   type: 'warning',
-        //   message: '暂无推荐课程',
-        //   position: 'bottom',
-        // })
       }
     },
-    //开始转移课程
-    async details (data) {
-      // console.log(data, '这是转移啊')
-      const rs = await api.post('/transfer-user', {
-        user_id: this.userInfo.user_id,
-        lesson_id: data.md5,
-        client_type: data.equipmenttype,
-      })
-      console.log('转移课程', rs)
-      if (rs.data.data) {
-        this.$store.commit('set_recommendid', {
-          md5: data,
-          transfer: rs.data.data,
-        })
-        this.$store.commit('set_client_id', rs.data.data.client_id)
+    // 开始课程
+    async new_details(info) {
+      // 根据课程分类进行转移
+      const rs = await api.post("/tranfser-by-type", {
+        "client_id": this.ouid,
+        "lesson_type": info.title,
+        "user_id": this.userInfo.user_id,
+      });
+      console.log("调用课程转移", rs);
+      if (rs.data.data){ // 判断转移课程返回的数据不为空
+        this.tranfserData = rs.data.data;
+        this.popupshow = true;
       } else {
-        // this.$notify({ type: 'warning', message: '暂无空闲设备', duration: 0 })
         if (!this.showNotify) {
-          this.showNotify = true
-          this.notifyTitle = "暂无推荐课程"
+          this.showNotify = true;
+          this.notifyTitle = "暂无推荐课程";
           setTimeout(() => {
-            this.showNotify = false
-          }, 3000)
+            this.showNotify = false;
+          }, 3000);
         }
       }
-    },
-    //周一到周七
-    filterWeekName (status) {
-      this.currentdate = this.$moment(new Date())
-        .add('year', 0)
-        .format('YYYY-MM-DD')
-      // 第一步: 获取今天是本周的第几天
-      const weekOfday = this.$moment().format('E')
-      // 第二步: 获取本周周一的日期
-      const lastMonday = this.$moment()
-        .subtract(weekOfday - 1, 'days')
-        .format('YYYYMMDD')
-      // 第三步: 获取本周周末的日期
-      const lastSunday = this.$moment()
-        .add(7 - weekOfday, 'days')
-        .format('YYYYMMDD')
-      if (status) {
-        for (let i = lastMonday; i <= lastSunday; i++) {
-          let j = String(i)
-          let day = j.slice(0, 4) + '-' + j.slice(4, 6) + '-' + j.slice(6, 8)
-          let obj = {}
-          // console.log(day)
-          this.tablueData.forEach((item, i) => {
-            if (item.date == day) {
-              obj = item
-              if (this.currentdate == day) {
-                // console.log('这是今天', item)
-                this.todayInfo = item
-                obj.current = true
-              } else {
-                obj.current = false
-              }
-              this.dateArr.push(obj)
-            }
-          })
-        }
-      } else {
-        // for (let i = lastMonday; i <= lastSunday; i++) {
-        //   let j = String(i)
-        //   let day = j.slice(0, 4) + '-' + j.slice(4, 6) + '-' + j.slice(6, 8)
-        //   this.dateArr.push({
-        //     value: 0,
-        //     date: day,
-        //   })
-        // }
-      }
-      // console.log(this.dateArr)
     },
     //退出课程
-    async lotrecommend () {
-      this.$router.push('/')
-    },
-    //获取日期
-    moment_date (date) {
-      var newdate = this.$moment(`${date}`)
-      var dow = newdate.date()
-      return dow
-    },
-    weekDay (date) {
-      const newDate = new Date(date.replace(/-/g, '/'))
-      const weekday = ['周天', '周一', '周二', '周三', '周四', '周五', '周六']
-      return weekday[newDate.getDay()]
+    async lotrecommend() {
+      this.$router.push("/");
     },
     //倒计时
-    loadDown () {
+    loadDown() {
       this.downtimer = setInterval(() => {
-        let num = (this.timernum -= 1)
+        let num = (this.timernum -= 1);
         if (num !== 0) {
-          this.timernum = num
+          this.timernum = num;
         } else {
-          clearInterval(this.downtimer)
-          this.$router.push('/')
+          clearInterval(this.downtimer);
+          this.$router.push("/");
         }
-      }, 1000)
-    },
-    plantitle (title) {
-      switch (title) {
-        case 'endurance':
-          return '耐力'
-        case 'power':
-          return '力量'
-        case 'control':
-          return '控制'
-        case 'balance':
-          return '平衡'
-        case 'flexibility':
-          return '柔韧'
-        case 'cardio':
-          return '心肺'
-        case 'fat':
-          return '脂肪'
-        case 'muscle':
-          return '肌肉'
-        case 'neck':
-          return '颈部'
-        case 'shoulder':
-          return '肩部'
-        case 'back':
-          return '背部'
-        case 'chest':
-          return '胸部'
-        case 'arm':
-          return '上臂'
-        case 'forearm':
-          return '前臂'
-        case 'abdominal':
-          return '核心'
-        case 'hip':
-          return '臀部'
-        case 'leg':
-          return '大腿'
-        case 'calf':
-          return '小腿'
-        default:
-          return ''
-      }
+      }, 1000);
     },
   },
-}
+};
 </script>

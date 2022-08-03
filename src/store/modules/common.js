@@ -94,20 +94,21 @@ const actions = {
     const user_id = rootState.user.userinfo.user_id
     const ouid = state.ouid
     const rs = await api.post('/client-start', {
-      ouid,
+      client_ouid: ouid,
       lesson_id: data.lesson_id,
       lesson_name: data.lesson_name,
-      user_id: user_id || ''
+      user_id: user_id || 0,
+      transfer_client_id: ''  //用户转移设备id
     })
     console.log('开始上课状态变更', rs)
   },
   //设备结束下课状态变更
   async clientEnd ({ state, rootState }) {
-    const user_id = rootState.user.userinfo.user_id
+    // const user_id = rootState.user.userinfo.user_id
     const ouid = state.ouid
     const rs = await api.post('/client-end', {
-      ouid,
-      user_id: user_id || ''
+      client_ouid: ouid,
+      // user_id: user_id || ''
     })
     console.log('结束下课状态变更', rs)
   },

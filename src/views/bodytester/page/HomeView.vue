@@ -115,6 +115,8 @@ export default {
     ...mapGetters([
       'loginState',
       'userInfo',
+      'user_sex',
+      'user_age',
       'userMakeState',
       'resStartLesson',
     ]),
@@ -166,9 +168,7 @@ export default {
     },
   },
   created () { },
-  mounted () {
-
-  },
+  mounted () { },
   methods: {
     ...mapMutations(['SEND_SOCKET', 'set_lesson_id', 'set_MakeCareInfo']),
     ...mapActions(['send_askLedState', 'click_effects']),
@@ -193,6 +193,10 @@ export default {
       if (this.courseState) {
         if (this.viewindex < 1) {
           this.click_effects()
+          if (this.user_age  && this.user_sex ){
+            this.$router.push('/datadetection')
+            return
+          }
           this.viewindex++
           let uid = `footer_li${this.viewindex}`
           document.getElementById(uid).setAttribute('class', 'view_active')
