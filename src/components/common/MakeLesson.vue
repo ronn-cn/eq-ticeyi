@@ -219,7 +219,6 @@ export default {
       makeStyle: {},
       aftercolor: '#ff3b30',
       backcolor: '#fff',
-      breathing_lamp_color: '255, 59, 48',
       breathing_lamp_opacity: 1,
       PAGETYPE: 0
     }
@@ -254,10 +253,7 @@ export default {
     console.log("预约 created:")
   },
   mounted () {
-    this.breathing_lamp_color = this.MakelampColor
-    // console.log("预约 mounted:", this.MakelampColor)
     this.breathing_lamp_change()
-    // this.breathing_lamp_opacity = 0
     this.loaddown()
   },
   destroyed: function () {

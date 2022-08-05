@@ -292,7 +292,7 @@ header {
   .plan_record{
     .record_item{
       text-align: left;
-      padding:20px;
+      padding: 16px 20px;
       .lesson_class{
         font-size: 30px;
         padding: 10px 5px;
@@ -600,7 +600,16 @@ export default {
         "user_id": this.userInfo.user_id,
       });
       console.log("用户今天的训练记录：", rs)
-      this.todayLesson = rs.data.data;
+      if (rs.data.data){
+        this.todayLesson = []
+        var temp = rs.data.data.reverse()
+        if (temp.length == 1){
+          this.todayLesson.push(temp[0])
+        } else if(temp.length > 1) {
+          this.todayLesson.push(temp[1])
+          this.todayLesson.push(temp[0])
+        }
+      }
     },
     //获取用户信息
     async getUserAll() {

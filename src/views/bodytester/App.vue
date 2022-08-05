@@ -59,8 +59,11 @@ export default {
     getTouchTime (val) {
       if (process.env.NODE_ENV !== 'development') {
         if (!this.userMakeState) {
-          if (this.$route.path == '/datadetection') {
-            this.$router.push('/')
+          if (this.$route.path !== '/datadetection') {
+            console.log("进入到待机页面")
+            if (this.$route.path != '/' && this.$route.path != '/bodytester'){
+              this.$router.push('/')
+            }
             this.$store.commit('set_StandbyState', true)
             this.$store.dispatch('logout')
           }
