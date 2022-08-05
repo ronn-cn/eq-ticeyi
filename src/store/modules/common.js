@@ -20,8 +20,9 @@ const state = {
   evenfPublic: process.env.NODE_ENV == "development" ? '/' : '../', //资源目录
   MakeCareTitle: powerInfo.name || '',  //预约课程名称
   MakeCareDesc: powerInfo.desc || '',    //预约课程简介
-  MakelampColor:'',   //预约灯的颜色
-  client_id: '',       //推荐课程id
+  MakelampColor:'255,165,0',   //预约灯的颜色
+  MakeClientName: '',    //预约设备名称
+  client_id: '',       //推荐
   lesson_id: project.lesson_id, //课程id
   Audio_effects: null
 }
@@ -54,6 +55,7 @@ const mutations = {
     state.MakeCareTitle = data.name
     state.MakeCareDesc = data.desc
     state.MakelampColor = data.color
+    state.MakeClientName = data.client_name
   },
   set_recommendid (state, data) {
     if (Object.keys(data).length == 0) {
@@ -141,7 +143,11 @@ const actions = {
   set_resLogoutUser ({ commit, dispatch }, data) {
     console.log('用户转移退出', data)
     dispatch('logout')
-    router.push({ path: '/' })
+    console.log('router:',router)
+    console.log('this.$route:', this.$route)
+    if (router.history.current.path != '/' && router.history.current.path != '/bodytester') {
+      router.push({ path: '/' })
+    }
   },
   //点击音频
   click_effects ({ state, dispatch }) {

@@ -21,6 +21,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      border-radius: 20px;
       //未登录
       .qr_img {
         width: 1.57rem;
@@ -287,7 +288,6 @@ export default {
       'Qrcode',
       'loginState',
       'userInfo',
-      'resStartLesson',
       'voicestate',
       'userMakeState',
       'publicPath',

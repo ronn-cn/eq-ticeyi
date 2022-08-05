@@ -19,6 +19,7 @@ export default {
   MakeCareTitle: state => state.common.MakeCareTitle,  //预约名称
   MakeCareDesc: state => state.common.MakeCareDesc,  //预约简介
   MakelampColor: state => state.common.MakelampColor,  //预约灯的颜色
+  MakeClientName: state => state.common.MakeClientName,  //预约灯的颜色
 
 
   //用户

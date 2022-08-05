@@ -438,10 +438,10 @@ header {
                     {{ item.sport_length }}
                   </div>
                 </li> -->
-                <li class="record_item">
-                  <div class="lesson_class">课程分类</div>
-                  <div class="lesson_name">·课程名称</div>
-                  <div class="lesson_time">17:25</div>
+                <li class="record_item" v-for="(item, index) in todayLesson" :key="index">
+                  <div class="lesson_class">{{item.lesson_type}}</div>
+                  <div class="lesson_name">·{{item.lesson_name}}</div>
+                  <div class="lesson_time">{{getLessonTime(item.time)}}</div>
                   <div style="clear: both;"></div>
                 </li>
                 
@@ -507,6 +507,7 @@ export default {
   },
   data() {
     return {
+      curriculum: [], // 分类
       popupshow: false,
       showNotify: false,
       // 新的参数
@@ -521,6 +522,9 @@ export default {
       tranfserData: undefined, // 转移数据
       currentRate: 0,        // 当前阶段进度
       todayLesson: [],        // 进入课程
+      continueMyPlanBool: true,
+      new_detailsBool: true,
+
     };
   },
   created() {
@@ -530,12 +534,9 @@ export default {
     recommendState(val) {
       this.popupshow = true;
       if (val) {
-        // this.loadDown()
         this.popupshow = true;
       } else {
         this.popupshow = false;
-        // clearInterval(this.downtimer)
-        // this.timernum = 30
       }
     },
   },
@@ -545,13 +546,9 @@ export default {
     });
     this.getUserAll();
     this.getLessonLog();
-
-    // console.log(this.recommendState)
+    this.getUserSportLogToday();
   },
-  destroyed() {
-    clearInterval(this.downtimer);
-    this.$store.commit("set_recommendid", "");
-  },
+  destroyed() { },
   methods: {
     ...mapActions(['logout',"click_effects"]),
 
@@ -566,6 +563,10 @@ export default {
         console.log("取消转移返回值: ",rs)
       } else if(data == 'goNow'){
         // 立即前往
+        const rs = await api.post("/unlock", {
+          "client_id": this.tranfserData.client_id,
+        });
+        console.log("立即前往 解锁设备: ",rs)
         this.popupshow = false;
         this.logout()
         this.$router.push('/')
@@ -592,8 +593,14 @@ export default {
         this.weeklength = rs.data.data.weekend.length;
       }
       this.weektoday = new Date().getDay()
-
-      // 获取今天的课程记录
+    },
+    // 获取今天的课程记录
+    async getUserSportLogToday() { // 现在还没有调用
+      const rs = await api.post("/get-user-sport-log-today", {
+        "user_id": this.userInfo.user_id,
+      });
+      console.log("用户今天的训练记录：", rs)
+      this.todayLesson = rs.data.data;
     },
     //获取用户信息
     async getUserAll() {
@@ -626,63 +633,66 @@ export default {
     },
     // 继续我的计划函数
     async continueMyPlan() {
-      const rs = await api.post("/lesson-select", {
-        "client_id": this.ouid,
-        "user_id": this.userInfo.user_id,
-      });
-      console.log("继续我的计划：",rs);
-      
-      if (rs.data.data){ // 判断转移课程返回的数据不为空
-        this.tranfserData = rs.data.data;
-        this.popupshow = true;
-      } else {
-        if (!this.showNotify) {
-          this.showNotify = true;
-          this.notifyTitle = "暂无推荐课程";
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 3000);
+      if (this.continueMyPlanBool){
+        this.continueMyPlanBool = false;
+        const rs = await api.post("/lesson-select", {
+          "client_id": this.ouid,
+          "user_id": this.userInfo.user_id,
+        });
+        console.log("继续我的计划：",rs);
+        
+        if (rs.data.data){ // 判断转移课程返回的数据不为空
+          this.tranfserData = rs.data.data;
+          this.popupshow = true;
+        } else {
+          if (!this.showNotify) {
+            this.showNotify = true;
+            this.notifyTitle = "暂无推荐课程";
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 3000);
+          }
         }
+        this.continueMyPlanBool = true;
       }
     },
     // 开始课程
     async new_details(info) {
-      // 根据课程分类进行转移
-      const rs = await api.post("/tranfser-by-type", {
-        "client_id": this.ouid,
-        "lesson_type": info.title,
-        "user_id": this.userInfo.user_id,
-      });
-      console.log("调用课程转移", rs);
-      if (rs.data.data){ // 判断转移课程返回的数据不为空
-        this.tranfserData = rs.data.data;
-        this.popupshow = true;
-      } else {
-        if (!this.showNotify) {
-          this.showNotify = true;
-          this.notifyTitle = "暂无推荐课程";
-          setTimeout(() => {
-            this.showNotify = false;
-          }, 3000);
+      if (this.new_detailsBool){
+        this.new_detailsBool = false;
+        // 根据课程分类进行转移
+        const rs = await api.post("/tranfser-by-type", {
+          "client_id": this.ouid,
+          "lesson_type": info.title,
+          "user_id": this.userInfo.user_id,
+        });
+        console.log("调用课程转移", rs);
+        if (rs.data.data){ // 判断转移课程返回的数据不为空
+          this.tranfserData = rs.data.data;
+          this.popupshow = true;
+        } else {
+          if (!this.showNotify) {
+            this.showNotify = true;
+            this.notifyTitle = "暂无推荐课程";
+            setTimeout(() => {
+              this.showNotify = false;
+            }, 3000);
+          }
         }
+        this.new_detailsBool = true;
       }
     },
     //退出课程
     async lotrecommend() {
       this.$router.push("/");
     },
-    //倒计时
-    loadDown() {
-      this.downtimer = setInterval(() => {
-        let num = (this.timernum -= 1);
-        if (num !== 0) {
-          this.timernum = num;
-        } else {
-          clearInterval(this.downtimer);
-          this.$router.push("/");
-        }
-      }, 1000);
-    },
+    getLessonTime(t){
+      var date = new Date(t*1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000 
+      var hour = ("0" + date.getHours()).slice(-2);
+      var minute = ("0" + date.getMinutes()).slice(-2);
+      var result = hour +":"+ minute;
+      return result;
+    }
   },
 };
 </script>

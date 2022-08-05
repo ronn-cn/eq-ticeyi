@@ -39,39 +39,45 @@
   justify-content: center;
   align-items: center;
 }
-.make_page::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 500px;
-  height: 100%;
-  z-index: 9999;
-  background: linear-gradient(
-    90deg,
-    rgb(var(--afterc)) 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
-}
-.make_page::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 500px;
-  height: 100%;
-  z-index: 9999;
-  background: linear-gradient(
-    270deg,
-    rgb(var(--afterc)) 0%,
-    rgba(255, 255, 255, 0) 98.18%
-  );
-}
 .make_conver {
   color: #000;
-}
-.conver_img {
-  padding: 40px 0 80px 0;
+  height: 100%;
+  h2 {
+    display: inline-block;
+    width: 900px;
+    font-size: 36px;
+    line-height: 55px;
+    margin-top: 100px;
+    padding-left: 30px;
+    background: url("~assets/images/common/lock.png") no-repeat;
+    background-size: 30px 30px;
+    background-position-y: 13px;
+  }
+  p {
+    display: inline-block;
+    font-size: 24px;
+    margin-top: 50px;
+    padding-left: 30px;
+    background: url("~assets/images/common/remind.png") no-repeat;
+    background-size: 21px 24px;
+  }
+  .countdown{
+    color: #FF3A2F;
+    font-size: 96px;
+    margin-top: 20px;
+  }
+  .conver_img {
+    padding: 40px 0 80px 0;
+    position: relative;
+    .disable_img{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left:-100px;
+      margin-top:-90px;
+    }
+  }
+
 }
 //已登录
 .qrcode_avatar {
@@ -136,73 +142,56 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 0 0 20px 0;
   }
+}
+.breathing_lamp_left{
+  width: 20%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+}
+.breathing_lamp_right{
+  width: 20%;
+  height: 100%;
+  position: absolute;
+  right: 0;
 }
 </style>
 
 <template>
-  <div class="make_page"
-       :style="{'--afterc':MakelampColor,'--backc':backcolor}">
-
-    <div class="make_conver"
-         v-if="PAGETYPE == 0">
-      <h2>当前训练器械（B03-坐姿腹肌训练器）已预约，请选择其他器械进行锻炼</h2>
+  <div class="make_page" :style="{'--afterc':MakelampColor,'--backc':backcolor}">
+    <div :style="breathing_lamp_left_style" class="breathing_lamp_left"></div>
+    <div :style="breathing_lamp_right_style" class="breathing_lamp_right"></div>
+    <div class="make_conver" v-if="PAGETYPE == 0">
+      <h2>当前设备（{{MakeClientName}}）预约中，（{{userInfo.user_name}}）即将开始训练</h2>
+      <div class="countdown">{{completedSteps-90}}</div>
       <div class="conver_img">
-        <img :src="`${publicPath}powerStatic/images/${projecttype}.png`"
-             style="width: 350px" />
+        <!-- <img :src="`${publicPath}powerStatic/images/${projecttype}.png`" style="width: 350px" /> -->
+        <img class="disable_img" src="~assets/images/common/disable.png" />
+        <img :src="`${publicPath}common/images/equipment/${projecttype}.png`" style="height: 480px" />
       </div>
-      <p>你可前往智能指导镜查看今日训练计划，更好的打造完美身材哦~</p>
+      <p>非预约用户可前往智能指导镜查看今日训练计划，更好的打造完美身材哦~</p>
     </div>
     <div v-else>
-      <van-overlay :show="true">
-        <div class="wrapper"
-             @click.stop>
+      <!-- <van-overlay :show="true"> -->
+        <div class="wrapper" @click.stop>
           <div class="block">
             <div class="qrcode_avatar">
               <div class="avatar_img">
-                <img :src="userInfo.user_avatar || ''"
-                     alt="" />
+                <img :src="userInfo.user_avatar || ''" alt="头像" />
               </div>
               <p class="p2">{{ userInfo.user_name || '' }}</p>
             </div>
-            <p class="close_p1">
-              你已预约B03-坐姿腹肌训练器，确认信息并开启训练
-            </p>
+            <p class="close_p1"> 你已预约{{MakeClientName}}，确认信息并开启训练 </p>
             <section class="btn_list">
-              <div class="close_btn1"
-                   @click="logout(),click_effects()">
-                退出
-              </div>
-              <div class="close_btn2"
-                   @click="click_effects()">
-                立即开课 {{completedSteps}}s
-              </div>
+              <div class="close_btn1" @click="exit(),click_effects()"> 退出 {{completedSteps}}s </div>
+              <div class="close_btn2" @click="start(),click_effects()"> 立即开课 </div>
             </section>
           </div>
         </div>
-      </van-overlay>
+      <!-- </van-overlay> -->
     </div>
-    <!-- <div class="introduce_title">
-      <p class="introduce_title_p1">
-        {{ MakeCareTitle || '力量器械' }}
-      </p>
-      <p class="introduce_title_p2">
-        {{ MakeCareDesc || '' }}
-      </p>
-    </div> -->
-    <!-- <div class="careradia">
-      <RadialProgressBar :diameter="barinfo.diameter"
-                         :stopColor="barinfo.stopColor"
-                         :startColor="barinfo.startColor"
-                         :strokeWidth="barinfo.strokeWidth"
-                         :innerStrokeWidth="barinfo.innerStrokeWidth"
-                         :completed-steps="completedSteps"
-                         :total-steps="totalSteps">
-        <p style="font-size: 0.84rem; margin-bottom: 0.05rem">
-          {{ completedSteps }}
-        </p>
-      </RadialProgressBar>
-    </div> -->
   </div>
 </template>
 
@@ -224,13 +213,15 @@ export default {
         strokeWidth: 15,
         innerStrokeWidth: 15,
       },
-      completedSteps: 90,
-      totalSteps: 90,
+      completedSteps: 100,
+      // totalSteps: 90,
       timer: null,
       makeStyle: {},
       aftercolor: '#ff3b30',
-      backcolor: '#000',
-      PAGETYPE: 1
+      backcolor: '#fff',
+      breathing_lamp_color: '255, 59, 48',
+      breathing_lamp_opacity: 1,
+      PAGETYPE: 0
     }
   },
   computed: {
@@ -238,15 +229,36 @@ export default {
       'MakeCareTitle',
       'MakeCareDesc',
       'MakelampColor',
+      'MakeClientName',
       'loginState',
       'publicPath',
       "projecttype",
       'userInfo'
     ]),
+    breathing_lamp_left_style(){
+      var obj = {
+        'background': 'linear-gradient(to right, rgba('+this.MakelampColor+', 1), rgba(255, 255, 255, 0))',
+        'opacity': this.breathing_lamp_opacity
+      }
+      return obj
+    },
+    breathing_lamp_right_style(){
+      var obj = {
+        'background': 'linear-gradient(to left, rgba('+this.MakelampColor+', 1), rgba(255, 255, 255, 0))',
+        'opacity': this.breathing_lamp_opacity
+      }
+      return obj
+    }
   },
-  created () { },
+  created () { 
+    console.log("预约 created:")
+  },
   mounted () {
-    //this.loaddown()
+    this.breathing_lamp_color = this.MakelampColor
+    // console.log("预约 mounted:", this.MakelampColor)
+    this.breathing_lamp_change()
+    // this.breathing_lamp_opacity = 0
+    this.loaddown()
   },
   destroyed: function () {
     if (this.timer) {
@@ -259,27 +271,55 @@ export default {
     loaddown () {
       this.timer = setInterval(() => {
         if (this.completedSteps == 0) {
-          clearInterval(this.timer)
-          this.set_userMakeState(false)
-          this.$store.commit(
-            'set_lesson_id',
-            '445dab66e033da6f0000000000000003'
-          )
-          this.completedSteps = 90
-          this.totalSteps = 90
-          if (this.loginState) {
-            this.$store.dispatch('logout')
-          }
+          this.exit();
         } else {
           this.completedSteps -= 1
-          if (this.completedSteps == 40) {
+          if (this.completedSteps == 90) {
             let audio = new Audio()
             audio.src = `${this.publicPath}powerStatic/audio/首页/03您已预约，请点击开始课程.mp3`
             audio.play()
+            this.backcolor = '#000'
+            this.PAGETYPE = 1
           }
         }
       }, 1000)
     },
+    breathing_lamp_change() {
+      var sw = false;
+      setInterval(() => {
+        // console.log("我看看呼吸的数据：",this.breathing_lamp_opacity)
+        if(sw){
+          this.breathing_lamp_opacity += 0.01
+        } else {
+          this.breathing_lamp_opacity -= 0.01
+        }
+        if (this.breathing_lamp_opacity>=1) {
+          sw = false
+        }
+        if (this.breathing_lamp_opacity<=0) {
+          sw = true
+        }
+      }, 10);
+    },
+    exit() {
+      console.log("退出了预约页面")
+      clearInterval(this.timer)
+      this.set_userMakeState(false)
+      if (this.loginState) {
+        this.$store.dispatch('logout')
+      }
+    },
+    start() {
+      // 这就是开始预约的课程了
+      clearInterval(this.timer)
+      this.set_userMakeState(false)
+      //开始测试接口
+      this.$store.dispatch('clientstart', {
+        lesson_id: '445dab66e033da6f0000000000000001',
+        lesson_name: '体测仪',
+      })
+      this.$router.push('/datadetection')
+    }
   },
 }
 </script>

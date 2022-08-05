@@ -488,7 +488,10 @@ export default {
   watch: {
     loginState (val, oldval) {
       if (val) {
-        this.endPageStatus = false
+        setTimeout(()=>{
+          this.loadaddside();
+          this.endPageStatus = false
+        }, 500 )
       }
     },
   },
@@ -542,7 +545,6 @@ export default {
 
     async loadaddside () {
       const data = this.bodydata
-      // console.log(data)
       var msg = {
         device_ouid: this.ouid, //设备ID
         user_id: this.userInfo['user_id'] || 0, //用户ID
@@ -563,8 +565,7 @@ export default {
         protein: data['protein-percentage'], //用户蛋白质
         grade: this.usergrade, //  用户健康评分
       }
-      console.log('msg', msg)
-
+      console.log('体测数据：', msg)
       const rs = await api.post('/add-side', msg)
       console.log("提交用户体测数据返回数据：", rs)
     },

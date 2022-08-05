@@ -184,41 +184,30 @@
                   :codeTest="Qrcode"></QRCode>
         </div>
         <MakeLesson v-if="userMakeState" />
+        <!-- <MakeLesson /> -->
       </div>
 
       <div class="introduce_start_after"
            v-if="courseState">
-        <div class="step_back"
-             @click="backindex">
+        <div class="step_back" @click="backindex">
         </div>
-        <div class="risk_notice"
-             v-if="viewindex === 0">
+        <div class="risk_notice" v-if="viewindex === 0">
           <h1 class="h1_title">测试注意事项</h1>
           <ul class="careful_ul">
-            <li v-for="item of carefulList"
-                :key="item">
+            <li v-for="item of carefulList" :key="item">
               {{ item }}
             </li>
           </ul>
         </div>
-        <div class="apparatus_test"
-             v-show="viewindex === 1">
+        <div class="apparatus_test" v-show="viewindex === 1">
           <h1 class="h1_title">完善个人信息</h1>
           <div class="choice_sex">
             <h2>点击选择你的性别</h2>
             <div class="gender">
-              <section :class="[
-                'gender_male',
-                user_sex == 1 ? 'gender_male_active' : '',
-              ]"
-                       @click="commitAge(1)">
+              <section :class="[ 'gender_male', user_sex == 1 ? 'gender_male_active' : '',]" @click="commitAge(1)">
                 <div>男</div>
               </section>
-              <section :class="[
-                'gender_male',
-                user_sex == 2 ? 'gender_male_active' : '',
-              ]"
-                       @click="commitAge(2)">
+              <section :class="[ 'gender_male', user_sex == 2 ? 'gender_male_active' : '', ]" @click="commitAge(2)">
                 女
               </section>
             </div>

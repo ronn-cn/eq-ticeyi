@@ -65,6 +65,7 @@
   .content_p {
     font-size: 0.14rem;
     width: 85%;
+    height: 0.4rem;
     color: #7F7F7F;
     text-align: center;
     line-height: 0.2rem;
@@ -103,7 +104,7 @@
 .footer {
   bottom: 0;
   width: 90%;
-  margin:60px auto;
+  margin:30px auto;
   height: 0.8rem;
   border-top: 1px solid #aaa;
   display: flex;
@@ -156,13 +157,16 @@ export default {
       recommInfo: {},
       recommMsg: {},
       imgurl: '',
-      downnum: 30,
+      downnum: 10,  // 此字段由30秒倒计时修改为10秒倒计时
       timer: null,
-
-
     }
   },
-  watch: { },
+  watch: { 
+    tranfserData() {
+      console.log("监听这个数据tranfserData:",this.tranfserData);
+      this.downChang();
+    },
+  },
   computed: {
     ...mapGetters([
       'recommendid',
@@ -179,23 +183,24 @@ export default {
     },
     getImageUrl() {
       var val = this.tranfserData.client_type;
-      if (val.includes('健身指导镜')) {
-        return `${this.publicPath}common/images/jianshenjing.png`
-      } else if (val.includes('跑步机')) {
-        return require('../assets/images/paobuji.png')
-      } else if (val.includes('体测仪')) {
-        return require('../assets/images/ticeyi.png')
-      } else {
-        return `${this.publicPath}powerStatic/images/${val[0]}.png`
-      }
+      return `${this.publicPath}common/images/equipment/${val}.png`
+      // if (val.includes('健身指导镜')) {
+      //   return `${this.publicPath}common/images/equipment/健身指导镜.png`
+      // } else if (val.includes('跑步机')) {
+      //   return require('../assets/images/paobuji.png')
+      // } else if (val.includes('体测仪')) {
+      //   return require('../assets/images/ticeyi.png')
+      // } else {
+      //   return `${this.publicPath}common/images/${val[0]}.png`
+      // }
     }
   },
   created () { 
     console.log("created:",this.tranfserData);
-    this.downChang();
   },
   mounted () {
     console.log("mounted:",this.tranfserData);
+    this.downChang(); // 第一次调用
   },
   destroyed: function () {
     clearInterval(this.timer)
@@ -207,15 +212,18 @@ export default {
     // 取消转移方法 
     cancelTransfer() {
       this.receipt('cancelTransfer');
+      clearInterval(this.timer)
+      this.timer = null
     },
     // 立即前往方法
     goNow(){
       this.receipt('goNow');
-      // clearInterval(this.timer)
+      clearInterval(this.timer)
+      this.timer = null
     },
     downChang () {
       clearInterval(this.timer)
-      this.downnum = 30
+      this.downnum = 10
       this.timer = setInterval(() => {
         if (this.downnum == 0) {
           clearInterval(this.timer)

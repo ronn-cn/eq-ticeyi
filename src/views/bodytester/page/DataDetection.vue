@@ -465,7 +465,7 @@ export default {
           this.massageList[2].state = true
           this.audiosrc = `${this.publicPath}bodytesterStatic/audio/测量体重.mp3`
           this.audio_play()
-          this.progress.endVal += 20
+          this.progress.endVal = 20
           // console.log('测量体重')
           this.SEND_SOCKET('{"cmd":"askStopMeasureHeight"}') //停止测量身高
           setTimeout(() => {
@@ -495,7 +495,7 @@ export default {
           this.weightWarnState = false;
           this.audiosrc = `${this.publicPath}bodytesterStatic/audio/测量体质.mp3`
           this.audio_play()
-          this.progress.endVal += 20
+          this.progress.endVal = 40
           this.massageList[3].state = true
           setTimeout(() => {
             this.massageList[4].state = true
@@ -517,13 +517,13 @@ export default {
       this.bodyfat = true
       this.electricWarnState = false
       this.massageList[5].state = true
-      this.progress.endVal += 10
+      this.progress.endVal = 85
       this.updateProgress('75')
     },
     //监听数据
     bodydata: {
       handler(newName, oldName) {
-        this.progress.endVal += 20
+        this.progress.endVal == 70
         this.audiosrc = `${this.publicPath}bodytesterStatic/audio/生成数据.mp3`
         this.audio_play()
         this.massageList[9].state = true
@@ -542,15 +542,16 @@ export default {
           if (!val[item].state) {
             if (item == '5' || item == '7') {
               setTimeout(() => {
-                this.progress.endVal += 15 //总进度百分比
                 // this.massageList[item].state = true
                 if (item == '5') {
+                  this.progress.endVal = 50 //总进度百分比
                   this.connected.endVal = 96
                   setTimeout(() => {
                     let i = Number(item) + 1
                     this.massageList[i].state = true
                   }, 2000)
                 } else {
+                  this.progress.endVal = 100 //总进度百分比
                   this.testingNum.endVal = 98
                   this.massageList[item].state = true
                   setTimeout(() => {

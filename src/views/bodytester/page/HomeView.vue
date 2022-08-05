@@ -138,10 +138,9 @@ export default {
           b: arr[2],
         })
         this.$store.dispatch('set_userMakeState', true)
-        const lesson_id = val.lesson.md5
-        this.set_lesson_id(lesson_id)
+        this.set_lesson_id(val.lesson.id)
         const data = val.lesson
-        this.set_MakeCareInfo({ name: data[0].name, desc: data[0].desc })
+        this.set_MakeCareInfo({ name: data.name, desc: data.desc, client_name: data.client_name, color: val.color})
       }
     },
     loginState: {
