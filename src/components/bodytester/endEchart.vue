@@ -41,8 +41,8 @@ export default {
   },
   mounted () {
     if (Array.isArray(this.user_side_log)){
-      let l = this.user_side_log.length
-      for (let i = 0; i < l; i++){
+      let l = this.user_side_log.length;
+      for (let i = l-1; i >= 0; i--){
         this.xdata.push(i.toString())
         this.ydata1.push(this.user_side_log[i].weight)
         this.ydata2.push(this.user_side_log[i].fat)
