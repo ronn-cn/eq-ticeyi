@@ -63,6 +63,7 @@
     color: #7F7F7F;
   }
   .content_p {
+    display: inline-block;
     font-size: 0.14rem;
     width: 85%;
     height: 0.4rem;
@@ -84,7 +85,6 @@
     // background-color: aqua;
     margin-top: 0.2rem;
     img {
-      width: 100%;
       height: 100%;
     }
   }
@@ -127,10 +127,10 @@
     <div class="recomm_back" @click="cancelTransfer(), click_effects()"></div>
     <section class="main_content">
       <div class="content_title">{{ tranfserData.lesson_name || '转移的课程标题' }}</div>
-      <div class="content_energy">
-        <span>L{{ tranfserData.lesson_factor/10 || 1 }}</span> |
+      <div class="content_energy" v-if="projecttype!='体测仪'">
+        <span>L{{ tranfserData.lesson_factor/10 || 0 }}</span> |
         <span>{{ Math.ceil(tranfserData.lesson_time / 60 || 1) }}分钟</span> |
-        <span>{{ tranfserData.lesson_energy || 180 }}kWatts</span> |
+        <span>{{ tranfserData.lesson_energy || 0 }}Watts</span> |
         <!-- 图标 -->
       </div>
       <p class="content_p">{{ tranfserData.lesson_desc }}</p>
@@ -184,15 +184,6 @@ export default {
     getImageUrl() {
       var val = this.tranfserData.client_type;
       return `${this.publicPath}common/images/equipment/${val}.png`
-      // if (val.includes('健身指导镜')) {
-      //   return `${this.publicPath}common/images/equipment/健身指导镜.png`
-      // } else if (val.includes('跑步机')) {
-      //   return require('../assets/images/paobuji.png')
-      // } else if (val.includes('体测仪')) {
-      //   return require('../assets/images/ticeyi.png')
-      // } else {
-      //   return `${this.publicPath}common/images/${val[0]}.png`
-      // }
     }
   },
   created () { 

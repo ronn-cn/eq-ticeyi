@@ -430,14 +430,6 @@ header {
             </section>
             <section class="plan_record">
               <ul>
-                <!-- <li v-for="(item, index) in showclass" :key="index" style="font-size: 18px" ref="child">
-                  <div class="lesson_name">
-                    ·{{ item.lesson_name }}
-                  </div>
-                  <div class="sport_length">
-                    {{ item.sport_length }}
-                  </div>
-                </li> -->
                 <li class="record_item" v-for="(item, index) in todayLesson" :key="index">
                   <div class="lesson_class">{{item.lesson_type}}</div>
                   <div class="lesson_name">·{{item.lesson_name}}</div>
@@ -688,6 +680,14 @@ export default {
             }, 3000);
           }
         }
+        // this.tranfserData = {
+        //   "color": "25,12,12",
+        //   "name": "体测仪",
+        //   "lesson_name":"体测仪",
+        //   "lesson_factor": 10,
+        //   "client_type": "体测仪"
+        // };
+        // this.popupshow = true;
         this.new_detailsBool = true;
       }
     },
