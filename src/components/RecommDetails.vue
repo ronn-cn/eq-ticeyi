@@ -218,7 +218,8 @@ export default {
       this.timer = setInterval(() => {
         if (this.downnum == 0) {
           clearInterval(this.timer)
-          this.$router.push('/')
+          // this.$router.push('/')
+          this.goNow();
         } else {
           this.downnum -= 1
         }

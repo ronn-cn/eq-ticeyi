@@ -351,7 +351,7 @@ header {
       <!-- 底部 -->
       <div class="footer">
         <button class="footer_btn1" @click="$router.push('/')">返回首页</button>
-        <button class="footer_btn2" @click="foot_btn()">推荐课程</button>
+        <button class="footer_btn2" @click="foot_btn()">{{userInfo.user_name?'推荐课程':'登录账号'}}</button>
       </div>
       <!-- 登录二维码 -->
       <EndOverlay v-if="showQR" @showover="showQR = false" />
