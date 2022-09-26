@@ -265,8 +265,7 @@
           </li>
         </ul>
       </div>
-      <home-view :itemindex="itemindex"
-                 @set_showCourse="set_showCourse"></home-view>
+      <home-view :itemindex="itemindex" @set_showCourse="set_showCourse"></home-view>
     </div>
   </div>
 </template>

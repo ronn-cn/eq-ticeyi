@@ -185,6 +185,7 @@ export default {
     },
     //开始
     initStep () {
+      // this.$router.push('/testingend') 测试用
       if (this.$refs.stepview.timer) {
         this.$refs.stepview.removetimer()
         // this.$emit('send_askLedState', 0, 0, 0)

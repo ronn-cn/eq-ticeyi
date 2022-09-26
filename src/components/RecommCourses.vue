@@ -433,7 +433,7 @@ header {
                 <li class="record_item" v-for="(item, index) in todayLesson" :key="index">
                   <div class="lesson_class">{{item.lesson_type}}</div>
                   <div class="lesson_name">·{{item.lesson_name}}</div>
-                  <div class="lesson_time">{{getLessonTime(item.time)}}</div>
+                  <div class="lesson_time">{{getLessonDuration(item.sport_length)}}</div>
                   <div style="clear: both;"></div>
                 </li>
                 
@@ -701,6 +701,17 @@ export default {
       var minute = ("0" + date.getMinutes()).slice(-2);
       var result = hour +":"+ minute;
       return result;
+    },
+    getLessonDuration(s){
+      var sec = s % 60
+      var min = Math.trunc(s / 60)
+      if (min < 10) {
+        min = "0"+min;
+      }
+      if (sec < 10){
+        sec = "0" + sec;
+      }
+      return min+"'"+sec+'"'
     }
   },
 };

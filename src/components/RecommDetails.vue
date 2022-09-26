@@ -61,6 +61,13 @@
     font-size: 0.14rem;
     padding: 0.2rem 0;
     color: #7F7F7F;
+    height: 0.15rem;
+    display: flex;
+    align-items: center;
+  }
+  .content_energy span{
+    display: inline-block;
+    padding: 0 0.05rem;
   }
   .content_p {
     display: inline-block;
@@ -127,19 +134,18 @@
     <div class="recomm_back" @click="cancelTransfer(), click_effects()"></div>
     <section class="main_content">
       <div class="content_title">{{ tranfserData.lesson_name || '转移的课程标题' }}</div>
-      <div class="content_energy" v-if="projecttype!='体测仪'">
+      <div class="content_energy" v-if="tranfserData.client_type != '体测仪'">
         <span>L{{ tranfserData.lesson_factor/10 || 0 }}</span> |
         <span>{{ Math.ceil(tranfserData.lesson_time / 60 || 1) }}分钟</span> |
-        <span>{{ tranfserData.lesson_energy || 0 }}Watts</span> |
-        <!-- 图标 -->
+        <span><img src="~assets/images/common/device_icon/瑜伽砖.png" alt="icon" width="25"/></span>
       </div>
-      <p class="content_p">{{ tranfserData.lesson_desc }}</p>
+      <p class="content_p" v-if="tranfserData.lesson_desc">{{ tranfserData.lesson_desc }}</p>
       <div class="content_cover">
         <img :src="getImageUrl" alt="器械图片" />
       </div>
       <div class="content_progress" :style="getBackcolor"></div>
       <div class="content_tips">
-        请您前往“<span :style="getcolor"> {{ tranfserData.name }} </span>”开启健身课程
+        请您前往 {{tranfserData.area_name+tranfserData.area_no}} “<span :style="getcolor"> {{ tranfserData.name }} </span>”开启健身课程
       </div>
     </section>
     <section class="footer">
@@ -164,6 +170,7 @@ export default {
   watch: { 
     tranfserData() {
       console.log("监听这个数据tranfserData:",this.tranfserData);
+      console.log("projecttype:", this.projecttype);
       this.downChang();
     },
   },

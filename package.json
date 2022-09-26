@@ -24,7 +24,7 @@
     "vant": "^2.12.38",
     "vue": "^2.6.11",
     "vue-axios": "^3.2.5",
-    "vue-count-to": "^1.0.13",
+    "vue-count-to": "^1.0.13",   
     "vue-pickers": "^2.5.3",
     "vue-radial-progress": "^0.3.2",
     "vue-router": "^3.2.0",
