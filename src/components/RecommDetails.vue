@@ -137,7 +137,10 @@
       <div class="content_energy" v-if="tranfserData.client_type != '体测仪'">
         <span>L{{ tranfserData.lesson_factor/10 || 0 }}</span> |
         <span>{{ Math.ceil(tranfserData.lesson_time / 60 || 1) }}分钟</span> |
-        <span><img src="~assets/images/common/device_icon/瑜伽砖.png" alt="icon" width="25"/></span>
+
+        <span v-for="(item, index) in tranfserData.Apparatus" :key="index">
+          <img :src="getIconUrl(item)" alt="icon" width="25"/>
+        </span>
       </div>
       <p class="content_p" v-if="tranfserData.lesson_desc">{{ tranfserData.lesson_desc }}</p>
       <div class="content_cover">
@@ -232,6 +235,9 @@ export default {
         }
       }, 1000)
     },
+    getIconUrl(name){
+      return `${this.publicPath}common/images/equipment/icon/${name}.png`
+    }
   },
 }
 </script>
